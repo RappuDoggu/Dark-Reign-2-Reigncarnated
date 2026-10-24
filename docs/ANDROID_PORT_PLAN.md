@@ -48,3 +48,7 @@ cmake --build build-android --verbose
 ```
 
 Do not run ARM64 CTest binaries on an x86 host. Their linking is verified, their Android execution is not. Diagnostic package and debug key remain in ignored build directories; never commit the key or distribute source-derived binaries pending rights review. CI currently uploads evidence logs only.
+
+## Current next gate after installation audit
+
+Use the original-only Android asset-test APK and ANDROID_ASSET_TEST.md for native file/pack runtime evidence. Host validation of the supplied installation passes (88 packs, 3,763 entries, 1,181 total non-player text configs). Original TBuf now compiles for ARM64; original PTree/FScope/FileSys integration and real Vid/Bitmap rendering remain unimplemented. This diagnostic does not advance M3 to achieved. SDK/JDK/build commands for the distributable asset test are separate from the upstream-derived NativeActivity shell.

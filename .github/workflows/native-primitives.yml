@@ -52,7 +52,18 @@ jobs:
           mkdir -p evidence
           bash tools/package_android.sh 2>&1 | tee evidence/android-build-package.log
           "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" -h -l build-android/libreign_diagnostic.so > evidence/android-elf.log
-      # No source, libraries, executable or APK artifacts pending redistribution rights.
+      - name: Build original-only asset test APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ANDROID_SDK_ROOT="$RUNNER_TEMP/reign-sdk"
+          export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk/27.2.12479018"
+          bash tools/package_asset_probe.sh 2>&1 | tee evidence/asset-probe-package.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Reigncarnated-Asset-Test-v02-arm64
+          path: build-asset-probe/Reigncarnated-Asset-Test-v02.apk
+      # Engine-derived binaries remain excluded. The APK above links only original porting tools.
       - uses: actions/upload-artifact@v4
         if: always()
         with:

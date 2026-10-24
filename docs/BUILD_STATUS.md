@@ -65,3 +65,13 @@ Commit `54d6f1c49bb0f74864bbcceb9cfaa0d2cf5ffc5b` passed both jobs in [run 40110
 - Development branch: `dev/native-arm64-primitives`; [draft PR #1](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/pull/1). Initial implementation commit: `eea4dd3282dbd34526fa7ebe8e1dbdc6182a4815`. Follow-up toolchain fix and parser probe: `54d6f1c49bb0f74864bbcceb9cfaa0d2cf5ffc5b`.
 
 The final evidence-only documentation commit does not alter tested code. No copyrighted engine/game binary was uploaded as an artifact.
+
+## Continuation: supplied installation and native asset test
+
+The community installation passes static/archive/config checks; see INSTALLATION_AUDIT.md. Original TBuf/StrBuf now compile on host and Android ARM64, alongside CRC/RNG. A native on-demand ZWP reader validates and reads 3,763 entries across 88 real packs (389,882,093 payload bytes), with every filename CRC checked against the original engine. Original TBuf tokenizes 1,165 archived text configs and 16 loose non-player configs without errors. This is lexical validation, not full PTree execution.
+
+Seven local CTest targets pass under ASan/UBSan (local LeakSanitizer disabled for the previously recorded sandbox limitation), including tokenizer, archive corruption/truncation/lookup cases, and an original synthetic installation integration fixture. The Android original-engine diagnostic rebuild also compiles the tokenizer and native reader. A separate original-only asset APK compiles, passes signature/ZIP checks and has 16KiB ELF/ZIP alignment; it contains no upstream implementation or game assets. Its file-picker/JNI/device execution is untested and is the owner's next task.
+
+Additional packaging work: a full JDK17 was required because the environment originally contained only a JRE. Raw Java compilation uses `--release 8` with the Android SDK on its classpath before D8 conversion; using the Android stub jar as javac's bootclasspath caused a LambdaMetafactory compile error and was corrected. SDK/NDK remain pinned as before. CI now uploads only the original-only asset test APK plus logs, never the engine-derived diagnostic.
+
+Current execution logs: `docs/logs/install-slice/`. New CI results will be recorded after execution. M3, M4 and M5 remain unachieved. Next: run the provided asset test on Fold 5/Thor; continue the original parser/FileSys dependency slice and rendering integration with that runtime evidence.

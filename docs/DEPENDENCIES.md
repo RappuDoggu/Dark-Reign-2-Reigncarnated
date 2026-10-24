@@ -21,3 +21,7 @@ Inspected 2026-10-24 at the revisions in PORTING_AUDIT. Public availability and 
 The harness does not confer rights over upstream material. CI fetches a pinned upstream revision into the runner's temporary directory, verifies five file hashes, compiles privately, and publishes only logs. Source-derived libraries, native executables and APKs are deliberately not artifact uploads. A distribution decision requires rights clarification covering both source and compiled derivatives, plus middleware/assets as applicable.
 
 Original materials added here: CMake harness, type/rotate declarations, platform services, diagnostic lifecycle/GLES shell, tests, metadata tools, workflow and authored reports. No copied upstream implementations or game data are committed.
+
+## Supplied installation cross-check
+
+PE version resources confirm Miles 6.0f and Bink 1.0i, matching the inspected headers. The community dr2.exe is x86 with a 2020 embedded build date; dgVoodoo 2.64 supplies its DirectDraw/Direct3D compatibility wrappers. None are added to Android. Distribution of the new asset-test APK is limited to original porting code and standard Android/C++ runtime dependencies: it links no upstream game implementation or proprietary middleware and includes no game assets. Engine-derived artifacts remain excluded.

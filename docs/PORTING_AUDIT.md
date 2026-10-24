@@ -71,3 +71,7 @@ A new high-bit byte test reproduced `Crc::CalcStr` indexing `toLower` with negat
 ## Remaining audit limits
 
 Licensing is unresolved; see DEPENDENCIES. No exhaustive runtime call graph, complete serialized-type review, entire simulation compile, complete Windows build, real asset compatibility run, or Android execution has been completed. The native port is at primitives/platform bring-up, not gameplay.
+
+## Continuation with supplied community installation
+
+See INSTALLATION_AUDIT.md for actual file/PE/archive/config observations. The former statement that no game archive was supplied describes the first execution only. Source TBuf/StrBuf now compile on GCC and NDK ARM64; the original tokenizer processes all 1,165 archived and 16 non-player loose text configurations with no errors. Native ZWP access and the original CRC agree across all 3,763 archive entries. The full original PTree/FScope/FileSys chain and game initialization still do not compile or run as a whole. A separate original-only asset diagnostic is buildable without an upstream checkout, so user testing can proceed without distributing the original engine implementations.
