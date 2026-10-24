@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <string>
 #include <limits>
+#include <algorithm>
+#include <vector>
 namespace reign {
 #define REIGN_GL(X) \
  X(CreateShader,PFNGLCREATESHADERPROC) X(ShaderSource,PFNGLSHADERSOURCEPROC) X(CompileShader,PFNGLCOMPILESHADERPROC) \
@@ -20,24 +22,47 @@ namespace reign {
  X(Viewport,PFNGLVIEWPORTPROC) X(Enable,PFNGLENABLEPROC) X(Disable,PFNGLDISABLEPROC) X(DepthMask,PFNGLDEPTHMASKPROC) \
  X(DepthFunc,PFNGLDEPTHFUNCPROC) X(BlendFunc,PFNGLBLENDFUNCPROC) X(ClearColor,PFNGLCLEARCOLORPROC) \
  X(ClearDepthf,PFNGLCLEARDEPTHFPROC) X(Clear,PFNGLCLEARPROC) X(DrawElements,PFNGLDRAWELEMENTSPROC) \
+ X(GenFramebuffers,PFNGLGENFRAMEBUFFERSPROC) X(DeleteFramebuffers,PFNGLDELETEFRAMEBUFFERSPROC) X(BindFramebuffer,PFNGLBINDFRAMEBUFFERPROC) \
+ X(FramebufferTexture2D,PFNGLFRAMEBUFFERTEXTURE2DPROC) X(CheckFramebufferStatus,PFNGLCHECKFRAMEBUFFERSTATUSPROC) \
+ X(GenRenderbuffers,PFNGLGENRENDERBUFFERSPROC) X(DeleteRenderbuffers,PFNGLDELETERENDERBUFFERSPROC) X(BindRenderbuffer,PFNGLBINDRENDERBUFFERPROC) \
+ X(RenderbufferStorage,PFNGLRENDERBUFFERSTORAGEPROC) X(FramebufferRenderbuffer,PFNGLFRAMEBUFFERRENDERBUFFERPROC) X(BlitFramebuffer,PFNGLBLITFRAMEBUFFERPROC) \
  X(ReadPixels,PFNGLREADPIXELSPROC) X(GetError,PFNGLGETERRORPROC) X(PixelStorei,PFNGLPIXELSTOREIPROC)
 struct LegacyGles::Impl {
 #define DECLARE(name,type) type name=nullptr;
  REIGN_GL(DECLARE)
 #undef DECLARE
- GLuint program=0,vao=0,vbo=0,ibo=0,white=0;
+ GLuint program=0,vao=0,vbo=0,ibo=0,white=0,fbo=0,color=0,depth=0;
+ unsigned width=0,height=0;
  explicit Impl(Resolver resolver) {
 #define LOAD(name,type) name=reinterpret_cast<type>(resolver("gl" #name));if(!name)throw std::runtime_error("Missing GLES entry: gl" #name);
   REIGN_GL(LOAD)
 #undef LOAD
  }
  void check(){if(auto error=GetError())throw std::runtime_error("GLES error "+std::to_string(error));}
+ void target(unsigned w,unsigned h){
+  if(!w||!h||w>16384||h>16384||std::uint64_t(w)*h*4>128*1024*1024)throw std::runtime_error("Invalid native render target size");
+  if(w==width&&h==height&&fbo){BindFramebuffer(GL_FRAMEBUFFER,fbo);return;}
+  GLuint next_fbo=0,next_color=0,next_depth=0;
+  try{
+   GenFramebuffers(1,&next_fbo);GenTextures(1,&next_color);GenRenderbuffers(1,&next_depth);
+   BindTexture(GL_TEXTURE_2D,next_color);TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+   TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+   TexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,nullptr);
+   BindRenderbuffer(GL_RENDERBUFFER,next_depth);RenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT16,w,h);
+   BindFramebuffer(GL_FRAMEBUFFER,next_fbo);FramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,next_color,0);
+   FramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,next_depth);check();
+   if(CheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)throw std::runtime_error("Native render target incomplete");
+  }catch(...){if(next_fbo)DeleteFramebuffers(1,&next_fbo);if(next_color)DeleteTextures(1,&next_color);if(next_depth)DeleteRenderbuffers(1,&next_depth);throw;}
+  if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);
+  fbo=next_fbo;color=next_color;depth=next_depth;width=w;height=h;
+ }
+ void read_size(unsigned w,unsigned h,const void *out){if(!out||w!=width||h!=height||!fbo)throw std::runtime_error("Readback must match the native render target");}
  GLuint shader(GLenum type,const char *source){
   auto s=CreateShader(type);ShaderSource(s,1,&source,nullptr);CompileShader(s);GLint ok=0;GetShaderiv(s,GL_COMPILE_STATUS,&ok);
   if(!ok){char log[4096];GetShaderInfoLog(s,sizeof(log),nullptr,log);DeleteShader(s);throw std::runtime_error(log);}return s;
  }
  GLint uniform(const char *name){return GetUniformLocation(program,name);}
- ~Impl(){if(white)DeleteTextures(1,&white);if(ibo)DeleteBuffers(1,&ibo);if(vbo)DeleteBuffers(1,&vbo);if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
+ ~Impl(){if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);if(white)DeleteTextures(1,&white);if(ibo)DeleteBuffers(1,&ibo);if(vbo)DeleteBuffers(1,&vbo);if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
 };
 LegacyGles::LegacyGles(Resolver resolver):impl_(std::make_unique<Impl>(resolver)){
  auto &g=*impl_;
@@ -54,7 +79,7 @@ out vec4 screen_specular;
 out float screen_w;
 void main(){
  float w=1.0/position.w;
- vec2 ndc=vec2((position.x+0.5)*2.0/viewport_size.x-1.0,1.0-(position.y+0.5)*2.0/viewport_size.y);
+ vec2 ndc=vec2((position.x+0.5)*2.0/viewport_size.x-1.0,(position.y+0.5)*2.0/viewport_size.y-1.0);
  gl_Position=vec4(ndc*w,(position.z*2.0-1.0)*w,w);
  texcoord=uv;
  screen_diffuse=diffuse_bgra.bgra*w;
@@ -107,17 +132,17 @@ unsigned LegacyGles::texture_rgba(unsigned width,unsigned height,const std::uint
  g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
  g.TexImage2D(GL_TEXTURE_2D,0,GL_RGBA, width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,data);g.check();return id;
 }
-void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.program=g.vao=g.vbo=g.ibo=g.white=0; }
+void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0; }
 void LegacyGles::delete_texture(unsigned id){if(id)impl_->DeleteTextures(1,&id);}
 void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
- auto &gl=*impl_;gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);gl.ClearColor(r,g,b,a);gl.ClearDepthf(1);gl.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);gl.check();
+ auto &gl=*impl_;gl.target(w,h);gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);gl.ClearColor(r,g,b,a);gl.ClearDepthf(1);gl.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);gl.check();
 }
 void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
  if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle batch");
  if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
  for(std::size_t i=0;i<count;++i)if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid TL coordinates/rhw");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
- auto &g=*impl_;g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);
+ auto &g=*impl_;g.target(w,h);g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);
  if(state.depth_test)g.Enable(GL_DEPTH_TEST);else g.Disable(GL_DEPTH_TEST);g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);g.DepthFunc(GL_LEQUAL);
  if(state.blend==Blend::opaque)g.Disable(GL_BLEND);else{g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,state.blend==Blend::alpha?GL_ONE_MINUS_SRC_ALPHA:GL_ONE);}
  if(state.blend==Blend::custom){
@@ -138,5 +163,14 @@ void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t
  g.VertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(24));
  g.DrawElements(GL_TRIANGLES,index_count,GL_UNSIGNED_SHORT,nullptr);g.check();
 }
-void LegacyGles::read_rgba(unsigned w,unsigned h,std::uint8_t *out){auto &g=*impl_;g.PixelStorei(GL_PACK_ALIGNMENT,1);g.ReadPixels(0,0,w,h,GL_RGBA,GL_UNSIGNED_BYTE,out);g.check();}
+void LegacyGles::present(){
+ auto &g=*impl_;if(!g.fbo)throw std::runtime_error("No native frame to present");
+ g.Disable(GL_SCISSOR_TEST);g.BindFramebuffer(GL_READ_FRAMEBUFFER,g.fbo);g.BindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
+ g.BlitFramebuffer(0,0,g.width,g.height,0,g.height,g.width,0,GL_COLOR_BUFFER_BIT,GL_NEAREST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.check();
+}
+void LegacyGles::read_presented_rgba(unsigned w,unsigned h,std::uint8_t *out){auto &g=*impl_;g.read_size(w,h,out);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.PixelStorei(GL_PACK_ALIGNMENT,1);g.ReadPixels(0,0,w,h,GL_RGBA,GL_UNSIGNED_BYTE,out);g.check();}
+void LegacyGles::read_rgba(unsigned w,unsigned h,std::uint8_t *out){
+ auto &g=*impl_;g.read_size(w,h,out);g.BindFramebuffer(GL_FRAMEBUFFER,g.fbo);g.PixelStorei(GL_PACK_ALIGNMENT,1);g.ReadPixels(0,0,w,h,GL_RGBA,GL_UNSIGNED_BYTE,out);g.check();
+ const std::size_t pitch=std::size_t(w)*4;for(unsigned y=0;y<h/2;++y)std::swap_ranges(out+y*pitch,out+(y+1)*pitch,out+(h-1-y)*pitch);
+}
 }

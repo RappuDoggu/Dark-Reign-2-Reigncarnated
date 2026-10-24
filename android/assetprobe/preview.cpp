@@ -27,9 +27,9 @@ extern "C" JNIEXPORT jlong JNICALL Java_org_reigncarnated_assetprobe_ProbeActivi
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_assetprobe_ProbeActivity_previewReportNative(JNIEnv *env,jobject,jlong h){
  return env->NewStringUTF(h?get(h)->report.c_str():last_error.c_str());
 }
-extern "C" JNIEXPORT void JNICALL Java_org_reigncarnated_assetprobe_ProbeActivity_destroyPreviewNative(JNIEnv *,jobject,jlong h){
+extern "C" JNIEXPORT void JNICALL Java_org_reigncarnated_assetprobe_ProbeActivity_destroyPreviewNative(JNIEnv *,jobject,jlong h,jboolean context_lost){
  if(!h)return;auto *p=get(h);
- if(p->context!=eglGetCurrentContext())p->renderer.abandon_context();
+ if(context_lost||p->context!=eglGetCurrentContext())p->renderer.abandon_context();
  else if(p->texture)p->renderer.delete_texture(p->texture);
  delete p;
 }
@@ -45,7 +45,7 @@ extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_assetprobe_ProbeActi
   if(!p.texture){vertices[0].diffuse=0xff2360b0;vertices[1].diffuse=0xff20b898;vertices[2].diffuse=0xffb8e8ff;vertices[3].diffuse=0xff274080;}
   const std::uint16_t indices[]={0,1,2,0,2,3};reign::DrawState state;
   state.texture=p.texture;state.texture_op=p.texture?reign::TextureOp::modulate_rgba:reign::TextureOp::diffuse;
-  state.blend=reign::Blend::alpha;p.renderer.draw(w,height,vertices.data(),vertices.size(),indices,6,state);
+  state.blend=reign::Blend::alpha;p.renderer.draw(w,height,vertices.data(),vertices.size(),indices,6,state);p.renderer.present();
   return env->NewStringUTF("");
  }catch(const std::exception &e){return env->NewStringUTF(e.what());}
 }

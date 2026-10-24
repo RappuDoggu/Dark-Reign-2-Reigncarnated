@@ -41,3 +41,10 @@ Host GLES tests use installed Mesa/EGL and externally staged Khronos SDK headers
 ## Bitmap pixels and opaque/translucent buckets
 
 `dr2_buckets` compiles original PrimitiveDesc, Bucket, BucketMan and TranBucketMan plus original intrusive NList from a SHA-pinned external overlay. The native boundary provides aligned allocation, bounded request conversion, a real TL-only draw sink and sequential indexing for supported nonindexed triangles. Original state grouping, merging, sort comparisons and flush transitions remain. Active multiple texture stages reject. `dr2_bitmap_pixels` retains original Pix setup/integer packing and Bitmap::CopyLine behind a conversion-only facade; this does not compile the full DirectDraw/Bink Bitmap class. The public adapter validates buffer sizes, palette and masks. Native TGA decoding still explicitly excludes five formats present in supplied base.zwp. See BITMAP_BUCKET_PROGRESS.md for behavior retained, source edits, tests and unported managers/loaders.
+
+
+## Original font/IFace and native atlas storage
+
+`dr2_fonts` retains original Font reader/measurement/draw, selected FontSys atlas allocation/lookup and IFace batching from an external hashed overlay. NativeFont validates serialized extents, isolates source types, scopes atlas ownership and requires explicit GPU upload/draw consumers. BitmapSurface provides real RGBA8 CPU memory, lock/write/publication and repeatable atlas upload data; it is not the full DirectDraw Bitmap manager. Original FtoL truncation is reproduced with a C-compatible cast. Original Font::Draw uses indexed rectangles; its stale DOTRIFAN define is not an active rendering branch. Full FontSys aliases/registration and interface startup remain unported.
+
+The GLES backend now requires core GLES3 framebuffer/renderbuffer/blit support. It owns a reusable RGBA8/depth16 logical target, then presents once with a vertical flip. Resize allocation, readback orientation and lost-context cleanup are tested locally; v0.4 device evidence is still required. No extra text-shaping/font middleware or source/game assets are added to public APKs. See FONT_PROGRESS.md.

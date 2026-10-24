@@ -165,3 +165,10 @@ Original PrimitiveDesc/Bucket/BucketMan/TranBucketMan now compile and render thr
 
 Locally, the two new component tests also pass in an optimized Release build with ASan/UBSan. Real supplied data matches 106 supported TGA images / 1,934,336 pixels with five unsupported native-decoder TGA formats explicitly skipped. See BITMAP_BUCKET_PROGRESS.md and release/raw logs for scope and failure details. M3–M5 remain unachieved. Next native launch dependencies are original Bitmap storage/load/registry/context restoration, Font glyph atlas creation and triangle fans, plus original frontend/startup orchestration. This final documentation commit changes no tested code.
 
+
+
+## Original font and IFace rendering continuation
+
+Original Font::Read/Width/Draw, FontSys atlas allocation/lookup and IFace glyph batching now compile through an external SHA-pinned overlay. Native RGBA bitmap storage implements lock/write/publication and atlas replay. Six supplied v1 fonts load: 1,351 glyphs, 12 atlases, 504 sample vertices; no font data is published. Sixteen host sanitizer targets and 39 GPU checks per recreated software-EGL context pass. Optimized font/storage checks also pass. Original font targets compile for ARM64; they are not yet executed on a physical device.
+
+An actual missing-glyph-row failure exposed the old pre-raster Y inversion. The GLES backend now renders in logical game coordinates into an RGBA8/depth16 target and flips once at presentation. Original font coordinates/UVs are unchanged. The new original-only Renderer Test v0.4 contains 12 device checks (coverage, presentation and resize included) and needs Fold testing. Local APK SHA-256: `17e03f102b7887b6ba446ff2b6a6762e0879616a010890c53adc3cb243caf925`, 2,470,523 bytes; debug certificate matches local v0.3. See FONT_PROGRESS.md, ANDROID_RENDERER_TEST.md and docs/logs/fonts/. Full original menu/engine/mission startup remains unfinished; M3–M5 are not achieved. Updated CI evidence follows after this code is pushed.

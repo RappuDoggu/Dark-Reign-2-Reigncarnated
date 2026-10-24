@@ -110,8 +110,8 @@ BUILD_STATUS.md after the branch build completes.
    Current texture views remain externally owned handles with no manager cache.
 2. Original interface/font.cpp::Read builds 128x128 glyph textures through
    Bitmap Create/Clear/Lock/MakeRGBA/PutPixel/LoadVideo; these manager/storage
-   methods are the next concrete font prerequisites. Its default DOTRIFAN
-   rendering path also requires triangle-fan support (currently rejected).
+   methods are the next concrete font prerequisites. Its DOTRIFAN define is unused in the current Draw body; the implemented
+   font slice retains the actual indexed-rectangle path.
    Connect the original InitBuckets/frame orchestration and frontend render
    helpers; validate real UI drawing and clipping rather than constructing a
    substitute menu.
@@ -124,3 +124,8 @@ that behavior has not been changed in this slice and needs call-site analysis
 before native texture eviction is connected. Full Bitmap/terrain/mesh startup,
 menu and mission execution remain unfinished. M3–M5 remain unachieved. No new
 playable APK or additional owner test is claimed or required by this slice.
+
+
+## Subsequent font work
+
+The original FFF reader/atlas builder/Font::Draw and IFace batching now work through the next dependency slice; see FONT_PROGRESS.md. Reading the complete current Draw body corrected the old DOTRIFAN inference: this revision emits indexed rectangles. Native storage and retained-atlas replay are implemented for that slice. Full Bitmap management, FontSys aliases and engine/frontend startup are still outstanding.

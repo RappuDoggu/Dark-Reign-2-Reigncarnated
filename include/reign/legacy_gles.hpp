@@ -41,6 +41,10 @@ public:
  // Other FVF layouts/stages are deliberately not silently accepted.
  void draw(unsigned width,unsigned height,const LegacyTL *,std::size_t vertices,
            const std::uint16_t *,std::size_t indices,const DrawState &);
+ // Draw in logical game coordinates, then flip the completed color buffer once.
+ void present();
+ // Both reads return bottom-up display rows; presented read verifies the default target.
+ void read_presented_rgba(unsigned width,unsigned height,std::uint8_t *out);
  void read_rgba(unsigned width,unsigned height,std::uint8_t *out);
 };
 }

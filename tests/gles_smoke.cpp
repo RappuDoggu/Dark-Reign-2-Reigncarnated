@@ -10,6 +10,7 @@
 void original_vid_gpu_checks(reign::LegacyGles &);
 void original_bucket_gpu_checks(reign::LegacyGles &);
 void original_bitmap_gpu_checks(reign::LegacyGles &);
+void original_font_gpu_checks(reign::LegacyGles &);
 #endif
 namespace {
 constexpr unsigned W=32,H=32;
@@ -38,6 +39,7 @@ int main(){
  original_vid_gpu_checks(renderer);
  original_bucket_gpu_checks(renderer);
  original_bitmap_gpu_checks(renderer);
+ original_font_gpu_checks(renderer);
 #endif
 }return 0;}
  catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}

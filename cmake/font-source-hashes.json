@@ -1,0 +1,10 @@
+{
+  "interface/font.h": "6e475ea0739085d43a35ff54768bdd76394e590676b7381da46d6c088df27250",
+  "interface/font.cpp": "3417a7e8ac9849f9c262ff0517335c12277f53cd7c4fe72de458e4f3500dd6d2",
+  "interface/fontsys.cpp": "582b68518b35128468b9f9554dfb0065d94cde4a5b5a3dc1aca62aef8d043fba",
+  "interface/iface_util.cpp": "b464102949c932f1bbee108064634a22ee9f62f3aafab4a5564ce3dc8fa9e0ab",
+  "system/utils.cpp": "421b53e990f3e0415d2bf14cfc4ef44179dd338fb3070c65f090e2d54362eea5",
+  "system/utils.h": "a614dd502cceb284e89d0004abd4e7bfabe45af58866d1da65653cdb60c4d942",
+  "util/area.h": "09a09deba868aad41c846e421a78641110ecca94263e7a9675c1808c43132a75",
+  "graphics/bitmap.cpp": "55df7fcba1a97311899fc191c34b61745fb34ff8c86da4f46c16e82d9a4e47d6"
+}

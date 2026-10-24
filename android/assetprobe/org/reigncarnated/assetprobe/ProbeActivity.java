@@ -26,7 +26,7 @@ public final class ProbeActivity extends Activity {
     private native long createPreviewNative();
     private native String previewReportNative(long handle);
     private native String drawPreviewNative(long handle, int width, int height);
-    private native void destroyPreviewNative(long handle);
+    private native void destroyPreviewNative(long handle, boolean contextLost);
     private native byte[] loadAtlasNative(String path);
     private native String uploadAtlasNative(long handle, byte[] rgba);
 
@@ -39,7 +39,7 @@ public final class ProbeActivity extends Activity {
     }
     private final class Preview extends GLSurfaceView implements GLSurfaceView.Renderer {
         private long handle;
-        private int width, height;
+        private int width, height, generations;
         private String driverInfo = "";
         private volatile byte[] image;
         Preview() {
@@ -50,17 +50,23 @@ public final class ProbeActivity extends Activity {
             setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         }
         @Override public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            if (handle != 0) destroyPreviewNative(handle);
-            handle = 0;
-            driverInfo = "GL: " + gl.glGetString(GL10.GL_VERSION) + "\nGPU: " + gl.glGetString(GL10.GL_RENDERER);
+            if (handle != 0) destroyPreviewNative(handle,true);
+            handle = 0; generations++;
+            driverInfo = "Device: " + android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL + "\nAPI: " + android.os.Build.VERSION.SDK_INT + "\nGL: " + gl.glGetString(GL10.GL_VERSION) + "\nGPU: " + gl.glGetString(GL10.GL_RENDERER);
         }
-        @Override public void onSurfaceChanged(GL10 gl, int w, int h) { width=w; height=h; }
+        @Override public void onSurfaceChanged(GL10 gl, int w, int h) {
+            width=w; height=h;
+            if (handle != 0) rendererStatus(driverInfo + "\nContext generation: " + generations + "\nSurface: " + width + " x " + height + "\n" + previewReportNative(handle));
+        }
         @Override public void onDrawFrame(GL10 gl) {
             if (width < 32 || height < 32) return;
             if (handle == 0) {
                 handle = createPreviewNative();
-                rendererStatus(driverInfo + "\n" + previewReportNative(handle));
-                if (handle != 0 && image != null) uploadAtlasNative(handle,image);
+                rendererStatus(driverInfo + "\nContext generation: " + generations + "\nSurface: " + width + " x " + height + "\n" + previewReportNative(handle));
+                if (handle != 0 && image != null) {
+                    String error=uploadAtlasNative(handle,image);
+                    if (!error.isEmpty()) rendererStatus("TEXTURE FAIL after context recreation: " + error);
+                }
             }
             if (handle != 0) {
                 String error=drawPreviewNative(handle,width,height);
@@ -78,7 +84,7 @@ public final class ProbeActivity extends Activity {
             requestRender();
         }
         void pauseRenderer() {
-            queueEvent(() -> { if (handle != 0) { destroyPreviewNative(handle); handle=0; } });
+            queueEvent(() -> { if (handle != 0) { destroyPreviewNative(handle,false); handle=0; } });
             super.onPause();
         }
     }
@@ -169,7 +175,7 @@ public final class ProbeActivity extends Activity {
                     }
                 }
                 atlas = loadAtlasNative(local.getAbsolutePath());
-                answer = "Reigncarnated renderer bring-up v0.3\nDevice: " + android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL
+                answer = "Reigncarnated renderer bring-up v0.4\nDevice: " + android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL
                     + "\nAndroid API: " + android.os.Build.VERSION.SDK_INT + "\n" + inspectNative(local.getAbsolutePath()) + "\nCursor atlas decoded: " + (atlas == null ? "NO" : "YES");
             } catch (Exception e) {
                 answer = "TEST FAILED\n" + e.getClass().getSimpleName() + ": " + e.getMessage();

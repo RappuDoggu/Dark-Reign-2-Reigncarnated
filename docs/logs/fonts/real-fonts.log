@@ -1,0 +1,7 @@
+FONT font_allcaps.fff version=1 height=17 glyphs=225 atlases=2 sample_width=114
+FONT font_console.fff version=1 height=12 glyphs=225 atlases=1 sample_width=91
+FONT font_movie.fff version=1 height=25 glyphs=226 atlases=4 sample_width=127
+FONT font_system.fff version=1 height=13 glyphs=226 atlases=2 sample_width=63
+FONT font_tiny.fff version=1 height=10 glyphs=224 atlases=1 sample_width=46
+FONT font_windowtitle.fff version=1 height=16 glyphs=225 atlases=2 sample_width=84
+SUMMARY original_fonts=6 glyphs=1351 atlases=12 sample_vertices=504 failures=0

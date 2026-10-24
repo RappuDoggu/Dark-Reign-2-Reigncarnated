@@ -66,3 +66,10 @@ The original state setters, texture binding and indexed submission now build for
 ## Completed bitmap conversion and bucket dependency slice
 
 Original opaque/translucent bucket management and Pix/CopyLine conversion now build for ARM64 and run through original Vid calls into host GLES pixel checks. CMake automatically includes the new targets/tests when REIGN_UPSTREAM is configured; staging recipe and hash-file changes trigger reconfiguration. There are 14 host CTest targets and 31 real GPU checks per recreated context. Follow BITMAP_BUCKET_PROGRESS.md for the exact scope. Next connect original Bitmap loading/lifetime/context restoration, InitBuckets and frontend helpers, then remaining Main/GameGod/VarSys/font/interface/input/audio services. Avoid substituting a diagnostic image or a recreated menu for original engine startup. M3 still requires an engine-initializing APK and original scene runtime evidence.
+
+
+## Completed original font/IFace dependency slice
+
+Original FFF atlas construction, measurement, glyph draw and interface batching now compile for ARM64 and render through original Vid calls in host GLES tests. Retained CPU atlas data can be uploaded again after context recreation. This revision's font draw path uses indexed rectangles; the earlier triangle-fan prerequisite was inferred from a stale define and is corrected.
+
+Renderer consumers must call LegacyGles::present() once after frame draws, before EGL swap. The JNI diagnostic does this. Renderer Test v0.4 exposes 12 own-adapter GPU checks and surface/context metadata for Fold validation. It contains no upstream implementation or game assets. Next: device verification of the changed presentation path, original Bitmap loading/registry and missing formats, FontSys alias/configuration, IFace frame/control/input integration and remaining Main/GameGod services. See FONT_PROGRESS.md. No substitute menu or playable mission is claimed.
