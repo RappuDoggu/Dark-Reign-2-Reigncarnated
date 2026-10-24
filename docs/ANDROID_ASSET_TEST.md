@@ -32,3 +32,5 @@ bash tools/package_asset_probe.sh
 ```
 
 This target explicitly builds with `REIGN_UPSTREAM` empty and links only `reign_platform`. The original-engine diagnostic target remains separately restricted and is not published. Do not confuse the asset-test package `org.reigncarnated.assetprobe` with full engine startup.
+
+CI build and log artifacts: [verified run 40117369440](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40117369440). The direct delivered APK and CI APK use separate debug keys; choose one delivery for this test rather than installing one over the other. If switching between them, uninstall the existing Asset Test first. This does not affect the game installation file in Downloads.

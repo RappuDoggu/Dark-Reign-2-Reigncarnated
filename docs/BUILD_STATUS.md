@@ -74,4 +74,14 @@ Seven local CTest targets pass under ASan/UBSan (local LeakSanitizer disabled fo
 
 Additional packaging work: a full JDK17 was required because the environment originally contained only a JRE. Raw Java compilation uses `--release 8` with the Android SDK on its classpath before D8 conversion; using the Android stub jar as javac's bootclasspath caused a LambdaMetafactory compile error and was corrected. SDK/NDK remain pinned as before. CI now uploads only the original-only asset test APK plus logs, never the engine-derived diagnostic.
 
-Current execution logs: `docs/logs/install-slice/`. New CI results will be recorded after execution. M3, M4 and M5 remain unachieved. Next: run the provided asset test on Fold 5/Thor; continue the original parser/FileSys dependency slice and rendering integration with that runtime evidence.
+Current execution logs: `docs/logs/install-slice/`. Updated CI at code commit `6526761636937cef238ed3c3dd71c9bef7454091` passes both jobs (see evidence below). M3, M4 and M5 remain unachieved. Next: run the provided asset test on Fold 5/Thor; continue the original parser/FileSys dependency slice and rendering integration with that runtime evidence.
+
+### Updated CI evidence: installation I/O slice
+
+[Run 40117369440](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40117369440) at code commit `6526761636937cef238ed3c3dd71c9bef7454091` completed with **host PASS and Android PASS**. Host job `120941316880` runs seven CTest targets with sanitizers. Android job `120941316945` compiles the original tokenizer and installation probe for ARM64, verifies both diagnostic packages, and publishes only the original-only asset-test APK.
+
+- [Original-only ARM64 asset-test APK artifact](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40117369440/artifacts/12570351152), ID `12570351152`.
+- [Host compilation/test logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40117369440/artifacts/12570060994), ID `12570060994`.
+- [Android compilation/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40117369440/artifacts/12569591224), ID `12569591224`.
+
+Real proprietary installation validation was performed locally; CI uses only original synthetic fixtures. Neither CI success nor ZIP/signature verification demonstrates Android runtime success. The owner's asset-probe report is still required. The locally delivered APK is separately debug signed from the CI build; both use the same tested source. Local delivered APK SHA-256: `40196a4bcd4cd9d02fc6f8a2e8e4d2358ba548dc172d82b88684ba309d7fb106`.
