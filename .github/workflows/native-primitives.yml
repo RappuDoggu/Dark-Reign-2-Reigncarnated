@@ -52,6 +52,10 @@ jobs:
           mkdir -p evidence
           bash tools/package_android.sh 2>&1 | tee evidence/android-build-package.log
           "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" -h -l build-android/libreign_diagnostic.so > evidence/android-elf.log
+      - name: Install software EGL runtime for pixel tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libegl-mesa0 libgl1-mesa-dri
       - name: Test initial GLES translation on software EGL
         shell: bash
         run: |
