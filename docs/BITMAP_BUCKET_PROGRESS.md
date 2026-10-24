@@ -84,6 +84,8 @@ assets remain outside repository/artifact publication.
 
 - Fourteen host CTest targets pass with ASan/UBSan (local LeakSanitizer has the
   previously documented environment limitation; CI uses its default setting).
+- The bucket and bitmap golden tests also pass in an optimized Release build
+  with ASan/UBSan; release configure/build/test logs are retained.
 - Original CopyLine: 18,504 independent scalar golden pixel comparisons across
   four source depths and six destination formats, including odd-width rows.
 - Supplied base.zwp: bounded native TGA decode followed by original CopyLine
@@ -106,7 +108,11 @@ BUILD_STATUS.md after the branch build completes.
 1. Port original Bitmap lifetime, file loaders (including unsupported TGA/PIC),
    texture registry/upload/mipmaps, surface locking and context restoration.
    Current texture views remain externally owned handles with no manager cache.
-2. Connect the original InitBuckets/frame orchestration and frontend render
+2. Original interface/font.cpp::Read builds 128x128 glyph textures through
+   Bitmap Create/Clear/Lock/MakeRGBA/PutPixel/LoadVideo; these manager/storage
+   methods are the next concrete font prerequisites. Its default DOTRIFAN
+   rendering path also requires triangle-fan support (currently rejected).
+   Connect the original InitBuckets/frame orchestration and frontend render
    helpers; validate real UI drawing and clipping rather than constructing a
    substitute menu.
 3. Add needed texture stages/samplers and complete original VarSys, font,

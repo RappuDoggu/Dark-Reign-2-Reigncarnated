@@ -4,8 +4,8 @@
 
 | Milestone | Evidence | Status |
 |---|---|---|
-| M1 original subsystem with contemporary compiler | Original system/crc.cpp and random.cpp compile/link with GCC 13.3; host tests pass | Achieved for these primitive subsystems; broader source/license audit continues |
-| M2 original portable components on Android ARM64 | Same original sources compile/link using NDK r27c Clang, API26, arm64-v8a; readelf confirms AArch64 | Achieved for these components; not the simulation |
+| M1 original subsystem with contemporary compiler | Original primitives, parser/run codes, Vid, buckets and bitmap pixel conversion compile/link with GCC 13.3; host tests pass | Achieved for these primitive subsystems; broader source/license audit continues |
+| M2 original portable components on Android ARM64 | Original primitives, parser/run codes, Vid, buckets and bitmap conversion compile/link with NDK r27c Clang, API26, arm64-v8a | Achieved for these components; not the simulation |
 | M3 APK initializes original engine and renders a scene | Original porting renderer runs on Fold 5; original Vid submission passes host GPU tests | **Not achieved**: no full engine initialization or original scene |
 | M4 original single-player mission | Supplied installation validated; simulation port not built | Not achieved |
 | M5 Thor tactical display | No Thor/display runtime access | Not achieved |
@@ -151,3 +151,17 @@ Next: original Bitmap management/conversion and bucket flush/sorting, required t
 ## Original bitmap pixels and render buckets
 
 Original PrimitiveDesc/Bucket/BucketMan/TranBucketMan now compile and render through the original Vid submission boundary. Original Pix and Bitmap::CopyLine conversion also compiles and supplies tested GLES texture pixels. Fourteen local sanitizer CTest targets pass; real software-GLES readback passes 31 checks per context in two fresh contexts. The new original targets and smoke executables compile for Android ARM64. Supplied base.zwp conversion matches 106 supported TGA images / 1,934,336 pixels; five unsupported native-decoder TGA formats are explicitly skipped. UBSan exposed a real original bucket split alignment bug; scoped external edits align the regions and bound index rebasing. See [BITMAP_BUCKET_PROGRESS.md](BITMAP_BUCKET_PROGRESS.md) and raw logs under `docs/logs/buckets/` / `docs/logs/pixels/`. Full Bitmap management, frontend/engine startup and M3–M5 remain unfinished. No new owner test is required. Updated CI evidence follows after the branch build.
+
+
+### Verified CI: original bitmap pixels and opaque/translucent buckets
+
+[Run 40140262166](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40140262166) at code commit `6f2b14ef76c7a1a3a904dbdb946755b7dceb78bc` completed with **host PASS and Android PASS**. Initial implementation is `0bcd6d000b355400965bc121af0013b7bef59d99`; the follow-up isolates conversion-only types in their own namespace and records optimized-build evidence. The earlier implementation also passed run 40139888918.
+
+- Host job `121010326910`: 14 CTest targets pass with ASan/UBSan and default runner leak detection. Logs confirm original bucket alignment/merge/rebase/state/sort/450-bucket checks and all 18,504 bitmap golden comparisons.
+- Android job `121010326747`: original bucket and pixel-conversion targets compile for ARM64; private diagnostic packaging verifies. Software EGL passes 31 GPU checks per context in two fresh contexts, including original pixel conversion -> buckets -> Vid -> GLES. The original-only diagnostic package also verifies.
+- [Host logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40140262166/artifacts/12578691466), artifact `12578691466`.
+- [Android/GLES/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40140262166/artifacts/12579100265), artifact `12579100265`.
+- Original-only Renderer Test v0.3 rebuild artifact `12579145190` contains no original engine implementations/assets. It is not a new menu/gameplay build; no additional owner test is requested.
+
+Locally, the two new component tests also pass in an optimized Release build with ASan/UBSan. Real supplied data matches 106 supported TGA images / 1,934,336 pixels with five unsupported native-decoder TGA formats explicitly skipped. See BITMAP_BUCKET_PROGRESS.md and release/raw logs for scope and failure details. M3–M5 remain unachieved. Next native launch dependencies are original Bitmap storage/load/registry/context restoration, Font glyph atlas creation and triangle fans, plus original frontend/startup orchestration. This final documentation commit changes no tested code.
+
