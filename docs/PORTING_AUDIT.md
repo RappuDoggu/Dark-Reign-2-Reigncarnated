@@ -1,50 +1,73 @@
-# Source-port audit — initial inventory
+# Source port audit — implementation evidence
 
-**Date:** 2026-10-24  
-**Upstream:** https://github.com/grasmanek94/darkreign2 (default branch `master`)  
-**Confidence:** Directory and README findings are observed; technical dependency conclusions remain hypotheses until inspected at file level and compiled.
+Date: 2026-10-24. This expands the initial audit; it does not establish redistribution rights or claim a complete engine build.
 
-## Verified upstream findings
+## Source identity and scope
 
-The repository has a Visual Studio solution `dr2.sln`, `settings.h`, a `3rdparty` directory and separate project directories:
-- Application/startup: `appdr2`, `main`, `game`, `apps`
-- Gameplay: `coregame`, `coregame_ai`, `coregame_interface`, `coregame_objects`, `coregame_orders`, `coregame_tasks`, `coregame_particles`
-- Rendering: `graphics`, `appmesh`
-- Platform/interfaces: `system`, `interface`, `sound`, `util`
-- Network: `multiplayer`, `styxnet`, `won`, `wonlib`
+- Primary checkout: `grasmanek94/darkreign2` at `9ce9da5f21604310a997f0c41e9cd383f5e292c3`.
+- Additional reference: `medwards/darkreign2` at `fad7b9fb3f50339c81c6d11a09144fca99d03fb7`.
+- Both retrieved with git into separate temporary checkouts. Primary has 2,136 tracked files and 20 vcxproj files. `dr2.sln` has 19 solution projects; the additional project is the Miles proxy.
+- `medwards` has root and `source/` trees. Its README describes a Google Code fork and a VC6 build. That is provenance information, not a verified license grant.
+- Root `system/crc.cpp` and `system/random.cpp` in the two references are identical after newline normalization. Their byte hashes differ due to line endings. The CMake harness validates primary-source byte hashes before compiling.
+- `upstream-inventory.json` records project dependencies, source counts, symbols and line locations. Reproduce with `python3 tools/audit_upstream.py /tmp/dr2 --output inventory.json`. The scan includes comments and inactive code; counts are candidates, not active-call counts.
 
-Within `graphics`, observed `graphics.vcxproj`, `camera.cpp`, `bitmap.cpp`, `bucket.cpp`, `light.cpp` and other original rendering components.
+## Executable startup: inspected control flow
 
-Upstream `readme.txt` states it was updated for VS2015 and that LAN and single-player work. This is an upstream claim **not yet independently verified**.
+1. `appdr2/winmain.cpp::WinMain`: reset floating-point state; call `Main::Init(hInst, cmdLine)`.
+2. `main/maininit.cpp::Main::Init`: retain instance/command line, set active state, call `LowLevelSystemInit`, register QUIT run code. Low-level init sets debug instance, version, mono/debug services and FixMe. Some clock/log/debug calls are commented out in this fork; do not infer they execute.
+3. WinMain registers KeyCheck, Intro, Login, Shell, Mission and Outro; Studio is registered in non-DEMO builds. It enters `Debug::Exception::Handler(GameGod::Start)`.
+4. `game/gamegod.cpp::GameGod::Start`: reset/mask FPU exceptions; install video mode callback; call `MultiPlayer::PreInit`, then `Main::CoreSystemInit`.
+5. `main/maininit.cpp::CoreSystemInit`: register emergency shutdown; clear video state; parse command line; enable watchdog; obtain/create HWND; seed non-synchronized RNG from Clock; initialize TrackSys, VarSys, commands, FileSys, EventSys, MultiLanguage, FontSys, Console; run `Setup::StartupConfiguration`; initialize Vid; show window; initialize Input after activation; start frame timing.
+6. `GameGod::Init`: CD discovery and command registration; initialize Sound/Miles, GameSound, Orders; execute game config; initialize IFace, GameTime, game run codes, Sync, Difficulty, Campaigns, Missions, User, Demo, SaveGame, Sides, Mods and MultiPlayer; register UI controls; select Intro (CRC `0xA521E37B`, verified by our test).
+7. `Main::MessagePump` in maininit.cpp drains PeekMessage/dispatches messages and processes run codes while active. GameGod then shuts down game and core systems; WinMain calls Main::Done, which also has optional external patcher/process launching.
 
-`settings.h` carries a 1997–1999 Pandemic Studios copyright notice. GitHub metadata reports **no detected repository license**. Public access is not a license grant.
+The portable diagnostic does **not** execute this full sequence. It isolates original primitives first; redirecting WinMain straight into Android would drag in all the above services.
 
-## Immediate investigations
+## Build graph and original configuration
 
-1. Inspect `dr2.sln`, `appdr2`, `main`, and `system` to identify the actual executable entry point and build target graph.
-2. Inspect `graphics` for Direct3D device lifecycle, draw calls, fixed-function pipeline assumptions, and proprietary image/mesh formats.
-3. Audit `3rdparty`, `won` and `wonlib` for dependency versions, licenses and features removable from a single-player build.
-4. Search for Win32 types, memory layout assumptions, inline x86 assembly, and compiler extensions.
-5. Separate pure simulation code from platform APIs and establish testable compile targets.
-6. Determine game data loading contract without checking proprietary assets into this repo.
+`appdr2/appdr2.vcxproj` links coregame, coregame_ai, coregame_interface, coregame_objects, coregame_orders, coregame_particles, coregame_tasks, game, graphics, interface, main, multiplayer, sound, styxnet, system, util and wonlib. The application also directly compiles `graphics/meshmrm.cpp`. `appmesh` is a separate tool/application target.
 
-## Porting decisions (provisional)
+The inspected application project uses Win32 Debug/Release, v140, Windows SDK 8.1, forced `std.h`, fastcall, pre/post-build tools, and Windows resources. `3rdparty/dxlib.h` hardcodes x86 Windows SDK **10.0.14393.0** library paths, so even the nominal SDK 8.1 configuration is not self-contained. No Windows compiler/SDK/MSBuild is installed in this Linux environment. A complete Windows build was not attempted or verified. Original project files remain unchanged in the separate upstream checkout.
 
-- Initial target: **Android arm64-v8a**, single display, one single-player mission.
-- Keep original game simulation and resource formats.
-- Use CMake / Android NDK for builds. SDL3 and OpenGL ES/Vulkan are candidates, **not yet chosen**.
-- Dual-display AYN Thor UX starts only after a functioning single-screen engine.
-- Keep Winlator as behavior baseline only: owner has confirmed working gameplay on Android.
-- No claims of APK success until CI builds and on-device tests occur.
+## Platform and architecture findings
 
-## Milestone evidence expected
+| Boundary | Inspected evidence | Port implication |
+|---|---|---|
+| Global headers | `system/std.h` forces win32.h, mmsystem.h, dxinc.h, conio.h | Replace forced platform-heavy prelude incrementally; no giant fake windows.h |
+| Integer ABI | `system/defines.h` defines U32/S32 as unsigned/signed long | LLP64/ILP32 assumptions break on ARM64 LP64; fixed-width types required |
+| Unicode | CH is unsigned short | Preserve 16-bit units; do not substitute Android wchar_t |
+| x86 | system/utils.cpp, clock.cpp, debug*.cpp, util/mathtypes.cpp and graphics bitmap primitives contain assembly/intrinsics | Replace operations individually; preserve rounding and deterministic simulation semantics |
+| FPU | GameGod startup and Utils::FP use x87 control state | ARM floating-point/rounding parity needs explicit fixtures before simulation claims |
+| Pointers | `system/dlgtemplate.cpp:77`, `debug_memory.cpp:2343-2346` narrow pointers to U32 | Pointer storage must use uintptr_t; serialized fields remain 32 bits |
+| Layout | PACK header uses packed U32 fields; binary block/terrain/mesh I/O | Validate serialized records individually; never globally widen fields |
+| Files | system/file.cpp and filemap.cpp call CreateFile/CreateFileMapping | Introduce native handles, bounded mapping, file offsets, search and lifetime semantics |
+| Input | interface/input.cpp:689 calls DirectInput8Create | Preserve Input event contract while replacing acquisition/key/mouse backend |
+| Network | styxnet/win32_socket.cpp uses WSA* and ws2_32; win32_event/critsec/thread wrappers | Port socket/event/thread abstractions; single-player still initializes multiplayer |
+| Platform coupling | simulation uses system/util/templates and shared forced header | Gameplay is a preservation target, not currently an independently portable library |
 
-- Build commands and captured logs.
-- Dependency and licensing inventory.
-- Compiling portable subsystem, followed by engine startup.
-- Android runtime logs and reproducible test scene.
-- User-owned asset import procedure, never bundled copyrighted game assets.
+Lexical inventory, excluding 3rdparty and won: assembly/compiler constructs in 14 files (80 matching lines), selected Windows services in 17 files (38 lines), selected DirectX symbols in 16 files (42 lines), Miles/Bink in 14 files (131 lines), socket markers in 5 files (577 lines). These are deliberately narrow patterns, not an exhaustive Win32 inventory.
 
-## Important constraint
+## Rendering investigation
 
-Do not import third-party upstream code to this repository pending a provenance/licensing decision. A separate, original adapter/build harness can be developed meanwhile.
+`3rdparty/dxinc.h` includes DirectX 7 headers. `graphics/vid_enumdx.cpp` uses DirectDrawCreateEx and IDirectDraw7; `graphics/vid.cpp` creates the D3D device on the back surface. `graphics/vidrend.cpp` submits DrawPrimitive/DrawIndexedPrimitive with fixed-function-era vertices and render state. Bitmap storage, texture surfaces, locks, blits, display modes and Bink playback cross the renderer boundary. Porting draw calls alone will not preserve behavior.
+
+Provisional lowest-risk approach: retain camera, visibility, terrain, mesh, bucket and software transform code; implement a bounded GLES backend behind the existing Vid/Bitmap contracts and validate with captured Windows output. GLES shaders must reproduce original texture stages, alpha/fog/depth, coordinate conventions and blend modes. GLES3 diagnostic setup is implemented, **not an engine rendering backend**. Vulkan remains an alternative if profiling/correctness requires it. A D3D translation layer is not selected: it would also need Android ARM64 D3D7/DirectDraw support, compatible COM/surface services and licensing validation. No such layer has been integrated or tested. SDL3 is deferred until its lifecycle/input/audio coverage is weighed against the preserved engine interfaces; this harness uses NDK NativeActivity directly.
+
+## Asset contract
+
+- FileSys defaults to `.zwp` archives (`system/filesys.cpp:28-29`). Pack sources index filenames using case-insensitive CRC rather than full paths.
+- `system/packdef.h`: NORK signature, version 1, a 56-byte header with 32-bit little-endian fields; variable-length file and directory tables. Header layout is compiled from the original header with a static assertion.
+- **Implementation outranks the header's illustrative offsets:** `filesrcpack.cpp` maps `info->offset` directly as an absolute archive offset. `apps/zwagapack/packtool.cpp` writes file and directory tables. Our original read-only inspector follows these implementations and is tested with synthetic files, not proprietary assets.
+- `PTree`/`FScope` implement structured configuration parsing; startup configuration establishes streams/search paths. Case-folding and search precedence must survive Android's case-sensitive filesystem.
+- `graphics/meshload.cpp` uses `.god` compiled meshes; `.xsi` references appear in meshconfig; bitmap lookup uses `.pic`, `.tga`, `.bmp`, and Bink integration. Terrain data serializes through BlockFile (`coregame/terraindata.cpp`). Audio supports sampled files and MP3 via Miles calls.
+- No user game archive was supplied for this execution. Real asset import, complete pack compatibility, startup config and missions remain unverified. No copyrighted asset is included in this repository or diagnostic package.
+
+## Proven and fixed issues
+
+Bare CRC compilation fails because U32/U8/CH arrive through the legacy forced header; using that header fails at windows.h. The harness instead force-includes original fixed-width type declarations and a C++ rotate adapter. CRC and RNG source files remain byte-for-byte unchanged.
+
+A new high-bit byte test reproduced `Crc::CalcStr` indexing `toLower` with negative signed char (`system/crc.cpp:176`), caught by ASan/UBSan. The fix applies `-funsigned-char` **only** to crc.cpp. Regression tests cover bytes 1..255, ASCII folding, existing Intro CRC, bitwise CRC oracle, all streaming split points, UTF-16 ordering and RNG golden states. This is a verified build-adapter correction, not a claim that all Unicode paths are safe.
+
+## Remaining audit limits
+
+Licensing is unresolved; see DEPENDENCIES. No exhaustive runtime call graph, complete serialized-type review, entire simulation compile, complete Windows build, real asset compatibility run, or Android execution has been completed. The native port is at primitives/platform bring-up, not gameplay.

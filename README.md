@@ -1,29 +1,25 @@
 # Reigncarnated
 
-**Dark Reign 2 preservation and native Android source-port research.**
+Dark Reign 2 preservation and native Android source port.
 
 ## Objective
-Produce a **native ARM64 Android** build of Dark Reign 2 from recoverable C++ source, preserving original gameplay while adapting rendering, platform services and controls. Target AYN Thor dual-screen tactical UI **after** a stable single-display port.
 
-## Status
-**Phase 0 — source and licensing audit.** No Android gameplay, successful engine compilation or APK has been demonstrated yet.
+Produce a native ARM64 Android build of the original C++ engine, preserving gameplay, AI, missions, balance and asset formats. AYN Thor dual-screen tactical controls follow working single-screen gameplay. The owner's working Winlator installation is a behavioral baseline; this project builds native components.
 
-## Existing reference
-- Source repository: https://github.com/grasmanek94/darkreign2 (master)
-- Original game is confirmed by project owner to run under Winlator on Android. That establishes a behavioral reference, **not** native Android compatibility.
-- Public source availability does not necessarily grant permission to redistribute source, third-party libraries or game assets. Do not copy upstream source or bundled binaries here until provenance and license rights are clarified.
+## Verified status — 2026-10-24
 
-## Planned milestones
-1. Inventory C++ source, project files, third-party dependencies and provenance.
-2. Reproduce an original Windows build or isolate a small, independently buildable subsystem.
-3. Identify/untangle Win32, Direct3D and legacy compiler dependencies.
-4. Add a portable platform abstraction and ARM64 Android toolchain; validate with automated CI.
-5. Bring up engine initialization and rendering on one Android display.
-6. Load user-provided game data and play one mission with gamepad/touch support.
-7. Investigate AYN Thor secondary-display APIs; implement tactical controls on the lower screen.
+- Original CRC and RNG sources compile with GCC 13 and Android NDK r27c Clang for arm64-v8a.
+- Host original-engine primitive tests, platform-service tests and synthetic PACK format tests pass. ARM64 runtime remains untested.
+- An original NativeActivity/EGL/GLES3 diagnostic shell links and packages into a signed, aligned local APK. It runs primitive checks by design; it does not initialize the full engine or render a game scene.
+- No playable Android port, original main menu or mission is demonstrated yet.
 
-## Architecture notes
-See [docs/PORTING_AUDIT.md](docs/PORTING_AUDIT.md). Avoid reimplementing gameplay unless a source component is genuinely unavailable.
+See [build results and failures](docs/BUILD_STATUS.md), [source audit](docs/PORTING_AUDIT.md), [dependencies and provenance](docs/DEPENDENCIES.md), and [build commands / next engineering work](docs/ANDROID_PORT_PLAN.md).
 
-## Assets
-The repository should not contain proprietary game data. The eventual app should load files obtained from the user's legally owned copy, subject to rights and compatibility review.
+## Source and rights
+
+Primary reference: https://github.com/grasmanek94/darkreign2 at `9ce9da5f21604310a997f0c41e9cd383f5e292c3`.
+Additional reference: https://github.com/medwards/darkreign2 at `fad7b9fb3f50339c81c6d11a09144fca99d03fb7`.
+
+Public source access is not a redistribution license. Upstream source stays in a separate temporary checkout. This repository contains original harnesses, adapters, tests, tooling, reports and metadata; no copied upstream implementations or proprietary game assets. Source-derived executables/APKs are built locally and are not published while redistribution rights remain unresolved. CI publishes logs only.
+
+Use `bash tools/fetch_upstream.sh /tmp/dr2-reviewed` to obtain the reviewed source separately. The build validates content hashes before using it. Tools, SDKs, dependencies, game installation files, build products and debug signing keys stay outside versioned source.

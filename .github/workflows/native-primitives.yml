@@ -1,0 +1,58 @@
+name: Native primitives and Android diagnostic
+on:
+  push:
+    branches: [main, 'dev/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch reviewed upstream separately
+        run: bash tools/fetch_upstream.sh "$RUNNER_TEMP/dr2-upstream"
+      - name: Compile and test original primitives and platform services
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cmake -S . -B build-host -DREIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream" -DREIGN_SANITIZE=ON 2>&1 | tee evidence/configure.log
+          cmake --build build-host --verbose 2>&1 | tee evidence/build.log
+          ctest --test-dir build-host -V 2>&1 | tee evidence/tests.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: host-compilation-and-test-logs
+          path: evidence/*.log
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Fetch reviewed upstream separately
+        run: bash tools/fetch_upstream.sh "$RUNNER_TEMP/dr2-upstream"
+      - name: Install pinned NDK and SDK tools
+        run: sdkmanager 'ndk;27.2.12479018' 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Compile ARM64 and verify local diagnostic package
+        shell: bash
+        env:
+          ANDROID_NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/27.2.12479018
+        run: |
+          set -euo pipefail
+          export ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk/27.2.12479018"
+          export REIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream"
+          mkdir -p evidence
+          bash tools/package_android.sh 2>&1 | tee evidence/android-build-package.log
+          "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" -h -l build-android/libreign_diagnostic.so > evidence/android-elf.log
+      # No source, libraries, executable or APK artifacts pending redistribution rights.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-compilation-and-package-logs
+          path: evidence/*.log
