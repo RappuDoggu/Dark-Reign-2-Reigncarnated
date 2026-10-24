@@ -85,3 +85,17 @@ Current execution logs: `docs/logs/install-slice/`. Updated CI at code commit `6
 - [Android compilation/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40117369440/artifacts/12569591224), ID `12569591224`.
 
 Real proprietary installation validation was performed locally; CI uses only original synthetic fixtures. Neither CI success nor ZIP/signature verification demonstrates Android runtime success. The owner's asset-probe report is still required. The locally delivered APK is separately debug signed from the CI build; both use the same tested source. Local delivered APK SHA-256: `40196a4bcd4cd9d02fc6f8a2e8e4d2358ba548dc172d82b88684ba309d7fb106`.
+
+## Owner-verified Android runtime: Fold 5 asset probe v0.2
+
+The owner supplied a successful runtime report from Samsung SM-F946U (Fold 5), Android API 36. This is owner-reported on-device evidence, not an automated test performed in the development environment.
+
+- Result: PASS — native ARM64 archive access.
+- Archive entries: 2,074.
+- Payload bytes read: 99,631,656.
+- Configuration files: 465; GOD meshes: 334; textures: 567.
+- Reported elapsed time: 1,264 ms (single diagnostic run, not a performance benchmark).
+
+Every count matches the inspected base.zwp baseline. This validates the file-picker/import/JNI/native archive-read path for this device and supplied archive. Full original engine initialization, original rendering, mission execution, audio/input integration and Thor dual-screen behavior remain unverified. M3–M5 remain unachieved.
+
+The first asset-access runtime checkpoint is satisfied. No replacement installation or additional device report is currently required to continue the original PTree/FScope/FileSys integration and then the Vid/Bitmap backend.
