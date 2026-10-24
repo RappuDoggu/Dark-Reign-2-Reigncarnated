@@ -1,0 +1,24 @@
+[ 20%] Built target reign_vid_device
+[ 40%] Built target dr2_vid_state
+[ 80%] Built target dr2_buckets
+[ 90%] Building CXX object CMakeFiles/bucket_smoke.dir/tests/bucket_smoke.cpp.o
+In file included from /tmp/reign-upstream-vid-overlay/vid_slice.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/bucket_prelude.hpp:2,
+                 from /tmp/reign-upstream-bucket-overlay/bucket.h:1,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/tests/bucket_smoke.cpp:1:
+/tmp/reign-upstream-bucket-overlay/nlist.h: In instantiation of ‘NList<DATA>::~NList() [with DATA = Bucket]’:
+/tmp/reign-upstream-bucket-overlay/bucket.h:61:3:   required from here
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vid_prelude.hpp:36:25: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   36 | #define ERR_FATAL(args) throw std::runtime_error("Invalid original Vid texture blend flags")
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h:444:7: note: in expansion of macro ‘ERR_FATAL’
+  444 |       ERR_FATAL(("NList was NOT empty when destroyed - MUST call UnlinkAll or DisposeAll!"));
+      |       ^~~~~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vid_prelude.hpp:36:25: note: in C++11 destructors default to ‘noexcept’
+   36 | #define ERR_FATAL(args) throw std::runtime_error("Invalid original Vid texture blend flags")
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h:444:7: note: in expansion of macro ‘ERR_FATAL’
+  444 |       ERR_FATAL(("NList was NOT empty when destroyed - MUST call UnlinkAll or DisposeAll!"));
+      |       ^~~~~~~~~
+[100%] Linking CXX executable bucket_smoke
+[100%] Built target bucket_smoke

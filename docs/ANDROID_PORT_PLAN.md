@@ -61,3 +61,8 @@ Original configuration/runtime compilation and real J01 parse tests now pass; in
 ## Completed original Vid dependency slice
 
 The original state setters, texture binding and indexed submission now build for ARM64 and drive tested software-GLES pixels on the host. Reproduce with REIGN_UPSTREAM plus REIGN_GLES_BACKEND=ON and the external Khronos headers; gles_smoke automatically adds the original-function pixel checks when that upstream is configured. CI now configures both options together. The current source overlay remains outside the repository and engine-derived binaries remain excluded from artifacts. Next: original Bitmap lifecycle/conversion, BucketMan flush/sort/allocation, missing texture stages/samplers, then remaining Main/GameGod services. See VID_STATE_PROGRESS.md. This does not advance M3 until actual engine initialization and an original scene run in an APK.
+
+
+## Completed bitmap conversion and bucket dependency slice
+
+Original opaque/translucent bucket management and Pix/CopyLine conversion now build for ARM64 and run through original Vid calls into host GLES pixel checks. CMake automatically includes the new targets/tests when REIGN_UPSTREAM is configured; staging recipe and hash-file changes trigger reconfiguration. There are 14 host CTest targets and 31 real GPU checks per recreated context. Follow BITMAP_BUCKET_PROGRESS.md for the exact scope. Next connect original Bitmap loading/lifetime/context restoration, InitBuckets and frontend helpers, then remaining Main/GameGod/VarSys/font/interface/input/audio services. Avoid substituting a diagnostic image or a recreated menu for original engine startup. M3 still requires an engine-initializing APK and original scene runtime evidence.

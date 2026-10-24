@@ -36,8 +36,8 @@ enum : U32 {D3DBLEND_ZERO=1,D3DBLEND_ONE,D3DBLEND_SRCCOLOR,D3DBLEND_INVSRCCOLOR,
 #define ERR_FATAL(args) throw std::runtime_error("Invalid original Vid texture blend flags")
 namespace Vid {
  struct PortableRenderState {
-  struct {Bool zbuffer=0,wbuffer=0,alpha=0,texStaged=0;} status;
-  U32 renderFlags=0;
+  struct {Bool zbuffer=0,wbuffer=0,alpha=0,texStaged=0,texMulti=0;} status;
+  U32 renderFlags=0,fogColor=0;
  };
  extern thread_local PortableRenderState renderState;
  extern thread_local reign::VidDevice *device;

@@ -146,3 +146,8 @@ Original Vid texture/blend/depth/address setters, SetTextureDX and indexed submi
 - The original-only v0.3 diagnostic is rebuilt by CI, artifact `12572309177`; it does not contain the original Vid implementation and is not evidence of full engine startup. The owner's already-installed v0.3 remains sufficient for the completed device checkpoint; no additional owner test is requested for this host-tested original slice.
 
 Next: original Bitmap management/conversion and bucket flush/sorting, required texture stages, and remaining Main/GameGod initialization. No original menu/mission APK is claimed. Final evidence-only documentation commit does not alter the tested code.
+
+
+## Original bitmap pixels and render buckets
+
+Original PrimitiveDesc/Bucket/BucketMan/TranBucketMan now compile and render through the original Vid submission boundary. Original Pix and Bitmap::CopyLine conversion also compiles and supplies tested GLES texture pixels. Fourteen local sanitizer CTest targets pass; real software-GLES readback passes 31 checks per context in two fresh contexts. The new original targets and smoke executables compile for Android ARM64. Supplied base.zwp conversion matches 106 supported TGA images / 1,934,336 pixels; five unsupported native-decoder TGA formats are explicitly skipped. UBSan exposed a real original bucket split alignment bug; scoped external edits align the regions and bound index rebasing. See [BITMAP_BUCKET_PROGRESS.md](BITMAP_BUCKET_PROGRESS.md) and raw logs under `docs/logs/buckets/` / `docs/logs/pixels/`. Full Bitmap management, frontend/engine startup and M3–M5 remain unfinished. No new owner test is required. Updated CI evidence follows after the branch build.

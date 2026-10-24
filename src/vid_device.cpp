@@ -18,13 +18,14 @@ VidBinding::VidBinding(VidDevice &d):previous_(Vid::device),previous_state_(Vid:
 VidBinding::~VidBinding(){Vid::device=previous_;Vid::renderState=previous_state_;Vid::dxError=previous_error_;}
 VidDevice::VidDevice(){render_[19]=5;render_[20]=6;stage_[1]=4;stage_[2]=2;stage_[3]=0;stage_[4]=4;stage_[5]=2;stage_[6]=0;stage_[12]=1;}
 int VidDevice::SetRenderState(U32 k,U32 v){
- switch(k){case 7:case 14:case 27:case 136:if(v>1)throw std::runtime_error("Unsupported Vid boolean/W-buffer state");break;
+ switch(k){case 7:case 14:case 27:case 28:case 136:if(v>1)throw std::runtime_error("Unsupported Vid boolean/W-buffer state");break;
+ case 34:break;
  case 19:case 20:if(v<1||v>(k==20?10u:11u))throw std::runtime_error("Unsupported Vid blend factor");break;
  default:throw std::runtime_error("Unsupported Vid render state");}
  render_[k]=v;return 0;
 }
 int VidDevice::GetRenderState(U32 k,U32 *v)const{
- if(!v||(k!=7&&k!=14&&k!=19&&k!=20&&k!=27&&k!=136))throw std::runtime_error("Unsupported Vid render-state query");
+ if(!v||(k!=7&&k!=14&&k!=19&&k!=20&&k!=27&&k!=28&&k!=34&&k!=136))throw std::runtime_error("Unsupported Vid render-state query");
  *v=render_[k];return 0;
 }
 int VidDevice::SetTextureStageState(U32 stage,U32 k,U32 v){
@@ -53,6 +54,7 @@ int VidDevice::SetTexture(U32 stage,unsigned texture){
 DrawState VidDevice::draw_state()const{
  const auto texture=texture_;
  DrawState s;s.texture=texture;s.depth_test=render_[7];s.depth_write=render_[14];
+ s.fog=render_[28];s.fog_rgb[0]=float((render_[34]>>16)&255)/255;s.fog_rgb[1]=float((render_[34]>>8)&255)/255;s.fog_rgb[2]=float(render_[34]&255)/255;
  s.blend=render_[27]?Blend::custom:Blend::opaque;
  s.source_factor=static_cast<BlendFactor>(render_[19]);s.destination_factor=static_cast<BlendFactor>(render_[20]);
  s.address=stage_[12]==1?TextureAddress::wrap:stage_[12]==2?TextureAddress::mirror:TextureAddress::clamp;
