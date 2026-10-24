@@ -121,3 +121,12 @@ Initial updated run 40121491459: host PASS and original ARM64 compilation/packag
 - [Android/GLES/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40121657469/artifacts/12571406870), ID `12571406870`.
 
 The local direct-download v0.3 APK has SHA-256 `afb2fbc0b66cb1a2d2923de2a1307ddfd2e7da1ad8bf37acc5dacfb3895cedb6`, 2,433,659 bytes. Its separate retained development signing key matches the previous local delivery; CI generates its own development key. Runtime evidence for this new GLES path still requires the owner's Fold test. A successful GPU test will not by itself establish original engine/menu/mission initialization.
+
+
+## Owner-verified Android GPU runtime: Fold 5 Renderer Test v0.3
+
+The owner supplied a screenshot from Samsung SM-F946U showing the original cursor atlas rendered and all nine legacy-TL GPU pixel checks PASS. Reported GPU: Adreno (TM) 740; OpenGL ES 3.2 V@0676.77.1, driver date 01/27/26. Evidence is owner-supplied on-device output, not remotely automated execution.
+
+Passing checks: ARGB byte order/half-pixel coverage; D3D top-left texture orientation; source-alpha blending; alpha-reference discard; zero-to-one depth mapping/occlusion; specular-alpha vertex fog; specular RGB addition; reciprocal homogeneous W; invalid-index rejection. Aggregate GLES3 legacy-TL pixel checks: PASS. The visible cursor atlas also confirms the selected archive-to-TGA-to-GPU preview path on this device.
+
+Pause/resume and context-loss behavior are not established by this still screenshot. Original Vid/Bitmap integration, full engine initialization, main menu and mission execution remain outstanding; M3–M5 remain unachieved. Next engineering task: connect the tested GLES boundary to the original rendering/texture interfaces and continue required engine services. Touch/pen and dual-screen work remain deferred.
