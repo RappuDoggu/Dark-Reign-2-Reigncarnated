@@ -135,3 +135,14 @@ Pause/resume and context-loss behavior are not established by this still screens
 ## Original Vid submission continuation
 
 Original Vid texture/blend/depth/address setters, SetTextureDX and indexed submission now compile for Android ARM64 and execute through the native adapter into GLES on the host. Twelve host sanitizer CTest targets pass. GPU readback passes nine baseline plus 13 original-Vid checks in two new contexts. Full engine initialization is still incomplete. See [VID_STATE_PROGRESS.md](VID_STATE_PROGRESS.md) for exact extraction edits, rejection boundaries, compiler warning fixes and remaining work. New local logs: `docs/logs/vid-state/`. The source-derived test binaries stay private; no additional owner test is needed for this slice. Updated CI evidence follows when available.
+
+
+### Verified CI: original Vid submission slice
+
+[Run 40124738169](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40124738169) at implementation commit `695b18c9652a5f85aefe0be39b8b57edba0fe5b9` completed with **host PASS and Android PASS**. Host job `120963643069` passes 12 sanitizer CTest targets. Android job `120963643187` compiles the original Vid slice for ARM64, verifies diagnostic packaging, and runs 9 baseline plus 13 original-Vid GPU readback checks in two recreated software-EGL contexts. The logs explicitly confirm the original Vid modes, blending, depth and addressing tests. Public artifact packaging continues to exclude original engine implementations and proprietary assets.
+
+- [Host compilation/test logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40124738169/artifacts/12572054376), artifact `12572054376`.
+- [Android/GLES/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40124738169/artifacts/12572498966), artifact `12572498966`.
+- The original-only v0.3 diagnostic is rebuilt by CI, artifact `12572309177`; it does not contain the original Vid implementation and is not evidence of full engine startup. The owner's already-installed v0.3 remains sufficient for the completed device checkpoint; no additional owner test is requested for this host-tested original slice.
+
+Next: original Bitmap management/conversion and bucket flush/sorting, required texture stages, and remaining Main/GameGod initialization. No original menu/mission APK is claimed. Final evidence-only documentation commit does not alter the tested code.
