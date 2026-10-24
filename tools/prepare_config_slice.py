@@ -45,6 +45,12 @@ def prepare(upstream, output):
                 '    blockMode = BM_CLOSED;\n'
                 '    try { Close(); } catch (...) {}\n'
                 '  } else { Close(); }\n}', 'exception-safe block cleanup at native error boundary')
+            text=replace(text,'char *dest = new char [entry->info.size];',
+                'std::unique_ptr<char[]> dest(new char[entry->info.size]);','allocated block exception ownership')
+            text=replace(text,'ReadBlock(key, dest, entry->info.size, fatal)',
+                'ReadBlock(key, dest.get(), entry->info.size, fatal)','owned block buffer read')
+            text=replace(text,'return (dest);','return dest.release();','transfer successful block allocation')
+            text=replace(text,'    delete dest;','    // Array buffer released by its owner on failure.','correct array cleanup on block read failure')
         if name=='blockfile.h':
             text=replace(text,'#define BLOCK_ID       (*((U32*)"DOCB"))',
                 '#define BLOCK_ID       0x42434F44u','alignment-safe little-endian DOCB identifier')

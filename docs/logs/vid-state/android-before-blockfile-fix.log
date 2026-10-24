@@ -1,0 +1,59 @@
+[  1%] Building CXX object CMakeFiles/reign_vid_device.dir/src/vid_device.cpp.o
+[ 10%] Built target reign_platform
+[ 16%] Built target dr2_primitives
+[ 17%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 19%] Linking CXX static library libreign_vid_device.a
+[ 19%] Built target reign_vid_device
+[ 23%] Built target reign_checks
+[ 26%] Built target platform_smoke
+[ 28%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 32%] Built target reign_diagnostic
+[ 35%] Built target archive_smoke
+[ 39%] Built target resources_smoke
+[ 41%] Building CXX object CMakeFiles/reign_gles.dir/src/legacy_gles.cpp.o
+[ 42%] Building CXX object CMakeFiles/reign_gles.dir/src/renderer_checks.cpp.o
+[ 44%] Linking CXX static library libdr2_tokenizer.a
+[ 44%] Built target dr2_tokenizer
+[ 48%] Built target tga_smoke
+[ 50%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 51%] Linking CXX static library libdr2_vid_state.a
+[ 51%] Built target dr2_vid_state
+[ 53%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 55%] Linking CXX static library libreign_gles.a
+[ 55%] Built target reign_gles
+[ 57%] Linking CXX executable installation_probe
+[ 58%] Built target installation_probe
+[ 60%] Linking CXX executable tokenizer_smoke
+[ 62%] Built target tokenizer_smoke
+[ 66%] Built target engine_smoke
+[ 67%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 69%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 71%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 73%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 75%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 76%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 78%] Building CXX object CMakeFiles/vid_state_smoke.dir/tests/vid_state_smoke.cpp.o
+/tmp/reign-upstream-config-overlay/blockfile.cpp:702:5: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you mean 'delete[]'? [-Wmismatched-new-delete]
+  702 |     delete dest;
+      |     ^
+      |           []
+/tmp/reign-upstream-config-overlay/blockfile.cpp:686:18: note: allocated with 'new[]' here
+  686 |     char *dest = new char [entry->info.size];
+      |                  ^
+1 warning generated.
+[ 80%] Linking CXX static library libdr2_config.a
+[ 80%] Built target dr2_config
+[ 82%] Linking CXX executable configuration_probe
+[ 83%] Built target configuration_probe
+[ 85%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/runcodes.cpp.o
+[ 87%] Linking CXX executable vid_state_smoke
+[ 87%] Built target vid_state_smoke
+[ 89%] Linking CXX executable config_smoke
+[ 91%] Built target config_smoke
+[ 92%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/main_exec.cpp.o
+[ 94%] Building CXX object CMakeFiles/dr2_runcodes.dir/src/runcode_host.cpp.o
+[ 96%] Linking CXX static library libdr2_runcodes.a
+[ 96%] Built target dr2_runcodes
+[ 98%] Building CXX object CMakeFiles/runcodes_smoke.dir/tests/runcodes_smoke.cpp.o
+[100%] Linking CXX executable runcodes_smoke
+[100%] Built target runcodes_smoke

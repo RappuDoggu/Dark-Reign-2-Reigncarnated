@@ -83,6 +83,10 @@ void main(){
  if(texture_op==1)c=d*t;
  if(texture_op==2)c=vec4(d.rgb*t.rgb,t.a);
  if(texture_op==3)c=vec4(t.rgb,t.a*d.a);
+ if(texture_op==4)c=vec4(d.rgb,t.a);
+ if(texture_op==5)c=t;
+ if(texture_op==6)c=vec4(clamp(d.rgb*t.rgb*2.0,0.0,1.0),d.a*t.a);
+ if(texture_op==7)c=vec4(clamp(d.rgb*t.rgb*4.0,0.0,1.0),d.a*t.a);
  if(alpha_test!=0 && c.a<=alpha_reference)discard;
  if(specular_enabled!=0)c.rgb=clamp(c.rgb+s.rgb,0.0,1.0);
  if(fog_enabled!=0)c.rgb=mix(fog_rgb,c.rgb,s.a);
@@ -110,15 +114,21 @@ void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
 }
 void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
  if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle batch");
- if(static_cast<unsigned>(state.texture_op)>3 || static_cast<unsigned>(state.blend)>2 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
- for(std::size_t i=0;i<count;++i)if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z))throw std::runtime_error("Invalid TL coordinates/rhw");
+ if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
+ for(std::size_t i=0;i<count;++i)if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid TL coordinates/rhw");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
  auto &g=*impl_;g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);
  if(state.depth_test)g.Enable(GL_DEPTH_TEST);else g.Disable(GL_DEPTH_TEST);g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);g.DepthFunc(GL_LEQUAL);
  if(state.blend==Blend::opaque)g.Disable(GL_BLEND);else{g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,state.blend==Blend::alpha?GL_ONE_MINUS_SRC_ALPHA:GL_ONE);}
+ if(state.blend==Blend::custom){
+  const GLenum factors[]={GL_ZERO,GL_ONE,GL_SRC_COLOR,GL_ONE_MINUS_SRC_COLOR,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_DST_ALPHA,GL_ONE_MINUS_DST_ALPHA,GL_DST_COLOR,GL_ONE_MINUS_DST_COLOR,GL_SRC_ALPHA_SATURATE};
+  g.BlendFunc(factors[static_cast<unsigned>(state.source_factor)-1],factors[static_cast<unsigned>(state.destination_factor)-1]);
+ }
  g.UseProgram(g.program);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
  g.Uniform1i(g.uniform("fog_enabled"),state.fog);g.Uniform1i(g.uniform("specular_enabled"),state.specular);g.Uniform3fv(g.uniform("fog_rgb"),1,state.fog_rgb);g.Uniform1i(g.uniform("alpha_test"),state.alpha_test);g.Uniform1f(g.uniform("alpha_reference"),state.alpha_reference);
  g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,state.texture?state.texture:g.white);g.Uniform1i(g.uniform("image"),0);
+ const GLint addressing=state.address==TextureAddress::wrap?GL_REPEAT:state.address==TextureAddress::mirror?GL_MIRRORED_REPEAT:GL_CLAMP_TO_EDGE;
+ g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,addressing);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,addressing);
  g.BindVertexArray(g.vao);g.BindBuffer(GL_ARRAY_BUFFER,g.vbo);g.BufferData(GL_ARRAY_BUFFER,count*sizeof(LegacyTL),vertices,GL_STREAM_DRAW);
  g.BindBuffer(GL_ELEMENT_ARRAY_BUFFER,g.ibo);g.BufferData(GL_ELEMENT_ARRAY_BUFFER,index_count*sizeof(std::uint16_t),indices,GL_STREAM_DRAW);
  for(unsigned i=0;i<4;++i)g.EnableVertexAttribArray(i);

@@ -6,6 +6,9 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#ifdef REIGN_ORIGINAL_VID_CHECKS
+void original_vid_gpu_checks(reign::LegacyGles &);
+#endif
 namespace {
 constexpr unsigned W=32,H=32;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
@@ -28,6 +31,10 @@ std::array<reign::LegacyTL,4> quad(std::uint32_t color,float z=.5f,std::uint32_t
 const std::uint16_t indices[]={0,1,2,0,2,3};
 }
 int main(){
- try{for(int pass=0;pass<2;++pass){Context context;reign::LegacyGles renderer(resolve);std::cout<<"Context "<<pass+1<<"\n"<<reign::renderer_checks(renderer);}return 0;}
+ try{for(int pass=0;pass<2;++pass){Context context;reign::LegacyGles renderer(resolve);std::cout<<"Context "<<pass+1<<"\n"<<reign::renderer_checks(renderer);
+#ifdef REIGN_ORIGINAL_VID_CHECKS
+ original_vid_gpu_checks(renderer);
+#endif
+}return 0;}
  catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}
 }

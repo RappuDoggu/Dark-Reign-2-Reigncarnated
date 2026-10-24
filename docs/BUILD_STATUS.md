@@ -6,8 +6,8 @@
 |---|---|---|
 | M1 original subsystem with contemporary compiler | Original system/crc.cpp and random.cpp compile/link with GCC 13.3; host tests pass | Achieved for these primitive subsystems; broader source/license audit continues |
 | M2 original portable components on Android ARM64 | Same original sources compile/link using NDK r27c Clang, API26, arm64-v8a; readelf confirms AArch64 | Achieved for these components; not the simulation |
-| M3 APK initializes original engine and renders a scene | Diagnostic APK packages and verifies; original primitives linked, GLES shell implemented | **Not achieved**: no runtime test, no full engine initialization, no original scene |
-| M4 original single-player mission | No game assets supplied or simulation port built | Not achieved |
+| M3 APK initializes original engine and renders a scene | Original porting renderer runs on Fold 5; original Vid submission passes host GPU tests | **Not achieved**: no full engine initialization or original scene |
+| M4 original single-player mission | Supplied installation validated; simulation port not built | Not achieved |
 | M5 Thor tactical display | No Thor/display runtime access | Not achieved |
 
 ## What was built and tested locally
@@ -130,3 +130,8 @@ The owner supplied a screenshot from Samsung SM-F946U showing the original curso
 Passing checks: ARGB byte order/half-pixel coverage; D3D top-left texture orientation; source-alpha blending; alpha-reference discard; zero-to-one depth mapping/occlusion; specular-alpha vertex fog; specular RGB addition; reciprocal homogeneous W; invalid-index rejection. Aggregate GLES3 legacy-TL pixel checks: PASS. The visible cursor atlas also confirms the selected archive-to-TGA-to-GPU preview path on this device.
 
 Pause/resume and context-loss behavior are not established by this still screenshot. Original Vid/Bitmap integration, full engine initialization, main menu and mission execution remain outstanding; M3–M5 remain unachieved. Next engineering task: connect the tested GLES boundary to the original rendering/texture interfaces and continue required engine services. Touch/pen and dual-screen work remain deferred.
+
+
+## Original Vid submission continuation
+
+Original Vid texture/blend/depth/address setters, SetTextureDX and indexed submission now compile for Android ARM64 and execute through the native adapter into GLES on the host. Twelve host sanitizer CTest targets pass. GPU readback passes nine baseline plus 13 original-Vid checks in two new contexts. Full engine initialization is still incomplete. See [VID_STATE_PROGRESS.md](VID_STATE_PROGRESS.md) for exact extraction edits, rejection boundaries, compiler warning fixes and remaining work. New local logs: `docs/logs/vid-state/`. The source-derived test binaries stay private; no additional owner test is needed for this slice. Updated CI evidence follows when available.

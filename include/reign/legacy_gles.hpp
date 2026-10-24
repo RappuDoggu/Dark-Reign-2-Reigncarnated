@@ -10,11 +10,15 @@ struct LegacyTL {
  float u,v;
 };
 static_assert(sizeof(LegacyTL)==32 && offsetof(LegacyTL,diffuse)==16 && offsetof(LegacyTL,u)==24);
-enum class TextureOp { diffuse, modulate_rgba, modulate_rgb_texture_alpha, decal };
-enum class Blend { opaque, alpha, additive };
+enum class TextureOp { diffuse, modulate_rgba, modulate_rgb_texture_alpha, decal, diffuse_texture_alpha, texture, modulate2x, modulate4x };
+enum class Blend { opaque, alpha, additive, custom };
+enum class BlendFactor : unsigned { zero=1,one,source_color,inverse_source_color,source_alpha,inverse_source_alpha,destination_alpha,inverse_destination_alpha,destination_color,inverse_destination_color,source_alpha_saturate };
+enum class TextureAddress { clamp, wrap, mirror };
 struct DrawState {
  TextureOp texture_op=TextureOp::diffuse;
  Blend blend=Blend::opaque;
+ BlendFactor source_factor=BlendFactor::source_alpha,destination_factor=BlendFactor::inverse_source_alpha;
+ TextureAddress address=TextureAddress::clamp;
  bool depth_test=false,depth_write=false,fog=false,alpha_test=false,specular=false;
  float alpha_reference=0;
  float fog_rgb[3]={0,0,0};

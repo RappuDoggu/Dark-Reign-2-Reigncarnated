@@ -56,3 +56,8 @@ Use the original-only Android asset-test APK and ANDROID_ASSET_TEST.md for nativ
 ## Updated next engineering units
 
 Original configuration/runtime compilation and real J01 parse tests now pass; inspect CONFIG_RENDER_PROGRESS.md. The initial GLES TL batch boundary is implemented and pixel-tested on software EGL. Device gate: ANDROID_RENDERER_TEST.md. Next connect the original Vid/Bitmap surface, texture-cache and render-state paths to this backend; preserve original visibility/camera/mesh code, then continue Main::CoreSystemInit/GameGod::Start. No new gameplay implementation or simplified replacement is introduced. Touch/pen and dual-screen work remains deferred in CONTROLS_BACKLOG.md.
+
+
+## Completed original Vid dependency slice
+
+The original state setters, texture binding and indexed submission now build for ARM64 and drive tested software-GLES pixels on the host. Reproduce with REIGN_UPSTREAM plus REIGN_GLES_BACKEND=ON and the external Khronos headers; gles_smoke automatically adds the original-function pixel checks when that upstream is configured. CI now configures both options together. The current source overlay remains outside the repository and engine-derived binaries remain excluded from artifacts. Next: original Bitmap lifecycle/conversion, BucketMan flush/sort/allocation, missing texture stages/samplers, then remaining Main/GameGod services. See VID_STATE_PROGRESS.md. This does not advance M3 until actual engine initialization and an original scene run in an APK.
