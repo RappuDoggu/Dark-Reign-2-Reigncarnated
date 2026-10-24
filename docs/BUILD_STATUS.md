@@ -32,6 +32,8 @@
 | First SDK archive extraction | Parent output directories absent | Create directories before unzip; SDK tools subsequently ran successfully |
 | Initial ELF layout | 4KiB LOAD alignment despite APK alignment option | Enable NDK ANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES; readelf verifies 16KiB LOAD alignment |
 | Original Windows engine build | Windows SDK/MSVC/MSBuild unavailable | No complete Windows build attempted or claimed; original v140/SDK and hardcoded library paths audited |
+| PTree portable compile probe | system/file.h includes unavailable io.h | Captured ptree-probe-failure.log; next slice needs File/Dir adapters, not parser rewrites |
+| First GitHub Android CI run | sdkmanager command absent on runner (exit127); host job passed | Added checksum-verified standalone Google SDK/NDK installer; rerun pending |
 | Full Android engine boot | Main/GameGod require unported Win32, D3D7, input, audio, FileSys and other services | Explicitly deferred to next dependency slice; no fake stubs claiming initialization |
 
 ## Reproducibility and logs
@@ -49,3 +51,5 @@ GitHub workflow: `.github/workflows/native-primitives.yml`, with host and ARM64 
 3. Add deterministic math/FPU and serialized-layout fixtures before bringing simulation across.
 4. Implement and validate the first Vid/Bitmap GLES draw path against Windows captures; port Sound/Input internals behind their original interfaces.
 5. Resolve source/middleware distribution rights before publishing a downloadable engine build. Continue original adapters/tooling independently.
+
+Initial CI evidence: commit `eea4dd3282dbd34526fa7ebe8e1dbdc6182a4815`, run https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40110196683 — host PASS, Android SDK setup failure. Host log artifact ID `12565887634`. A follow-up fixes setup; see subsequent CI evidence below.

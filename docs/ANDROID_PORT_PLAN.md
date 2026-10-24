@@ -29,7 +29,8 @@ ctest --test-dir build-host -V
 # Only in sandboxes where LeakSanitizer cannot inspect /proc:
 ASAN_OPTIONS=detect_leaks=0 ctest --test-dir build-host -V
 
-export ANDROID_SDK_ROOT=/path/to/sdk
+bash tools/install_android_sdk.sh /tmp/reign-sdk
+export ANDROID_SDK_ROOT=/tmp/reign-sdk
 export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk/27.2.12479018"
 export REIGN_UPSTREAM=/tmp/dr2-reviewed
 bash tools/package_android.sh

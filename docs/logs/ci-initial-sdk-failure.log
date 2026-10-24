@@ -1,0 +1,8 @@
+GitHub Actions run 40110196683, job 120920123806, 2026-10-24
+Host job: success.
+Android job failed at toolchain installation, before compilation.
+Run sdkmanager 'ndk;27.2.12479018' 'platforms;android-35' 'build-tools;35.0.0'
+sdkmanager: command not found
+Process completed with exit code 127.
+Resolution: tools/install_android_sdk.sh downloads pinned Google archives,
+checks SHA-256, and installs the exact toolchain without sdkmanager.
