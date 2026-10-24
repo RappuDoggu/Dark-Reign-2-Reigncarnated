@@ -52,7 +52,15 @@ jobs:
           mkdir -p evidence
           bash tools/package_android.sh 2>&1 | tee evidence/android-build-package.log
           "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" -h -l build-android/libreign_diagnostic.so > evidence/android-elf.log
-      - name: Build original-only asset test APK
+      - name: Test initial GLES translation on software EGL
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/stage_khronos_headers.py "$RUNNER_TEMP/reign-sdk/ndk/27.2.12479018" "$RUNNER_TEMP/reign-khronos"
+          cmake -S . -B build-render-host -DREIGN_GLES_BACKEND=ON -DREIGN_KHRONOS_HEADERS="$RUNNER_TEMP/reign-khronos"
+          cmake --build build-render-host --target gles_smoke
+          LIBGL_ALWAYS_SOFTWARE=1 ctest --test-dir build-render-host -R gles_legacy_pixels -V 2>&1 | tee evidence/gles-pixel-tests.log
+      - name: Build original-only renderer test APK
         shell: bash
         run: |
           set -euo pipefail
@@ -61,8 +69,8 @@ jobs:
           bash tools/package_asset_probe.sh 2>&1 | tee evidence/asset-probe-package.log
       - uses: actions/upload-artifact@v4
         with:
-          name: Reigncarnated-Asset-Test-v02-arm64
-          path: build-asset-probe/Reigncarnated-Asset-Test-v02.apk
+          name: Reigncarnated-Renderer-Test-v03-arm64
+          path: build-asset-probe/Reigncarnated-Renderer-Test-v03.apk
       # Engine-derived binaries remain excluded. The APK above links only original porting tools.
       - uses: actions/upload-artifact@v4
         if: always()

@@ -52,3 +52,7 @@ Do not run ARM64 CTest binaries on an x86 host. Their linking is verified, their
 ## Current next gate after installation audit
 
 Use the original-only Android asset-test APK and ANDROID_ASSET_TEST.md for native file/pack runtime evidence. Host validation of the supplied installation passes (88 packs, 3,763 entries, 1,181 total non-player text configs). Original TBuf now compiles for ARM64; original PTree/FScope/FileSys integration and real Vid/Bitmap rendering remain unimplemented. This diagnostic does not advance M3 to achieved. SDK/JDK/build commands for the distributable asset test are separate from the upstream-derived NativeActivity shell.
+
+## Updated next engineering units
+
+Original configuration/runtime compilation and real J01 parse tests now pass; inspect CONFIG_RENDER_PROGRESS.md. The initial GLES TL batch boundary is implemented and pixel-tested on software EGL. Device gate: ANDROID_RENDERER_TEST.md. Next connect the original Vid/Bitmap surface, texture-cache and render-state paths to this backend; preserve original visibility/camera/mesh code, then continue Main::CoreSystemInit/GameGod::Start. No new gameplay implementation or simplified replacement is introduced. Touch/pen and dual-screen work remains deferred in CONTROLS_BACKLOG.md.

@@ -14,6 +14,8 @@ Produce a native ARM64 Android build of the original C++ engine, preserving game
 - GitHub host tests and ARM64 build/package CI both pass; [verified run and downloadable logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40110369623).
 - Uploaded community installation checked: 88 archives / 3,763 entries read natively; original tokenizer processes 1,165 archived plus 16 loose configs without errors. See [installation audit](docs/INSTALLATION_AUDIT.md).
 - Original-only ARM64 [asset-test APK and instructions](docs/ANDROID_ASSET_TEST.md) are ready for on-device testing. Full original-engine startup remains unimplemented.
+- Original config parser, binary-block layer and run-code lifecycle now compile; J01's real type/object/strategic data parse. Initial GLES TL rendering passes offscreen pixel tests. [Progress and limits](docs/CONFIG_RENDER_PROGRESS.md).
+- [Renderer Test v0.3](docs/ANDROID_RENDERER_TEST.md) checks the GPU path and previews the owner's cursor atlas. It does not initialize the full game.
 - No playable Android port, original main menu or mission is demonstrated yet.
 
 See [build results and failures](docs/BUILD_STATUS.md), [source audit](docs/PORTING_AUDIT.md), [dependencies and provenance](docs/DEPENDENCIES.md), and [build commands / next engineering work](docs/ANDROID_PORT_PLAN.md).

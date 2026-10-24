@@ -25,3 +25,9 @@ Original materials added here: CMake harness, type/rotate declarations, platform
 ## Supplied installation cross-check
 
 PE version resources confirm Miles 6.0f and Bink 1.0i, matching the inspected headers. The community dr2.exe is x86 with a 2020 embedded build date; dgVoodoo 2.64 supplies its DirectDraw/Direct3D compatibility wrappers. None are added to Android. Distribution of the new asset-test APK is limited to original porting code and standard Android/C++ runtime dependencies: it links no upstream game implementation or proprietary middleware and includes no game assets. Engine-derived artifacts remain excluded.
+
+## Additional source provenance check
+
+The official Google Code archive project metadata (https://storage.googleapis.com/google-code-archive/v2/code.google.com/darkreign2/project.json) records an MIT license selection. Its description says source was acquired through a former developer. The metadata does not confirm uploader/rightsholder licensing authority, and a matching root license grant is absent in the inspected mirrors. Treat the MIT selection as evidence to investigate, not as a verified blanket grant over code, middleware or assets. The current builds keep original code in external temporary overlays; the distributed renderer test uses original adapter code only.
+
+Host GLES tests use installed Mesa/EGL and externally staged Khronos SDK headers. No SDK header copy, Mesa binary or proprietary middleware is committed. Android uses system EGL/GLES and the pinned NDK C++ runtime. Standard TGA decoding and the GLES adapter are original porting components.

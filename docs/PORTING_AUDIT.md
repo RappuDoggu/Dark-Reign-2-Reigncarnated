@@ -75,3 +75,9 @@ Licensing is unresolved; see DEPENDENCIES. No exhaustive runtime call graph, com
 ## Continuation with supplied community installation
 
 See INSTALLATION_AUDIT.md for actual file/PE/archive/config observations. The former statement that no game archive was supplied describes the first execution only. Source TBuf/StrBuf now compile on GCC and NDK ARM64; the original tokenizer processes all 1,165 archived and 16 non-player loose text configurations with no errors. Native ZWP access and the original CRC agree across all 3,763 archive entries. The full original PTree/FScope/FileSys chain and game initialization still do not compile or run as a whole. A separate original-only asset diagnostic is buildable without an upstream checkout, so user testing can proceed without distributing the original engine implementations.
+
+## Configuration/runtime and renderer continuation
+
+See CONFIG_RENDER_PROGRESS.md for the original PTree/FScope/StdParse/BlockFile and RunCodes/Main::Exec port slice. The previous io.h compile blocker is bypassed at a narrow native File/DataFile boundary; it is not a complete original FileSys port. Original J01 type, object-placement and strategic trees now parse with actual includes and values, without executing mission logic. Initial GLES TL rendering passes independent pixel fixtures, but original Vid/Bitmap and full engine startup remain unported.
+
+Additional provenance evidence: the archived Google Code project metadata at https://storage.googleapis.com/google-code-archive/v2/code.google.com/darkreign2/project.json declares `license: mit`. Its description attributes source acquisition to a former developer. This is stronger provenance than a press label but does not establish that the uploader had authority to license the Pandemic/Activision code. The inspected mirrors still lack a clear root grant. No original implementation is copied into this repository; distribution practice is unchanged pending that authority question.

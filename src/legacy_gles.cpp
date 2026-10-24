@@ -1,0 +1,132 @@
+#include "reign/legacy_gles.hpp"
+#include <GLES3/gl3.h>
+#include <cmath>
+#include <stdexcept>
+#include <string>
+#include <limits>
+namespace reign {
+#define REIGN_GL(X) \
+ X(CreateShader,PFNGLCREATESHADERPROC) X(ShaderSource,PFNGLSHADERSOURCEPROC) X(CompileShader,PFNGLCOMPILESHADERPROC) \
+ X(GetShaderiv,PFNGLGETSHADERIVPROC) X(GetShaderInfoLog,PFNGLGETSHADERINFOLOGPROC) X(DeleteShader,PFNGLDELETESHADERPROC) \
+ X(CreateProgram,PFNGLCREATEPROGRAMPROC) X(AttachShader,PFNGLATTACHSHADERPROC) X(LinkProgram,PFNGLLINKPROGRAMPROC) \
+ X(GetProgramiv,PFNGLGETPROGRAMIVPROC) X(GetProgramInfoLog,PFNGLGETPROGRAMINFOLOGPROC) X(DeleteProgram,PFNGLDELETEPROGRAMPROC) \
+ X(UseProgram,PFNGLUSEPROGRAMPROC) X(GetUniformLocation,PFNGLGETUNIFORMLOCATIONPROC) X(Uniform1i,PFNGLUNIFORM1IPROC) \
+ X(Uniform1f,PFNGLUNIFORM1FPROC) X(Uniform2f,PFNGLUNIFORM2FPROC) X(Uniform3fv,PFNGLUNIFORM3FVPROC) \
+ X(GenVertexArrays,PFNGLGENVERTEXARRAYSPROC) X(BindVertexArray,PFNGLBINDVERTEXARRAYPROC) X(DeleteVertexArrays,PFNGLDELETEVERTEXARRAYSPROC) \
+ X(GenBuffers,PFNGLGENBUFFERSPROC) X(BindBuffer,PFNGLBINDBUFFERPROC) X(BufferData,PFNGLBUFFERDATAPROC) X(DeleteBuffers,PFNGLDELETEBUFFERSPROC) \
+ X(EnableVertexAttribArray,PFNGLENABLEVERTEXATTRIBARRAYPROC) X(VertexAttribPointer,PFNGLVERTEXATTRIBPOINTERPROC) \
+ X(GenTextures,PFNGLGENTEXTURESPROC) X(BindTexture,PFNGLBINDTEXTUREPROC) X(TexParameteri,PFNGLTEXPARAMETERIPROC) \
+ X(TexImage2D,PFNGLTEXIMAGE2DPROC) X(DeleteTextures,PFNGLDELETETEXTURESPROC) X(ActiveTexture,PFNGLACTIVETEXTUREPROC) \
+ X(Viewport,PFNGLVIEWPORTPROC) X(Enable,PFNGLENABLEPROC) X(Disable,PFNGLDISABLEPROC) X(DepthMask,PFNGLDEPTHMASKPROC) \
+ X(DepthFunc,PFNGLDEPTHFUNCPROC) X(BlendFunc,PFNGLBLENDFUNCPROC) X(ClearColor,PFNGLCLEARCOLORPROC) \
+ X(ClearDepthf,PFNGLCLEARDEPTHFPROC) X(Clear,PFNGLCLEARPROC) X(DrawElements,PFNGLDRAWELEMENTSPROC) \
+ X(ReadPixels,PFNGLREADPIXELSPROC) X(GetError,PFNGLGETERRORPROC) X(PixelStorei,PFNGLPIXELSTOREIPROC)
+struct LegacyGles::Impl {
+#define DECLARE(name,type) type name=nullptr;
+ REIGN_GL(DECLARE)
+#undef DECLARE
+ GLuint program=0,vao=0,vbo=0,ibo=0,white=0;
+ explicit Impl(Resolver resolver) {
+#define LOAD(name,type) name=reinterpret_cast<type>(resolver("gl" #name));if(!name)throw std::runtime_error("Missing GLES entry: gl" #name);
+  REIGN_GL(LOAD)
+#undef LOAD
+ }
+ void check(){if(auto error=GetError())throw std::runtime_error("GLES error "+std::to_string(error));}
+ GLuint shader(GLenum type,const char *source){
+  auto s=CreateShader(type);ShaderSource(s,1,&source,nullptr);CompileShader(s);GLint ok=0;GetShaderiv(s,GL_COMPILE_STATUS,&ok);
+  if(!ok){char log[4096];GetShaderInfoLog(s,sizeof(log),nullptr,log);DeleteShader(s);throw std::runtime_error(log);}return s;
+ }
+ GLint uniform(const char *name){return GetUniformLocation(program,name);}
+ ~Impl(){if(white)DeleteTextures(1,&white);if(ibo)DeleteBuffers(1,&ibo);if(vbo)DeleteBuffers(1,&vbo);if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
+};
+LegacyGles::LegacyGles(Resolver resolver):impl_(std::make_unique<Impl>(resolver)){
+ auto &g=*impl_;
+ const char *vertex=R"(#version 300 es
+precision highp float;
+layout(location=0) in vec4 position;
+layout(location=1) in vec4 diffuse_bgra;
+layout(location=2) in vec4 specular_bgra;
+layout(location=3) in vec2 uv;
+uniform vec2 viewport_size;
+out vec2 texcoord;
+out vec4 screen_diffuse;
+out vec4 screen_specular;
+out float screen_w;
+void main(){
+ float w=1.0/position.w;
+ vec2 ndc=vec2((position.x+0.5)*2.0/viewport_size.x-1.0,1.0-(position.y+0.5)*2.0/viewport_size.y);
+ gl_Position=vec4(ndc*w,(position.z*2.0-1.0)*w,w);
+ texcoord=uv;
+ screen_diffuse=diffuse_bgra.bgra*w;
+ screen_specular=specular_bgra.bgra*w;
+ screen_w=w;
+})";
+ const char *fragment=R"(#version 300 es
+precision highp float;
+in vec2 texcoord;
+in vec4 screen_diffuse;
+in vec4 screen_specular;
+in float screen_w;
+uniform sampler2D image;
+uniform int texture_op;
+uniform int fog_enabled;
+uniform int specular_enabled;
+uniform int alpha_test;
+uniform float alpha_reference;
+uniform vec3 fog_rgb;
+out vec4 output_color;
+void main(){
+ vec4 d=screen_diffuse/screen_w;
+ vec4 s=screen_specular/screen_w;
+ vec4 t=texture(image,texcoord);
+ vec4 c=d;
+ if(texture_op==1)c=d*t;
+ if(texture_op==2)c=vec4(d.rgb*t.rgb,t.a);
+ if(texture_op==3)c=vec4(t.rgb,t.a*d.a);
+ if(alpha_test!=0 && c.a<=alpha_reference)discard;
+ if(specular_enabled!=0)c.rgb=clamp(c.rgb+s.rgb,0.0,1.0);
+ if(fog_enabled!=0)c.rgb=mix(fog_rgb,c.rgb,s.a);
+ output_color=c;
+})";
+ auto vs=g.shader(GL_VERTEX_SHADER,vertex);GLuint fs=0;
+ try { fs=g.shader(GL_FRAGMENT_SHADER,fragment); } catch(...) {g.DeleteShader(vs);throw;}
+ g.program=g.CreateProgram();g.AttachShader(g.program,vs);g.AttachShader(g.program,fs);g.LinkProgram(g.program);g.DeleteShader(vs);g.DeleteShader(fs);
+ GLint ok=0;g.GetProgramiv(g.program,GL_LINK_STATUS,&ok);if(!ok){char log[4096];g.GetProgramInfoLog(g.program,sizeof(log),nullptr,log);throw std::runtime_error(log);}
+ g.GenVertexArrays(1,&g.vao);g.GenBuffers(1,&g.vbo);g.GenBuffers(1,&g.ibo);
+ const std::uint8_t white[]={255,255,255,255};g.white=texture_rgba(1,1,white);g.check();
+}
+LegacyGles::~LegacyGles()=default;
+unsigned LegacyGles::texture_rgba(unsigned width,unsigned height,const std::uint8_t *data){
+ if(!width||!height||width>16384||height>16384||!data)throw std::runtime_error("Invalid RGBA texture");
+ auto &g=*impl_;GLuint id=0;g.GenTextures(1,&id);g.BindTexture(GL_TEXTURE_2D,id);g.PixelStorei(GL_UNPACK_ALIGNMENT,1);
+ g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+ g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+ g.TexImage2D(GL_TEXTURE_2D,0,GL_RGBA, width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,data);g.check();return id;
+}
+void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.program=g.vao=g.vbo=g.ibo=g.white=0; }
+void LegacyGles::delete_texture(unsigned id){if(id)impl_->DeleteTextures(1,&id);}
+void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
+ auto &gl=*impl_;gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);gl.ClearColor(r,g,b,a);gl.ClearDepthf(1);gl.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);gl.check();
+}
+void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
+ if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle batch");
+ if(static_cast<unsigned>(state.texture_op)>3 || static_cast<unsigned>(state.blend)>2 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
+ for(std::size_t i=0;i<count;++i)if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z))throw std::runtime_error("Invalid TL coordinates/rhw");
+ for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
+ auto &g=*impl_;g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);
+ if(state.depth_test)g.Enable(GL_DEPTH_TEST);else g.Disable(GL_DEPTH_TEST);g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);g.DepthFunc(GL_LEQUAL);
+ if(state.blend==Blend::opaque)g.Disable(GL_BLEND);else{g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,state.blend==Blend::alpha?GL_ONE_MINUS_SRC_ALPHA:GL_ONE);}
+ g.UseProgram(g.program);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
+ g.Uniform1i(g.uniform("fog_enabled"),state.fog);g.Uniform1i(g.uniform("specular_enabled"),state.specular);g.Uniform3fv(g.uniform("fog_rgb"),1,state.fog_rgb);g.Uniform1i(g.uniform("alpha_test"),state.alpha_test);g.Uniform1f(g.uniform("alpha_reference"),state.alpha_reference);
+ g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,state.texture?state.texture:g.white);g.Uniform1i(g.uniform("image"),0);
+ g.BindVertexArray(g.vao);g.BindBuffer(GL_ARRAY_BUFFER,g.vbo);g.BufferData(GL_ARRAY_BUFFER,count*sizeof(LegacyTL),vertices,GL_STREAM_DRAW);
+ g.BindBuffer(GL_ELEMENT_ARRAY_BUFFER,g.ibo);g.BufferData(GL_ELEMENT_ARRAY_BUFFER,index_count*sizeof(std::uint16_t),indices,GL_STREAM_DRAW);
+ for(unsigned i=0;i<4;++i)g.EnableVertexAttribArray(i);
+ g.VertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),nullptr);
+ g.VertexAttribPointer(1,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(16));
+ g.VertexAttribPointer(2,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(20));
+ g.VertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(24));
+ g.DrawElements(GL_TRIANGLES,index_count,GL_UNSIGNED_SHORT,nullptr);g.check();
+}
+void LegacyGles::read_rgba(unsigned w,unsigned h,std::uint8_t *out){auto &g=*impl_;g.PixelStorei(GL_PACK_ALIGNMENT,1);g.ReadPixels(0,0,w,h,GL_RGBA,GL_UNSIGNED_BYTE,out);g.check();}
+}

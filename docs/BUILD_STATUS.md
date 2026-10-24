@@ -99,3 +99,11 @@ The owner supplied a successful runtime report from Samsung SM-F946U (Fold 5), A
 Every count matches the inspected base.zwp baseline. This validates the file-picker/import/JNI/native archive-read path for this device and supplied archive. Full original engine initialization, original rendering, mission execution, audio/input integration and Thor dual-screen behavior remain unverified. M3–M5 remain unachieved.
 
 The first asset-access runtime checkpoint is satisfied. No replacement installation or additional device report is currently required to continue the original PTree/FScope/FileSys integration and then the Vid/Bitmap backend.
+
+## Current continuation: original configuration/run codes and initial GLES renderer
+
+Original PTree/FScope/VNode/StdParse/BlockFile plus RunCodes/Main::Exec now compile through an external, hash-verified source overlay. Includes and real J01 types/object/strategic config trees parse successfully; text/binary round-trip, 32-bit numeric, stream precedence and original run-code lifecycle tests pass. See CONFIG_RENDER_PROGRESS.md for exact counts, failures, scoped source edits and unimplemented engine boundaries.
+
+There are 11 host CTest targets with sanitizers plus separate offscreen GLES pixel validation (run twice with new contexts). Original configuration/runcode targets and the initial GLES adapter compile for Android ARM64. Renderer Test v0.3 packages original porting code only and loads the owner's cursor texture for GPU preview; signature, ZIP integrity and alignment are build checks, not device runtime evidence. The Fold 5 v0.2 archive PASS remains the verified device baseline. v0.3 GPU execution still needs testing. Full original engine/menu/gameplay remain unimplemented; M3–M5 are not achieved.
+
+Touch/optional pen and dual-screen ideas are pinned in CONTROLS_BACKLOG.md for later. No additional installation files are currently requested. New CI results will be recorded after this code is committed.
