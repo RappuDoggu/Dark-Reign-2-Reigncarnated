@@ -109,3 +109,15 @@ There are 11 host CTest targets with sanitizers plus separate offscreen GLES pix
 Touch/optional pen and dual-screen ideas are pinned in CONTROLS_BACKLOG.md for later. No additional installation files are currently requested. New CI results will be recorded after this code is committed.
 
 Initial updated run 40121491459: host PASS and original ARM64 compilation/package step PASS, but the new software GLES CI step could not configure because the runner lacked libEGL. The workflow now explicitly installs libegl1, libegl-mesa0 and libgl1-mesa-dri before GPU-contract tests; a follow-up run is required. Local software EGL tests remain independently verified.
+
+### Configuration/GLES CI result
+
+[Run 40121657469](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40121657469) at `c7dd41bde5a7b9b466ce123621821017b9c562a0` completed with host PASS and Android PASS. This follows implementation commit `1e3e549692467a06c4e10edc1559c201bc42c803` and fixes only the missing software-EGL runner dependency.
+
+- Host job `120954351242`: 11 CTest targets, sanitizers and default CI leak detection PASS.
+- Android job `120954350938`: original config/run-code sources and initial GLES backend compile for ARM64; source-derived diagnostic package checks PASS; software EGL pixel tests PASS with two recreated contexts; original-only Renderer Test v0.3 build/signature/ZIP checks PASS.
+- [Renderer Test v0.3 CI APK artifact](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40121657469/artifacts/12571696548), ID `12571696548`.
+- [Host compilation/test logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40121657469/artifacts/12570828672), ID `12570828672`.
+- [Android/GLES/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40121657469/artifacts/12571406870), ID `12571406870`.
+
+The local direct-download v0.3 APK has SHA-256 `afb2fbc0b66cb1a2d2923de2a1307ddfd2e7da1ad8bf37acc5dacfb3895cedb6`, 2,433,659 bytes. Its separate retained development signing key matches the previous local delivery; CI generates its own development key. Runtime evidence for this new GLES path still requires the owner's Fold test. A successful GPU test will not by itself establish original engine/menu/mission initialization.

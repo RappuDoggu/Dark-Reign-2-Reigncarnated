@@ -11,3 +11,5 @@ This tests the new rendering boundary, not the original game's menu or a playabl
 The report includes Android/device and GL/GPU information. Timing is diagnostic, not a benchmark. No game data or original engine code is bundled; the selected pack is temporarily copied to private cache and deleted after reading. The decoded cursor image remains only in process memory for preview. API26+ / ARM64 / GLES3 required.
 
 If switching from a CI-signed test build to the local delivery causes Android to report a signature conflict, uninstall only the earlier test app and retry. The base.zwp file in Downloads is unaffected.
+
+Build evidence: [passing CI 40121657469](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40121657469). The implementation is on `dev/native-arm64-primitives` in PR #1. Package validation includes NDK runtime notices, ARM64 ELF/ZIP 16KiB alignment, APK signatures and ZIP entry CRCs. Actual Android GPU/rendering behavior is the remaining test for this build.
