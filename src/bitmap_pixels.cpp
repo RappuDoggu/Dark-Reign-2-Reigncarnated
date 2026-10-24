@@ -16,6 +16,7 @@ void validate(PixelFormat f){
 }
 }
 std::vector<std::uint8_t> convert_bitmap_pixels(unsigned width,unsigned height,unsigned source_depth,const std::vector<std::uint8_t> &source,PixelFormat destination,const std::vector<std::array<std::uint8_t,4>> &palette){
+ using namespace pixel_detail;
  validate(destination);
  if(!width||!height||width>16384||height>16384||(source_depth!=8&&source_depth!=16&&source_depth!=24&&source_depth!=32))throw std::runtime_error("Unsupported bitmap dimensions/depth");
  const std::uint64_t count=std::uint64_t(width)*height,input_size=count*(source_depth/8),output_size=count*(destination.depth/8);

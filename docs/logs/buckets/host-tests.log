@@ -16,7 +16,7 @@ test 1
 1: Bucket::FlushBucket: !doDraw
 1: Bucket::FlushBucket: !doDraw
 1: Original bucket split alignment/merge/rebase/state/sort/450-bucket flush and rejection checks PASS
- 1/14 Test  #1: original_render_buckets ..........   Passed    0.02 sec
+ 1/14 Test  #1: original_render_buckets ..........   Passed    0.03 sec
 test 2
       Start  2: original_bitmap_pixels
 
@@ -86,7 +86,7 @@ test 9
 9: Test timeout computed to be: 1500
 9: ...
 9: ----------------------------------------------------------------------
-9: Ran 3 tests in 0.003s
+9: Ran 3 tests in 0.002s
 9: 
 9: OK
  9/14 Test  #9: pack_metadata_inspector ..........   Passed    0.07 sec
@@ -97,7 +97,7 @@ test 10
 10: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
 10: Test timeout computed to be: 1500
 10: Native PACK checks: PASS (0 failures)
-10/14 Test #10: native_archive_reader ............   Passed    0.03 sec
+10/14 Test #10: native_archive_reader ............   Passed    0.04 sec
 test 11
       Start 11: make_installation_fixture
 
@@ -133,4 +133,4 @@ test 14
 
 100% tests passed out of 14
 
-Total Test time (real) =   0.27 sec
+Total Test time (real) =   0.29 sec

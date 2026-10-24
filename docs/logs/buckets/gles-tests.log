@@ -81,11 +81,11 @@ test 14
 14: Original 16-bit CopyLine -> bucket -> GLES: PASS
 14: Original 24-bit CopyLine -> bucket -> GLES: PASS
 14: Original 32-bit CopyLine -> bucket -> GLES: PASS
-1/1 Test #14: gles_legacy_pixels ...............   Passed    0.15 sec
+1/1 Test #14: gles_legacy_pixels ...............   Passed    0.14 sec
 
 The following tests passed:
 	gles_legacy_pixels
 
 100% tests passed out of 1
 
-Total Test time (real) =   0.15 sec
+Total Test time (real) =   0.14 sec

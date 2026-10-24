@@ -25,11 +25,11 @@ def prepare(upstream,output):
     if copy.count(old)!=3:raise ValueError('Unexpected 24-bit aliases')
     copy=copy.replace(old,'std::memcpy(bits++, &color, 3);')
     output.mkdir(parents=True,exist_ok=True)
-    (output/'pixel_slice.hpp').write_text('#pragma once\n#include "reign/pixel_prelude.hpp"\n'+pix+'\n'+
+    (output/'pixel_slice.hpp').write_text('#pragma once\n#include "reign/pixel_prelude.hpp"\nnamespace reign::pixel_detail {\n'+pix+'\n'+
         'class Bitmap {public: int bmpDepth; Pix *pixForm;\n'
         'U32 MakeRGBA(U32 r,U32 g,U32 b,U32 a=255)const{return pixForm->MakeRGBA(r,g,b,a);}\n'
-        'void CopyLine(U8 *,U8 *,int,int,RGBQUAD *);};\n')
-    (output/'pixel_slice.cpp').write_text('// Selected original pixel implementation: Copyright 1997-2000 Pandemic Studios, Dark Reign II.\n#include "pixel_slice.hpp"\n'+setup+'\n'+copy)
+        'void CopyLine(U8 *,U8 *,int,int,RGBQUAD *);};\n}\n')
+    (output/'pixel_slice.cpp').write_text('// Selected original pixel implementation: Copyright 1997-2000 Pandemic Studios, Dark Reign II.\n#include "pixel_slice.hpp"\nnamespace reign::pixel_detail {\n'+setup+'\n'+copy+'\n}\n')
     print('Staged original Pix/CopyLine pixel conversion externally:',output)
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('upstream',type=Path);p.add_argument('output',type=Path);a=p.parse_args();prepare(a.upstream,a.output)

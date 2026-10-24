@@ -28,7 +28,9 @@ does; this slice does not replace the original InitBuckets orchestration.
 
 `prepare_pixel_slice.py` pins original bitmap.h/.cpp and bitmapprimitive.cpp.
 It retains the integer Pix declaration/methods and original CopyLine body;
-the unused Color overload is excluded. The full DirectDraw/Bink Bitmap class
+the unused Color overload is excluded. The isolated conversion types and
+methods live in reign::pixel_detail so their narrow facade cannot collide with
+the future full engine Bitmap/Pix types. The full DirectDraw/Bink Bitmap class
 is not compiled. A narrow conversion-only Bitmap facade implements the real
 MakeRGBA contract by calling original Pix. Original GameIdent uses the already
 reviewed StrCrc template; the required RGB DDPIXELFORMAT fields use a checked
