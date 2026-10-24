@@ -33,7 +33,7 @@
 | Initial ELF layout | 4KiB LOAD alignment despite APK alignment option | Enable NDK ANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES; readelf verifies 16KiB LOAD alignment |
 | Original Windows engine build | Windows SDK/MSVC/MSBuild unavailable | No complete Windows build attempted or claimed; original v140/SDK and hardcoded library paths audited |
 | PTree portable compile probe | system/file.h includes unavailable io.h | Captured ptree-probe-failure.log; next slice needs File/Dir adapters, not parser rewrites |
-| First GitHub Android CI run | sdkmanager command absent on runner (exit127); host job passed | Added checksum-verified standalone Google SDK/NDK installer; rerun pending |
+| First GitHub Android CI run | sdkmanager command absent on runner (exit127); host job passed | Added checksum-verified standalone Google SDK/NDK installer; subsequent host and Android jobs PASS |
 | Full Android engine boot | Main/GameGod require unported Win32, D3D7, input, audio, FileSys and other services | Explicitly deferred to next dependency slice; no fake stubs claiming initialization |
 
 ## Reproducibility and logs
@@ -42,7 +42,7 @@ Build commands: ANDROID_PORT_PLAN.md. Source hashes: cmake/VerifyUpstream.cmake.
 
 `docs/logs/` contains captured configure/build/test logs, the pre-fix CRC sanitizer failure, the sandbox LeakSanitizer failure, signed APK verification, APK manifest/ABI metadata and ELF headers. Absolute temporary paths reflect the actual execution environment.
 
-GitHub workflow: `.github/workflows/native-primitives.yml`, with host and ARM64 build/package jobs. Only compilation/test/package logs may be uploaded. No upstream source, game data, object files, static libraries, native executables, debug keys or APKs are uploaded. CI run status is recorded after the workflow executes; local results above are independently observed.
+GitHub workflow: `.github/workflows/native-primitives.yml`, with host and ARM64 build/package jobs. Only compilation/test/package logs may be uploaded. No upstream source, game data, object files, static libraries, native executables, debug keys or APKs are uploaded. CI run results are recorded below; local results above are independently observed.
 
 ## Next concrete engineering work
 
@@ -53,3 +53,15 @@ GitHub workflow: `.github/workflows/native-primitives.yml`, with host and ARM64 
 5. Resolve source/middleware distribution rights before publishing a downloadable engine build. Continue original adapters/tooling independently.
 
 Initial CI evidence: commit `eea4dd3282dbd34526fa7ebe8e1dbdc6182a4815`, run https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40110196683 — host PASS, Android SDK setup failure. Host log artifact ID `12565887634`. A follow-up fixes setup; see subsequent CI evidence below.
+
+## Verified GitHub CI result
+
+Commit `54d6f1c49bb0f74864bbcceb9cfaa0d2cf5ffc5b` passed both jobs in [run 40110369623](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40110369623).
+
+- Host job `120920630137`: original primitives, platform services and PACK inspector pass with ASan/UBSan and the runner's default LeakSanitizer enabled.
+- Android job `120920630415`: checksum-verified SDK/NDK setup passes; original CRC/RNG, smoke executables and NativeActivity/GLES diagnostic library compile/link; diagnostic APK v2/v3 signature and ZIP alignment verification pass. Runtime remains untested.
+- [Host compilation/test log artifact](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40110369623/artifacts/12566092043), artifact ID `12566092043`.
+- [Android compilation/package log artifact](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40110369623/artifacts/12566098284), artifact ID `12566098284`.
+- Development branch: `dev/native-arm64-primitives`; [draft PR #1](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/pull/1). Initial implementation commit: `eea4dd3282dbd34526fa7ebe8e1dbdc6182a4815`. Follow-up toolchain fix and parser probe: `54d6f1c49bb0f74864bbcceb9cfaa0d2cf5ffc5b`.
+
+The final evidence-only documentation commit does not alter tested code. No copyrighted engine/game binary was uploaded as an artifact.
