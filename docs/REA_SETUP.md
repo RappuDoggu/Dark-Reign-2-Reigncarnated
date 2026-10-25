@@ -82,3 +82,12 @@ To repeat against the resulting project safely, use `-process dr2.exe -noanalysi
 ## Main-menu APK status
 
 The executable, assets, source, host compiler and Android NDK/SDK are available. The remaining main-menu blocker is engine implementation/integration, not another owner asset upload. Original control declarations and five coordinate/border methods now compile natively, with 15 host checks of original UI types and successful ARM64 compilation; full IControl, IFace startup, Main/GameGod and menu controls are not linked. No original-menu APK or gameplay launch is established. See [control progress](CONTROL_PROGRESS.md).
+
+
+## Follow-up troubleshooting — 2026-10-25
+
+Reproduced the provider prerequisite failure in ordinary and PTY execution. Node PID6 resolved to /proc/self=14462; PTY PID5 resolved to14549. procps exited1 with `fatal library error, lookup self` in both. Inspected installed REA ProcessOwnershipObservation.js: it reads /proc/PID/stat, status and environ directly, so a ps wrapper alone cannot repair ownership validation. Docker and Podman executables are absent. A private user/mount/PID namespace with unshare --mount-proc was attempted; it failed with `unshare: write failed /proc/self/uid_map: Operation not permitted`. The earlier bwrap namespace attempt was denied. No process-ownership checks were disabled.
+
+Full original control compile was repeated with native declarations and still fails at Pix/VertexTL and subsequent input/font/utility dependencies. No further menu functionality or APK runtime success resulted from this troubleshooting. Standalone Ghidra remains the usable analysis path. A normal Linux execution host with matching PID/procfs visibility is the concrete REA prerequisite; no additional game files are needed.
+
+Scheduling remains uncertain before full control/IFace linkage. A provisional engineering allowance is 2–6 focused developer-weeks for the original menu, with substantial overrun risk from startup dependencies; this is a planning estimate, not a measured delivery forecast or a promise of background execution. Re-estimate after the first original interactive window and an integrated desktop startup loop.
