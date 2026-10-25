@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: quads, gradients, shadows and UV coordinates
+
+Original drawing paths execute through texture-aware native batches. 21 focused checks and all 35 host tests pass; the full UI link still fails with 24 unresolved symbols. Polygon clipping, filtering integration and full UI startup remain incomplete. [Details and evidence](FRONTEND_QUADS.md).
+
 ## Latest increment: original UI triangles
 
 Host and Android CI passed for `17fcdb8`: [run 40222255157](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40222255157), [provider evidence](logs/frontend-draw/ci-result.json).
