@@ -3,8 +3,9 @@
 42 host tests pass. The real English database loads and validates 1,515 entries
 containing 30,072 UTF-16 units. Babel lookup/formatting and menu startup remain
 unimplemented. See [LOCALIZATION_DATABASE.md](LOCALIZATION_DATABASE.md).
-The preceding input/probe increment passed CI run 40225792024; this increment
-awaits fresh ARM64/GLES CI verification.
+CI run 40226863538 passed both jobs: 42 host tests, ARM64 compilation and
+software-GLES checks. Tested code commit: a8149ed5217a4143372ba3b7d3bb9268ac4c0b15.
+The published APK remains the v0.4 renderer diagnostic, not an engine/menu APK.
 
 # Latest: native menu input and real installation theme checks
 

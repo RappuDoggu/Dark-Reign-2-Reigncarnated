@@ -32,3 +32,7 @@ The inspected Babel formatter ignores its output-size parameter, has fixed
 substitution buffers and Windows-wide printf assumptions. These must be adapted
 and tested before routing real menu strings through it. Database loading alone
 does not resolve Babel::Translate or initialize the original main menu.
+
+Independent CI run 40226863538 passed 42 host tests, ARM64 compilation and
+software-GLES checks. Exact tested commit, artifact IDs and provider log excerpts
+are in logs/localization-database/ci.json and ci-*-excerpt.log.
