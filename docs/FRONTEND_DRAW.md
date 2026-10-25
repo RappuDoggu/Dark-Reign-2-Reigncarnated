@@ -1,5 +1,7 @@
 # Original UI triangle submission — 2026-10-25
 
+CI passed both jobs on `17fcdb8bfdcaa084679130f8be4b47812c1faefd`: [run 40222255157](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40222255157), [provider evidence](logs/frontend-draw/ci-result.json). Host execution passed 34/34 tests including 48 triangle checks with normal sanitizer settings. Android compiled the new draw library and test for ARM64. Existing GLES tests and diagnostic packaging passed; this does not imply new triangle pixel validation or a UI window/menu launch.
+
 The original IFace::RenderTriangle body is hash-checked and staged unchanged outside the repository. A native GetVertHelper allocates stable three-vertex buffers, retaining the original position, depth, reciprocal W, ARGB, specular and UV calculations. FrontendDraw submits completed triangles through a required callback as LegacyTL vertices and explicit indices. It currently supports this untextured triangle allocation only; unsupported helper requests fail explicitly.
 
 The original VertexTL member spelling is represented by a native 32-byte interchange structure, then copied field by field into renderer vertices. No vendor-object reinterpret cast is used. Nested sessions have independent buffers; failed collection submits nothing. Submission errors propagate and release local storage, but earlier delivered batches cannot be rolled back: callers must discard a failed frame. Consumer callbacks cannot append to the collection being iterated.
