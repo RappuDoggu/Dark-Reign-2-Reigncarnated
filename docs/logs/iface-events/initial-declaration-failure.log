@@ -1,0 +1,90 @@
+[  8%] Built target dr2_primitives
+[ 12%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 12%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 16%] Built target reign_frontend_support
+[ 16%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+[ 20%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+[ 25%] Linking CXX static library libdr2_tokenizer.a
+[ 25%] Built target dr2_tokenizer
+[ 29%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
+[ 33%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 37%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 41%] Linking CXX static library libdr2_tracking.a
+[ 41%] Built target dr2_tracking
+[ 41%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 45%] Linking CXX static library libdr2_events.a
+[ 45%] Built target dr2_events
+[ 45%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[ 50%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 54%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 54%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 58%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[ 62%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 66%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+[ 66%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /tmp/reign-upstream-runtime-overlay/varsys.h:3,
+                 from /tmp/reign-upstream-runtime-overlay/varitem.cpp:2:
+/tmp/reign-upstream-runtime-overlay/varitem.cpp: In destructor ‘reign::vars_detail::VarSys::VarItem::~VarItem()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+[ 70%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+[ 75%] Linking CXX static library libdr2_config.a
+[ 75%] Built target dr2_config
+[ 79%] Linking CXX static library libdr2_vars.a
+[ 79%] Built target dr2_vars
+[ 83%] Building CXX object CMakeFiles/dr2_frontend_config.dir/tmp/reign-upstream-frontend-overlay/control_stdload.cpp.o
+[ 87%] Linking CXX static library libdr2_frontend_config.a
+[ 87%] Built target dr2_frontend_config
+[ 87%] Building CXX object CMakeFiles/dr2_iface_events.dir/tmp/reign-upstream-iface-events-overlay/iface_events.cpp.o
+[ 91%] Building CXX object CMakeFiles/dr2_iface_events.dir/src/interface_events.cpp.o
+[ 95%] Linking CXX static library libdr2_iface_events.a
+[ 95%] Built target dr2_iface_events
+[100%] Building CXX object CMakeFiles/interface_events_smoke.dir/tests/interface_events_smoke.cpp.o
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/interface_events_smoke.cpp: In lambda function:
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/interface_events_smoke.cpp:17:62: error: cannot convert ‘std::nullptr_t’ to ‘U32’ {aka ‘unsigned int’}
+   17 |   for(unsigned i=0;i<128;++i)check(IFace::PostNotify(nullptr,nullptr,i)!=0);
+      |                                                              ^~~~~~~
+      |                                                              |
+      |                                                              std::nullptr_t
+In file included from /tmp/reign-upstream/interface/iface_messagebox.h:19,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:19,
+                 from /tmp/reign-upstream-iface-events-overlay/iface_events.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/tests/interface_events_smoke.cpp:1:
+/tmp/reign-upstream/interface/iface.h:188:38: note:   initializing argument 2 of ‘U32 IFace::PostNotify(IControl*, U32, U32, U32, U32)’
+  188 |   U32 PostNotify(IControl *from, U32 event, U32 p1 = 0, U32 p2 = 0, U32 p3 = 0);
+      |                                  ~~~~^~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/interface_events_smoke.cpp:18:36: error: cannot convert ‘std::nullptr_t’ to ‘U32’ {aka ‘unsigned int’}
+   18 |   check(!IFace::PostNotify(nullptr,nullptr,129));
+      |                                    ^~~~~~~
+      |                                    |
+      |                                    std::nullptr_t
+/tmp/reign-upstream/interface/iface.h:188:38: note:   initializing argument 2 of ‘U32 IFace::PostNotify(IControl*, U32, U32, U32, U32)’
+  188 |   U32 PostNotify(IControl *from, U32 event, U32 p1 = 0, U32 p2 = 0, U32 p3 = 0);
+      |                                  ~~~~^~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/interface_events_smoke.cpp: In lambda function:
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/interface_events_smoke.cpp:22:108: error: cannot convert ‘std::nullptr_t’ to ‘U32’ {aka ‘unsigned int’}
+   22 |  {reign::InterfaceEvents pending;pending.run([&]{for(unsigned i=0;i<12;++i)check(IFace::PostNotify(nullptr,nullptr,i)!=0);});}
+      |                                                                                                            ^~~~~~~
+      |                                                                                                            |
+      |                                                                                                            std::nullptr_t
+/tmp/reign-upstream/interface/iface.h:188:38: note:   initializing argument 2 of ‘U32 IFace::PostNotify(IControl*, U32, U32, U32, U32)’
+  188 |   U32 PostNotify(IControl *from, U32 event, U32 p1 = 0, U32 p2 = 0, U32 p3 = 0);
+      |                                  ~~~~^~~~~
+gmake[3]: *** [CMakeFiles/interface_events_smoke.dir/build.make:79: CMakeFiles/interface_events_smoke.dir/tests/interface_events_smoke.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/Makefile2:1792: CMakeFiles/interface_events_smoke.dir/all] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:1799: CMakeFiles/interface_events_smoke.dir/rule] Error 2
+gmake: *** [Makefile:732: interface_events_smoke] Error 2

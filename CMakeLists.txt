@@ -132,12 +132,34 @@ if(REIGN_UPSTREAM)
   add_executable(frontend_config_smoke tests/frontend_config_smoke.cpp)
   target_link_libraries(frontend_config_smoke PRIVATE dr2_frontend_config)
   add_test(NAME original_frontend_config COMMAND frontend_config_smoke)
+  set(REIGN_IFACE_EVENTS_OVERLAY "${REIGN_UPSTREAM}-iface-events-overlay" CACHE PATH "External original interface event staging")
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS tools/prepare_iface_events.py cmake/iface-event-hashes.json)
+  execute_process(COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/prepare_iface_events.py"
+    "${REIGN_UPSTREAM}" "${REIGN_IFACE_EVENTS_OVERLAY}" RESULT_VARIABLE iface_events_stage_result)
+  if(NOT iface_events_stage_result EQUAL 0)
+    message(FATAL_ERROR "Failed to stage original interface events")
+  endif()
+  add_library(dr2_iface_events STATIC "${REIGN_IFACE_EVENTS_OVERLAY}/iface_events.cpp" src/interface_events.cpp)
+  set_target_properties(dr2_iface_events PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  target_include_directories(dr2_iface_events PUBLIC include "${REIGN_IFACE_EVENTS_OVERLAY}" "${REIGN_FRONTEND_OVERLAY}"
+    "${REIGN_CONTROL_OVERLAY}" "${REIGN_RUNTIME_OVERLAY}" "${REIGN_CONFIG_OVERLAY}" "${REIGN_UPSTREAM}/interface" "${REIGN_UPSTREAM}/graphics" "${REIGN_UPSTREAM}/util" "${REIGN_UPSTREAM}/system")
+  target_link_libraries(dr2_iface_events PUBLIC dr2_events dr2_tracking dr2_frontend_config reign_frontend_support)
+  add_executable(interface_events_smoke tests/interface_events_smoke.cpp)
+  target_link_libraries(interface_events_smoke PRIVATE dr2_iface_events)
+  add_test(NAME original_interface_events COMMAND interface_events_smoke)
   add_library(dr2_frontend_controls OBJECT
     "${REIGN_FRONTEND_OVERLAY}/icontrol.cpp" "${REIGN_FRONTEND_OVERLAY}/icroot.cpp"
     "${REIGN_FRONTEND_OVERLAY}/icbutton.cpp" "${REIGN_FRONTEND_OVERLAY}/icwindow.cpp"
     "${REIGN_FRONTEND_OVERLAY}/ifvar.cpp" "${REIGN_FRONTEND_OVERLAY}/icsystembutton.cpp")
   set_target_properties(dr2_frontend_controls PROPERTIES POSITION_INDEPENDENT_CODE ON)
-  target_link_libraries(dr2_frontend_controls PUBLIC dr2_frontend_config reign_frontend_support dr2_events)
+  target_link_libraries(dr2_frontend_controls PUBLIC dr2_frontend_config reign_frontend_support dr2_events dr2_iface_events)
+  target_compile_options(dr2_frontend_controls PRIVATE -ffunction-sections -fdata-sections)
+  # Keep real IControl RTTI for UBSan; the event test does not construct controls.
+  # Unreachable UI methods are discarded rather than replaced by fake stubs.
+  target_link_libraries(interface_events_smoke PRIVATE dr2_frontend_controls)
+  target_link_options(interface_events_smoke PRIVATE -Wl,--gc-sections)
+
+  target_include_directories(dr2_frontend_controls BEFORE PRIVATE "${REIGN_IFACE_EVENTS_OVERLAY}")
   target_compile_options(dr2_frontend_controls PRIVATE -include "${CMAKE_CURRENT_SOURCE_DIR}/include/reign/frontend_prelude.hpp")
   target_include_directories(dr2_frontend_controls PRIVATE
     "${REIGN_FRONTEND_OVERLAY}" "${REIGN_CONTROL_OVERLAY}" "${REIGN_RUNTIME_OVERLAY}" "${REIGN_CONFIG_OVERLAY}" include

@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: original interface state/events
+
+24 original IFace methods now compile/link through a native session, with original queued-notification/dead-recipient paths executed in 178 checks. The session can share the engine queue and preserves unrelated events during cleanup. Host suite: 30/30 pass. Full control linkage still fails with 49 unresolved symbols; live controls and the main menu remain untested. [Implementation, failures and reproduction](IFACE_EVENTS.md).
+
 ## Latest increment: frontend services
 
 Original StdLoad menu functions now link and execute; native UTF-16/allocation helpers and a scoped original EventSys binding are implemented. All 29 host tests pass. The full frontend link still fails with 62 unresolved symbols (previous probe: 77); no main-menu APK or original interactive window is established. [Implementation, recovery notes and evidence](FRONTEND_SERVICES.md). Host and ARM64 CI both passed on `70c65f1`: [run 40208431181](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40208431181).

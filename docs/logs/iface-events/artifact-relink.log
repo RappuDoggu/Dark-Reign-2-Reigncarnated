@@ -1,0 +1,6 @@
+[ 13%] Built target dr2_primitives
+[ 46%] Built target reign_platform
+[ 73%] Built target dr2_bitmap_pixels
+[ 86%] Built target dr2_bitmap_manager
+[ 93%] Linking CXX executable bitmap_manager_smoke
+[100%] Built target bitmap_manager_smoke

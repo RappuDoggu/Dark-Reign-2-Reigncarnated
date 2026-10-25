@@ -3,6 +3,7 @@
 #include "control_types.hpp"
 #include "reign/frontend_support.hpp"
 struct Pix; struct VertexTL;
+#include "iface.h"
 using PathString=StrBuf<270>;
 #define LOGEXTERN
 namespace Utils {
