@@ -51,6 +51,7 @@ def prepare(upstream, output):
             end = s.index('\n  // Notify control that is was deactivated', start)
             # This adapter is intentionally UNDEFINED, never a successful no-op.
             s = s[:start]+'  if (texture && texture->texture) reign::deactivate_control_movie(texture->texture);\n'+s[end:]
+        s = s.replace('IFace::data', 'IFace::FrontendData()')
         (output/(name+'.cpp')).write_text(s)
     # Preserve the original variable-name/dereference path; IControl supplies
     # parent-relative lookup. This remains unexecuted until live controls link.

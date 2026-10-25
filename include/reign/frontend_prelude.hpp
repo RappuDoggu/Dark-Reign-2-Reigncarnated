@@ -23,5 +23,6 @@ namespace reign { void deactivate_control_movie(Bitmap *); }
 constexpr S32 DIK_RETURN=0x1C, DIK_SPACE=0x39, DIK_ESCAPE=0x01;
 
 #include "iface_priv.h"
+namespace IFace { SystemData &FrontendData(); }
 #include "icsystembutton.h"
 

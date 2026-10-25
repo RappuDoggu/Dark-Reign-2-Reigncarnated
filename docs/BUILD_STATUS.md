@@ -1,3 +1,10 @@
+# Latest: original theme initialization
+
+40 host tests pass, including 26 theme checks. Eight unresolved symbols remain
+in the complete staged-control link. See [FRONTEND_THEME.md](FRONTEND_THEME.md).
+Theme ARM64/GLES CI is pending; the preceding texture increment passed both jobs
+in run 40224190466. There is still no original main-menu APK.
+
 # Latest: original texture configuration bridge
 
 39 host tests pass; the complete control link has 12 missing symbols.
