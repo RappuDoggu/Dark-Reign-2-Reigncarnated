@@ -137,6 +137,7 @@ if(REIGN_UPSTREAM)
     "${REIGN_FRONTEND_OVERLAY}/icbutton.cpp" "${REIGN_FRONTEND_OVERLAY}/icwindow.cpp"
     "${REIGN_FRONTEND_OVERLAY}/ifvar.cpp" "${REIGN_FRONTEND_OVERLAY}/icsystembutton.cpp")
   set_target_properties(dr2_frontend_controls PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  target_link_libraries(dr2_frontend_controls PUBLIC dr2_frontend_config reign_frontend_support dr2_events)
   target_compile_options(dr2_frontend_controls PRIVATE -include "${CMAKE_CURRENT_SOURCE_DIR}/include/reign/frontend_prelude.hpp")
   target_include_directories(dr2_frontend_controls PRIVATE
     "${REIGN_FRONTEND_OVERLAY}" "${REIGN_CONTROL_OVERLAY}" "${REIGN_RUNTIME_OVERLAY}" "${REIGN_CONFIG_OVERLAY}" include
