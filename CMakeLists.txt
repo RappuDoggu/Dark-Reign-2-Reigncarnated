@@ -103,6 +103,29 @@ if(REIGN_UPSTREAM)
   target_include_directories(control_types_smoke PRIVATE "${REIGN_CONFIG_OVERLAY}" "${REIGN_UPSTREAM}/system")
   target_link_libraries(control_types_smoke PRIVATE dr2_control_coordinates)
   add_test(NAME original_control_types COMMAND control_types_smoke)
+
+  # Complete original UI translation units. Object-only until actual services link.
+  set(REIGN_FRONTEND_OVERLAY "${REIGN_UPSTREAM}-frontend-overlay" CACHE PATH "External full original control staging")
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+    tools/prepare_frontend_controls.py cmake/frontend-source-hashes.json
+    tools/prepare_control_types.py cmake/control-source-hashes.json)
+  execute_process(COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/prepare_frontend_controls.py"
+    "${REIGN_UPSTREAM}" "${REIGN_FRONTEND_OVERLAY}" RESULT_VARIABLE frontend_stage_result)
+  if(NOT frontend_stage_result EQUAL 0)
+    message(FATAL_ERROR "Failed to stage original frontend controls")
+  endif()
+  add_library(dr2_frontend_controls OBJECT
+    "${REIGN_FRONTEND_OVERLAY}/icontrol.cpp" "${REIGN_FRONTEND_OVERLAY}/icroot.cpp"
+    "${REIGN_FRONTEND_OVERLAY}/icbutton.cpp" "${REIGN_FRONTEND_OVERLAY}/icwindow.cpp"
+    "${REIGN_FRONTEND_OVERLAY}/ifvar.cpp" "${REIGN_FRONTEND_OVERLAY}/icsystembutton.cpp")
+  set_target_properties(dr2_frontend_controls PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  target_compile_options(dr2_frontend_controls PRIVATE -include "${CMAKE_CURRENT_SOURCE_DIR}/include/reign/frontend_prelude.hpp")
+  target_include_directories(dr2_frontend_controls PRIVATE
+    "${REIGN_FRONTEND_OVERLAY}" "${REIGN_CONTROL_OVERLAY}" "${REIGN_RUNTIME_OVERLAY}" "${REIGN_CONFIG_OVERLAY}" include
+    "${REIGN_UPSTREAM}/interface" "${REIGN_UPSTREAM}/graphics" "${REIGN_UPSTREAM}/util"
+    "${REIGN_UPSTREAM}/system" "${REIGN_UPSTREAM}/main" "${REIGN_UPSTREAM}/coregame"
+    "${REIGN_UPSTREAM}/game" "${REIGN_UPSTREAM}/3rdparty")
+
   set(REIGN_VID_OVERLAY "${REIGN_UPSTREAM}-vid-overlay" CACHE PATH "External original Vid state source staging")
   execute_process(COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/prepare_vid_slice.py"
     "${REIGN_UPSTREAM}" "${REIGN_VID_OVERLAY}" RESULT_VARIABLE vid_stage_result)

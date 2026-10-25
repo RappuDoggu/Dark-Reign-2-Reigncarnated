@@ -36,3 +36,8 @@ This exits 1 and records exact argv, compiler status and false linked/engine/men
 
 
 CI verified for implementation `8e73b55c49823e2d3758e8712d731685d3f8687d`: [run40198264863](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40198264863) SUCCESS. Host job121183725463 passes all26 CTest targets including15 original control-type checks with runner default leak checking. Android job121183725807 builds the original control declaration/coordinate library and test for ARM64, verifies the private diagnostic package and passes the software-GLES target across two contexts. CI records vendor, opaque-video and native-control-declaration frontend compile failures as diagnostics; it does not claim a successful full frontend link. [Host logs artifact12600499572](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40198264863/artifacts/12600499572), [Android/GPU/package logs artifact12600759005](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40198264863/artifacts/12600759005). The public v0.4 renderer artifact remains unchanged in scope and is not a menu test. REA/Ghidra verification was performed locally in Work, not by this CI run. This evidence-only update changes no compiled code.
+
+
+## Full translation-unit follow-up — 2026-10-25
+
+[Six complete original UI translation units](FRONTEND_CONTROLS.md) now compile to host and ARM64 objects. This supersedes the earlier full-IControl compilation blocker only for the new staged target; the untouched-source diagnostic still reports its legacy dependency failures. Full frontend linkage and runtime remain unverified.

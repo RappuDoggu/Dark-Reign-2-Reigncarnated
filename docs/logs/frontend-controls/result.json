@@ -1,0 +1,126 @@
+{
+  "translation_units": [
+    "icontrol",
+    "icroot",
+    "icbutton",
+    "icwindow",
+    "ifvar",
+    "icsystembutton"
+  ],
+  "host_compiled": true,
+  "android_compiled": true,
+  "host_tests_passed": 26,
+  "engine_initialized": false,
+  "menu_rendered": false,
+  "architectures": {
+    "host": [
+      {
+        "object": "icbutton.cpp.o",
+        "machine": "Machine:                           Advanced Micro Devices X86-64",
+        "bytes": 353136
+      },
+      {
+        "object": "icontrol.cpp.o",
+        "machine": "Machine:                           Advanced Micro Devices X86-64",
+        "bytes": 1926944
+      },
+      {
+        "object": "icroot.cpp.o",
+        "machine": "Machine:                           Advanced Micro Devices X86-64",
+        "bytes": 133928
+      },
+      {
+        "object": "icsystembutton.cpp.o",
+        "machine": "Machine:                           Advanced Micro Devices X86-64",
+        "bytes": 200880
+      },
+      {
+        "object": "icwindow.cpp.o",
+        "machine": "Machine:                           Advanced Micro Devices X86-64",
+        "bytes": 343512
+      },
+      {
+        "object": "ifvar.cpp.o",
+        "machine": "Machine:                           Advanced Micro Devices X86-64",
+        "bytes": 318968
+      }
+    ],
+    "android": [
+      {
+        "object": "icbutton.cpp.o",
+        "machine": "Machine:                           AArch64",
+        "bytes": 119160
+      },
+      {
+        "object": "icontrol.cpp.o",
+        "machine": "Machine:                           AArch64",
+        "bytes": 441680
+      },
+      {
+        "object": "icroot.cpp.o",
+        "machine": "Machine:                           AArch64",
+        "bytes": 76912
+      },
+      {
+        "object": "icsystembutton.cpp.o",
+        "machine": "Machine:                           AArch64",
+        "bytes": 86744
+      },
+      {
+        "object": "icwindow.cpp.o",
+        "machine": "Machine:                           AArch64",
+        "bytes": 119056
+      },
+      {
+        "object": "ifvar.cpp.o",
+        "machine": "Machine:                           AArch64",
+        "bytes": 108800
+      }
+    ]
+  },
+  "link_probe": {
+    "exit_code": 1,
+    "command": [
+      "c++",
+      "-fsanitize=address,undefined",
+      "/tmp/reign-full-control/link-main.cpp",
+      "reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o",
+      "reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o",
+      "reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o",
+      "reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o",
+      "reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o",
+      "reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o",
+      "-Wl,--start-group",
+      "reign-work/build-host/libdr2_bitmap_manager.a",
+      "reign-work/build-host/libdr2_bitmap_pixels.a",
+      "reign-work/build-host/libdr2_buckets.a",
+      "reign-work/build-host/libdr2_config.a",
+      "reign-work/build-host/libdr2_control_coordinates.a",
+      "reign-work/build-host/libdr2_events.a",
+      "reign-work/build-host/libdr2_font_registry.a",
+      "reign-work/build-host/libdr2_fonts.a",
+      "reign-work/build-host/libdr2_iface_metrics.a",
+      "reign-work/build-host/libdr2_primitives.a",
+      "reign-work/build-host/libdr2_runcodes.a",
+      "reign-work/build-host/libdr2_tokenizer.a",
+      "reign-work/build-host/libdr2_tracking.a",
+      "reign-work/build-host/libdr2_vars.a",
+      "reign-work/build-host/libdr2_vid_state.a",
+      "reign-work/build-host/libreign_checks.a",
+      "reign-work/build-host/libreign_platform.a",
+      "reign-work/build-host/libreign_vid_device.a",
+      "-Wl,--end-group",
+      "-pthread",
+      "-ldl",
+      "-o",
+      "/tmp/reign-full-control/frontend-link-check"
+    ],
+    "linked": false
+  },
+  "limitations": [
+    "Objects only; host tests cover existing subsystems, not complete controls",
+    "Movie adapter is undefined; no silent no-op",
+    "Original global Font/Bitmap/IFace dependencies still need integration",
+    "No Android execution"
+  ]
+}

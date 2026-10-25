@@ -1,0 +1,56 @@
+CMake Warning (deprecated) at /workspace/scratch/2e29d93ded9e/reign-work/android-sdk/ndk/27.2.12479018/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /workspace/scratch/2e29d93ded9e/reign-work/build-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /workspace/scratch/2e29d93ded9e/reign-work/android-sdk/ndk/27.2.12479018/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /workspace/scratch/2e29d93ded9e/reign-work/android-sdk/ndk/27.2.12479018/build/cmake/android.toolchain.cmake:55 (include)
+  /workspace/scratch/2e29d93ded9e/reign-work/build-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /workspace/scratch/2e29d93ded9e/reign-work/android-sdk/ndk/27.2.12479018/build/cmake/flags.cmake:18 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang.cmake:23 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeCXXInformation.cmake:48 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original tracking, events and variables externally: /tmp/reign-upstream-runtime-overlay
+Staged original IControl declarations and coordinate/border methods externally: /tmp/reign-upstream-control-overlay
+Staged six full original frontend translation units; runtime linkage still required
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+Staged original Bitmap::Manager naming/fallback/animation/release loops externally: /tmp/reign-upstream-bitmap-manager-overlay
+Staged original font reader/layout/draw/IFace batching externally: /tmp/reign-upstream-font-overlay
+Staged original IFace metric configuration/default/read functions externally: /tmp/reign-upstream-metrics-overlay
+Staged original FontSys alias/config/mode-change registration externally: /tmp/reign-upstream-font-registry-overlay
+-- Configuring done (0.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/scratch/2e29d93ded9e/reign-work/build-android

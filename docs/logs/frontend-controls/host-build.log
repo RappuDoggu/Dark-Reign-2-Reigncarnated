@@ -1,0 +1,92 @@
+[  0%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o
+[ 25%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream-frontend-overlay/icontrol.cpp:24:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp: In destructor ‘virtual IControl::~IControl()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+[ 50%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o
+[ 75%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream-frontend-overlay/icwindow.cpp:18:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+[ 75%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream-frontend-overlay/icsystembutton.cpp:17:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+[100%] Built target dr2_frontend_controls
+[ 12%] Built target dr2_primitives
+[ 18%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+[ 25%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
+[ 31%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+[ 37%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
+[ 50%] Linking CXX static library libdr2_tracking.a
+[ 50%] Built target dr2_tracking
+[ 56%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[ 62%] Linking CXX static library libdr2_events.a
+[ 62%] Built target dr2_events
+[ 68%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[ 68%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /tmp/reign-upstream-runtime-overlay/varsys.h:3,
+                 from /tmp/reign-upstream-runtime-overlay/varitem.cpp:2:
+/tmp/reign-upstream-runtime-overlay/varitem.cpp: In destructor ‘reign::vars_detail::VarSys::VarItem::~VarItem()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+[ 75%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+[ 81%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+[ 87%] Linking CXX static library libdr2_vars.a
+[ 87%] Built target dr2_vars
+[ 93%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_color_magic.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_coordinates.cpp.o
+[100%] Linking CXX static library libdr2_control_coordinates.a
+[100%] Built target dr2_control_coordinates
+[106%] Building CXX object CMakeFiles/control_types_smoke.dir/tests/control_types_smoke.cpp.o
+[112%] Linking CXX executable control_types_smoke
+[112%] Built target control_types_smoke

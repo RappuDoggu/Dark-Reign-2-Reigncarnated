@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: full frontend control objects
+
+Six full original UI translation units now compile for Linux x86_64 and Android ARM64/API26: IControl, ICRoot, ICButton, ICWindow (including title), IFaceVar and ICSystemButton. All 26 existing host tests pass. Executable linkage was attempted and failed on the remaining frontend services; no menu or new APK runtime is claimed. [Changes, reproduction and evidence](FRONTEND_CONTROLS.md). CI verification for this increment is recorded separately when available.
+
 ## Latest increment: menu binary trace
 
 Standalone Ghidra decompiled 13 Login/Shell lifecycle functions and callees from the owner-supplied executable. Six direct-call sequences verified; five corrupt evidence reports rejected. REA provider launch remains blocked by process/procfs inspection. No new C++ build, original-menu launch or APK runtime result is claimed in this increment. [Research, reproduction and next integration gates](REA_ASSESSMENT.md). Earlier sections below retain their dated build history.

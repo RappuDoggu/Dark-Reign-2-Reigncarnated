@@ -10,7 +10,7 @@ namespace EventSys = reign::event_detail::EventSys;
 // Neighboring original headers must share the already staged VarSys class,
 // rather than redeclaring the legacy class in the global namespace.
 #define __VARSYS_H
-template<class T> class Array;
+template<class T, U32 ALIGNMENT = 0> class Array;
 class IFaceVar;
 template<class T> inline T Max(T a,T b){return std::max(a,b);}
 template<class T> inline void Swap(T &a,T &b){std::swap(a,b);}
