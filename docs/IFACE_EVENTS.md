@@ -37,6 +37,10 @@ cmake --build build-host -j4
 ASAN_OPTIONS=detect_leaks=0 ctest --test-dir build-host --output-on-failure
 ```
 
-Use the existing Android NDK configuration for the same default targets. Original source, objects and source-derived executables remain outside published artifacts. CI verification is recorded after completion.
+Use the existing Android NDK configuration for the same default targets. Original source, objects and source-derived executables remain outside published artifacts.
+
+## CI verification
+
+Commit `16cc5367a7d6384f7ecdf65113166d827e79c463` passed both jobs in [run 40211110772](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40211110772). Host execution passed 30/30 tests, including 178 interface checks, with normal ASan/UBSan and leak detection. Android NDK compilation built `dr2_iface_events`, all original frontend control objects and `interface_events_smoke` for ARM64. The ARM64 test executable was compiled, not executed on a device. Software GLES checks and existing renderer v0.4 packaging also passed. That APK has no new engine/menu integration. [Provider results and artifact metadata](logs/iface-events/ci-result.json) preserve the actual job output excerpts.
 
 Evidence: [interface test](logs/iface-events/interface-test.log), [suite](logs/iface-events/suite.log), [build](logs/iface-events/build.log), [full link errors](logs/iface-events/link.log), [result and exact link command](logs/iface-events/result.json), [initial declaration error](logs/iface-events/initial-declaration-failure.log), [RTTI link error](logs/iface-events/rtti-failure.log).
