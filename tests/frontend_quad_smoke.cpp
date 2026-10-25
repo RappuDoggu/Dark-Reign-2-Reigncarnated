@@ -3,7 +3,7 @@
 #include <iostream>
 int main(){try{
  unsigned checks=0;auto check=[&](bool b){++checks;if(!b)throw std::logic_error("Quad check "+std::to_string(checks));};
- auto rejects=[&](auto f){bool caught=false;try{f();}catch(const std::runtime_error&){caught=true;}check(caught);};
+ auto rejects=[&](auto f){bool caught=false;try{f();}catch(const std::exception&){caught=true;}check(caught);};
  ClipRect rect;rect.p0={10,20};rect.p1={42,36};std::vector<reign::FrontendBatch> batches;
  auto sink=[&](const auto &b){batches.push_back(b);};
  reign::FrontendDraw::run_batches([&]{IFace::RenderRectangle(rect,Color(U32(0x80402010)),nullptr,.5f);},sink);
@@ -32,5 +32,15 @@ int main(){try{
  reign::FrontendDraw::run_batches([&]{IFace::RenderShadow(rect,shadow,Color(U32(0x80000000)),2,1);},sink);check(batches.size()==2);
  check(batches[0].vertices[0].y==36&&batches[1].vertices[0].x==42);
  VertexTL clip[4]{};rejects([&]{reign::FrontendDraw::run_batches([&]{IFace::RenderRectangle(rect,Color(U32(0xffffffff)),nullptr,1,clip);},sink);});
+ // Original nine-piece skin layout, including client-relative interior.
+ TextureSkin skin;ColorGroup colors;colors.bg[0]=Color(U32(0xffffffff));
+ auto &state=skin.states[0];state.colors=&colors;
+ for(auto &piece:state.pieces){piece.textureSize={2,2};piece.texture.texture=&bitmap;piece.texture.texMode=TextureInfo::TM_TILED;}
+ PaintInfo paint(&colors);paint.window.p0={0,0};paint.window.p1={20,20};paint.client.p0={2,2};paint.client.p1={18,18};
+ batches.clear();reign::FrontendDraw::run_batches([&]{skin.Render(paint,0);},sink);check(batches.size()==9);
+ const float expected[9][4]={{2,2,18,18},{0,0,2,2},{18,0,20,2},{0,18,2,20},{18,18,20,20},{0,2,2,18},{2,0,18,2},{18,2,20,18},{2,18,18,20}};
+ for(unsigned i=0;i<9;++i){auto &v=batches[i].vertices;check(v[0].x==expected[i][0]&&v[0].y==expected[i][1]&&v[2].x==expected[i][2]&&v[2].y==expected[i][3]);}
+ batches.clear();reign::FrontendDraw::run_batches([&]{skin.Render(paint,1);},sink);check(batches.empty());
+ rejects([&]{reign::FrontendDraw::run_batches([&]{skin.Render(paint,ColorGroup::MAX_INDEX);},sink);});
  std::cout<<"Original UI quads/gradients/shadows/texture UV: PASS ("<<checks<<" checks)\n";
  }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

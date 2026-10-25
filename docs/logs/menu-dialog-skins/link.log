@@ -1,0 +1,65 @@
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `Input::EventID()':
+icbutton.cpp:(.text._ZN5Input7EventIDEv[_ZN5Input7EventIDEv]+0xb): undefined reference to `Input::eventId'
+/usr/bin/ld: icbutton.cpp:(.text._ZN5Input7EventIDEv[_ZN5Input7EventIDEv]+0x45): undefined reference to `Input::eventId'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `Input::LeftButtonCode()':
+icbutton.cpp:(.text._ZN5Input14LeftButtonCodeEv[_ZN5Input14LeftButtonCodeEv]+0xb): undefined reference to `Input::lButton'
+/usr/bin/ld: icbutton.cpp:(.text._ZN5Input14LeftButtonCodeEv[_ZN5Input14LeftButtonCodeEv]+0x45): undefined reference to `Input::lButton'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::DrawSelf(PaintInfo&)':
+icbutton.cpp:(.text._ZN8ICButton8DrawSelfER9PaintInfo+0x1dba): undefined reference to `IFace::data'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton8DrawSelfER9PaintInfo+0x1dd1): undefined reference to `IFace::data'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton8DrawSelfER9PaintInfo+0x1dea): undefined reference to `IFace::data'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton8DrawSelfER9PaintInfo+0x1e12): undefined reference to `IFace::data'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::Setup(FScope*)':
+icbutton.cpp:(.text._ZN8ICButton5SetupEP6FScope+0x2da): undefined reference to `IFace::FScopeToTextureInfo(FScope*, TextureInfo&)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::HandleEvent(reign::event_detail::Event&)':
+icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0xa8d): undefined reference to `IFace::Sound::Play(unsigned char, IControl*)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x1c8a): undefined reference to `IFace::Sound::Play(unsigned char, IControl*)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x41ea): undefined reference to `IFace::Sound::Play(unsigned char, IControl*)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `Input::MousePos()':
+icontrol.cpp:(.text._ZN5Input8MousePosEv[_ZN5Input8MousePosEv]+0xb): undefined reference to `Input::mousePos'
+/usr/bin/ld: icontrol.cpp:(.text._ZN5Input8MousePosEv[_ZN5Input8MousePosEv]+0x2b): undefined reference to `Input::mousePos'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::IControl(IControl*)':
+icontrol.cpp:(.text._ZN8IControlC2EPS_+0x922): undefined reference to `IFace::data'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControlC2EPS_+0x936): undefined reference to `IFace::data'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControlC2EPS_+0x94f): undefined reference to `IFace::data'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControlC2EPS_+0x977): undefined reference to `IFace::data'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::DrawChildren(PaintInfo&)':
+icontrol.cpp:(.text._ZN8IControl12DrawChildrenER9PaintInfo+0x6c5): undefined reference to `IFace::data'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o:icontrol.cpp:(.text._ZN8IControl12DrawChildrenER9PaintInfo+0x6dc): more undefined references to `IFace::data' follow
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)':
+icontrol.cpp:(.text._ZN8IControl18DrawCtrlBackgroundERK9PaintInfoPK11TextureInfo+0x6d7): undefined reference to `IFace::GetColor(unsigned int)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl18DrawCtrlBackgroundERK9PaintInfoPK11TextureInfo+0x6e6): undefined reference to `IFace::GetColor(unsigned int)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl18DrawCtrlBackgroundERK9PaintInfoPK11TextureInfo+0x947): undefined reference to `IFace::GetColor(unsigned int)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl18DrawCtrlBackgroundERK9PaintInfoPK11TextureInfo+0x953): undefined reference to `IFace::GetColor(unsigned int)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::Setup(FScope*)':
+icontrol.cpp:(.text._ZN8IControl5SetupEP6FScope+0x2144): undefined reference to `IFace::FindColorGroup(unsigned int)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl5SetupEP6FScope+0x23f6): undefined reference to `IFace::FScopeToTextureInfo(FScope*, TextureInfo&)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl5SetupEP6FScope+0x264e): undefined reference to `IFace::FindTextureSkin(unsigned int)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl5SetupEP6FScope+0x297c): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl5SetupEP6FScope+0x49e6): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::Deactivate()':
+icontrol.cpp:(.text._ZN8IControl10DeactivateEv+0x1591): undefined reference to `reign::deactivate_control_movie(Bitmap*)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::ExecItem(FScope*)':
+icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x2e5e): undefined reference to `Console::ProcessCmd(char const*, void*)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x396d): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x39f4): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x3b45): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x3bcc): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x3d2a): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o:icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x3db1): more undefined references to `Babel::Translate(char const*, unsigned int, ...)' follow
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::ExecItem(FScope*)':
+icontrol.cpp:(.text._ZN8IControl8ExecItemEP6FScope+0x3e48): undefined reference to `IFace::MsgBox(unsigned short const*, unsigned short const*, unsigned int, MBEvent*, MBEvent*, MBEvent*)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o: in function `IControl::ProcessCmd(FScope*)':
+icontrol.cpp:(.text._ZN8IControl10ProcessCmdEP6FScope+0x576): undefined reference to `Console::ProcessCmd(char const*, void*)'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::PostConfigure()':
+icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x296c): undefined reference to `IFace::data'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x2983): undefined reference to `IFace::data'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x299c): undefined reference to `IFace::data'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x29c4): undefined reference to `IFace::data'
+/usr/bin/ld: reign-work/build-host/CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o: in function `IFaceVar::GetValue(unsigned short*, unsigned int, char const*, int)':
+ifvar.cpp:(.text._ZN8IFaceVar8GetValueEPtjPKci+0x4d6): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: ifvar.cpp:(.text._ZN8IFaceVar8GetValueEPtjPKci+0x4ef): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: ifvar.cpp:(.text._ZN8IFaceVar8GetValueEPtjPKci+0x6a1): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: ifvar.cpp:(.text._ZN8IFaceVar8GetValueEPtjPKci+0xa10): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+/usr/bin/ld: ifvar.cpp:(.text._ZN8IFaceVar8GetValueEPtjPKci+0xbde): undefined reference to `Babel::Translate(char const*, unsigned int, ...)'
+collect2: error: ld returned 1 exit status

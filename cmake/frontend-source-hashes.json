@@ -11,5 +11,7 @@
   "interface/icsystembutton.cpp": "256d28d4798e08de066d3374c8b382e587f90f513ffa71ef3abdf73de7bddbe6",
   "util/multilanguage.h": "7b6c56b130e99057cf5c73fcde5abe31870b851396922980101f810137df6bd6",
   "util/stdload.cpp": "bc61b8baba06939c0f55f233840a05aa6da4ac08ba6e4afb4b5a90daf5782b68",
-  "util/utiltypes.cpp": "4da07b6f869ae7d7a10069197c4b073fb2007ce5c458fca6f770c3720ddc1b9a"
+  "util/utiltypes.cpp": "4da07b6f869ae7d7a10069197c4b073fb2007ce5c458fca6f770c3720ddc1b9a",
+  "interface/messagebox_event.cpp": "76cae977adac8c4c146f79dac494738f3a9e0d70e61da2aa6e5e9bf920c067fa",
+  "interface/iface_util.cpp": "b464102949c932f1bbee108064634a22ee9f62f3aafab4a5564ce3dc8fa9e0ab"
 }

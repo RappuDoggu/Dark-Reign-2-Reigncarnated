@@ -31,8 +31,10 @@ def prepare(upstream,output):
  macro=source[source.index('  #define UPDATE_TEX'):source.index('  //\n  // Helper function')]
  body='\n'.join(bodies)
  uv=function('void TextureInfo::UpdateUV(')
+ skin=function('void TextureSkin::Render(')
+ skin=skin.replace('{', '{\n  if (colorIndex >= ColorGroup::MAX_INDEX) throw std::out_of_range("Skin color state");',1)
  output.mkdir(parents=True,exist_ok=True)
- (output/'frontend_triangle.cpp').write_text('#include "reign/frontend_draw.hpp"\n#include "reign/frontend_bitmap.hpp"\nnamespace IFace {\n'+macro+'\n'+body+'\n}\n'+uv+'\n')
+ (output/'frontend_triangle.cpp').write_text('#include "reign/frontend_draw.hpp"\n#include "reign/frontend_bitmap.hpp"\nnamespace IFace {\n'+macro+'\n'+body+'\n}\n'+uv+'\n'+skin+'\n')
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('upstream',type=Path);p.add_argument('output',type=Path)
  a=p.parse_args();prepare(a.upstream,a.output)

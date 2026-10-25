@@ -158,7 +158,9 @@ if(REIGN_UPSTREAM)
   add_library(dr2_frontend_controls OBJECT
     "${REIGN_FRONTEND_OVERLAY}/icontrol.cpp" "${REIGN_FRONTEND_OVERLAY}/icroot.cpp"
     "${REIGN_FRONTEND_OVERLAY}/icbutton.cpp" "${REIGN_FRONTEND_OVERLAY}/icwindow.cpp"
-    "${REIGN_FRONTEND_OVERLAY}/ifvar.cpp" "${REIGN_FRONTEND_OVERLAY}/icsystembutton.cpp")
+    "${REIGN_FRONTEND_OVERLAY}/ifvar.cpp" "${REIGN_FRONTEND_OVERLAY}/icsystembutton.cpp"
+    "${REIGN_FRONTEND_OVERLAY}/messagebox_event.cpp"
+    "${REIGN_FRONTEND_OVERLAY}/frontend_helpers.cpp")
   set_target_properties(dr2_frontend_controls PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_link_libraries(dr2_frontend_controls PUBLIC dr2_frontend_config reign_frontend_support dr2_events dr2_iface_events)
   target_compile_options(dr2_frontend_controls PRIVATE -ffunction-sections -fdata-sections)
@@ -170,6 +172,10 @@ if(REIGN_UPSTREAM)
   target_link_libraries(interface_registry_smoke PRIVATE dr2_iface_events dr2_frontend_controls)
   target_link_options(interface_registry_smoke PRIVATE -Wl,--gc-sections)
   add_test(NAME original_interface_registry COMMAND interface_registry_smoke)
+  add_executable(messagebox_event_smoke tests/messagebox_event_smoke.cpp)
+  target_link_libraries(messagebox_event_smoke PRIVATE dr2_frontend_controls)
+  target_link_options(messagebox_event_smoke PRIVATE -Wl,--gc-sections)
+  add_test(NAME original_messagebox_events COMMAND messagebox_event_smoke)
   add_library(reign_frontend_fonts STATIC src/frontend_font.cpp)
   set_target_properties(reign_frontend_fonts PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_link_libraries(reign_frontend_fonts PUBLIC dr2_frontend_config dr2_font_registry)

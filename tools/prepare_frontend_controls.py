@@ -27,7 +27,7 @@ def prepare(upstream, output):
         if s.count(old) != 1:
             raise ValueError('Expected one occurrence: '+old)
         return s.replace(old, new)
-    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton']:
+    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event']:
         s = texts['interface/'+name+'.cpp']
         s = s.replace('#include "input.h"', '#include "control_input.hpp"')
         s = s.replace('#include "stdload.h"', '#include "control_stdload.hpp"')
@@ -52,6 +52,16 @@ def prepare(upstream, output):
             # This adapter is intentionally UNDEFINED, never a successful no-op.
             s = s[:start]+'  if (texture && texture->texture) reign::deactivate_control_movie(texture->texture);\n'+s[end:]
         (output/(name+'.cpp')).write_text(s)
+    # Preserve the original variable-name/dereference path; IControl supplies
+    # parent-relative lookup. This remains unexecuted until live controls link.
+    source = texts['interface/iface_util.cpp']
+    a = source.index('  Bool ExpandDerefVar(')
+    b = source.index('{', a) + 1
+    depth = 1
+    while depth:
+        depth += (source[b] == '{') - (source[b] == '}')
+        b += 1
+    (output/'frontend_helpers.cpp').write_text('namespace IFace {\n'+source[a:b]+'\n}\n')
     s = replace_once(texts['interface/input.h'], 'void Init(HINSTANCE inst, HWND window);',
                      '// Windows startup declaration excluded; native input lifecycle remains separate.')
     (output/'control_input.hpp').write_text(s)

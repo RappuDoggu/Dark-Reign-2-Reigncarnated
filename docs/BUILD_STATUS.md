@@ -1,3 +1,9 @@
+# Latest: original dialog events and nine-piece skins
+
+38 host tests pass. Full UI link still has 13 unresolved symbols.
+See [MENU_DIALOG_SKINS.md](MENU_DIALOG_SKINS.md). Original menu startup is not
+yet available. The Clang expression include fix awaits fresh CI verification.
+
 # Current increment: menu expressions and bounded text
 
 37 host tests pass; full UI link still has 17 missing symbols. See
