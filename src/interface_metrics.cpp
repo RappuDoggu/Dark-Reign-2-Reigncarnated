@@ -17,6 +17,9 @@ InterfaceMetrics::InterfaceMetrics(unsigned w,unsigned h):impl_(std::make_unique
  dimensions(w,h);auto &s=impl_->state;s.width=w;s.height=h;metric_detail::Binding bind(s);metric_detail::InitMetrics();
 }
 InterfaceMetrics::~InterfaceMetrics()=default;
+std::int32_t InterfaceMetrics::get_id(std::uint32_t type)const{
+ metric_detail::Binding bind(impl_->state);return metric_detail::GetMetric(type);
+}
 std::int32_t InterfaceMetrics::get(const std::string &name)const{
  if(name.empty()||name.find('\0')!=std::string::npos)throw std::runtime_error("Invalid interface metric name");
  auto &s=impl_->state;const auto crc=Crc::CalcStr(name.c_str());metric_detail::Binding bind(s);
@@ -34,3 +37,4 @@ std::shared_ptr<const NativeFont> InterfaceMetrics::font(const std::string &metr
  return registry.find_crc(static_cast<std::uint32_t>(get(metric)));
 }
 }
+

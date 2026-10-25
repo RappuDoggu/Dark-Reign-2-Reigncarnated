@@ -15,8 +15,11 @@ public:
  ~InterfaceMetrics();
  InterfaceMetrics(const InterfaceMetrics &)=delete;InterfaceMetrics &operator=(const InterfaceMetrics &)=delete;
  std::int32_t get(const std::string &name)const;
+ // Original MetricType index; bounds are checked by original GetMetric.
+ std::int32_t get_id(std::uint32_t type)const;
  InterfaceViewport viewport()const;
  void resize(unsigned width,unsigned height);
  std::shared_ptr<const NativeFont> font(const std::string &metric,const FontRegistry &)const;
 };
 }
+

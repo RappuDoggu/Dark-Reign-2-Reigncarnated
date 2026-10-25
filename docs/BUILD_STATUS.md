@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: frontend metrics and frame state
+
+Original UI metric calls now reach the ported metric implementation; viewport and supplied engine timing are bound through FrontendFrame. 43 focused checks and all 33 host tests pass. Full UI linkage still fails with 30 unresolved symbols. No live window or main-menu APK yet. [Implementation and evidence](FRONTEND_FRAME.md).
+
 ## Latest increment: frontend font adapter
 
 Host and Android ARM64 CI passed on `4614983`: [run 40216274121](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40216274121), [provider evidence](logs/frontend-font/ci-result.json).
