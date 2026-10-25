@@ -74,3 +74,8 @@ The scoped original bitmap manager now uses original NBinTree and CRC naming, fa
 ## BMP corpus and control dependency checkpoint
 
 BMP decoding now supports bounded DIB40/BI_RGB8/16/24/32 and routes through original Pix/CopyLine; manager .bmp fallback is operational. BI_BITFIELDS remains explicitly unsupported because the inspected original mask reader is unfinished. Pillow is only an optional private24-bit pixel-oracle dependency. Original event/tracking/VarSys/color/control services, full Bitmap allocation/UV/mipmap/transparency and engine startup remain dependencies. See BMP_PROGRESS.md.
+
+
+## Runtime recovery and requested menu gate — 2026-10-25
+
+dr2_tracking, dr2_events and dr2_vars now stage original runtime implementations externally. Native synchronization/string helpers support the engine services; non-ASCII Windows ACP remains unsupported. Original control/graphics/math/font/frame ABI integration, root configuration, User/Login/Shell and Android input/lifecycle remain menu dependencies. No menu-capable APK is available. Recovered source requires fresh CI evidence after the workspace disconnected.

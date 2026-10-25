@@ -99,3 +99,8 @@ CMake now builds dr2_bitmap_manager, bitmap_manager_smoke and bitmap_manager_pro
 ## BMP corpus and control dependency checkpoint
 
 BMP is now connected to original pixel conversion and original manager fallback, with private corpus checks and host GPU tests. CMake adds bitmap_bmp_smoke and bmp_rgba_probe; the local verify_bmp_archive.py checks a legal installation in memory against Pillow without writing assets. Next port original EventSys/TrackSys/color/control startup prerequisites and complete Bitmap allocation/UV/mipmap/transparency policies before constructing ICRoot. The public v0.4 adapter remains unchanged; there is no new gameplay APK or new device-testing gate.
+
+
+## Runtime recovery and requested menu gate — 2026-10-25
+
+Next device deliverable must show the original main menu at minimum; a refreshed diagnostic does not satisfy it. Original tracking/event/variable prerequisites and a synthetic handoff fixture are implemented, but IControl compilation probes remain failed and full original frontend/startup integration is missing. The interactive workspace became unavailable before upload; implementation recovery uses GitHub and requires fresh CI. Continue at IControl/ICRoot graphics/math/header integration, then original root configuration and User/Login/Shell/frame/input initialization.

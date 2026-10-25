@@ -126,3 +126,8 @@ Original graphics/bitmap_manager.cpp Setup/Create/Find/FindCreate/ReleaseDD/OnMo
 ## BMP corpus and control dependency checkpoint
 
 Inspected original ReadBMP: DIB40, DWORD row stride, signed-height orientation, palette handling, CopyLine, and unfinished BI_BITFIELDS mask reading. Inventory finds63 BMPs in88 archives, all24-bit BI_RGB, no loose BMPs. All63 independently match Pillow output. Game::Preview uses terrain.bmp; this does not execute a mission. IFace::Init and IControl construction/destruction establish EventSys/Input/Main/TrackSys/VarSys/colors/control dependencies. util/event.h packs native pointers inside Event; ARM64 alignment/runtime-layout and serialization consumers need further audit. No event/control initialization is claimed.
+
+
+## Runtime recovery and requested menu gate — 2026-10-25
+
+Original event/queue, tracking/reapers, String and VarSys family inspected/staged. Native pointer layout is runtime-only (Event40 bytes/interface offset8, tracking Info16/offset8). Original dispatch/work-queue flow retained; native queue corrects the inspected Full/Empty/Flush defects. Binary array cleanup and string/path bounds fixed. Full IControl compilation remains failed at vendor/graphics/math integration; actual Login/Shell initialization is unachieved. RUNTIME_PROGRESS.md distinguishes local observations from reconstructed-source CI verification after workspace loss.
