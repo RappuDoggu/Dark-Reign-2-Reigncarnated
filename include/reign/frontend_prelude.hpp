@@ -1,6 +1,7 @@
 #pragma once
 // Compile boundary: declarations here do not provide runtime implementations.
 #include "control_types.hpp"
+#include "reign/frontend_font.hpp"
 #include "reign/frontend_support.hpp"
 struct Pix; struct VertexTL;
 #include "iface.h"

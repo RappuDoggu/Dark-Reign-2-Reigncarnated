@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: frontend font adapter
+
+Original controls now compile against a Font/FontSys adapter using the ported original font implementation. 40 bridge checks and all 32 host tests pass. Full UI linkage remains blocked by 34 unresolved symbols; no live root window or main-menu APK is established. [Implementation and evidence](FRONTEND_FONT.md).
+
 ## Latest increment: factory compilation and stored menu scopes
 
 Host and Android CI passed on `aa5fd80`: [run 40215613098](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40215613098), [provider evidence](logs/iface-factory/ci-result.json).
