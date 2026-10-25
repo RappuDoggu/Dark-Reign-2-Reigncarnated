@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: interface class registry and configuration ABI
+
+Four original class-registry/template methods execute in 23 checks; the full host suite passes 31/31. Sanitizers exposed an FScope layout mismatch across modules, fixed by consistently enabling DEVELOPMENT across CMake targets. Full frontend linking still fails on 47 unresolved symbols. No live control creation or main-menu APK yet. [Details and recorded failures](IFACE_REGISTRY.md).
+
 ## Latest increment: original interface state/events
 
 24 original IFace methods now compile/link through a native session, with original queued-notification/dead-recipient paths executed in 178 checks. The session can share the engine queue and preserves unrelated events during cleanup. Host suite: 30/30 pass. Full control linkage still fails with 49 unresolved symbols; live controls and the main menu remain untested. [Implementation, failures and reproduction](IFACE_EVENTS.md). Host and Android ARM64 CI passed for `16cc536`: [run 40211110772](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40211110772), [provider evidence](logs/iface-events/ci-result.json). ARM64 compilation is verified; no new device runtime result is claimed.

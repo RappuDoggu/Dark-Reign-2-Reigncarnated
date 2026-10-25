@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 project(Reigncarnated LANGUAGES CXX)
+# DEVELOPMENT changes original C++ class layouts (not just diagnostics).
+# Keep every engine producer and consumer on the same ABI.
+add_compile_definitions(DEVELOPMENT=1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -158,6 +161,10 @@ if(REIGN_UPSTREAM)
   # Unreachable UI methods are discarded rather than replaced by fake stubs.
   target_link_libraries(interface_events_smoke PRIVATE dr2_frontend_controls)
   target_link_options(interface_events_smoke PRIVATE -Wl,--gc-sections)
+  add_executable(interface_registry_smoke tests/interface_registry_smoke.cpp)
+  target_link_libraries(interface_registry_smoke PRIVATE dr2_iface_events dr2_frontend_controls)
+  target_link_options(interface_registry_smoke PRIVATE -Wl,--gc-sections)
+  add_test(NAME original_interface_registry COMMAND interface_registry_smoke)
 
   target_include_directories(dr2_frontend_controls BEFORE PRIVATE "${REIGN_IFACE_EVENTS_OVERLAY}")
   target_compile_options(dr2_frontend_controls PRIVATE -include "${CMAKE_CURRENT_SOURCE_DIR}/include/reign/frontend_prelude.hpp")

@@ -15,10 +15,11 @@ def prepare(upstream, output):
     names=['SetFlag','GetFlag','SendEvent','PostEvent','SendNotify','SendNotifyModal','SendNotifyFocus',
            'PostNotify','PostNotifyModal','PostNotifyFocus','EventID','SetTipControl',
            'SetMouseCapture','ReleaseMouseCapture','GetCapture','GetMouseOver','SetFocus','ReleaseFocus',
-           'GetFocus','SetModal','UnsetModal','GetModal','DeactivateModals','IFaceEventHandler']
+           'GetFocus','SetModal','UnsetModal','GetModal','DeactivateModals','IFaceEventHandler',
+           'RegisterControlClass','UnregisterControlClass','FindControlClass','DefineControlType']
     bodies=[]
     for name in names:
-        match=re.search(r'^  (?:Bool|U32|U16|void|IControl \*)\s*'+name+r'\([^\n]*\)\s*\n  \{',source,re.M)
+        match=re.search(r'^  (?:Bool|U32|U16|void|IControl \*|ICClass \*)\s*'+name+r'\([^\n]*\)\s*\n  \{',source,re.M)
         if not match:raise ValueError('Missing function '+name)
         a=match.start();b=source.index('{',a)+1;depth=1
         while depth:depth+=(source[b]=='{')-(source[b]=='}');b+=1
@@ -34,7 +35,16 @@ def prepare(upstream, output):
             begin=body.index('      // Create reapers');end=body.index('      // Build up the event structure',begin)
             body=body[:begin]+'      IControlPtr *ptrTo=ownedTo.get(), *ptrFrom=ownedFrom.get();\n\n'+body[end:]
             body=body.replace('      EventSys::PutUnlock();','      EventSys::PutUnlock();\n      ownedTo.release(); ownedFrom.release();')
-        fields=['eventId','systemFlags','modalStack','modal','focus','mouseCapture','mouseOver','tipCtrl']
+        if name in ['UnregisterControlClass','DefineControlType']:
+            body=body.replace('ASSERT(sysInit);','ASSERT(reign::iface_event_detail::state().registryReady);')
+        if name=='DefineControlType':
+            # Fatal errors are exceptions on the port. Reject before mutation:
+            # original BinTree::Add inserts a duplicate before reporting it.
+            body=body.replace('    // It was so create a new Control class',
+                '    if (ctrlTypes.Find(Crc::CalcStr(newClass)))\n'
+                '    { ERR_FATAL(("Control class [%s] already defined", newClass)); }\n\n'
+                '    // It was so create a new Control class')
+        fields=['ctrlTypes','eventId','systemFlags','modalStack','modal','focus','mouseCapture','mouseOver','tipCtrl']
         # Rewrite identifiers only, preserving original diagnostics and comments.
         token=r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\b(?:'+ '|'.join(fields)+r')\b'
         body=re.sub(token,lambda m:'reign::iface_event_detail::state().'+m[0] if m[0] in fields else m[0],body)
@@ -54,9 +64,11 @@ struct Pix;
 namespace reign::iface_event_detail {
 struct State {
  U16 eventId=0; U32 systemFlags=0;
+ // Readiness of this registry only; does not claim full IFace initialization.
+ Bool registryReady=TRUE; BinTree<ICClass> ctrlTypes;
  Stack<IControlPtr> modalStack;
  IControlPtr modal,focus,mouseCapture,mouseOver,tipCtrl;
- ~State(){modalStack.DisposeAll();}
+ ~State(){modalStack.DisposeAll();ctrlTypes.DisposeAll();}
 };
 State &state();
 struct Binding {State *previous;explicit Binding(State &);~Binding();};
@@ -64,7 +76,7 @@ struct Binding {State *previous;explicit Binding(State &);~Binding();};
 namespace IFace { Bool IFaceEventHandler(Event &); }
 ''')
     (output/'iface_events.cpp').write_text('#include "iface_events.hpp"\n#define PROCESS(c,e,s) (c)->HandleEvent(e)\nnamespace IFace {\n'+'\n\n'.join(bodies)+'\n}\n#undef PROCESS\n')
-    print('Staged 24 original IFace event/state methods; native PostEvent ownership guard enabled')
+    print('Staged 28 original IFace event/state methods; native PostEvent ownership guard enabled')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('upstream',type=Path);p.add_argument('output',type=Path)
