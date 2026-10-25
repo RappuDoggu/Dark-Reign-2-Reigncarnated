@@ -1,0 +1,25 @@
+{
+  "command": [
+    "c++",
+    "-std=c++17",
+    "-fsyntax-only",
+    "-fmax-errors=12",
+    "-include",
+    "/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp",
+    "-I/tmp/reign-upstream-frontend-overlay",
+    "-I/tmp/reign-upstream-control-overlay",
+    "-I/tmp/reign-upstream-runtime-overlay",
+    "-I/tmp/reign-upstream-config-overlay",
+    "-I/workspace/scratch/2e29d93ded9e/reigncarnated/include",
+    "-I/tmp/reign-upstream/interface",
+    "-I/tmp/reign-upstream/graphics",
+    "-I/tmp/reign-upstream/util",
+    "-I/tmp/reign-upstream/system",
+    "-I/tmp/reign-upstream/main",
+    "-I/tmp/reign-upstream/coregame",
+    "-I/tmp/reign-upstream/game",
+    "-I/tmp/reign-upstream/3rdparty",
+    "/tmp/reign-upstream/interface/iface.cpp"
+  ],
+  "exit_code": 1
+}

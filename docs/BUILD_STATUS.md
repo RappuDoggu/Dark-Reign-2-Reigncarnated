@@ -2,7 +2,7 @@
 
 ## Latest increment: frontend services
 
-Original StdLoad menu functions now link and execute; native UTF-16/allocation helpers and a scoped original EventSys binding are implemented. All 29 host tests pass. The full frontend link still fails with 62 unresolved symbols (previous probe: 77); no main-menu APK or original interactive window is established. [Implementation, recovery notes and evidence](FRONTEND_SERVICES.md).
+Original StdLoad menu functions now link and execute; native UTF-16/allocation helpers and a scoped original EventSys binding are implemented. All 29 host tests pass. The full frontend link still fails with 62 unresolved symbols (previous probe: 77); no main-menu APK or original interactive window is established. [Implementation, recovery notes and evidence](FRONTEND_SERVICES.md). Host and ARM64 CI both passed on `70c65f1`: [run 40208431181](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40208431181).
 
 ## Latest increment: full frontend control objects
 

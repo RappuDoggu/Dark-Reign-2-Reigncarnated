@@ -9,7 +9,7 @@
 
 Host GCC13.3 build passes. All **29 CTest targets pass** with ASan/UBSan and the documented local LeakSanitizer limitation. New tests execute 24 original configuration checks, 14 native string/allocation checks and 10 native event-context checks. They do not construct a real control tree or display the menu.
 
-The event test registers the original event type/handler, enqueues through original PutLock/PutUnlock and Put, and dispatches through EventLoop::process. It checks two-loop isolation, nested exception restoration, absence of a native binding outside the callback, and empty-callback rejection. It does not claim that original IFace::PostEvent or its Reaper lifetime path has run yet.
+The event test registers the original event type/handler, enqueues through original PutLock/PutUnlock and Put, and dispatches through EventLoop::process. It checks two-loop isolation, nested exception restoration, absence of a native binding outside the callback, and empty-callback rejection. It does not claim that original IFace::PostEvent or its Reaper lifetime path has run yet. A deliberately wrong nested-context expectation exits 1, confirming that the intentional exception handler cannot swallow a failed assertion.
 
 Configuration tests include range/type errors, signed and unsigned coordinate values, CRC of Shell, missing-required settings, optional defaults, integer-to-float conversion, and an original behavioral distinction: an absent named scope returns its default without range validation, while an absent argument in a present scope validates the default.
 
@@ -40,3 +40,10 @@ ASAN_OPTIONS=detect_leaks=0 ctest --test-dir build-host --output-on-failure
 Use the existing Android configuration instructions to build the same default targets with NDK r27c. New libraries/tests are included in default host and Android builds. No game implementation or assets are committed.
 
 [Build](logs/frontend-services/build.log), [29-test result](logs/frontend-services/tests.log), [configuration tests](logs/frontend-services/config-test.log), [native support tests](logs/frontend-services/support-test.log), [event context tests](logs/frontend-services/event-context-test.log), [link errors](logs/frontend-services/link-failure.log), [machine-readable result and exact link command](logs/frontend-services/result.json). The link probe main is `int main(){return 0;}` and failed to produce an executable. CI status is recorded separately after completion.
+
+The untouched full `interface/iface.cpp` compile was probed with the native frontend prelude; it still fails through `multilanguage.h` at missing `windows.h`. [Compiler output](logs/frontend-services/iface-next-compile.log) and [exact command](logs/frontend-services/iface-next-result.json). Its global service dependencies need explicit port boundaries; compiling the control sources does not remove them.
+
+
+## Verified CI
+
+Implementation commit `70c65f183a49a93d17524d25e1ee0ef44bb02047` passed host and Android jobs in [run 40208431181](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40208431181). Host logs confirm 29/29 tests, including all three new executable checks. Android logs confirm compilation/linking of the new libraries and smoke executables and compilation of the six control objects. Android runtime was not tested. [Job output and artifact metadata](logs/frontend-services/ci-result.json). The v0.4 APK artifact is unchanged diagnostic tooling, not an original-menu build.

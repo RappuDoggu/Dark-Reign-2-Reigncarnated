@@ -1,0 +1,49 @@
+{
+  "implementation_commit": "70c65f183a49a93d17524d25e1ee0ef44bb02047",
+  "run_id": 40208431181,
+  "jobs": [
+    {
+      "name": "host",
+      "id": 121214280890,
+      "conclusion": "success"
+    },
+    {
+      "name": "android",
+      "id": 121214281184,
+      "conclusion": "success"
+    }
+  ],
+  "host_checks": [
+    "2026-10-25T15:46:42.8491298Z 1: Native UTF-16 buffers and original Array allocation support: PASS (14 checks)",
+    "2026-10-25T15:46:42.9427679Z 4: Original EventSys scoped binding, raw queue, nested exception restoration: PASS (10 checks)",
+    "2026-10-25T15:46:43.0085799Z 8: Original menu StdLoad scalar/string/CRC/point paths: PASS (24 checks)",
+    "2026-10-25T15:46:43.6250496Z 100% tests passed, 0 tests failed out of 29"
+  ],
+  "android_compilation": [
+    "2026-10-25T15:46:01.2868727Z [  2%] Built target reign_frontend_support",
+    "2026-10-25T15:46:07.1344334Z [ 22%] Built target frontend_support_smoke",
+    "2026-10-25T15:46:19.7860033Z [ 61%] Built target native_event_context_smoke",
+    "2026-10-25T15:46:27.9855321Z [ 86%] Built target dr2_frontend_config",
+    "2026-10-25T15:46:32.1911270Z [ 97%] Built target frontend_config_smoke",
+    "2026-10-25T15:46:34.0391137Z [100%] Built target dr2_frontend_controls"
+  ],
+  "artifacts": [
+    {
+      "id": 12605076892,
+      "name": "host-compilation-and-test-logs",
+      "digest": "sha256:94789c26ecefb130c5928baaf4619d701bf91412f3602685d64dba7533327677"
+    },
+    {
+      "id": 12604521926,
+      "name": "android-compilation-and-package-logs",
+      "digest": "sha256:bc2c6c8cb112bfac1375138608fb702ebbfdd7164df398f90a194404efe0d74b"
+    },
+    {
+      "id": 12604242531,
+      "name": "Reigncarnated-Renderer-Test-v04-arm64",
+      "digest": "sha256:d72f60172e4ec8dfa84aa1db5482bb5d5f136e3c57597ced7a35df0403df1833"
+    }
+  ],
+  "main_menu": false,
+  "notes": "Android binaries compiled in CI, not executed on the Fold. Published renderer v0.4 artifact remains unchanged."
+}
