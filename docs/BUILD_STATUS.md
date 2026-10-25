@@ -206,3 +206,10 @@ Original FontSys registration now runs behind native adapters: hash-pinned Creat
 Local NDK r27c/API26 build/package verification PASS, including dr2_font_registry and AArch64 font_registry_smoke/font_registry_probe. ELF verification and package logs are retained in docs/logs/font-registry. These source-derived registry binaries were compiled, not executed on Android; the unchanged public v0.4 adapter remains the latest owner-tested APK.
 
 CI verified: code commit `53027af214f5103c6eddf622ea9c9c782f8b0c7c`, [run40154496926](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40154496926) SUCCESS. Host job121052859375:18 tests PASS with default leak checking. Android job121052859564: ARM64 build/private package checks,41 software GPU checks in each of two contexts, public original-only v0.4 package build PASS. Evidence artifacts:12583708068(host logs),12583603418(Android/GPU/package logs),12583388571(public v0.4 APK). That APK contains no original font registration/engine implementation and is not a new menu build.
+
+
+## Original interface metrics integration
+
+Original IFace InitMetrics/ConfigureMetrics/GetMetric/UpdateScreenMetrics now run behind scoped native viewport/state adapters. Same-parse font/metric configuration resolves actual standard-font TitleFont=WindowTitle and ThinTitleFont=System. Host ASan/UBSan:19 CTest targets PASS, including33 metric checks. Software GLES:42 checks PASS in each of two recreated contexts, including configured font-reference/shadow rendering. See INTERFACE_METRICS_PROGRESS.md and docs/logs/interface-metrics. This does not launch the original menu or engine.
+
+Local Android verification PASS: NDK r27c/API26 builds the original metric source slice, native adapter, AArch64 interface_metrics_smoke and private diagnostic package. ELF header/package verification logs are retained. The new metric/registry path has not executed on Android and is absent from the unchanged public v0.4 APK.

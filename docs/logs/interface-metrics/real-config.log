@@ -1,0 +1,4 @@
+Original FontSys: files=6 aliases=12 reads_after_reload=12 PASS
+CONFIG observed: declarations=9 aliases=9 files=6 reads=8 system_button_shared=1
+Original Metrics: TitleFont=WindowTitle ThinTitleFont=System ShadowAlpha=88 screen=1692x666 PASS
+Original PTree/FScope -> FontSys real interface_standard_fonts.cfg: declarations=9 shared_files=6 PASS

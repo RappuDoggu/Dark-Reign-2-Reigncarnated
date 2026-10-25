@@ -59,3 +59,8 @@ Native bounded TGA/PIC framing now feeds the separately compiled original Pix/Co
 ## Original font registration integration
 
 The original FontSys file/alias registry and CreateFont FScope handler now compile against original NBinTree, CRC/StrCrc and the existing native-backed original Font implementation. Per-file CPU atlas ownership replaces old global DirectDraw texture-table ownership at this boundary. Metrics/control/event startup remains a separate IFace dependency; this is not full FontSys/IFace ABI integration. See FONT_REGISTRY_PROGRESS.md.
+
+
+## Original interface metrics integration
+
+Original IFace metric defaults, CRC table, FScope configuration and reads now compile in the external dr2_iface_metrics slice. Native InterfaceMetrics plus FontRegistry share the original parse and resolve font references by original FontSys CRC lookup. Native viewport dimensions/32-bit RGBA render depth replace Vid::backBmp dimension reads. Actual controls, colors/skins, events, frame setup and Main/GameGod services remain missing. See INTERFACE_METRICS_PROGRESS.md.

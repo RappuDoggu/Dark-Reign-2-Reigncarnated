@@ -1,6 +1,7 @@
 #include "vid_slice.hpp"
 #include "reign/native_font.hpp"
 #include "reign/font_registry.hpp"
+#include "reign/interface_metrics.hpp"
 #include "font_fixture.hpp"
 #include <algorithm>
 #include <array>
@@ -41,10 +42,14 @@ void original_font_gpu_checks(reign::LegacyGles &renderer){
  auto paged=font_fixture(2,700,4);std::fill(paged.end()-16,paged.end(),128);reign::NativeFont pages(paged);
  options.clip.p1.x=32;options.x=2;options.y=2;renderer.clear(32,32,0,0,0);render_font(renderer,pages,u"A\u02fc",options,2);
  check(pages.atlas_count()==2&&pixel(2,2,255,255,255)&&pixel(7,2,128,128,128),"Original font multi-atlas texture switch");
- reign::FontRegistry registry([](const std::string &name){if(name=="fonts.cfg"){std::string config="ConfigureInterface() { CreateFont(\"System\") { File(\"one.fff\"); } CreateFont(\"Button\") { File(\"one.fff\"); } }";return std::vector<std::uint8_t>(config.begin(),config.end());}return font_fixture();});
- if(registry.configure("fonts.cfg")!=2)throw std::runtime_error("Font configuration dispatch failed");
+ reign::FontRegistry registry([](const std::string &name){if(name=="fonts.cfg"){std::string config="ConfigureInterface() { CreateFont(\"System\") { File(\"one.fff\"); } CreateFont(\"Button\") { File(\"one.fff\"); } Metrics() { TitleFont(\"Button\"); ShadowAlpha(77); } }";return std::vector<std::uint8_t>(config.begin(),config.end());}return font_fixture();});
+ reign::InterfaceMetrics metrics(32,32);
+ if(registry.configure("fonts.cfg",&metrics)!=2)throw std::runtime_error("Font configuration dispatch failed");
  auto registered=registry.find("Button");registry.reload();registered=registry.find("System");
  options.x=4;options.y=4;renderer.clear(32,32,0,0,0);render_font(renderer,*registered,u"A",options);
  check(registry.file_count()==1&&registered==registry.find("Button")&&pixel(4,4,255,255,255)&&pixel(5,4,128,128,128),"Original font configuration/alias/reload to GLES");
+
+ options.shadow=1;options.shadow_alpha=metrics.get("ShadowAlpha");renderer.clear(32,32,1,1,1);render_font(renderer,*metrics.font("TitleFont",registry),u"A",options);
+ check(metrics.viewport().width==32&&metrics.font("TitleFont",registry)==registered&&pixel(5,5,178,178,178),"Original interface metrics/font reference/shadow to GLES");
 
 }

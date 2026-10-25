@@ -111,3 +111,8 @@ Owner v0.4 Fold report passes all12 public adapter pixel checks including intege
 ## Original font registration integration
 
 Original FontSys Init/Done/Create/GetFont/DeleteAll/OnModeChange and NBinTree now execute in a scoped native registration slice. Inspected utiltypes.h confirms MAX_GAMEIDENT64. Actual interface_standard_fonts.cfg declares nine aliases referring to six files; parser and registration results match. IFace Metrics/control/frame/startup handlers remain unported. See FONT_REGISTRY_PROGRESS.md for ownership/ABI boundaries.
+
+
+## Original interface metrics integration
+
+Inspected iface.cpp InitMetrics/ConfigureMetrics/GetMetric/UpdateScreenMetrics and iface_types.h MetricType. Extracted original code preserves the reserved sentinel slot and original default/key tables. Actual standard-font config executes its Metrics section and resolves its two original font aliases. Native viewport/state adapters do not initialize IFace controls or graphics. See INTERFACE_METRICS_PROGRESS.md for exact scope/evidence.

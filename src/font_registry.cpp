@@ -1,5 +1,6 @@
 #include "registry_slice.hpp"
 #include "ptree.h"
+#include "reign/interface_metrics.hpp"
 namespace reign::registry_detail {
 namespace {thread_local State *active=nullptr;}
 State &state(){if(!active)throw std::runtime_error("Font registry not bound");return *active;}
@@ -26,7 +27,7 @@ struct FontRegistry::Impl {
 FontRegistry::FontRegistry(ConfigLoader loader):impl_(std::make_unique<Impl>(std::move(loader))){}
 FontRegistry::~FontRegistry()=default;
 void FontRegistry::create(const std::string &alias,const std::string &file){identifier(alias);identifier(file);registry_detail::Binding binding(impl_->state);registry_detail::Create(alias.c_str(),file.c_str());}
-unsigned FontRegistry::configure(const std::string &file){
+unsigned FontRegistry::configure(const std::string &file,InterfaceMetrics *metrics){
  registry_detail::Binding binding(impl_->state);FileSys::Session session(impl_->state.loader);PTree tree;
  if(!tree.AddFile(file.c_str()))throw FileSys::FileNotFound(tree.LastError());
  unsigned count=0;auto *root=tree.GetGlobalScope();root->InitIterators();
@@ -37,13 +38,15 @@ unsigned FontRegistry::configure(const std::string &file){
  };
  while(auto *scope=root->NextFunction()){
   if(scope->NameCrc()==Crc::CalcStr("CreateFont"))create_scope(scope);
+  else if(metrics&&scope->NameCrc()==Crc::CalcStr("Metrics"))metrics->configure_native(scope);
   else if(scope->NameCrc()==Crc::CalcStr("ConfigureInterface")){
-   scope->InitIterators();while(auto *child=scope->NextFunction())if(child->NameCrc()==Crc::CalcStr("CreateFont"))create_scope(child);
+   scope->InitIterators();while(auto *child=scope->NextFunction()){if(child->NameCrc()==Crc::CalcStr("CreateFont"))create_scope(child);else if(metrics&&child->NameCrc()==Crc::CalcStr("Metrics"))metrics->configure_native(child);}
   }
  }
  return count;
 }
 std::shared_ptr<const NativeFont> FontRegistry::find(const std::string &alias)const{identifier(alias);registry_detail::Binding binding(impl_->state);auto *font=registry_detail::GetFont(Crc::CalcStr(alias.c_str()));return font?font->native:nullptr;}
+std::shared_ptr<const NativeFont> FontRegistry::find_crc(std::uint32_t crc)const{registry_detail::Binding binding(impl_->state);auto *font=registry_detail::GetFont(crc);return font?font->native:nullptr;}
 unsigned FontRegistry::alias_count()const{return impl_->state.fontItems.GetCount();}
 unsigned FontRegistry::file_count()const{return impl_->state.fontFiles.GetCount();}
 void FontRegistry::reload(){registry_detail::Binding binding(impl_->state);registry_detail::OnModeChange();}

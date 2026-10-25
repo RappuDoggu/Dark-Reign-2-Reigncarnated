@@ -1,0 +1,158 @@
+CMake Warning (deprecated) at /tmp/reign-tools/android-ndk-r27c/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  build-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-tools/android-ndk-r27c/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /tmp/reign-tools/android-ndk-r27c/build/cmake/android.toolchain.cmake:55 (include)
+  build-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-tools/android-ndk-r27c/build/cmake/flags.cmake:18 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang.cmake:23 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeCXXInformation.cmake:48 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+Staged original font reader/layout/draw/IFace batching externally: /tmp/reign-upstream-font-overlay
+Staged original IFace metric configuration/default/read functions externally: /tmp/reign-upstream-metrics-overlay
+Staged original FontSys alias/config/mode-change registration externally: /tmp/reign-upstream-font-registry-overlay
+-- Configuring done (0.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/scratch/2e29d93ded9e/reigncarnated/build-android
+[  2%] Built target reign_vid_device
+[  5%] Built target dr2_primitives
+[ 12%] Built target reign_platform
+[ 13%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 14%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 15%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 16%] Linking CXX static library libdr2_vid_state.a
+[ 16%] Built target dr2_vid_state
+[ 18%] Built target reign_checks
+[ 20%] Built target platform_smoke
+[ 22%] Built target reign_diagnostic
+[ 24%] Built target archive_smoke
+[ 26%] Built target resources_smoke
+[ 29%] Built target reign_gles
+[ 31%] Built target tga_smoke
+[ 34%] Built target bitmap_surface_smoke
+[ 35%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/primitive.cpp.o
+[ 36%] Linking CXX static library libdr2_tokenizer.a
+[ 36%] Built target dr2_tokenizer
+[ 37%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 38%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o
+/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp:21:46: warning: for loop has empty body [-Wempty-body]
+   21 |               for (rScale = 0; m; rScale++, m >>= 1);
+      |                                                     ^
+/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp:21:46: note: put the semicolon on a separate line to silence this warning
+1 warning generated.
+[ 39%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 40%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucket.cpp.o
+[ 41%] Linking CXX static library libdr2_bitmap_pixels.a
+[ 43%] Built target dr2_bitmap_pixels
+[ 44%] Building CXX object CMakeFiles/vid_state_smoke.dir/tests/vid_state_smoke.cpp.o
+[ 45%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/tranbucket.cpp.o
+[ 46%] Linking CXX static library libdr2_buckets.a
+[ 47%] Linking CXX executable vid_state_smoke
+[ 47%] Built target dr2_buckets
+[ 47%] Built target vid_state_smoke
+[ 48%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 49%] Linking CXX executable installation_probe
+[ 50%] Built target installation_probe
+[ 51%] Linking CXX executable tokenizer_smoke
+[ 52%] Built target tokenizer_smoke
+[ 54%] Built target engine_smoke
+[ 55%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 56%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 57%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 58%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 59%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 60%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 61%] Building CXX object CMakeFiles/bucket_smoke.dir/tests/bucket_smoke.cpp.o
+[ 62%] Linking CXX static library libdr2_config.a
+[ 62%] Built target dr2_config
+[ 63%] Linking CXX executable bitmap_conversion_probe
+[ 64%] Built target bitmap_conversion_probe
+[ 65%] Linking CXX executable bitmap_pixels_smoke
+[ 67%] Built target bitmap_pixels_smoke
+[ 68%] Linking CXX executable bitmap_loader_smoke
+[ 69%] Built target bitmap_loader_smoke
+[ 70%] Building CXX object CMakeFiles/dr2_fonts.dir/tmp/reign-upstream-font-overlay/font_slice.cpp.o
+[ 71%] Linking CXX executable bucket_smoke
+[ 71%] Built target bucket_smoke
+[ 72%] Building CXX object CMakeFiles/dr2_iface_metrics.dir/tmp/reign-upstream-metrics-overlay/metrics_slice.cpp.o
+[ 73%] Building CXX object CMakeFiles/dr2_fonts.dir/src/native_font.cpp.o
+[ 74%] Linking CXX static library libdr2_iface_metrics.a
+[ 74%] Built target dr2_iface_metrics
+[ 75%] Linking CXX executable configuration_probe
+[ 76%] Built target configuration_probe
+[ 77%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/runcodes.cpp.o
+[ 78%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/main_exec.cpp.o
+[ 79%] Linking CXX static library libdr2_fonts.a
+[ 79%] Built target dr2_fonts
+[ 80%] Linking CXX executable config_smoke
+[ 81%] Built target config_smoke
+[ 82%] Building CXX object CMakeFiles/dr2_runcodes.dir/src/runcode_host.cpp.o
+[ 83%] Building CXX object CMakeFiles/dr2_font_registry.dir/tmp/reign-upstream-font-registry-overlay/registry_slice.cpp.o
+[ 84%] Linking CXX static library libdr2_runcodes.a
+[ 84%] Built target dr2_runcodes
+[ 85%] Linking CXX executable font_probe
+[ 86%] Built target font_probe
+[ 87%] Linking CXX executable font_smoke
+[ 88%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/font_registry.cpp.o
+[ 89%] Built target font_smoke
+[ 90%] Building CXX object CMakeFiles/runcodes_smoke.dir/tests/runcodes_smoke.cpp.o
+[ 91%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/interface_metrics.cpp.o
+[ 92%] Linking CXX executable runcodes_smoke
+[ 92%] Built target runcodes_smoke
+[ 93%] Linking CXX static library libdr2_font_registry.a
+[ 93%] Built target dr2_font_registry
+[ 94%] Building CXX object CMakeFiles/interface_metrics_smoke.dir/tests/interface_metrics_smoke.cpp.o
+[ 95%] Building CXX object CMakeFiles/font_registry_smoke.dir/tests/font_registry_smoke.cpp.o
+[ 96%] Linking CXX executable font_registry_smoke
+[ 96%] Built target font_registry_smoke
+[ 97%] Building CXX object CMakeFiles/font_registry_probe.dir/tools/font_registry_probe.cpp.o
+[ 98%] Linking CXX executable interface_metrics_smoke
+[ 98%] Built target interface_metrics_smoke
+[100%] Linking CXX executable font_registry_probe
+[100%] Built target font_registry_probe
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+LOCAL DIAGNOSTIC ONLY: /workspace/scratch/2e29d93ded9e/reigncarnated/build-android/reigncarnated-diagnostic.apk
+Contains original upstream primitives. Do not redistribute until rights are resolved.
