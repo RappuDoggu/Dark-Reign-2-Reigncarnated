@@ -1,3 +1,10 @@
+# Current increment: menu expressions and bounded text
+
+37 host tests pass; full UI link still has 17 missing symbols. See
+[INTERFACE_EXPRESSIONS.md](INTERFACE_EXPRESSIONS.md) for tests, the explicit
+upstream float-switch correction, and the GLES CI build failure being fixed.
+No original main-menu APK is available yet.
+
 # Build status — latest update 2026-10-25
 
 ## Latest increment: quads, gradients, shadows and UV coordinates

@@ -4,7 +4,36 @@
 #include <limits>
 #include <new>
 #include <stdexcept>
+namespace {thread_local reign::AnsiEncoding ansi_encoding=reign::AnsiEncoding::ascii;}
+namespace reign {
+AnsiBinding::AnsiBinding(AnsiEncoding value):previous_(ansi_encoding){ansi_encoding=value;}
+AnsiBinding::~AnsiBinding(){ansi_encoding=previous_;}
+}
 namespace Utils {
+int Ansi2Unicode(CH *out,U32 size,const char *input){
+ if(!out||!size||!input||size>U32(std::numeric_limits<int>::max()))throw std::invalid_argument("Invalid ANSI conversion buffer");
+ static constexpr CH cp1252[32]={0x20ac,0x81,0x201a,0x192,0x201e,0x2026,0x2020,0x2021,0x2c6,0x2030,0x160,0x2039,0x152,0x8d,0x17d,0x8f,0x90,0x2018,0x2019,0x201c,0x201d,0x2022,0x2013,0x2014,0x2dc,0x2122,0x161,0x203a,0x153,0x9d,0x17e,0x178};
+ U32 n=0;while(n<size-1&&input[n]){auto c=static_cast<unsigned char>(input[n]);
+  if(c>=128&&ansi_encoding==reign::AnsiEncoding::ascii)throw std::runtime_error("Installation ANSI code page not selected");
+  ++n;
+ }
+ // Validate before modifying destination; preserve count including terminating NUL.
+ for(U32 i=0;i<n;++i){auto c=static_cast<unsigned char>(input[i]);out[i]=(c>=128&&c<160)?cp1252[c-128]:CH(c);}
+ out[n]=0;return int(n+1);
+}
+char *StrFmtHex(char *out,U32 width,U32 value,U32 flags){
+ thread_local char buffer[35];
+ if(!width||(!out&&width>=sizeof(buffer)))throw std::invalid_argument("Invalid hexadecimal field width");
+ if(!out)out=buffer;
+ static constexpr char digits[]="0123456789ABCDEF";
+ std::int64_t p=std::int64_t(width)-1;out[width]=0;bool end=false;
+ if(flags&4)out[p--]='h';
+ while(p>=0){if(!end){out[p--]=digits[value&15];value>>=4;end=(flags&2)&&(value==0);
+   if(end&&p>=2){out[p--]='x';out[p--]='0';}
+  }else out[p--]=' ';
+ }
+ return out;
+}
 U32 Strlen(const CH *s){
  if(!s)throw std::invalid_argument("Null UTF-16 string");
  std::size_t n=0;

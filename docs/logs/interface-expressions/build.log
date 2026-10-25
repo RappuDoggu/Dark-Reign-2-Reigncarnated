@@ -1,0 +1,10 @@
+[  5%] Built target dr2_primitives
+[ 11%] Built target dr2_tokenizer
+[ 23%] Built target dr2_tracking
+[ 52%] Built target dr2_config
+[ 70%] Built target dr2_vars
+[ 76%] Built target dr2_frontend_config
+[ 94%] Built target dr2_interface_expressions
+[ 94%] Building CXX object CMakeFiles/interface_expressions_smoke.dir/tests/interface_expressions_smoke.cpp.o
+[100%] Linking CXX executable interface_expressions_smoke
+[100%] Built target interface_expressions_smoke
