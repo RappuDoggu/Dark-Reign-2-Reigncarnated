@@ -21,3 +21,7 @@ The registry suite passes 38 checks (previously 23), including copied scope life
 Reproduce with the existing CMake host build, then `ctest --test-dir build-host --output-on-failure`. The exact full-link command and unresolved list are in [result.json](logs/iface-factory/result.json). [Build](logs/iface-factory/build.log), [registry execution](logs/iface-factory/test.log), [suite](logs/iface-factory/suite.log), [initial compile failure](logs/iface-factory/initial-failure.log), [artifact failure](logs/iface-factory/permission-failure.log), [relink](logs/iface-factory/relink.log), [full link errors](logs/iface-factory/link.log).
 
 Next: unify the original frontend's Font/Bitmap interfaces with the already ported font/texture implementations, implement drawing/state services, and link a genuine ICRoot instance before attempting menu construction.
+
+## CI verification
+
+Both jobs passed for `aa5fd803bbac64f7fd33c89cee6b5d3fb85dd83b` in [run 40215613098](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40215613098). Host execution passed 31/31 tests with the normal sanitizer environment, including 38 registry checks. Android compiled iface_factory.cpp and interface_registry_smoke for ARM64. Software GLES checks and existing renderer diagnostic packaging passed. [Provider output and artifact metadata](logs/iface-factory/ci-result.json). ARM64 runtime and a main-menu APK remain unverified.

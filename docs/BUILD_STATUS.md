@@ -2,6 +2,8 @@
 
 ## Latest increment: factory compilation and stored menu scopes
 
+Host and Android CI passed on `aa5fd80`: [run 40215613098](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40215613098), [provider evidence](logs/iface-factory/ci-result.json).
+
 12 original factory/lifecycle methods compile; original stored-scope loading and lookup execute in a 38-check registry suite. All 31 host tests pass. Full frontend linkage remains blocked by 38 unresolved symbols; no live control construction or main-menu APK yet. [Implementation and failure evidence](IFACE_FACTORY.md).
 
 ## Latest increment: interface class registry and configuration ABI
