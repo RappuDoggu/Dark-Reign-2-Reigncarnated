@@ -17,6 +17,35 @@ int main(){try{
  };
  reign::InterfaceEvents one,two;
  one.run([&]{
+  check(IFace::RootWindow()==nullptr&&IFace::OverlaysWindow()==nullptr&&IFace::GameWindow()==nullptr);
+  check(!reign::iface_event_detail::state().treeReady);
+  {
+   FScope input(nullptr,"RegistryData");input.AddArgString("ShellPanel");
+   input.AddFunction("CreateControl")->AddArgString("Shell");input.InitIterators();
+   reign::iface_event_detail::load_registry(&input);
+   auto *copy=IFace::FindRegData("ShellPanel",FALSE,FALSE);check(copy&&copy!=&input);
+   check(std::string(copy->NextArgString())=="ShellPanel");
+  }
+  auto *stored=IFace::FindRegData("ShellPanel",FALSE,FALSE);
+  check(stored&&std::string(stored->NextArgString())=="ShellPanel");
+  auto *childScope=IFace::FindRegData("ShellPanel",TRUE,FALSE);
+  check(childScope&&std::string(childScope->NameStr())=="CreateControl");
+  check(std::string(childScope->NextArgString())=="Shell");
+  childScope=IFace::FindRegData("ShellPanel",TRUE,FALSE);
+  check(std::string(childScope->NextArgString())=="Shell");
+  FScope duplicateScope(nullptr,"RegistryData");duplicateScope.AddArgString("ShellPanel");
+  duplicateScope.AddFunction("Replacement");duplicateScope.InitIterators();
+  reign::iface_event_detail::load_registry(&duplicateScope);
+  check(IFace::FindRegData("ShellPanel",FALSE,FALSE)==stored);
+  check(std::string(IFace::FindRegData("ShellPanel",TRUE,FALSE)->NameStr())=="CreateControl");
+  check(!IFace::FindRegData("Absent",FALSE,FALSE));
+  check(!IFace::FindRegData("Absent",TRUE,TRUE));
+  FScope emptyScope(nullptr,"RegistryData");emptyScope.AddArgString("Empty");emptyScope.InitIterators();
+  reign::iface_event_detail::load_registry(&emptyScope);
+  check(IFace::FindRegData("Empty",FALSE,FALSE)&&!IFace::FindRegData("Empty",TRUE,FALSE));
+  two.run([&]{check(!IFace::FindRegData("ShellPanel",FALSE,FALSE));});
+  bool missingScope=false;try{reign::iface_event_detail::load_registry(nullptr);}
+  catch(const std::invalid_argument&){missingScope=true;}check(missingScope);
   auto key=Crc::CalcStr("Button");check(IFace::FindControlClass(key)==nullptr);
   // Original BinTree Add returns FALSE for a successful, nonduplicate insert.
   check(IFace::RegisterControlClass("Button",unused_factory)==FALSE);

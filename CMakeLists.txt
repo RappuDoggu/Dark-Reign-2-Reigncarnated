@@ -142,7 +142,9 @@ if(REIGN_UPSTREAM)
   if(NOT iface_events_stage_result EQUAL 0)
     message(FATAL_ERROR "Failed to stage original interface events")
   endif()
-  add_library(dr2_iface_events STATIC "${REIGN_IFACE_EVENTS_OVERLAY}/iface_events.cpp" src/interface_events.cpp)
+  add_library(dr2_iface_events STATIC "${REIGN_IFACE_EVENTS_OVERLAY}/iface_events.cpp"
+    "${REIGN_IFACE_EVENTS_OVERLAY}/iface_factory.cpp" src/interface_events.cpp)
+  target_compile_options(dr2_iface_events PRIVATE -ffunction-sections -fdata-sections)
   set_target_properties(dr2_iface_events PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_include_directories(dr2_iface_events PUBLIC include "${REIGN_IFACE_EVENTS_OVERLAY}" "${REIGN_FRONTEND_OVERLAY}"
     "${REIGN_CONTROL_OVERLAY}" "${REIGN_RUNTIME_OVERLAY}" "${REIGN_CONFIG_OVERLAY}" "${REIGN_UPSTREAM}/interface" "${REIGN_UPSTREAM}/graphics" "${REIGN_UPSTREAM}/util" "${REIGN_UPSTREAM}/system")

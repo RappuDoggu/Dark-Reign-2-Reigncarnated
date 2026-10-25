@@ -1,0 +1,16 @@
+[  5%] Built target dr2_primitives
+[ 17%] Built target dr2_tokenizer
+[ 29%] Built target dr2_tracking
+[ 58%] Built target dr2_config
+[ 82%] Built target dr2_vars
+[ 94%] Built target dr2_frontend_config
+[ 94%] Linking CXX executable frontend_config_smoke
+[100%] Built target frontend_config_smoke
+[ 50%] Built target dr2_tokenizer
+[ 75%] Linking CXX executable tokenizer_smoke
+[100%] Built target tokenizer_smoke
+[ 11%] Built target dr2_primitives
+[ 33%] Built target dr2_tokenizer
+[ 88%] Built target reign_platform
+[100%] Linking CXX executable installation_probe
+[100%] Built target installation_probe

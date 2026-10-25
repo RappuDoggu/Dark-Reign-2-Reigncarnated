@@ -16,10 +16,11 @@ def prepare(upstream, output):
            'PostNotify','PostNotifyModal','PostNotifyFocus','EventID','SetTipControl',
            'SetMouseCapture','ReleaseMouseCapture','GetCapture','GetMouseOver','SetFocus','ReleaseFocus',
            'GetFocus','SetModal','UnsetModal','GetModal','DeactivateModals','IFaceEventHandler',
-           'RegisterControlClass','UnregisterControlClass','FindControlClass','DefineControlType']
+           'RegisterControlClass','UnregisterControlClass','FindControlClass','DefineControlType',
+           'CreateRegData','FindRegData']
     bodies=[]
     for name in names:
-        match=re.search(r'^  (?:Bool|U32|U16|void|IControl \*|ICClass \*)\s*'+name+r'\([^\n]*\)\s*\n  \{',source,re.M)
+        match=re.search(r'^  (?:static )?(?:Bool|U32|U16|void|IControl \*|ICClass \*|FScope \*)\s*'+name+r'\([^\n]*\)\s*\n  \{',source,re.M)
         if not match:raise ValueError('Missing function '+name)
         a=match.start();b=source.index('{',a)+1;depth=1
         while depth:depth+=(source[b]=='{')-(source[b]=='}');b+=1
@@ -44,7 +45,7 @@ def prepare(upstream, output):
                 '    if (ctrlTypes.Find(Crc::CalcStr(newClass)))\n'
                 '    { ERR_FATAL(("Control class [%s] already defined", newClass)); }\n\n'
                 '    // It was so create a new Control class')
-        fields=['ctrlTypes','eventId','systemFlags','modalStack','modal','focus','mouseCapture','mouseOver','tipCtrl']
+        fields=['scopeRegistry','ctrlTypes','eventId','systemFlags','modalStack','modal','focus','mouseCapture','mouseOver','tipCtrl']
         # Rewrite identifiers only, preserving original diagnostics and comments.
         token=r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\b(?:'+ '|'.join(fields)+r')\b'
         body=re.sub(token,lambda m:'reign::iface_event_detail::state().'+m[0] if m[0] in fields else m[0],body)
@@ -60,23 +61,47 @@ struct Pix;
 #include "iface.h"
 #include "reign/frontend_prelude.hpp"
 #include "iface_stack.hpp"
+#include "icroot.h"
+#include "control_stdload.hpp"
 #include <memory>
 namespace reign::iface_event_detail {
 struct State {
  U16 eventId=0; U32 systemFlags=0;
  // Readiness of this registry only; does not claim full IFace initialization.
  Bool registryReady=TRUE; BinTree<ICClass> ctrlTypes;
+ BinTree<FScope> scopeRegistry;
+ // No live root tree is installed until its actual bootstrap succeeds.
+ Bool treeReady=FALSE; ICRoot *root=nullptr,*overlays=nullptr;
  Stack<IControlPtr> modalStack;
  IControlPtr modal,focus,mouseCapture,mouseOver,tipCtrl;
- ~State(){modalStack.DisposeAll();ctrlTypes.DisposeAll();}
+ ~State(){modalStack.DisposeAll();ctrlTypes.DisposeAll();scopeRegistry.DisposeAll();}
 };
 State &state();
+void load_registry(FScope *);
 struct Binding {State *previous;explicit Binding(State &);~Binding();};
 }
 namespace IFace { Bool IFaceEventHandler(Event &); }
 ''')
-    (output/'iface_events.cpp').write_text('#include "iface_events.hpp"\n#define PROCESS(c,e,s) (c)->HandleEvent(e)\nnamespace IFace {\n'+'\n\n'.join(bodies)+'\n}\n#undef PROCESS\n')
-    print('Staged 28 original IFace event/state methods; native PostEvent ownership guard enabled')
+    (output/'iface_events.cpp').write_text('#include "iface_events.hpp"\n#define PROCESS(c,e,s) (c)->HandleEvent(e)\nnamespace IFace {\n'+'\n\n'.join(bodies)+'\n}\n#undef PROCESS\n'
+        'namespace reign::iface_event_detail { void load_registry(FScope *scope) {\n'
+        ' if (!scope) throw std::invalid_argument("Missing registry scope");\n'
+        ' IFace::CreateRegData(scope); } }\n')
+    factory=[]
+    expected={'CreateControl':4,'Activate':2,'Deactivate':2,'FindByName':1,
+              'RootWindow':1,'OverlaysWindow':1,'GameWindow':1}
+    for name,count in expected.items():
+        matches=list(re.finditer(r'^  (?:Bool|IControl \*)\s*'+name+r'\([^\n]*\)\s*\n  \{',source,re.M))
+        if len(matches)!=count:raise ValueError('Unexpected overloads: '+name)
+        for match in matches:
+            a=match.start();b=source.index('{',a)+1;depth=1
+            while depth:depth+=(source[b]=='{')-(source[b]=='}');b+=1
+            body=source[a:b].replace('ASSERT(sysInit);','ASSERT(reign::iface_event_detail::state().treeReady);')
+            fields=['root','overlays','ctrlTypes','systemFlags']
+            token=r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\b(?:'+'|'.join(fields)+r')\b'
+            body=re.sub(token,lambda m:'reign::iface_event_detail::state().'+m[0] if m[0] in fields else m[0],body)
+            factory.append(body)
+    (output/'iface_factory.cpp').write_text('#include "iface_events.hpp"\nnamespace IFace {\n'+'\n\n'.join(factory)+'\n}\n')
+    print('Staged 30 original IFace event/registry methods and 12 factory/lifecycle methods')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('upstream',type=Path);p.add_argument('output',type=Path)
