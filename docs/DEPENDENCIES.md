@@ -54,3 +54,8 @@ The GLES backend now requires core GLES3 framebuffer/renderbuffer/blit support. 
 ### Bitmap file loading checkpoint
 
 Native bounded TGA/PIC framing now feeds the separately compiled original Pix/CopyLine functions. The supplied base archive's111 TGA and453 PIC images load. The inspected `graphics/bitmap.cpp` methods establish channel/encoding rules; unknown PIC chains, grayscale/interleaved TGA remain rejected. Full original Bitmap registry, DirectDraw replacement, mipmaps and reload services are still dependencies. See BITMAP_LOADING_PROGRESS.md; these readers do not initialize Main/GameGod or IFace.
+
+
+## Original font registration integration
+
+The original FontSys file/alias registry and CreateFont FScope handler now compile against original NBinTree, CRC/StrCrc and the existing native-backed original Font implementation. Per-file CPU atlas ownership replaces old global DirectDraw texture-table ownership at this boundary. Metrics/control/event startup remains a separate IFace dependency; this is not full FontSys/IFace ABI integration. See FONT_REGISTRY_PROGRESS.md.

@@ -197,3 +197,10 @@ New native TGA/PIC framing feeds original Pix/CopyLine; no upstream implementati
 Local follow-through: all40 GPU checks PASS in each of two software EGL contexts. NDK r27c/API26 ARM64 builds the new loader, test executable and private diagnostic package successfully; ELF header reports AArch64. This establishes compilation, not ARM64 execution of the new loader. The private diagnostic package is not a distributable engine APK. Logs: `docs/logs/bitmap-loading/`. CI results for this change are recorded separately when available.
 
 CI confirmation: code commit `5803b5e58cf3f55c19b26d173bd4c79f1de84645`, [run40153363872](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40153363872), host job121049381396 and Android job121049381468 both SUCCESS. CI confirms17 host tests (default leak checking enabled), ARM64 build/private package verification,40 software GPU checks per context across two contexts, and the original-only public v0.4 package build. Logs artifacts:12583248880(host),12583761620(Android/GPU/package); public renderer-test artifact12583307361. That artifact does not contain or test the new source-derived bitmap loader. Code-derived binaries/assets are not published.
+
+
+## Original font registration integration
+
+Original FontSys registration now runs behind native adapters: hash-pinned Create/GetFont/DeleteAll/OnModeChange and original NBinTree, with native per-file atlas ownership. All18 host ASan/UBSan tests pass; registration has20 checks. Actual interface_standard_fonts.cfg produces nine aliases/six shared files through original PTree/FScope. All41 software GPU checks pass per context across two contexts, including configured alias/reload drawing. See FONT_REGISTRY_PROGRESS.md. This is not complete IFace startup or a menu/engine launch.
+
+Local NDK r27c/API26 build/package verification PASS, including dr2_font_registry and AArch64 font_registry_smoke/font_registry_probe. ELF verification and package logs are retained in docs/logs/font-registry. These source-derived registry binaries were compiled, not executed on Android; the unchanged public v0.4 adapter remains the latest owner-tested APK.

@@ -79,3 +79,8 @@ Renderer consumers must call LegacyGles::present() once after frame draws, befor
 ## Bitmap loading and v0.4 device checkpoint
 
 Owner Fold5/API36/Adreno740 passes all12 v0.4 adapter checks at context generation2. Native TGA/PIC framing plus original pixel conversion now loads111 TGA and453 PIC images from the supplied base archive. Reproduce with `bitmap_conversion_probe /path/to/base.zwp`; no image assets are committed. See BITMAP_LOADING_PROGRESS.md for the scoped semantics and synthetic/runtime evidence. Next implement original Bitmap registry/lifetime/reload/mipmap integration and FontSys/IFace registration/frame orchestration. M3 remains blocked on actual engine startup and scene execution, not adapter-only diagnostics.
+
+
+## Original font registration integration
+
+The original FontSys registration dependency is now exercised with the actual standard-font config (nine aliases/six files), and configured/reloaded aliases draw through original Font/IFace/Vid in host GPU tests. CMake automatically builds dr2_font_registry, font_registry_smoke and font_registry_probe when REIGN_UPSTREAM is set. Next preserve Bitmap manager cache/fallback/animation/lifetime behavior, then IFace Metrics/control/frame/input orchestration and Main/GameGod services. No substitute menu or mission is introduced.

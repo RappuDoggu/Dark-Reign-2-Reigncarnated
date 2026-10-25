@@ -1,0 +1,9 @@
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+Staged original font reader/layout/draw/IFace batching externally: /tmp/reign-upstream-font-overlay
+Staged original FontSys alias/config/mode-change registration externally: /tmp/reign-upstream-font-registry-overlay
+-- Configuring done (0.7s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host

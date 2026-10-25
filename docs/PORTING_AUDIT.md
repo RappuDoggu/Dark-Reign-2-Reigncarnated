@@ -106,3 +106,8 @@ Real supplied base.zwp fonts all load (6 fonts, 1,351 glyphs, 12 atlases). The f
 Inspected primary `graphics/bitmap.cpp` ReadTGA/ReadPIC, PIC headers/channel enums and `graphics/bitmap_manager.cpp` Create/Find/FindCreate/DisposeAll/ReleaseDD dependencies. TGA indexed8/packed16 and PIC RGB plus separate alpha occur in the supplied base archive. Native bounded framing now loads564 TGA/PIC images through original CopyLine; full original manager/surface/mipmap methods remain unported. True-color TGA RLE and mirrored origins are explicit supported extensions beyond the original reader. PIC unknown encodings fail explicitly. See BITMAP_LOADING_PROGRESS.md.
 
 Owner v0.4 Fold report passes all12 public adapter pixel checks including integer glyph coverage, presentation orientation and target resize, on context generation2. It contains no original game implementation and establishes no engine/menu/mission startup.
+
+
+## Original font registration integration
+
+Original FontSys Init/Done/Create/GetFont/DeleteAll/OnModeChange and NBinTree now execute in a scoped native registration slice. Inspected utiltypes.h confirms MAX_GAMEIDENT64. Actual interface_standard_fonts.cfg declares nine aliases referring to six files; parser and registration results match. IFace Metrics/control/frame/startup handlers remain unported. See FONT_REGISTRY_PROGRESS.md for ownership/ABI boundaries.
