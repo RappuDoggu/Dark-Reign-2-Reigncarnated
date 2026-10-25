@@ -2,7 +2,7 @@
 
 ## Latest increment: full frontend control objects
 
-Six full original UI translation units now compile for Linux x86_64 and Android ARM64/API26: IControl, ICRoot, ICButton, ICWindow (including title), IFaceVar and ICSystemButton. All 26 existing host tests pass. Executable linkage was attempted and failed on the remaining frontend services; no menu or new APK runtime is claimed. [Changes, reproduction and evidence](FRONTEND_CONTROLS.md). CI verification for this increment is recorded separately when available.
+Six full original UI translation units now compile for Linux x86_64 and Android ARM64/API26: IControl, ICRoot, ICButton, ICWindow (including title), IFaceVar and ICSystemButton. All 26 existing host tests pass. Executable linkage was attempted and failed on the remaining frontend services; no menu or new APK runtime is claimed. [Changes, reproduction and evidence](FRONTEND_CONTROLS.md). CI run [40203206699](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40203206699) passed both host and Android jobs for implementation commit c098b4758549bdbfea23b0d554509b904f14575d. [Recorded job/artifact evidence](logs/frontend-controls/ci-result.json).
 
 ## Latest increment: menu binary trace
 

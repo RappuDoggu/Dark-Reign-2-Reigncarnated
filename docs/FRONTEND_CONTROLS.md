@@ -51,3 +51,8 @@ Configure `build-android` first using the existing Android instructions in ANDRO
 ## Next integration work
 
 Resolve the actual IFace implementation and shared global Font/Bitmap services, then link and exercise an original interactive control tree with configuration and events. Carry that into Main/GameGod, real profile/login and Shell initialization before packaging a menu APK. Existing source-derived library slices alone do not satisfy those runtime dependencies.
+
+
+## CI verification
+
+Run [40203206699](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40203206699) passed host and Android jobs on implementation commit `c098b4758549bdbfea23b0d554509b904f14575d`. Both job logs explicitly report `Built target dr2_frontend_controls`; host reports 26/26 tests passing. The renderer APK artifact remains the unchanged v0.4 diagnostic, not a main-menu build. [Machine-readable evidence](logs/frontend-controls/ci-result.json).
