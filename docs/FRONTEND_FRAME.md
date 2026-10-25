@@ -13,3 +13,7 @@ Bindings restore the previous session even after exceptions. Metrics must outliv
 The full frontend link still fails with 30 unresolved symbols, down from 34. GetMetric, ScreenWidth, ScreenHeight and TimeStepMs now resolve. Fonts were connected in the prior increment. Remaining dependencies still include UI drawing, texture/skin integration, IFace data, input, sound and script-expression services. No original window or main-menu APK is established.
 
 Reproduce using the existing CMake host configuration, build frontend_frame_smoke, and run CTest. [Build](logs/frontend-frame/build.log), [focused test](logs/frontend-frame/test.log), [suite](logs/frontend-frame/suite.log), [full link failure](logs/frontend-frame/link.log), [exact link command and unresolved list](logs/frontend-frame/result.json).
+
+## CI verification
+
+Both jobs passed for `0d46e07800dfb7504aefcfb7019ff4e499dbdb2d` in [run 40220853532](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40220853532). Host tests passed 33/33 with normal sanitizer settings, including 43 frame checks. Android NDK compiled reign_frontend_frame and frontend_frame_smoke for ARM64. Software GLES checks and existing diagnostic packaging passed. [Provider output and artifact metadata](logs/frontend-frame/ci-result.json). No new device execution or menu launch is claimed.
