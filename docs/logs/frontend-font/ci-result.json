@@ -1,0 +1,231 @@
+{
+  "commit": "4614983d45d46327e44995e3ef4b1093395416f1",
+  "run_id": 40216274121,
+  "jobs": [
+    {
+      "id": 121237967987,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40216274121,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Fetch reviewed upstream separately",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Install pinned NDK and SDK tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Compile ARM64 and verify local diagnostic package",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Install software EGL runtime for pixel tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Test initial GLES translation on software EGL",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Build original-only renderer test APK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        }
+      ]
+    },
+    {
+      "id": 121237968234,
+      "name": "host",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40216274121,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Fetch reviewed upstream separately",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Compile and test original primitives and platform services",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Record original frontend compilation boundary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    }
+  ],
+  "host_lines": [
+    "2026-10-25T17:25:22.2555865Z 11: Frontend Font adapter/original draw equivalence/lifetime: PASS (40 checks)",
+    "2026-10-25T17:25:23.1114780Z 100% tests passed, 0 tests failed out of 32"
+  ],
+  "limitations": [
+    "No live original control tree or main menu",
+    "ARM64 compilation verified; no new device execution"
+  ],
+  "android_lines": [
+    "2026-10-25T17:25:23.4251181Z [ 92%] Built target reign_frontend_fonts",
+    "2026-10-25T17:25:25.1250463Z [ 96%] Built target frontend_font_smoke",
+    "2026-10-25T17:26:15.3004788Z 31: GLES3 legacy-TL pixel checks: PASS",
+    "2026-10-25T17:26:15.3026784Z 31: GLES3 legacy-TL pixel checks: PASS"
+  ],
+  "artifacts": [
+    {
+      "id": 12608255664,
+      "name": "Reigncarnated-Renderer-Test-v04-arm64",
+      "size_in_bytes": 741857,
+      "url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12608255664",
+      "archive_download_url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12608255664/zip",
+      "expired": false,
+      "created_at": "2026-10-25T17:26:25Z",
+      "expires_at": "2027-01-23T17:23:58Z",
+      "updated_at": "2026-10-25T17:26:25Z",
+      "digest": "sha256:2e94e06bc7347d00b8471d22f7621ca86e70c90eedbec282b06de20800f2e032",
+      "workflow_run": {
+        "id": 40216274121,
+        "repository_id": 1432322948,
+        "head_repository_id": 1432322948,
+        "head_branch": "dev/native-arm64-primitives",
+        "head_sha": "4614983d45d46327e44995e3ef4b1093395416f1"
+      }
+    },
+    {
+      "id": 12608225674,
+      "name": "android-compilation-and-package-logs",
+      "size_in_bytes": 10554,
+      "url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12608225674",
+      "archive_download_url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12608225674/zip",
+      "expired": false,
+      "created_at": "2026-10-25T17:26:26Z",
+      "expires_at": "2027-01-23T17:23:58Z",
+      "updated_at": "2026-10-25T17:26:26Z",
+      "digest": "sha256:3be6da2dae65f0e27749c71a515f0bc02078d085471ec0bb087d83ba87815d39",
+      "workflow_run": {
+        "id": 40216274121,
+        "repository_id": 1432322948,
+        "head_repository_id": 1432322948,
+        "head_branch": "dev/native-arm64-primitives",
+        "head_sha": "4614983d45d46327e44995e3ef4b1093395416f1"
+      }
+    },
+    {
+      "id": 12607621682,
+      "name": "host-compilation-and-test-logs",
+      "size_in_bytes": 19299,
+      "url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607621682",
+      "archive_download_url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607621682/zip",
+      "expired": false,
+      "created_at": "2026-10-25T17:25:25Z",
+      "expires_at": "2027-01-23T17:23:58Z",
+      "updated_at": "2026-10-25T17:25:25Z",
+      "digest": "sha256:2bc07b33017b45b23f112d01c8f8807fbb39a47e820c749063a87967400d508a",
+      "workflow_run": {
+        "id": 40216274121,
+        "repository_id": 1432322948,
+        "head_repository_id": 1432322948,
+        "head_branch": "dev/native-arm64-primitives",
+        "head_sha": "4614983d45d46327e44995e3ef4b1093395416f1"
+      }
+    }
+  ]
+}

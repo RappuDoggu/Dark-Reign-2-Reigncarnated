@@ -16,3 +16,7 @@ The adapter is not binary-compatible with the old global Font layout. All six fr
 Reproduce: configure the existing host CMake build, build `frontend_font_smoke`, then run the full CTest suite. [Build](logs/frontend-font/build.log), [focused execution](logs/frontend-font/test.log), [suite](logs/frontend-font/suite.log), [full-link failure](logs/frontend-font/link.log), [exact link command and remaining symbols](logs/frontend-font/result.json).
 
 Next dependencies include frontend drawing primitives, bitmap/texture/skin integration, IFace data/metrics/frame state, input and script-expression services. A real root window must link and run before menu startup can be tested.
+
+## CI verification
+
+Commit `4614983d45d46327e44995e3ef4b1093395416f1` passed both jobs in [run 40216274121](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40216274121). Host execution passed 32/32 tests, including 40 font adapter checks, with normal sanitizer settings. Android built reign_frontend_fonts and frontend_font_smoke for ARM64. GLES checks and existing diagnostic APK packaging passed. [Provider output and artifact metadata](logs/frontend-font/ci-result.json). No new device runtime or menu launch is claimed.

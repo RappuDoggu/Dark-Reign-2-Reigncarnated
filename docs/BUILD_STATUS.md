@@ -2,6 +2,8 @@
 
 ## Latest increment: frontend font adapter
 
+Host and Android ARM64 CI passed on `4614983`: [run 40216274121](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40216274121), [provider evidence](logs/frontend-font/ci-result.json).
+
 Original controls now compile against a Font/FontSys adapter using the ported original font implementation. 40 bridge checks and all 32 host tests pass. Full UI linkage remains blocked by 34 unresolved symbols; no live root window or main-menu APK is established. [Implementation and evidence](FRONTEND_FONT.md).
 
 ## Latest increment: factory compilation and stored menu scopes
