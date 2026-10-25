@@ -23,7 +23,13 @@ public:
  bool put(const EngineEvent &);bool get(EngineEvent &);
  bool empty()const;bool full()const;
  void process();
+ // Invoke original engine services (for example IFace::PostEvent) against this
+ // loop's native EventSys state. Binding is scoped and restored on exceptions.
+ // Run on the loop's owning thread; do not retain references to native state.
+ void run_native(const std::function<void()> &);
+
  // Original FlushEvents ignores type; this clears all pending types.
  void flush(std::uint16_t type);
 };
 }
+

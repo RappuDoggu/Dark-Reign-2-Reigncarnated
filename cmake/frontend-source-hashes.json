@@ -9,5 +9,7 @@
   "util/stdload.h": "8739642280604f65b6bbc11bf45067e3a4d922ddda3446a6de76d729718fa815",
   "interface/ifvar.cpp": "d7d06593de8f58727bd2c641623e71b4ad7a3982878b9c3d9287132d186388d1",
   "interface/icsystembutton.cpp": "256d28d4798e08de066d3374c8b382e587f90f513ffa71ef3abdf73de7bddbe6",
-  "util/multilanguage.h": "7b6c56b130e99057cf5c73fcde5abe31870b851396922980101f810137df6bd6"
+  "util/multilanguage.h": "7b6c56b130e99057cf5c73fcde5abe31870b851396922980101f810137df6bd6",
+  "util/stdload.cpp": "bc61b8baba06939c0f55f233840a05aa6da4ac08ba6e4afb4b5a90daf5782b68",
+  "util/utiltypes.cpp": "4da07b6f869ae7d7a10069197c4b073fb2007ce5c458fca6f770c3720ddc1b9a"
 }

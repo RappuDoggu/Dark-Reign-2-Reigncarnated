@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: frontend services
+
+Original StdLoad menu functions now link and execute; native UTF-16/allocation helpers and a scoped original EventSys binding are implemented. All 29 host tests pass. The full frontend link still fails with 62 unresolved symbols (previous probe: 77); no main-menu APK or original interactive window is established. [Implementation, recovery notes and evidence](FRONTEND_SERVICES.md).
+
 ## Latest increment: full frontend control objects
 
 Six full original UI translation units now compile for Linux x86_64 and Android ARM64/API26: IControl, ICRoot, ICButton, ICWindow (including title), IFaceVar and ICSystemButton. All 26 existing host tests pass. Executable linkage was attempted and failed on the remaining frontend services; no menu or new APK runtime is claimed. [Changes, reproduction and evidence](FRONTEND_CONTROLS.md). CI run [40203206699](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40203206699) passed both host and Android jobs for implementation commit c098b4758549bdbfea23b0d554509b904f14575d. [Recorded job/artifact evidence](logs/frontend-controls/ci-result.json).
@@ -252,3 +256,4 @@ Workspace restored: isolated REA6.8.0/Ghidra12.1.4/full JDK21.0.13+9 installed. 
 
 
 CI verified for implementation `8e73b55c49823e2d3758e8712d731685d3f8687d`: [run40198264863](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40198264863) SUCCESS. Host job121183725463 passes all26 CTest targets including15 original control-type checks with runner default leak checking. Android job121183725807 builds the original control declaration/coordinate library and test for ARM64, verifies the private diagnostic package and passes the software-GLES target across two contexts. CI records vendor, opaque-video and native-control-declaration frontend compile failures as diagnostics; it does not claim a successful full frontend link. [Host logs artifact12600499572](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40198264863/artifacts/12600499572), [Android/GPU/package logs artifact12600759005](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40198264863/artifacts/12600759005). The public v0.4 renderer artifact remains unchanged in scope and is not a menu test. REA/Ghidra verification was performed locally in Work, not by this CI run. This evidence-only update changes no compiled code.
+

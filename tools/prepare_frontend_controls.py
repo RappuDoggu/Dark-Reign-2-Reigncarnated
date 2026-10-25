@@ -67,6 +67,28 @@ def prepare(upstream, output):
     decl = '\n'.join(x for x in s.splitlines() if re.match(
         r'  (U32 TypeU32|F32 TypeF32|const char\* TypeString|U32 TypeStringCrc|template <class TYPE> void TypePoint\(FScope \*fScope)', x))
     (output/'control_stdload.hpp').write_text('#pragma once\n'+r+'\nnamespace StdLoad {\n'+decl+'\n}\n')
+    # Preserve original menu scalar/string/coordinate loading, including defaults
+    # and inclusive range validation. No rewritten approximation of the parser.
+    source = texts['util/stdload.cpp']
+    source = source[source.index('namespace StdLoad'):]
+    signatures = re.findall(r'^  (?:U32 TypeU32|F32 TypeF32|const char\* TypeString(?:D)?|U32 TypeStringCrc)\([^\n]+\)', source, re.M)
+    signatures += ['  template <> void TypePoint(FScope *fScope, Point<'+t+'> &val)' for t in ['F32','U32','S32']]
+    if len(signatures) != 19:
+        raise ValueError('Unexpected original scalar loader count')
+    bodies = []
+    for signature in signatures:
+        start = source.index(signature+'\n  {')
+        end = source.index('{', start)+1
+        depth = 1
+        while depth:
+            depth += (source[end] == '{') - (source[end] == '}')
+            end += 1
+        bodies.append(source[start:end])
+    ranges = re.findall(r'^Range<(?:U32|F32)> const Range<[^\n]+;', texts['util/utiltypes.cpp'], re.M)
+    # Modern compilers require explicit specialization for these static members.
+    ranges = ['template <> '+r.replace('U32_MIN','0u') for r in ranges]
+    (output/'control_stdload.cpp').write_text('#include "control_types.hpp"\n#include "fscope.h"\n#include "control_stdload.hpp"\n'+
+        '\n'.join(ranges)+'\nnamespace StdLoad {\n'+'\n\n'.join(bodies)+'\n}\n')
     (output/'manifest.json').write_text(json.dumps({'source_hashes': hashes,
         'translation_units': ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton'],
         'linked': False, 'engine_initialized': False, 'menu_rendered': False}, indent=2)+'\n')
@@ -76,3 +98,4 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('upstream', type=Path);p.add_argument('output', type=Path)
     a = p.parse_args();prepare(a.upstream, a.output)
+

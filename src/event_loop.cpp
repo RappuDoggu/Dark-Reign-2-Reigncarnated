@@ -41,4 +41,11 @@ bool EventLoop::empty()const{event_detail::EventSys::Binding b(impl_->state);ret
 bool EventLoop::full()const{event_detail::EventSys::Binding b(impl_->state);return event_detail::EventSys::QueueFull();}
 void EventLoop::process(){auto &i=*impl_;if(i.processing)throw std::runtime_error("Event dispatch cannot reenter");event_detail::EventSys::Binding b(i.state);i.processing=true;try{event_detail::EventSys::ProcessAll();}catch(...){i.processing=false;throw;}i.processing=false;}
 void EventLoop::flush(std::uint16_t type){event_detail::EventSys::Binding b(impl_->state);event_detail::EventSys::FlushEvents(type);}
+void EventLoop::run_native(const std::function<void()> &call){
+ if(!call)throw std::invalid_argument("Missing native event callback");
+ event_detail::EventSys::Binding binding(impl_->state);
+ call();
 }
+
+}
+
