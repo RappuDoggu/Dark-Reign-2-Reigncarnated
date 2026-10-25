@@ -28,3 +28,7 @@ Logs are under `docs/logs/font-registry/`. Android cross-compilation and CI evid
 ## Next engine integration
 
 Original Bitmap manager naming/fallback/animation/lifetime/mipmaps still needs integration with the bounded TGA/PIC loader. IFace Metrics, control class registration, frame orchestration, event/input handling and Main/GameGod startup remain missing. Font-only configuration is now exercised against actual assets, but M3 and gameplay are still unachieved. Touch/pen and dual-screen remain deferred.
+
+CI run40154496926 passes host and Android jobs for code53027af214f5103c6eddf622ea9c9c782f8b0c7c. Exact jobs/artifacts are recorded in BUILD_STATUS and logs/font-registry/ci-result.json. No original font-registration binary was published.
+
+Further manager inspection: Setup strips the extension from the complete supplied name before tree insertion, while Find expands the path and looks up its basename. Before implementing the manager adapter, audit real call-site paths rather than assuming those two key derivations agree for directory-qualified names.

@@ -1,0 +1,15 @@
+{
+  "code_commit": "53027af214f5103c6eddf622ea9c9c782f8b0c7c",
+  "run_id": 40154496926,
+  "conclusion": "success",
+  "host_job": 121052859375,
+  "android_job": 121052859564,
+  "host_tests": 18,
+  "registry_checks": 20,
+  "gpu_checks_per_context": 41,
+  "contexts": 2,
+  "host_logs_artifact": 12583708068,
+  "android_logs_artifact": 12583603418,
+  "original_only_v04_artifact": 12583388571,
+  "original_registry_android_runtime_tested": false
+}
