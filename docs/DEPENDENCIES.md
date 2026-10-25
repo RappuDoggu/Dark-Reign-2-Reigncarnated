@@ -1,3 +1,21 @@
+# Current menu dependency checkpoint — 2026-10-25
+
+Original UI drawing, expressions, dialog events, theme configuration and static
+texture loading now have native bridges and runtime tests. Pointer events use
+the native EventLoop through a scoped input producer. UI text conversion offers
+explicit ASCII/Windows-1252 handling; whole-engine localization/encoding remains
+unfinished. These changes do not initialize a live menu.
+
+The full staged-control link has five missing service symbols: Babel translation,
+console command processing, message-box creation, interface sound playback and
+movie deactivation. This is a subset link, not a complete game dependency count.
+Additional widget classes, game command handlers, Login/Shell lifecycle and
+scene rendering still require integration. Optional installation recovery uses
+system libarchive. See FRONTEND_INPUT.md and REAL_MENU_THEME.md for evidence.
+
+Earlier dated entries below record the progression and may describe superseded
+boundaries.
+
 # Dependencies and provenance
 
 Inspected 2026-10-24 at the revisions in PORTING_AUDIT. Public availability and press descriptions of "open source" are not treated as a license grant.
@@ -84,3 +102,4 @@ dr2_tracking, dr2_events and dr2_vars now stage original runtime implementations
 ## Restored workspace, decompiler verification and control types — 2026-10-25
 
 New optional analysis tooling: official rea-agents6.8.0 (MIT), Ghidra12.1.4, Temurin full JDK21.0.13+9, supported Node24.22.1 and Linux procps. Exact official origins, archive hashes/npm integrity, installed versions and actual failure output are in REA_SETUP.md and logs/rea-workspace/installed-toolchain.json. Their tool licenses do not confer redistribution rights on Dark Reign2 or decompiler output. Existing analysis stays separate; executables, assets, Ghidra database and pseudocode are excluded from commits.
+

@@ -1,3 +1,11 @@
+# Latest: original localization database loader
+
+42 host tests pass. The real English database loads and validates 1,515 entries
+containing 30,072 UTF-16 units. Babel lookup/formatting and menu startup remain
+unimplemented. See [LOCALIZATION_DATABASE.md](LOCALIZATION_DATABASE.md).
+The preceding input/probe increment passed CI run 40225792024; this increment
+awaits fresh ARM64/GLES CI verification.
+
 # Latest: native menu input and real installation theme checks
 
 41 host tests pass; pointer input has 152 checks. Five unresolved services remain
@@ -5,8 +13,8 @@ in the staged-control link. Real Login then Shell-menu theme loading passes:
 21 color groups, 14 skins, 2 bitmaps; 183 other statements are not executed.
 No original menu is displayed and no main-menu APK is ready.
 See [FRONTEND_INPUT.md](FRONTEND_INPUT.md) and [REAL_MENU_THEME.md](REAL_MENU_THEME.md).
-The preceding theme commit passed both CI jobs in run 40224830286; fresh CI
-verification of this input/probe increment is pending.
+CI run 40225792024 passed both jobs: 41 host tests, ARM64 compilation and
+software-GLES pixel checks. This does not establish original menu startup.
 
 # Latest: original theme initialization
 

@@ -1,3 +1,26 @@
+# Current next gate — original menu startup
+
+The next device deliverable remains an APK displaying the original menu. No
+replacement diagnostic is requested from the owner at this checkpoint.
+
+1. Port the remaining compiled-control services: localization, command parser,
+   actual dialog creation, sound and texture/movie lifecycle.
+2. Register and compile the additional widget/game control types required by the
+   supplied Login/Shell configurations; construct live original roots and execute
+   their configuration/action paths.
+3. Connect those roots to native input, font/texture submission, Android lifecycle,
+   frame presentation and the original shell-scene requirements.
+4. Build and verify the APK, then request a Fold test with actionable diagnostics.
+   Touch/stylus refinement and dual-screen support follow basic startup.
+
+The supplied installation has been recovered and its executable hash matches the
+prior analysis. Real configuration theme loading succeeds (21 groups, 14 skins,
+2 bitmaps), while 183 other statements remain deliberately unexecuted by that
+probe. This is not engine initialization or a main-menu runtime result. No reliable
+completion percentage follows from the five missing symbols in one UI slice.
+
+Earlier milestone notes below are historical checkpoints.
+
 # Native Android engineering sequence
 
 ## Implemented baseline
@@ -109,3 +132,4 @@ Next device deliverable must show the original main menu at minimum; a refreshed
 ## Restored workspace, decompiler verification and control types — 2026-10-25
 
 Current next gate remains a linked original main menu. Native control declarations and selected coordinate/border methods now compile on host and ARM64, with original geometry/color checks. Next integrate the full IControl source against shared native bitmap/font/TL/Input/Event/VarSys declarations, then original root/button/window classes and IFace Process/PaintAll. Continue through real user/login and Vid resources before Main/GameGod/Shell startup. REA is installed but blocked by PID/procfs ownership diagnostics; standalone Ghidra can now inspect the owner executable without touching prior projects. See CONTROL_PROGRESS.md and REA_SETUP.md.
+

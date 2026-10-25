@@ -1,3 +1,21 @@
+# Latest inspected menu initialization evidence
+
+The supplied community-fixed installation was recovered without replacing its
+files; dr2.exe still hashes to the previously analyzed build. The original
+runcode_main_shell.cfg issues commands that launch the shell mission, so a menu
+is not established merely by drawing themed controls. Asset-backed native tests
+now parse Login then Shell-menu configuration and execute only the theme-related
+statements: 21 color groups, 14 skins and 2 images; 183 other statements are not
+executed. See REAL_MENU_THEME.md and its metadata-only logs.
+
+Original-source staging now also covers menu expressions, message-box events,
+nine-piece skin rendering, color/theme configuration and texture configuration.
+ARM64/GLES evidence for the theme increment is CI run 40224830286. Native pointer
+input and the real-theme probe are the following increment. The complete staged
+control link remains incomplete; no engine/menu/gameplay success is claimed.
+
+Historical audit follows.
+
 # Source port audit — implementation evidence
 
 Date: 2026-10-24. This expands the initial audit; it does not establish redistribution rights or claim a complete engine build.
@@ -136,3 +154,4 @@ Original event/queue, tracking/reapers, String and VarSys family inspected/stage
 ## Restored workspace, decompiler verification and control types — 2026-10-25
 
 The supplied dr2.exe SHA256 5ea4734ab2f2ad381877ce1c0d9b03365ddb3dd8e3ff0719a634296be1c15250 was independently analyzed with Ghidra12.1.4. Startup at 0x004c3930 registers KeyCheck/Intro/Login/Shell/Mission/Outro/Studio in source order and returns zero: strong WinMain identity evidence, not proof of whole-build source equivalence. Standalone decompilation works; REA provider startup fails at the Work PID/procfs mismatch. Native full IControl declarations compile after isolating original Area/Color/PaintInfo types from Windows/rendering includes. Full translation-unit errors and unchanged engine/menu limitations are in CONTROL_PROGRESS.md.
+
