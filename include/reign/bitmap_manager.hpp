@@ -13,7 +13,7 @@ struct BitmapGpuCallbacks {
  std::function<void()> unbind;
 };
 // Scoped original manager slice for level-zero, unreduced, stage-zero textures.
-// CPU-only mode uses empty GPU callbacks. No mipmap, movie, reduction or BMP support yet.
+// CPU-only mode uses empty GPU callbacks. No mipmap, movie or reduction support yet.
 // Serialize all access, including reads of retained views; loaders/callbacks must not reenter.
 class BitmapManager {
  struct Impl;std::unique_ptr<Impl> impl_;

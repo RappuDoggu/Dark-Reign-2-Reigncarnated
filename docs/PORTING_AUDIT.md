@@ -121,3 +121,8 @@ Inspected iface.cpp InitMetrics/ConfigureMetrics/GetMetric/UpdateScreenMetrics a
 ## Original bitmap manager integration
 
 Original graphics/bitmap_manager.cpp Setup/Create/Find/FindCreate/ReleaseDD/OnModeChange, Bitmap reload/resource contracts, Utils::FindExt, Dir::PathExpand and BuffString limits were inspected and hash-pinned. The native slice preserves extension-independent cache lookup, fallback priority, numbered frame rings and release/restore iteration. Actual archive smoke.tga/smoke.pic requests demonstrate a cache reuse; directory-qualified keys demonstrate the original Setup/Find mismatch. Neither is treated as asset corruption. Full Bitmap/movie/mipmap integration is still missing.
+
+
+## BMP corpus and control dependency checkpoint
+
+Inspected original ReadBMP: DIB40, DWORD row stride, signed-height orientation, palette handling, CopyLine, and unfinished BI_BITFIELDS mask reading. Inventory finds63 BMPs in88 archives, all24-bit BI_RGB, no loose BMPs. All63 independently match Pillow output. Game::Preview uses terrain.bmp; this does not execute a mission. IFace::Init and IControl construction/destruction establish EventSys/Input/Main/TrackSys/VarSys/colors/control dependencies. util/event.h packs native pointers inside Event; ARM64 alignment/runtime-layout and serialization consumers need further audit. No event/control initialization is claimed.

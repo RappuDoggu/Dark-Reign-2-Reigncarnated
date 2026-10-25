@@ -94,3 +94,8 @@ CMake now stages original IFace metric functions into an external overlay, build
 ## Original bitmap manager integration
 
 CMake now builds dr2_bitmap_manager, bitmap_manager_smoke and bitmap_manager_probe from an external original manager overlay plus native ownership adapters. CPU-only and actual GLES callbacks are explicit; lost-context abandonment must precede restoration in a new owning context. Host tests and two-context GPU replay pass. Next complete BMP, mipmap/transparency policies and full Bitmap integration, then original interface colors/skins/control/frame/event startup and Main/GameGod services. The public v0.4 diagnostic is unchanged; no new owner testing is required for this source-side checkpoint.
+
+
+## BMP corpus and control dependency checkpoint
+
+BMP is now connected to original pixel conversion and original manager fallback, with private corpus checks and host GPU tests. CMake adds bitmap_bmp_smoke and bmp_rgba_probe; the local verify_bmp_archive.py checks a legal installation in memory against Pillow without writing assets. Next port original EventSys/TrackSys/color/control startup prerequisites and complete Bitmap allocation/UV/mipmap/transparency policies before constructing ICRoot. The public v0.4 adapter remains unchanged; there is no new gameplay APK or new device-testing gate.

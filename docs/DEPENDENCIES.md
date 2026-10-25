@@ -69,3 +69,8 @@ Original IFace metric defaults, CRC table, FScope configuration and reads now co
 ## Original bitmap manager integration
 
 The scoped original bitmap manager now uses original NBinTree and CRC naming, fallback/animation/release/mode-change loops, with native TGA/PIC decoding and actual optional GPU upload/delete/unbind callbacks. The full Bitmap class, mipmaps/reduction, BMP, Bink, color-key policies and nonzero stages remain unported. Original Setup/Find directory-key discrepancy is retained and tested. See BITMAP_MANAGER_PROGRESS.md.
+
+
+## BMP corpus and control dependency checkpoint
+
+BMP decoding now supports bounded DIB40/BI_RGB8/16/24/32 and routes through original Pix/CopyLine; manager .bmp fallback is operational. BI_BITFIELDS remains explicitly unsupported because the inspected original mask reader is unfinished. Pillow is only an optional private24-bit pixel-oracle dependency. Original event/tracking/VarSys/color/control services, full Bitmap allocation/UV/mipmap/transparency and engine startup remain dependencies. See BMP_PROGRESS.md.

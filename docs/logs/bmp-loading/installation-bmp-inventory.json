@@ -1,0 +1,447 @@
+{
+  "archives": 88,
+  "bmp": [
+    {
+      "archive": "missions/assault/a4assault.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/assault/a4seadevil.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/control/c2control.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/control/c4siege.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/control/c8snowpass.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/fenced/f2crazed.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/fenced/f4crazed.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/fenced/f4siege.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J01.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J02.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J03.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J04.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J05.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J06.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J06_Intro.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J07.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J08.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J09.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/jda/J10.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/koth/k3dr2.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/koth/k3spooge.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/koth/k4sprawl.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/koth/k6jungle.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/2crazed.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/2hilo.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/2mountain.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/2siege.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/3dr2.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/3spooge.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/4crazed.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/4octopussy.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/4seadevil.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/4siege.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/6city.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/6jungle.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/6sixway.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/8angelbay.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/8snowpass.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/multiplayer/8warway.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Outro.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S01.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S01_Intro.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S02.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S03.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S04.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S05.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S06.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S07.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S08.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/S09.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S01.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S02.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S03.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S04.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S05.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S06.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S07.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S08.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/sprawler/Transition into S09.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "missions/system/shell.zwp",
+      "name": "terrain.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "packs/base.zwp",
+      "name": "meshview_ground.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "packs/base.zwp",
+      "name": "meshview_sky.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    },
+    {
+      "archive": "packs/base.zwp",
+      "name": "engine_turtle.bmp",
+      "dib": 40,
+      "depth": 24,
+      "compression": 0
+    }
+  ],
+  "loose_bmp": []
+}

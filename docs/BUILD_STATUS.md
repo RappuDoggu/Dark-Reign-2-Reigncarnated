@@ -224,3 +224,8 @@ Original Bitmap::Manager Setup/Create/Find/FindCreate and ReleaseDD/OnModeChange
 Local Android NDK r27c/API26 compilation/package verification PASS, including original/native bitmap manager libraries, AArch64 bitmap_manager_smoke and bitmap_manager_probe. ELF/package logs are retained. The new manager has not executed on Android and is excluded from the unchanged public v0.4 APK.
 
 CI verified for code `e6a10e65e8cef36983263a09567f22be10d4991a`: [run40159070494](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40159070494) SUCCESS. Host job121066594264 passes20 tests, including29 manager checks with default leak checking. Android job121066594462 passes ARM64/private package verification,46 software GPU checks in each of two contexts, and the unchanged original-only public v0.4 package build. Artifacts:12585855099(host logs),12585349878(Android/GPU/package logs),12585554581(public v0.4 APK). Public APK excludes the original manager implementation; this is not an engine/menu runtime result.
+
+
+## BMP corpus and control dependency checkpoint
+
+Native BMP framing now feeds original CopyLine and the original manager fallback path. All63 real24-bit BMPs across88 archives match Pillow12.3.0 exactly (1,118,208 pixels); none skipped. Base image loading now covers567 requests/566 original-manager entries, all566 reloaded. Host ASan/UBSan:21 tests PASS, including213 BMP checks. Software GLES:51 checks PASS in each of two contexts. Local NDK r27c/API26 build/private package verification PASS. No new original-derived Android runtime test, original menu or mission is established. See BMP_PROGRESS.md and docs/logs/bmp-loading.

@@ -1,5 +1,7 @@
 # Original bitmap manager checkpoint — 2026-10-24
 
+Update: BMP framing/fallback has since been implemented; see BMP_PROGRESS.md. The TGA/PIC-only limitations and corpus counts below record this manager slice's initial checkpoint.
+
 Original manager naming, format fallback, numbered-animation construction and release/restore iteration now execute behind native bitmap ownership adapters. This is a stage-zero, unreduced, level-zero TGA/PIC texture slice, not the complete original Bitmap/DirectDraw implementation or engine startup.
 
 ## Retained original implementation

@@ -1,5 +1,6 @@
 #include "vid_slice.hpp"
 #include "reign/bitmap_manager.hpp"
+#include "bmp_fixture.hpp"
 #include <array>
 #include <iostream>
 namespace {
@@ -15,7 +16,7 @@ void original_bitmap_manager_gpu_checks(reign::LegacyGles &renderer){
  device.set_draw_sink([&](const auto *v,std::size_t n,const auto *ix,std::size_t ni,const auto &s){renderer.draw(32,32,v,n,ix,ni,s);});
  auto check=[](bool ok,const char *name){if(!ok)throw std::runtime_error(name);std::cout<<name<<": PASS\n";};
  try{
-  if(!replay.manager)replay.manager=std::make_unique<reign::BitmapManager>([](const std::string &n){return solid(n=="anim1.tga");},[](const std::string &n){return n=="anim.tga"||n=="anim1.tga";},reign::BitmapGpuCallbacks{
+  if(!replay.manager)replay.manager=std::make_unique<reign::BitmapManager>([](const std::string &n){if(n=="bmp.bmp"){auto b=bmp_fixture();b[56]=255;return b;}return solid(n=="anim1.tga");},[](const std::string &n){return n=="anim.tga"||n=="anim1.tga"||n=="bmp.bmp";},reign::BitmapGpuCallbacks{
    [](const auto &image){return replay.renderer->texture_rgba(image.width,image.height,image.pixels.data());},
    [](unsigned id){replay.renderer->delete_texture(id);},
    []{if(replay.bound)Vid::SetTextureDX(nullptr,0,RS_BLEND_DEF);}});
@@ -30,6 +31,7 @@ void original_bitmap_manager_gpu_checks(reign::LegacyGles &renderer){
   };
   check(first&&replay.manager->load("anim.pic")==first&&pixel(first,false),"Original bitmap manager fallback/cache to GLES");
   check(frames.size()==2&&frames[1]->frame==1&&pixel(frames[1],true),"Original bitmap manager numbered animation to GLES");
+  auto bmp=replay.manager->load("bmp.xyz");check(bmp&&bmp->source=="bmp.bmp"&&pixel(bmp,false),"Original bitmap manager BMP fallback to GLES");
   auto generation=first->generation;replay.manager->release();if(first->resident||first->texture)throw std::runtime_error("Bitmap release retained live handles");replay.manager->restore();
   check(first->generation==generation+1&&pixel(first,false),"Original bitmap manager release/restore to GLES");
   const bool same=!replay.retained||replay.retained==first;replay.retained=first;replay.manager->abandon_context();

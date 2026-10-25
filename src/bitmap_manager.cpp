@@ -27,7 +27,8 @@ void Bitmap::Read(const char *path){
  RgbaImage image;
  if(suffix.size()>=4&&suffix.substr(suffix.size()-4)==".tga")image=load_bitmap_tga(bytes);
  else if(suffix.size()>=4&&suffix.substr(suffix.size()-4)==".pic")image=load_bitmap_pic(bytes);
- else throw std::runtime_error("Bitmap manager requires supported TGA/PIC data; BMP/movie/mipmap paths remain unported");
+ else if(suffix.size()>=4&&suffix.substr(suffix.size()-4)==".bmp")image=load_bitmap_bmp(bytes);
+ else throw std::runtime_error("Bitmap manager requires supported TGA/PIC/BMP data; movie/mipmap paths remain unported");
  unsigned texture=0;if(state().gpu.upload){texture=state().gpu.upload(image);if(!texture)throw std::runtime_error("Bitmap upload returned no texture");}
  ReleaseDD();record->source=std::move(selected);record->image=std::move(image);record->texture=texture;record->resident=true;++record->generation;
 }

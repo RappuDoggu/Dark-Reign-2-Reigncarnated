@@ -8,10 +8,14 @@
 #include <stdexcept>
 int main(int argc,char **argv){try{
  if(argc!=2)throw std::runtime_error("Usage: bitmap_conversion_probe installation/base.zwp");
- reign::Archive archive(argv[1]);unsigned tested=0,unsupported=0,pics=0;std::uint64_t pixels=0;
+ reign::Archive archive(argv[1]);unsigned tested=0,unsupported=0,pics=0,bmps=0;std::uint64_t pixels=0;
  for(const auto &entry:archive.entries()){
   auto name=entry.name;std::transform(name.begin(),name.end(),name.begin(),[](unsigned char c){return std::tolower(c);});
   if(name.size()<4)continue;
+  if(name.substr(name.size()-4)==".bmp"){
+   auto loaded=reign::load_bitmap_bmp(archive.read(entry.name));++bmps;pixels+=std::uint64_t(loaded.width)*loaded.height;
+   std::cout<<"BMP loaded: "<<entry.name<<" width="<<loaded.width<<" height="<<loaded.height<<'\n';continue;
+  }
   if(name.substr(name.size()-4)==".pic"){
    auto loaded=reign::load_bitmap_pic(archive.read(entry.name));++pics;pixels+=std::uint64_t(loaded.width)*loaded.height;continue;
   }
@@ -29,6 +33,6 @@ int main(int argc,char **argv){try{
   if(converted!=image.pixels||reign::load_bitmap_tga(data).pixels!=image.pixels)throw std::runtime_error("Original CopyLine differs for "+entry.name);
   ++tested;pixels+=std::uint64_t(image.width)*image.height;
  }
- std::cout<<"TGA -> original Pix/CopyLine: independently_compared_images="<<tested<<" pixels="<<pixels<<" extended_formats_loaded="<<unsupported<<" PIC_loaded="<<pics<<" comparison_mismatches=0\n";
+ std::cout<<"TGA -> original Pix/CopyLine: independently_compared_images="<<tested<<" pixels="<<pixels<<" extended_formats_loaded="<<unsupported<<" PIC_loaded="<<pics<<" BMP_loaded="<<bmps<<" comparison_mismatches=0\n";
  if(!tested)throw std::runtime_error("No supported real TGA files exercised");
  }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

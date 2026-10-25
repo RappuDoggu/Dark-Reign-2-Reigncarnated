@@ -1,0 +1,64 @@
+a4assault.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+a4seadevil.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+c2control.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+c4siege.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+c8snowpass.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+f2crazed.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+f4crazed.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+f4siege.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J01.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J02.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J03.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J04.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J05.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J06.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J06_Intro.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J07.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J08.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J09.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+J10.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+k3dr2.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+k3spooge.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+k4sprawl.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+k6jungle.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+2crazed.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+2hilo.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+2mountain.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+2siege.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+3dr2.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+3spooge.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+4crazed.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+4octopussy.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+4seadevil.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+4siege.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+6city.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+6jungle.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+6sixway.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+8angelbay.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+8snowpass.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+8warway.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Outro.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S01.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S01_Intro.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S02.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S03.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S04.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S05.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S06.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S07.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S08.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+S09.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S01.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S02.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S03.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S04.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S05.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S06.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S07.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S08.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+Transition into S09.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+shell.zwp/terrain.bmp: RGBA matches Pillow 12.3.0, 128x128
+base.zwp/meshview_ground.bmp: RGBA matches Pillow 12.3.0, 256x256
+base.zwp/meshview_sky.bmp: RGBA matches Pillow 12.3.0, 256x256
+base.zwp/engine_turtle.bmp: RGBA matches Pillow 12.3.0, 64x64
+Independent real BMP oracle: archives=88 images=63 pixels=1118208 mismatches=0 other_depths_skipped=0
