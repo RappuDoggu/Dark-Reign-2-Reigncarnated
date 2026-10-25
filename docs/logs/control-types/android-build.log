@@ -1,40 +1,6 @@
 [ 12%] Built target dr2_primitives
-[ 18%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
-[ 18%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
-[ 25%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
-[ 25%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
-[ 31%] Linking CXX static library libdr2_tracking.a
-/tmp/reign-upstream-runtime-overlay/event_slice.cpp:129:5: warning: expression result unused [-Wunused-value]
-  129 |     type;
-      |     ^~~~
-[ 31%] Built target dr2_tracking
-[ 37%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
-[ 43%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
-In file included from /tmp/reign-upstream-runtime-overlay/event_slice.cpp:2:
-In file included from /tmp/reign-upstream-runtime-overlay/event_slice.hpp:3:
-/tmp/reign-upstream-runtime-overlay/queue_slice.hpp:86:7: warning: expression result unused [-Wunused-value]
-   86 |       timeout;
-      |       ^~~~~~~
-/tmp/reign-upstream-runtime-overlay/event_slice.cpp:160:29: note: in instantiation of member function 'reign::event_detail::Queue<reign::event_detail::Event, 128>::RemovePre' requested here
-  160 |       e = state().workQueue.RemovePre();
-      |                             ^
-2 warnings generated.
-[ 43%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
-[ 50%] Linking CXX static library libdr2_events.a
-[ 50%] Built target dr2_events
-[ 56%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
-/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: warning: '~VarItem' has a non-throwing exception specification but can still throw [-Wexceptions]
-  263 |   ASSERT(!pNotify);
-      |   ^
-/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: expanded from macro 'ASSERT'
-   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
-      |                             ^
-/tmp/reign-upstream-runtime-overlay/varitem.cpp:250:18: note: destructor has a implicit non-throwing exception specification
-  250 | VarSys::VarItem::~VarItem()
-      |                  ^
-[ 62%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
-1 warning generated.
-[ 68%] Linking CXX static library libdr2_vars.a
+[ 37%] Built target dr2_events
+[ 37%] Built target dr2_tracking
 [ 68%] Built target dr2_vars
 [ 75%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_coordinates.cpp.o
 [ 81%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_color_magic.cpp.o

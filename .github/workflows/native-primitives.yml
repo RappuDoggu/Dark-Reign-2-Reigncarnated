@@ -29,10 +29,11 @@ jobs:
           root=pathlib.Path(os.environ["RUNNER_TEMP"])
           upstream=root/"dr2-upstream"
           summaries=[]
-          for name,opaque in [("vendor",False),("opaque",True)]:
+          for name,opaque,native in [("vendor",False,False),("opaque",True,False),("native-types",True,True)]:
               out=root/("frontend-probe-"+name)
               command=[sys.executable,"tools/probe_original_frontend.py",str(upstream),str(upstream)+"-runtime-overlay",str(upstream)+"-config-overlay",str(out)]
               if opaque: command.append("--opaque-video-declarations")
+              if native: command.extend(["--native-control-types",str(upstream)+"-control-overlay"])
               result=subprocess.run(command,text=True,capture_output=True)
               pathlib.Path("evidence/frontend-"+name+".log").write_text(result.stdout+result.stderr)
               report=out/"result.json"

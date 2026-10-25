@@ -20,8 +20,16 @@ Logs: [host tests](logs/control-types/host-tests.log), [ARM64 build](logs/contro
 
 ## Concrete remaining menu work
 
-Full original interface/icontrol.cpp still fails compilation. After supplying the native control declarations, the compiler reaches IFace renderer contracts (Pix/VertexTL), the event handler alias, original Input HWND/HINSTANCE declarations and duplicate legacy VarSys includes pulled by neighboring headers. These require a consistent shared frontend type/backend boundary; adding fake platform handles or empty drawing functions would not demonstrate the menu.
+Full original interface/icontrol.cpp still fails compilation. After supplying the native control declarations, the compiler reaches IFace renderer contracts (Pix/VertexTL), original Input HWND/HINSTANCE declarations, the legacy font PathString dependency, and overlapping utility/Float2Int declarations pulled through stdload/mathtypes. The native EventSys alias and shared VarSys include guard now prevent duplicate legacy variable/event declarations. These require a consistent shared frontend type/backend boundary; adding fake platform handles or empty drawing functions would not demonstrate the menu.
 
 Next: reconcile these headers with the actual native bitmap/font/TL/event services, then compile/link the full IControl implementation and original root/button/window controls; connect original IFace configuration/Process/PaintAll; integrate real profile/login, Vid::InitResources and GameRunCodes Shell via Main/GameGod. The inspected original Shell::Init calls Base::Init (Vid resources) and requires User::LoggedIn, while Base::Process calls IFace Process/PaintAll. Skipping straight to Shell without these services is not an original menu launch.
 
 The original WinMain has now also been identified/decompiled from the owner's executable at 0x004c3930 using standalone Ghidra. See REA_SETUP.md for actual output and limits. Additional source is already available; no further owner asset upload is currently needed. The unchanged public v0.4 APK remains a renderer diagnostic and is not offered as a new menu test.
+
+Reproduce the remaining full-translation-unit failure after CMake stages the native control types:
+
+```bash
+python3 tools/probe_original_frontend.py /tmp/reign-upstream /tmp/reign-upstream-runtime-overlay /tmp/reign-upstream-config-overlay /tmp/reign-frontend-native-types --opaque-video-declarations --native-control-types /tmp/reign-upstream-control-overlay
+```
+
+This exits 1 and records exact argv, compiler status and false linked/engine/menu flags in result.json. Opaque Bink declarations are only a compile probe; no movie implementation is supplied. The complete full-control probe does not pass.

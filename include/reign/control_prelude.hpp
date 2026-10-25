@@ -6,6 +6,10 @@
 #include <iomanip>
 using namespace reign::vars_detail;
 using Event = reign::event_detail::Event;
+namespace EventSys = reign::event_detail::EventSys;
+// Neighboring original headers must share the already staged VarSys class,
+// rather than redeclaring the legacy class in the global namespace.
+#define __VARSYS_H
 template<class T> class Array;
 class IFaceVar;
 template<class T> inline T Max(T a,T b){return std::max(a,b);}
