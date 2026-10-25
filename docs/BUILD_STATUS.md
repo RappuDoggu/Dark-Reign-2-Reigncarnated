@@ -2,6 +2,8 @@
 
 ## Latest increment: interface class registry and configuration ABI
 
+Host and Android CI passed on `6ac355c`: [run 40212350443](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40212350443). [Recorded provider evidence](logs/iface-registry/ci-result.json).
+
 Four original class-registry/template methods execute in 23 checks; the full host suite passes 31/31. Sanitizers exposed an FScope layout mismatch across modules, fixed by consistently enabling DEVELOPMENT across CMake targets. Full frontend linking still fails on 47 unresolved symbols. No live control creation or main-menu APK yet. [Details and recorded failures](IFACE_REGISTRY.md).
 
 ## Latest increment: original interface state/events

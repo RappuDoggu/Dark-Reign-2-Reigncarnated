@@ -22,3 +22,7 @@ Reproduce using the existing CMake host setup and `ctest --test-dir build-host -
 Evidence: [test](logs/iface-registry/test.log), [suite](logs/iface-registry/suite.log), [initial sanitizer failure](logs/iface-registry/layout-failure.log), [build](logs/iface-registry/build.log), [full link failure](logs/iface-registry/link.log), [link command and status](logs/iface-registry/result.json).
 
 Next integration work: original CreateControl/root lifecycle, shared Font/Bitmap types and rendering services. The registry is a prerequisite, not a substitute for those implementations.
+
+## CI result
+
+Both jobs passed for commit `6ac355cdcb95b98ed9125fab6af098e97d70acc8` in [run 40212350443](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40212350443). Host tests passed 31/31 with the normal sanitizer environment, including the 23 registry checks. Android NDK built the registry test for ARM64; GLES checks and existing diagnostic APK packaging passed. No ARM64 registry runtime execution or menu launch is claimed. [Provider output and artifacts](logs/iface-registry/ci-result.json).
