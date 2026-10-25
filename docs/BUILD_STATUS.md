@@ -1,5 +1,9 @@
 # Build status — latest update 2026-10-25
 
+## Latest increment: original UI triangles
+
+Original RenderTriangle executes through a native allocation/submission adapter. 48 focused checks and all 34 host tests pass. Full UI linkage still fails on 29 unresolved symbols. No new GPU runtime, original window or main-menu APK is claimed. [Implementation and evidence](FRONTEND_DRAW.md).
+
 ## Latest increment: frontend metrics and frame state
 
 Host and Android ARM64 CI passed on `0d46e07`: [run 40220853532](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40220853532), [provider evidence](logs/frontend-frame/ci-result.json).
