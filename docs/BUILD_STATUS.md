@@ -1,3 +1,13 @@
+# Latest: native menu input and real installation theme checks
+
+41 host tests pass; pointer input has 152 checks. Five unresolved services remain
+in the staged-control link. Real Login then Shell-menu theme loading passes:
+21 color groups, 14 skins, 2 bitmaps; 183 other statements are not executed.
+No original menu is displayed and no main-menu APK is ready.
+See [FRONTEND_INPUT.md](FRONTEND_INPUT.md) and [REAL_MENU_THEME.md](REAL_MENU_THEME.md).
+The preceding theme commit passed both CI jobs in run 40224830286; fresh CI
+verification of this input/probe increment is pending.
+
 # Latest: original theme initialization
 
 40 host tests pass, including 26 theme checks. Eight unresolved symbols remain

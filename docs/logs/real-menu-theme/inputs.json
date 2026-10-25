@@ -1,0 +1,14 @@
+{
+  "archive": {
+    "size": 353729629,
+    "sha256": "e12ede0e457d79dc1d5d4cf220521b537421a899b7ff02cdb9ee1805991f630d"
+  },
+  "executable": {
+    "size": 5154304,
+    "sha256": "5ea4734ab2f2ad381877ce1c0d9b03365ddb3dd8e3ff0719a634296be1c15250"
+  },
+  "base_pack": {
+    "size": 99711663,
+    "sha256": "f28ea56cecea135ee52c00c5f63fab975dd882778b549fc814954f3cf7d02fe9"
+  }
+}

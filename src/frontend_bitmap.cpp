@@ -11,7 +11,9 @@ struct TextureContext {
  Bitmap *load(const char *name){
   if(!name)throw std::invalid_argument("Missing frontend texture name");
   auto view=manager.load(name);if(!view)return nullptr;
-  if(manager.animation(name).size()>1)throw std::runtime_error("Animated frontend textures not integrated");
+  const auto frames=manager.animation(name);
+  if(frames.empty()||frames.front()!=view)throw std::runtime_error("Frontend texture identity could not be resolved");
+  if(frames.size()>1)throw std::runtime_error("Animated frontend textures not integrated");
   if(!view->resident)throw std::runtime_error("Frontend texture manager must be restored");
   auto key=std::make_pair(view.get(),view->generation);auto it=entries.find(key);if(it!=entries.end())return it->second.bitmap.get();
   const auto &image=view->image;

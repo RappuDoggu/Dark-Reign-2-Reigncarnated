@@ -65,6 +65,8 @@ def prepare(upstream, output):
     (output/'frontend_helpers.cpp').write_text('namespace IFace {\n'+source[a:b]+'\n}\n')
     s = replace_once(texts['interface/input.h'], 'void Init(HINSTANCE inst, HWND window);',
                      '// Windows startup declaration excluded; native input lifecycle remains separate.')
+    for declaration in ['extern U16 eventId;', 'extern Point<S32> mousePos;', 'extern U32 lButton;']:
+        s = replace_once(s, declaration, declaration.replace('extern ', 'extern thread_local '))
     (output/'control_input.hpp').write_text(s)
     s = texts['system/array.h']
     s = s[s.index('template <class DATA'):s.index('// pads array data')]
