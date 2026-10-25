@@ -1,0 +1,264 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: original_object_tracking
+Process not started
+ /workspace/scratch/2e29d93ded9e/reign-work/build-host/tracking_smoke
+[permission denied]
+ 1/25 Test  #1: original_object_tracking .........***Not Run   0.00 sec
+      Start  2: original_event_dispatch
+ 2/25 Test  #2: original_event_dispatch ..........***Failed    0.01 sec
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+[engine] Event queue overrun
+==7==LeakSanitizer has encountered a fatal error.
+==7==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==7==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start  3: original_variable_runtime
+ 3/25 Test  #3: original_variable_runtime ........***Failed    0.01 sec
+[engine] VarItem 'iface' (scope) not being deleted
+==14==Can't open /proc/13/task for reading.
+==13==LeakSanitizer has encountered a fatal error.
+==13==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==13==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start  4: original_runtime_handoff
+ 4/25 Test  #4: original_runtime_handoff .........***Failed    0.02 sec
+==16==Can't open /proc/15/task for reading.
+==15==LeakSanitizer has encountered a fatal error.
+==15==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==15==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start  5: original_render_buckets
+ 5/25 Test  #5: original_render_buckets ..........***Failed    0.02 sec
+Bucket::FlushBucket: !doDraw
+Bucket::FlushBucket: !doDraw
+==18==Can't open /proc/17/task for reading.
+==17==LeakSanitizer has encountered a fatal error.
+==17==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==17==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start  6: original_bitmap_manager
+ 6/25 Test  #6: original_bitmap_manager ..........***Failed    0.01 sec
+[engine] Looking for texture prefer.xyz, found prefer.pic.
+==20==Can't open /proc/19/task for reading.
+==19==LeakSanitizer has encountered a fatal error.
+==19==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==19==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start  7: original_bitmap_pixels
+ 7/25 Test  #7: original_bitmap_pixels ...........***Failed    0.02 sec
+==22==Can't open /proc/21/task for reading.
+==21==LeakSanitizer has encountered a fatal error.
+==21==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==21==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start  8: bitmap_tga_loading
+ 8/25 Test  #8: bitmap_tga_loading ...............***Failed    0.01 sec
+==24==Can't open /proc/23/task for reading.
+==23==LeakSanitizer has encountered a fatal error.
+==23==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==23==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start  9: bitmap_bmp_loading
+ 9/25 Test  #9: bitmap_bmp_loading ...............***Failed    0.02 sec
+==26==Can't open /proc/25/task for reading.
+==25==LeakSanitizer has encountered a fatal error.
+==25==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==25==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 10: original_vid_states
+10/25 Test #10: original_vid_states ..............***Failed    0.01 sec
+==28==Can't open /proc/27/task for reading.
+==27==LeakSanitizer has encountered a fatal error.
+==27==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==27==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 11: original_font_registration
+11/25 Test #11: original_font_registration .......***Failed    0.02 sec
+[engine] Font [SYSTEM] already exists
+==30==Can't open /proc/29/task for reading.
+==29==LeakSanitizer has encountered a fatal error.
+==29==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==29==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 12: original_interface_metrics
+12/25 Test #12: original_interface_metrics .......***Failed    0.01 sec
+[engine] Unknown Metric Name [UnknownMetric]
+[engine] Metric [ButtonHeight] not String or Integer
+[engine] Parse Callstack:
+[engine] SliderWidth()
+[engine] Metrics()
+[engine] GlobalScope()
+==32==Can't open /proc/31/task for reading.
+==31==LeakSanitizer has encountered a fatal error.
+==31==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==31==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 13: original_font_atlas_and_draw
+13/25 Test #13: original_font_atlas_and_draw .....***Failed    0.04 sec
+==34==Can't open /proc/33/task for reading.
+==33==LeakSanitizer has encountered a fatal error.
+==33==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==33==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 14: original_runcodes
+14/25 Test #14: original_runcodes ................***Failed    0.01 sec
+[engine] [main] Run code [missing] does not exist
+[engine] [main] Entering run code [A]
+[engine] [main] Entering run code [B]
+[engine] [main] Entering run code [Quit]
+[engine] [main] Clearing runcode [Quit]
+==36==Can't open /proc/35/task for reading.
+==35==LeakSanitizer has encountered a fatal error.
+==35==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==35==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 15: original_config_parser
+15/25 Test #15: original_config_parser ...........***Failed    0.01 sec
+==38==Can't open /proc/37/task for reading.
+==37==LeakSanitizer has encountered a fatal error.
+==37==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==37==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 16: original_tokenizer
+16/25 Test #16: original_tokenizer ...............***Failed    0.01 sec
+==40==Can't open /proc/39/task for reading.
+==39==LeakSanitizer has encountered a fatal error.
+==39==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==39==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 17: original_engine_primitives
+17/25 Test #17: original_engine_primitives .......***Failed    0.01 sec
+==42==Can't open /proc/41/task for reading.
+==41==LeakSanitizer has encountered a fatal error.
+==41==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==41==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 18: platform_services
+18/25 Test #18: platform_services ................***Failed    0.01 sec
+==44==Can't open /proc/43/task for reading.
+==43==LeakSanitizer has encountered a fatal error.
+==43==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==43==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 19: pack_metadata_inspector
+19/25 Test #19: pack_metadata_inspector ..........   Passed    0.06 sec
+      Start 20: native_archive_reader
+20/25 Test #20: native_archive_reader ............***Failed    0.05 sec
+==47==Can't open /proc/46/task for reading.
+==46==LeakSanitizer has encountered a fatal error.
+==46==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==46==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 21: make_installation_fixture
+21/25 Test #21: make_installation_fixture ........   Passed    0.06 sec
+      Start 22: installation_integration
+22/25 Test #22: installation_integration .........***Failed    0.02 sec
+==50==Can't open /proc/49/task for reading.
+==49==LeakSanitizer has encountered a fatal error.
+==49==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==49==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 23: resource_streams
+23/25 Test #23: resource_streams .................***Failed    0.01 sec
+==52==Can't open /proc/51/task for reading.
+==51==LeakSanitizer has encountered a fatal error.
+==51==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==51==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 24: tga_pixels
+24/25 Test #24: tga_pixels .......................***Failed    0.02 sec
+==54==Can't open /proc/53/task for reading.
+==53==LeakSanitizer has encountered a fatal error.
+==53==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==53==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+      Start 25: native_bitmap_storage
+25/25 Test #25: native_bitmap_storage ............***Failed    0.01 sec
+==56==Can't open /proc/55/task for reading.
+==55==LeakSanitizer has encountered a fatal error.
+==55==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==55==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+
+8% tests passed, 23 tests failed out of 25
+
+Total Test time (real) =   0.50 sec
+
+The following tests FAILED:
+	  1 - original_object_tracking (BAD_COMMAND)
+	  2 - original_event_dispatch (Failed)
+	  3 - original_variable_runtime (Failed)
+	  4 - original_runtime_handoff (Failed)
+	  5 - original_render_buckets (Failed)
+	  6 - original_bitmap_manager (Failed)
+	  7 - original_bitmap_pixels (Failed)
+	  8 - bitmap_tga_loading (Failed)
+	  9 - bitmap_bmp_loading (Failed)
+	 10 - original_vid_states (Failed)
+	 11 - original_font_registration (Failed)
+	 12 - original_interface_metrics (Failed)
+	 13 - original_font_atlas_and_draw (Failed)
+	 14 - original_runcodes (Failed)
+	 15 - original_config_parser (Failed)
+	 16 - original_tokenizer (Failed)
+	 17 - original_engine_primitives (Failed)
+	 18 - platform_services (Failed)
+	 20 - native_archive_reader (Failed)
+	 22 - installation_integration (Failed)
+	 23 - resource_streams (Failed)
+	 24 - tga_pixels (Failed)
+	 25 - native_bitmap_storage (Failed)
+Errors while running CTest

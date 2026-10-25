@@ -1,0 +1,19 @@
+{
+  "platform": "linux-x86_64",
+  "node": "24.22.1",
+  "rea": {
+    "version": "6.8.0",
+    "resolved": "https://registry.npmjs.org/rea-agents/-/rea-agents-6.8.0.tgz",
+    "integrity": "sha512-9QDeRnGqEDzABZyr04eLnBXBv/c6I9/TWu/6M0MD4pEfkySI/BIgwTODIbAReX3C1x6hjw9+Jlx4A2yUSPZ9ww=="
+  },
+  "jdk": {
+    "version": "21.0.13+9",
+    "sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c"
+  },
+  "ghidra": {
+    "version": "12.1.4",
+    "sha256": "ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db"
+  },
+  "rea_provider_verified": false,
+  "standalone_ghidra_verified": true
+}

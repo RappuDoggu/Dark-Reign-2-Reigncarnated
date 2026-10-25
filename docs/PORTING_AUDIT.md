@@ -131,3 +131,8 @@ Inspected original ReadBMP: DIB40, DWORD row stride, signed-height orientation, 
 ## Runtime recovery and requested menu gate — 2026-10-25
 
 Original event/queue, tracking/reapers, String and VarSys family inspected/staged. Native pointer layout is runtime-only (Event40 bytes/interface offset8, tracking Info16/offset8). Original dispatch/work-queue flow retained; native queue corrects the inspected Full/Empty/Flush defects. Binary array cleanup and string/path bounds fixed. Full IControl compilation remains failed at vendor/graphics/math integration; actual Login/Shell initialization is unachieved. RUNTIME_PROGRESS.md distinguishes local observations from reconstructed-source CI verification after workspace loss.
+
+
+## Restored workspace, decompiler verification and control types — 2026-10-25
+
+The supplied dr2.exe SHA256 5ea4734ab2f2ad381877ce1c0d9b03365ddb3dd8e3ff0719a634296be1c15250 was independently analyzed with Ghidra12.1.4. Startup at 0x004c3930 registers KeyCheck/Intro/Login/Shell/Mission/Outro/Studio in source order and returns zero: strong WinMain identity evidence, not proof of whole-build source equivalence. Standalone decompilation works; REA provider startup fails at the Work PID/procfs mismatch. Native full IControl declarations compile after isolating original Area/Color/PaintInfo types from Windows/rendering includes. Full translation-unit errors and unchanged engine/menu limitations are in CONTROL_PROGRESS.md.

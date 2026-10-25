@@ -1,0 +1,84 @@
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream/interface/icontrol.cpp:24:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+In file included from /tmp/reign-upstream/interface/icontrol.cpp:11:
+/tmp/reign-upstream/interface/iface.h:305:3: error: ‘EventSys’ does not name a type; did you mean ‘EventType’?
+  305 |   EventSys::HANDLERPROC SetGameHandler(EventSys::HANDLERPROC proc);
+      |   ^~~~~~~~
+      |   EventType
+/tmp/reign-upstream/interface/iface.h:358:9: error: ‘Pix’ does not name a type
+  358 |   const Pix * ScreenPixelFormat();
+      |         ^~~
+In file included from /tmp/reign-upstream/interface/icontrol.cpp:12:
+/tmp/reign-upstream/interface/iface_util.h:89:3: error: ‘VertexTL’ does not name a type
+   89 |   VertexTL *GetVerts(U32 count, Bitmap *texture, U32 filter, U32 clamp, U16 &vertOffset);
+      |   ^~~~~~~~
+/tmp/reign-upstream/interface/iface_util.h:107:85: error: ‘VertexTL’ has not been declared
+  107 |   void RenderTriangle(const Point<S32> *vertex, Color color, F32 alphaScale = 1.0F, VertexTL * clip = NULL);
+      |                                                                                     ^~~~~~~~
+/tmp/reign-upstream/interface/iface_util.h:110:113: error: ‘VertexTL’ has not been declared
+  110 |   void RenderRectangle(const ClipRect &rect, Color color, const TextureInfo *tex = NULL, F32 alphaScale = 1.0F, VertexTL * clip = NULL);
+      |                                                                                                                 ^~~~~~~~
+In file included from /tmp/reign-upstream/interface/icontrol.cpp:17:
+/tmp/reign-upstream/interface/input.h:30:3: error: ‘LOGEXTERN’ does not name a type
+   30 |   LOGEXTERN
+      |   ^~~~~~~~~
+/tmp/reign-upstream/interface/input.h:102:8: error: variable or field ‘Init’ declared void
+  102 |   void Init(HINSTANCE inst, HWND window);
+      |        ^~~~
+/tmp/reign-upstream/interface/input.h:102:13: error: ‘HINSTANCE’ was not declared in this scope
+  102 |   void Init(HINSTANCE inst, HWND window);
+      |             ^~~~~~~~~
+/tmp/reign-upstream/interface/input.h:102:29: error: ‘HWND’ was not declared in this scope
+  102 |   void Init(HINSTANCE inst, HWND window);
+      |                             ^~~~
+/tmp/reign-upstream/interface/input.h: In function ‘U16 Input::EventID()’:
+/tmp/reign-upstream/interface/input.h:120:13: error: ‘eventId’ was not declared in this scope; did you mean ‘EventID’?
+  120 |     return (eventId);
+      |             ^~~~~~~
+      |             EventID
+In file included from /tmp/reign-upstream/util/console.h:19,
+                 from /tmp/reign-upstream/interface/icontrol.cpp:19:
+/tmp/reign-upstream/util/varsys.h: At global scope:
+/tmp/reign-upstream/util/varsys.h:130:5: error: reference to ‘VarNotify’ is ambiguous
+  130 |     VarNotify *pNotify;
+      |     ^~~~~~~~~
+In file included from reigncarnated/include/reign/control_prelude.hpp:3,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-runtime-overlay/varsys.h:398:8: note: candidates are: ‘struct reign::vars_detail::VarNotify’
+  398 | struct VarNotify
+      |        ^~~~~~~~~
+/tmp/reign-upstream/util/varsys.h:47:8: note:                 ‘struct VarNotify’
+   47 | struct VarNotify;
+      |        ^~~~~~~~~
+/tmp/reign-upstream/util/varsys.h:254:19: error: reference to ‘VarNotify’ is ambiguous
+  254 |     void NotifyMe(VarNotify *obj);
+      |                   ^~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varsys.h:398:8: note: candidates are: ‘struct reign::vars_detail::VarNotify’
+  398 | struct VarNotify
+      |        ^~~~~~~~~
+/tmp/reign-upstream/util/varsys.h:47:8: note:                 ‘struct VarNotify’
+   47 | struct VarNotify;
+      |        ^~~~~~~~~
+/tmp/reign-upstream/util/varsys.h:254:19: error: ‘VarNotify’ has not been declared
+  254 |     void NotifyMe(VarNotify *obj);
+      |                   ^~~~~~~~~
+/tmp/reign-upstream/util/varsys.h:257:19: error: reference to ‘VarNotify’ is ambiguous
+  257 |     void ForgetMe(VarNotify *obj);
+      |                   ^~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varsys.h:398:8: note: candidates are: ‘struct reign::vars_detail::VarNotify’
+  398 | struct VarNotify
+      |        ^~~~~~~~~
+/tmp/reign-upstream/util/varsys.h:47:8: note:                 ‘struct VarNotify’
+   47 | struct VarNotify;
+      |        ^~~~~~~~~
+/tmp/reign-upstream/util/varsys.h:257:19: error: ‘VarNotify’ has not been declared
+  257 |     void ForgetMe(VarNotify *obj);
+      |                   ^~~~~~~~~
+compilation terminated due to -fmax-errors=15.

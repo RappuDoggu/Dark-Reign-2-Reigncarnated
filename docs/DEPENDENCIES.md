@@ -79,3 +79,8 @@ BMP decoding now supports bounded DIB40/BI_RGB8/16/24/32 and routes through orig
 ## Runtime recovery and requested menu gate — 2026-10-25
 
 dr2_tracking, dr2_events and dr2_vars now stage original runtime implementations externally. Native synchronization/string helpers support the engine services; non-ASCII Windows ACP remains unsupported. Original control/graphics/math/font/frame ABI integration, root configuration, User/Login/Shell and Android input/lifecycle remain menu dependencies. No menu-capable APK is available. Recovered source requires fresh CI evidence after the workspace disconnected.
+
+
+## Restored workspace, decompiler verification and control types — 2026-10-25
+
+New optional analysis tooling: official rea-agents6.8.0 (MIT), Ghidra12.1.4, Temurin full JDK21.0.13+9, supported Node24.22.1 and Linux procps. Exact official origins, archive hashes/npm integrity, installed versions and actual failure output are in REA_SETUP.md and logs/rea-workspace/installed-toolchain.json. Their tool licenses do not confer redistribution rights on Dark Reign2 or decompiler output. Existing analysis stays separate; executables, assets, Ghidra database and pseudocode are excluded from commits.

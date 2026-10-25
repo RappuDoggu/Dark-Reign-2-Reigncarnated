@@ -20,6 +20,10 @@ Produce a native ARM64 Android build of the original C++ engine, preserving game
 
 See [build results and failures](docs/BUILD_STATUS.md), [source audit](docs/PORTING_AUDIT.md), [dependencies and provenance](docs/DEPENDENCIES.md), and [build commands / next engineering work](docs/ANDROID_PORT_PLAN.md).
 
+## Restored workspace checkpoint — 2026-10-25
+
+Official REA6.8.0, Ghidra12.1.4 and full JDK21 are installed in an isolated workspace prefix. Standalone Ghidra decompiled the owner executable startup and matched the seven WinMain registrations; REA provider startup remains blocked by the Work PID/procfs mismatch. Original control declarations and coordinate/border methods now compile on host/ARM64; 26 host tests pass with the documented local LeakSanitizer limitation. [Tool output and reproduction](docs/REA_SETUP.md), [control integration and remaining menu gate](docs/CONTROL_PROGRESS.md). No new original-menu APK is ready.
+
 ## Source and rights
 
 Primary reference: https://github.com/grasmanek94/darkreign2 at `9ce9da5f21604310a997f0c41e9cd383f5e292c3`.

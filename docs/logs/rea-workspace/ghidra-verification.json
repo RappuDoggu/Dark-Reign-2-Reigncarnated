@@ -1,0 +1,19 @@
+{
+  "standalone_ghidra_decompile_verified": true,
+  "rea_integration_verified": false,
+  "target_sha256": "5ea4734ab2f2ad381877ce1c0d9b03365ddb3dd8e3ff0719a634296be1c15250",
+  "source_file_sha256": "65f4abe0647cc511667668ac218468d3b1d231a65ad68a1263687ed4b538f3f0",
+  "function_address": "004c3930",
+  "source_identity": "WinMain (strong inference from seven ordered registrations)",
+  "registration_order": [
+    "KeyCheck",
+    "Intro",
+    "Login",
+    "Shell",
+    "Mission",
+    "Outro",
+    "Studio"
+  ],
+  "pseudocode_characters": 659,
+  "full_binary_source_equivalence_established": false
+}

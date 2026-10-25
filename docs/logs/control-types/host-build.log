@@ -1,0 +1,8 @@
+[ 18%] Built target dr2_primitives
+[ 31%] Built target dr2_tracking
+[ 43%] Built target dr2_events
+[ 75%] Built target dr2_vars
+[ 87%] Built target dr2_control_coordinates
+[ 93%] Building CXX object CMakeFiles/control_types_smoke.dir/tests/control_types_smoke.cpp.o
+[100%] Linking CXX executable control_types_smoke
+[100%] Built target control_types_smoke

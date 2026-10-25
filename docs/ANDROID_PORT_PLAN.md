@@ -104,3 +104,8 @@ BMP is now connected to original pixel conversion and original manager fallback,
 ## Runtime recovery and requested menu gate — 2026-10-25
 
 Next device deliverable must show the original main menu at minimum; a refreshed diagnostic does not satisfy it. Original tracking/event/variable prerequisites and a synthetic handoff fixture are implemented, but IControl compilation probes remain failed and full original frontend/startup integration is missing. The interactive workspace became unavailable before upload; implementation recovery uses GitHub and requires fresh CI. Continue at IControl/ICRoot graphics/math/header integration, then original root configuration and User/Login/Shell/frame/input initialization.
+
+
+## Restored workspace, decompiler verification and control types — 2026-10-25
+
+Current next gate remains a linked original main menu. Native control declarations and selected coordinate/border methods now compile on host and ARM64, with original geometry/color checks. Next integrate the full IControl source against shared native bitmap/font/TL/Input/Event/VarSys declarations, then original root/button/window classes and IFace Process/PaintAll. Continue through real user/login and Vid resources before Main/GameGod/Shell startup. REA is installed but blocked by PID/procfs ownership diagnostics; standalone Ghidra can now inspect the owner executable without touching prior projects. See CONTROL_PROGRESS.md and REA_SETUP.md.

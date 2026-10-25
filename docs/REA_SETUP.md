@@ -1,58 +1,84 @@
-# REA / Ghidra workspace setup checkpoint
+# REA / Ghidra workspace verification
 
-Date: 2026-10-25. Status: **BLOCKED — installation and decompilation not verified**.
+Date: 2026-10-25. **Toolchain installed; standalone Ghidra decompilation verified; REA provider integration blocked.**
 
-## Actual execution result
+## Installed and executed
 
-The Work execution service rejected the attempted `pwd`, `command -v rea`, `command -v ghidraRun`, and `command -v java` invocation before a shell started:
+A fresh isolated toolchain was installed by `tools/setup_rea.sh` at:
+
+`/workspace/scratch/2e29d93ded9e/reign-work/rea-toolchain-verified`
+
+- Node 24.22.1 (existing supported workspace runtime), REA CLI 6.8.0 from the official npm `rea-agents` package.
+- Full Temurin JDK 21.0.13+9, including javac.
+- Ghidra 12.1.4, including the Linux x86_64 native decompiler.
+- Both release archive SHA256 checks pass. Exact package URL/npm integrity and release hashes: [installed metadata](logs/rea-workspace/installed-toolchain.json).
+- npm installation, CLI version, java/javac versions and standalone decompilation executed. Setup exits **1 at REA doctor**; that is a failed readiness gate, not a successful integration.
+
+The initial disconnected-workspace blocker is resolved. The earlier official GitHub `v6.8.0` release URL returned 404, but actual npm installation now confirms that `rea-agents@6.8.0` is published and installable.
+
+## Actual REA output
+
+Commands used the new prefix's env.sh and the owner's original installation executable:
+
+```bash
+source /workspace/scratch/2e29d93ded9e/reign-work/rea-toolchain-verified/env.sh
+rea doctor --provider ghidra --json
+rea decompile '/workspace/scratch/2e29d93ded9e/reign-work/installation/Dark Reign 2/dr2.exe' 0x004c3930 --provider ghidra --json
+rea providers --json
+```
+
+Doctor fails with `capability_unavailable`; decompile and providers exit 1 with `execution_failure`. Actual common message:
 
 ```text
-No usable execution environment is available. Wait for an environment to become available before using this tool.
+Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: Command failed: ps -axo pid=,ppid=,pgid=,uid=,stat=,command=
+fatal library error, lookup self
 ```
 
-This is execution-service output, **not REA provider output**. No REA process, Ghidra bridge, JDK installation, provider doctor, or Dark Reign 2 decompilation ran during this checkpoint. No provider result exists to report. GitHub API access remained available and was used to preserve these instructions and original tooling. No existing analysis was opened, migrated, deleted, or modified; filesystem preservation could not be independently inspected while execution was unavailable.
+Raw [doctor](logs/rea-workspace/rea-doctor.json), [decompile](logs/rea-workspace/rea-decompile.json), [providers](logs/rea-workspace/rea-providers.json). Investigation found processes reporting namespace PID 5/6 while /proc/self resolved to host PIDs in the thousands. procps is installed; this is an execution-environment PID/procfs mismatch. Creating a private namespace with bwrap also failed with Operation not permitted. No ownership checks, process identities, ps output or REA code were patched or bypassed. Repairing the workspace's PID/procfs view remains required for REA provider startup. No MCP registration or tool integration has been established.
 
-## Official requirements inspected
+## Actual standalone Ghidra verification
 
-- [morluto/rea source checkpoint](https://github.com/morluto/rea/tree/25f0f9934d226caa62fb89d68e7bacad74f4fe73), package.json version 6.8.0, npm package `rea-agents`, CLI `rea`.
-- [Official installation guide](https://github.com/morluto/rea/blob/25f0f9934d226caa62fb89d68e7bacad74f4fe73/docs/installation.md#ghidra): Ghidra **12.1.x**; upstream documents bridge verification with **12.1.4 and JDK 21**. Full 64-bit JDK including javac, matching host architecture/native decompiler required. REA setup does not install Ghidra or Java.
-- Node `^22.23.4 || ^24.22.1 || >=26.12.1`; npm; Linux procps-compatible ps.
-- [Official Ghidra release](https://github.com/NationalSecurityAgency/ghidra/releases/tag/Ghidra_12.1.4_build): `ghidra_12.1.4_PUBLIC_20260921.zip`, SHA256 `ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db`.
-- [Official Temurin JDK release](https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.13%2B9): Linux x64 JDK21.0.13+9 archive, SHA256 `d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c`.
-- Release metadata and hashes were read through GitHub, **download bytes were not fetched or verified locally**.
-- REA's `v6.8.0` GitHub release URL returned 404. package.json version is not proof that npm has published it. The pinned npm installation below remains untested and must fail visibly if unavailable; do not silently substitute another release.
+Imported the supplied **dr2.exe**, not a recompiled fixture, into a new independent DR2Startup project. Ghidra auto-analysis completed in 134 seconds. Then repeated decompilation using the freshly installed toolchain with the project opened **read-only**, without re-analysis.
 
-## Reproduce when Work execution returns
+Actual Ghidra script output:
 
-The scripts are unexecuted recipes, not a successful setup report. Linux x86_64 is the only installer target. Provision a supported Node/npm runtime first through official Node distribution tooling. Do not reuse an existing installation directory.
+```text
+DR2_STARTUP_DECOMPILE address=004c3930 run_codes=[Intro, KeyCheck, Login, Mission, Outro, Shell, Studio] characters=659
+```
+
+[Machine-checked verification](logs/rea-workspace/ghidra-verification.json), [import log](logs/rea-workspace/ghidra-import.log), [fresh toolchain/read-only log](logs/rea-workspace/ghidra-readonly-verification.log).
+
+Executable SHA256: `5ea4734ab2f2ad381877ce1c0d9b03365ddb3dd8e3ff0719a634296be1c15250`; Ghidra language `x86:LE:32:default`. Function `0x004c3930` references all seven run-code names, registers them in precisely the order in `appdr2/winmain.cpp`, and returns zero. This strongly identifies WinMain by source comparison. It does **not** prove complete equivalence of the community executable to the pinned source. Decompiler names/types are inferred and the 659-character output is pseudocode, not recovered original source.
+
+Private pseudocode and the new project remain in `reign-work/decompilation-owned-toolchain/` and `reign-work/dr2-ghidra-project/`, outside the repository. No command in this DR2 work opened or migrated the existing Magic 2014 projects. A private inventory covered 19 of their files; a later comparison detected four database/journal files changed during the session. Attribution is not established (no active matching Java process remained at inspection), so byte-for-byte preservation cannot be claimed. Those files were not restored or overwritten. DR2 uses its own separately named project, toolchain prefix and evidence directories. Source/asset/executable bytes and pseudocode are excluded from the commit.
+
+## Reproduce
+
+Official REA requirements were read at [source checkpoint 25f0f99](https://github.com/morluto/rea/tree/25f0f9934d226caa62fb89d68e7bacad74f4fe73). The installation guide accepts Ghidra 12.1.x and documents upstream verification of 12.1.4 with JDK 21. Node requirement is `^22.23.4 || ^24.22.1 || >=26.12.1`; Linux also requires procps-compatible ps. REA setup itself does not install Java/Ghidra.
 
 ```bash
-bash tools/setup_rea.sh /absolute/new/reigncarnated-rea-toolchain
-source /absolute/new/reigncarnated-rea-toolchain/env.sh
+# Use a nonexistent absolute prefix. Existing installations are never overwritten.
+bash tools/setup_rea.sh /absolute/new/toolchain
+source /absolute/new/toolchain/env.sh
 ```
 
-This installs JDK/Ghidra into the new prefix, checks the pinned download hashes, installs the exact npm package version into that prefix, retains package-lock.json, captures version/doctor/providers output, and leaves user profiles/MCP registrations untouched. It requires network access to GitHub release downloads and npm. Retain failed-install logs and use a new prefix for a subsequent attempt rather than deleting existing material.
+Optionally set `REIGN_REA_DOWNLOAD_CACHE` to a directory containing the exact official archive filenames. Cache copies are still checked against pinned hashes. The actual Work run used the existing verified download cache, then extracted fresh installations and performed a fresh npm install. Versions/logs/env.sh/package-lock.json are retained even when doctor fails. Node/npm, curl, tar, unzip, sha256sum and ps must already be available. Run bash -n and Python py_compile for the checked-in scripts; these checks pass in Work.
 
-Before analysis, inventory existing .gpr/.rep projects, REA snapshots, and notes. Make backups before intentionally opening anything with a newer Ghidra. Verification should use an independent target copy and fresh output directory; do not pass an existing analysis snapshot, purge caches, or delete an existing project.
-
-Use the owner's original installation executable, record its SHA256, and keep it outside the repository. The previously described community executable has not been proved identical to the pinned source. No verified function address is currently recorded. Inspect the real provider's analysis/search output to locate a candidate, then establish identity from instructions, call sites, and source comparison.
+For standalone Ghidra, create fresh project and private evidence directories, and use the supplied owner executable and external source checkout:
 
 ```bash
-rea analyze /absolute/copy/dr2.exe --provider ghidra --json > /absolute/new-evidence/overview.json
-rea search /absolute/copy/dr2.exe 'source-backed identifying string' --provider ghidra --json > /absolute/new-evidence/search.json
-python3 tools/verify_rea_function.py /absolute/copy/dr2.exe CONFIRMED_FUNCTION_ADDRESS /absolute/new-function-evidence
+mkdir /absolute/new/project-directory /absolute/new/private-evidence
+"$GHIDRA_INSTALL_DIR/support/analyzeHeadless" /absolute/new/project-directory DR2Startup \
+ -import /absolute/owner/dr2.exe -scriptPath "$PWD/tools/ghidra" \
+ -postScript DR2StartupProbe.java /absolute/new/private-evidence \
+ -analysisTimeoutPerFile 240 -max-cpu 2
+python3 tools/verify_ghidra_startup.py /absolute/owner/dr2.exe /absolute/external/upstream /absolute/new/private-evidence
 ```
 
-Create the overview directory first with mkdir without -p, so an existing directory is rejected. Replace the example search text and address using actual discoveries, not guessed addresses. The verification script refuses an existing output directory, records target SHA256, exact argv, exit codes, stdout/stderr, doctor, providers, function dossier, and decompilation. It does not mark function identity confirmed automatically.
+The helper compares the real executable hash, decompiler completion, nonempty output and ordered registrations to the inspected source. An initial verifier error counted the commented-out MeshView registration; stripping source comments corrected that verifier without changing the observed decompilation. Review structured results: a Ghidra launcher exit alone is insufficient.
 
-A useful source-backed target is `WinMain` compared against `appdr2/winmain.cpp`, or a CRC routine compared against `system/crc.cpp`; neither has an established installation-binary address here. A recompiled engine_smoke function can provide an additional symbol-rich tool fixture, but must be labeled **source-compiled fixture**, not verification against the original installation executable.
+To repeat against the resulting project safely, use `-process dr2.exe -noanalysis -readOnly` instead of `-import`, with a new evidence directory. Never point the import command at existing analysis. Once REA readiness works, `tools/verify_rea_function.py` records separate real provider evidence and refuses an existing evidence directory. Standalone success must not be relabeled REA success.
 
-## Acceptance evidence still required
+## Main-menu APK status
 
-1. Actual installed versions and complete successful Ghidra doctor/provider output.
-2. Actual nonempty decompiler result, target SHA256 and selected address.
-3. Source comparison proving this is the intended Dark Reign 2 function; explain uncertainty with community-build provenance.
-4. Preserve raw results privately and review licensing before committing pseudocode, executable bytes, or other derived proprietary content. Commit a concise findings report and nonproprietary metadata.
-5. CLI success is distinct from MCP client registration. No MCP integration has been attempted or established here.
-
-No tests or syntax checks of the new scripts ran in this checkpoint. No APK, engine/menu milestone, or runtime result is implied.
+The executable, assets, source, host compiler and Android NDK/SDK are available. The remaining main-menu blocker is engine implementation/integration, not another owner asset upload. Original control declarations and five coordinate/border methods now compile natively, with 15 host checks of original UI types and successful ARM64 compilation; full IControl, IFace startup, Main/GameGod and menu controls are not linked. No original-menu APK or gameplay launch is established. See [control progress](CONTROL_PROGRESS.md).

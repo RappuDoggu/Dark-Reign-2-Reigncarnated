@@ -236,3 +236,8 @@ CI verified for code `707eea2f49b8b98f3446d58259ef8f603e095283`: [run40161670719
 ## Runtime recovery and requested menu gate — 2026-10-25
 
 Requested checkpoint: original menu APK at minimum. NOT ACHIEVED. Recovered original tracking, event dispatch and typed-variable runtime modules plus a synthetic kernel-handoff test. Local observations before workspace disconnection:25 ASan/UBSan tests passed; new services compiled for AArch64/API26; existing51 GPU checks passed per context. Original IControl syntax probes failed at vendor/graphics/math integration; no control link, engine/menu initialization or gameplay occurred. The workspace disconnected before raw logs/upload. Source was reconstructed through GitHub; fresh CI must verify the committed bytes. See RUNTIME_PROGRESS.md. No new device APK is delivered as a menu build.
+
+
+## Restored workspace, decompiler verification and control types — 2026-10-25
+
+Workspace restored: isolated REA6.8.0/Ghidra12.1.4/full JDK21.0.13+9 installed. Official archive hashes pass; standalone Ghidra decompiled the owner executable startup at 0x004c3930 and verified the seven ordered WinMain registrations. REA doctor/decompile/providers fail at process ownership because namespace PIDs disagree with /proc; no REA integration claim. Original control declarations/five coordinate-border methods now compile; 26 host tests pass with LeakSanitizer disabled (default leak checks fail in Work), 15 new UI-type checks, ARM64 compilation PASS. Full IControl/IFace/Main/GameGod/menu are unlinked; no new menu APK. See REA_SETUP.md and CONTROL_PROGRESS.md.
