@@ -116,3 +116,8 @@ Original FontSys Init/Done/Create/GetFont/DeleteAll/OnModeChange and NBinTree no
 ## Original interface metrics integration
 
 Inspected iface.cpp InitMetrics/ConfigureMetrics/GetMetric/UpdateScreenMetrics and iface_types.h MetricType. Extracted original code preserves the reserved sentinel slot and original default/key tables. Actual standard-font config executes its Metrics section and resolves its two original font aliases. Native viewport/state adapters do not initialize IFace controls or graphics. See INTERFACE_METRICS_PROGRESS.md for exact scope/evidence.
+
+
+## Original bitmap manager integration
+
+Original graphics/bitmap_manager.cpp Setup/Create/Find/FindCreate/ReleaseDD/OnModeChange, Bitmap reload/resource contracts, Utils::FindExt, Dir::PathExpand and BuffString limits were inspected and hash-pinned. The native slice preserves extension-independent cache lookup, fallback priority, numbered frame rings and release/restore iteration. Actual archive smoke.tga/smoke.pic requests demonstrate a cache reuse; directory-qualified keys demonstrate the original Setup/Find mismatch. Neither is treated as asset corruption. Full Bitmap/movie/mipmap integration is still missing.

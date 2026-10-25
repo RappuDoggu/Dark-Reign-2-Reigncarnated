@@ -215,3 +215,10 @@ Original IFace InitMetrics/ConfigureMetrics/GetMetric/UpdateScreenMetrics now ru
 Local Android verification PASS: NDK r27c/API26 builds the original metric source slice, native adapter, AArch64 interface_metrics_smoke and private diagnostic package. ELF header/package verification logs are retained. The new metric/registry path has not executed on Android and is absent from the unchanged public v0.4 APK.
 
 CI verified for code `41898b8af98cff073a1f53a77c677188cc90822d`: [run40157490540](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40157490540) SUCCESS. Host job121061885763 passes19 CTest targets including33 original metric checks with default leak checking. Android job121061885568 passes ARM64/private package verification,42 software GPU checks per context across two contexts, and the unchanged original-only public v0.4 package build. Artifacts:12584667237(host logs),12584757331(Android/GPU/package logs),12584812211(public v0.4 APK). Public APK excludes the original metric/registry implementation; no original menu or engine launch is established.
+
+
+## Original bitmap manager integration
+
+Original Bitmap::Manager Setup/Create/Find/FindCreate and ReleaseDD/OnModeChange loops now execute against native TGA/PIC image and optional real GPU ownership callbacks. Host ASan/UBSan:20 tests PASS, including29 manager checks. Real base.zwp:564 requests,563 entries/initial reads (smoke.tga reuses smoke.pic),563 successful restore reads. Software GLES:46 checks pass per context in two contexts; the manager persists across context loss and recreates textures in the second context. Two fixture failures (missing aliases, then missing blend bits) were corrected without weakening original Vid validation. See BITMAP_MANAGER_PROGRESS.md and docs/logs/bitmap-manager. No engine/menu launch is established.
+
+Local Android NDK r27c/API26 compilation/package verification PASS, including original/native bitmap manager libraries, AArch64 bitmap_manager_smoke and bitmap_manager_probe. ELF/package logs are retained. The new manager has not executed on Android and is excluded from the unchanged public v0.4 APK.

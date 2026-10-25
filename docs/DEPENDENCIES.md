@@ -64,3 +64,8 @@ The original FontSys file/alias registry and CreateFont FScope handler now compi
 ## Original interface metrics integration
 
 Original IFace metric defaults, CRC table, FScope configuration and reads now compile in the external dr2_iface_metrics slice. Native InterfaceMetrics plus FontRegistry share the original parse and resolve font references by original FontSys CRC lookup. Native viewport dimensions/32-bit RGBA render depth replace Vid::backBmp dimension reads. Actual controls, colors/skins, events, frame setup and Main/GameGod services remain missing. See INTERFACE_METRICS_PROGRESS.md.
+
+
+## Original bitmap manager integration
+
+The scoped original bitmap manager now uses original NBinTree and CRC naming, fallback/animation/release/mode-change loops, with native TGA/PIC decoding and actual optional GPU upload/delete/unbind callbacks. The full Bitmap class, mipmaps/reduction, BMP, Bink, color-key policies and nonzero stages remain unported. Original Setup/Find directory-key discrepancy is retained and tested. See BITMAP_MANAGER_PROGRESS.md.

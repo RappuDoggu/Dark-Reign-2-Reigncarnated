@@ -89,3 +89,8 @@ The original FontSys registration dependency is now exercised with the actual st
 ## Original interface metrics integration
 
 CMake now stages original IFace metric functions into an external overlay, builds dr2_iface_metrics and includes original_interface_metrics in host tests/ARM64 compilation. FontRegistry::configure optionally dispatches Metrics during the same original parse. Metric-driven font/shadow drawing passes host GPU checks. Next integrate original bitmap manager ownership/reload/animation and IFace colors/skins/control/event/frame startup before attempting an engine-initializing menu APK. No new adapter-only device test is required for this change.
+
+
+## Original bitmap manager integration
+
+CMake now builds dr2_bitmap_manager, bitmap_manager_smoke and bitmap_manager_probe from an external original manager overlay plus native ownership adapters. CPU-only and actual GLES callbacks are explicit; lost-context abandonment must precede restoration in a new owning context. Host tests and two-context GPU replay pass. Next complete BMP, mipmap/transparency policies and full Bitmap integration, then original interface colors/skins/control/frame/event startup and Main/GameGod services. The public v0.4 diagnostic is unchanged; no new owner testing is required for this source-side checkpoint.

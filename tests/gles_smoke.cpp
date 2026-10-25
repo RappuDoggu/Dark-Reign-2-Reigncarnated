@@ -10,6 +10,7 @@
 void original_vid_gpu_checks(reign::LegacyGles &);
 void original_bucket_gpu_checks(reign::LegacyGles &);
 void original_bitmap_gpu_checks(reign::LegacyGles &);
+void original_bitmap_manager_gpu_checks(reign::LegacyGles &);
 void original_font_gpu_checks(reign::LegacyGles &);
 #endif
 namespace {
@@ -39,6 +40,7 @@ int main(){
  original_vid_gpu_checks(renderer);
  original_bucket_gpu_checks(renderer);
  original_bitmap_gpu_checks(renderer);
+ original_bitmap_manager_gpu_checks(renderer);
  original_font_gpu_checks(renderer);
 #endif
 }return 0;}
