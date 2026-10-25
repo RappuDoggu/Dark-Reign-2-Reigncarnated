@@ -31,3 +31,5 @@ Logs: docs/logs/bitmap-manager. Android compilation/CI evidence is recorded in B
 ## Next engine dependencies
 
 BMP loading, original mipmap/reduction and transparency/color-key policies, remaining full Bitmap integration, IFace colors/skins/control registration, frame/event orchestration, input/audio and Main/GameGod startup remain unfinished. This manager slice does not initialize the original menu, scene or simulation. M3/M4 remain unachieved; pen/touch and dual-screen remain deferred.
+
+Further Bitmap::Create inspection: the original DirectDraw allocation rounds surface width with DWORDALIGN but retains requested bmpWidth and derives inverse width/half-texel UV shifts from logical bitmap dimensions. Full integration must preserve that allocation/stride/logical-size distinction and the texNoHalf policy; successful raw image loading is not proof of full Bitmap UV/allocation parity.
