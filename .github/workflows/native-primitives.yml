@@ -21,6 +21,12 @@ jobs:
           cmake -S . -B build-host -DREIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream" -DREIGN_SANITIZE=ON 2>&1 | tee evidence/configure.log
           cmake --build build-host --verbose 2>&1 | tee evidence/build.log
           ctest --test-dir build-host -V 2>&1 | tee evidence/tests.log
+      - name: Record complete original frontend link boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/probe_frontend_link.py build-host "$RUNNER_TEMP/frontend-full-link" --sanitize > evidence/frontend-link-boundary.log
+          cp "$RUNNER_TEMP/frontend-full-link/link.log" evidence/frontend-full-link.log
       - name: Record original frontend compilation boundary
         shell: bash
         run: |
@@ -103,3 +109,4 @@ jobs:
         with:
           name: android-compilation-and-package-logs
           path: evidence/*.log
+

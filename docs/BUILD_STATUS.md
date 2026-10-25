@@ -1,3 +1,8 @@
+# Latest: original texture configuration bridge
+
+39 host tests pass; the complete control link has 12 missing symbols.
+See [FRONTEND_TEXTURES.md](FRONTEND_TEXTURES.md). This is not a main-menu build.
+
 # Latest: original dialog events and nine-piece skins
 
 38 host tests pass. Full UI link still has 13 unresolved symbols.
