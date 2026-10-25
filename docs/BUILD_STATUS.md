@@ -163,7 +163,7 @@ Original PrimitiveDesc/Bucket/BucketMan/TranBucketMan now compile and render thr
 - [Android/GLES/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40140262166/artifacts/12579100265), artifact `12579100265`.
 - Original-only Renderer Test v0.3 rebuild artifact `12579145190` contains no original engine implementations/assets. It is not a new menu/gameplay build; no additional owner test is requested.
 
-Locally, the two new component tests also pass in an optimized Release build with ASan/UBSan. Real supplied data matches 106 supported TGA images / 1,934,336 pixels with five unsupported native-decoder TGA formats explicitly skipped. See BITMAP_BUCKET_PROGRESS.md and release/raw logs for scope and failure details. M3–M5 remain unachieved. Next native launch dependencies are original Bitmap storage/load/registry/context restoration, Font glyph atlas creation and triangle fans, plus original frontend/startup orchestration. This final documentation commit changes no tested code.
+Locally, the two new component tests also pass in an optimized Release build with ASan/UBSan. Real supplied data matches 106 supported TGA images / 1,934,336 pixels with five unsupported native-decoder TGA formats explicitly skipped. See BITMAP_BUCKET_PROGRESS.md and release/raw logs for scope and failure details. M3–M5 remain unachieved. Next native launch dependencies are original Bitmap storage/load/registry/context restoration, FontSys/interface integration (current glyph drawing uses indexed rectangles), plus original frontend/startup orchestration. This final documentation commit changes no tested code.
 
 
 
@@ -172,3 +172,16 @@ Locally, the two new component tests also pass in an optimized Release build wit
 Original Font::Read/Width/Draw, FontSys atlas allocation/lookup and IFace glyph batching now compile through an external SHA-pinned overlay. Native RGBA bitmap storage implements lock/write/publication and atlas replay. Six supplied v1 fonts load: 1,351 glyphs, 12 atlases, 504 sample vertices; no font data is published. Sixteen host sanitizer targets and 39 GPU checks per recreated software-EGL context pass. Optimized font/storage checks also pass. Original font targets compile for ARM64; they are not yet executed on a physical device.
 
 An actual missing-glyph-row failure exposed the old pre-raster Y inversion. The GLES backend now renders in logical game coordinates into an RGBA8/depth16 target and flips once at presentation. Original font coordinates/UVs are unchanged. The new original-only Renderer Test v0.4 contains 12 device checks (coverage, presentation and resize included) and needs Fold testing. Local APK SHA-256: `17e03f102b7887b6ba446ff2b6a6762e0879616a010890c53adc3cb243caf925`, 2,470,523 bytes; debug certificate matches local v0.3. See FONT_PROGRESS.md, ANDROID_RENDERER_TEST.md and docs/logs/fonts/. Full original menu/engine/mission startup remains unfinished; M3–M5 are not achieved. Updated CI evidence follows after this code is pushed.
+
+
+### Verified CI: original font/IFace rendering and v0.4 coverage fix
+
+[Run 40144610382](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40144610382) at implementation commit `381b6136cea58560387ea9344bad44978dc913cf` completed with **host PASS and Android PASS**.
+
+- Host job `121023175267`: all 16 CTest targets pass with ASan/UBSan and default runner leak checks. Logs confirm original FFF v1/v2, glyph/metric/draw/shadow/clipping/capacity/texture flush/replay/recovery and native bitmap-storage checks.
+- Android job `121023175052`: original font/IFace target and probes compile for ARM64; diagnostic package verifies. Software EGL passes all 39 checks per context in two fresh contexts, including retained CPU-font upload and original glyph drawing. The original-only v0.4 APK passes build/signature/ZIP checks.
+- [Host logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40144610382/artifacts/12579983748), artifact `12579983748`.
+- [Android/GLES/package logs](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40144610382/artifacts/12579998911), artifact `12579998911`.
+- [Original-only Renderer Test v0.4 CI APK](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40144610382/artifacts/12579729247), artifact `12579729247`. CI uses a different development key from the direct local download.
+
+The local direct-download v0.4 APK remains SHA-256 `17e03f102b7887b6ba446ff2b6a6762e0879616a010890c53adc3cb243caf925` (2,470,523 bytes), with the same debug certificate as the local v0.3 delivery. It contains no original engine code/assets. Its new 12-check framebuffer/presentation/resize path requires owner Fold runtime evidence. Original source font rendering has host runtime and ARM64 build evidence only. M3–M5 remain unachieved; no original menu/mission launch is claimed. The final evidence-only documentation commit changes no tested code.
