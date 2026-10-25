@@ -48,3 +48,9 @@ Host GLES tests use installed Mesa/EGL and externally staged Khronos SDK headers
 `dr2_fonts` retains original Font reader/measurement/draw, selected FontSys atlas allocation/lookup and IFace batching from an external hashed overlay. NativeFont validates serialized extents, isolates source types, scopes atlas ownership and requires explicit GPU upload/draw consumers. BitmapSurface provides real RGBA8 CPU memory, lock/write/publication and repeatable atlas upload data; it is not the full DirectDraw Bitmap manager. Original FtoL truncation is reproduced with a C-compatible cast. Original Font::Draw uses indexed rectangles; its stale DOTRIFAN define is not an active rendering branch. Full FontSys aliases/registration and interface startup remain unported.
 
 The GLES backend now requires core GLES3 framebuffer/renderbuffer/blit support. It owns a reusable RGBA8/depth16 logical target, then presents once with a vertical flip. Resize allocation, readback orientation and lost-context cleanup are tested locally; v0.4 device evidence is still required. No extra text-shaping/font middleware or source/game assets are added to public APKs. See FONT_PROGRESS.md.
+
+
+
+### Bitmap file loading checkpoint
+
+Native bounded TGA/PIC framing now feeds the separately compiled original Pix/CopyLine functions. The supplied base archive's111 TGA and453 PIC images load. The inspected `graphics/bitmap.cpp` methods establish channel/encoding rules; unknown PIC chains, grayscale/interleaved TGA remain rejected. Full original Bitmap registry, DirectDraw replacement, mipmaps and reload services are still dependencies. See BITMAP_LOADING_PROGRESS.md; these readers do not initialize Main/GameGod or IFace.

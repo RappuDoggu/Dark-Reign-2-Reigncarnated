@@ -98,3 +98,11 @@ The original ratio-based BucketMan::GetMem can place U16 indices at an odd offse
 The complete current interface/font.cpp::Draw emits indexed rectangles through IFace::GetVerts/SetIndex, despite the unused DOTRIFAN define. This corrects the earlier inference that font support requires triangle fans. Source-derived v1/v2 FFF extents and two-byte glyph images are validated before the original pointer reader; unaligned loads and zero-length-array dependence are removed without changing disk sizes. Original glyph packing and original IFace capacity/texture flushes are retained. Original system/utils.cpp::FtoL explicitly selects x87 truncation and restores the control word; opacity 255*0.5 therefore becomes 127, not 128. The adapter follows that implementation.
 
 Real supplied base.zwp fonts all load (6 fonts, 1,351 glyphs, 12 atlases). The first actual font GPU test showed a missing top row with the old renderer. A logical offscreen target and final presentation flip fixes the retained fixture without editing original glyph positions. This is host GPU evidence, not a D3D7 Windows capture or new Android engine-boot evidence. Details and raw failures: FONT_PROGRESS.md and docs/logs/fonts/.
+
+
+
+### Bitmap loader investigation and owner v0.4 evidence
+
+Inspected primary `graphics/bitmap.cpp` ReadTGA/ReadPIC, PIC headers/channel enums and `graphics/bitmap_manager.cpp` Create/Find/FindCreate/DisposeAll/ReleaseDD dependencies. TGA indexed8/packed16 and PIC RGB plus separate alpha occur in the supplied base archive. Native bounded framing now loads564 TGA/PIC images through original CopyLine; full original manager/surface/mipmap methods remain unported. True-color TGA RLE and mirrored origins are explicit supported extensions beyond the original reader. PIC unknown encodings fail explicitly. See BITMAP_LOADING_PROGRESS.md.
+
+Owner v0.4 Fold report passes all12 public adapter pixel checks including integer glyph coverage, presentation orientation and target resize, on context generation2. It contains no original game implementation and establishes no engine/menu/mission startup.

@@ -185,3 +185,13 @@ An actual missing-glyph-row failure exposed the old pre-raster Y inversion. The 
 - [Original-only Renderer Test v0.4 CI APK](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40144610382/artifacts/12579729247), artifact `12579729247`. CI uses a different development key from the direct local download.
 
 The local direct-download v0.4 APK remains SHA-256 `17e03f102b7887b6ba446ff2b6a6762e0879616a010890c53adc3cb243caf925` (2,470,523 bytes), with the same debug certificate as the local v0.3 delivery. It contains no original engine code/assets. Its new 12-check framebuffer/presentation/resize path requires owner Fold runtime evidence. Original source font rendering has host runtime and ARM64 build evidence only. M3–M5 remain unachieved; no original menu/mission launch is claimed. The final evidence-only documentation commit changes no tested code.
+
+
+
+## Owner v0.4 validation and native bitmap loading
+
+Owner Fold5 report: SM-F946U, API36, Adreno740, context generation2, surface1692x666. All12 v0.4 public adapter GPU checks PASS;2074 archive entries/99,631,656 payload bytes and cursor decode PASS. Raw report: `logs/bitmap-loading/fold-v04-owner-report.txt`. This replaces the pending device gate for v0.4 only; it does not test original engine initialization.
+
+New native TGA/PIC framing feeds original Pix/CopyLine; no upstream implementation was copied into this repository. Actual base.zwp:111 TGA plus453 PIC images load (564 total,11,605,888 pixels).106 true-color TGA files match the independent existing decoder; the remaining real formats have successful load evidence plus synthetic golden vectors, not a Windows oracle. Host ASan/UBSan:17 CTest targets PASS, including288 loading checks. See BITMAP_LOADING_PROGRESS.md for supported formats and remaining scope. No original menu or gameplay launch is claimed.
+
+Local follow-through: all40 GPU checks PASS in each of two software EGL contexts. NDK r27c/API26 ARM64 builds the new loader, test executable and private diagnostic package successfully; ELF header reports AArch64. This establishes compilation, not ARM64 execution of the new loader. The private diagnostic package is not a distributable engine APK. Logs: `docs/logs/bitmap-loading/`. CI results for this change are recorded separately when available.

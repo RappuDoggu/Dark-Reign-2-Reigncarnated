@@ -73,3 +73,9 @@ Original opaque/translucent bucket management and Pix/CopyLine conversion now bu
 Original FFF atlas construction, measurement, glyph draw and interface batching now compile for ARM64 and render through original Vid calls in host GLES tests. Retained CPU atlas data can be uploaded again after context recreation. This revision's font draw path uses indexed rectangles; the earlier triangle-fan prerequisite was inferred from a stale define and is corrected.
 
 Renderer consumers must call LegacyGles::present() once after frame draws, before EGL swap. The JNI diagnostic does this. Renderer Test v0.4 exposes 12 own-adapter GPU checks and surface/context metadata for Fold validation. It contains no upstream implementation or game assets. Next: device verification of the changed presentation path, original Bitmap loading/registry and missing formats, FontSys alias/configuration, IFace frame/control/input integration and remaining Main/GameGod services. See FONT_PROGRESS.md. No substitute menu or playable mission is claimed.
+
+
+
+## Bitmap loading and v0.4 device checkpoint
+
+Owner Fold5/API36/Adreno740 passes all12 v0.4 adapter checks at context generation2. Native TGA/PIC framing plus original pixel conversion now loads111 TGA and453 PIC images from the supplied base archive. Reproduce with `bitmap_conversion_probe /path/to/base.zwp`; no image assets are committed. See BITMAP_LOADING_PROGRESS.md for the scoped semantics and synthetic/runtime evidence. Next implement original Bitmap registry/lifetime/reload/mipmap integration and FontSys/IFace registration/frame orchestration. M3 remains blocked on actual engine startup and scene execution, not adapter-only diagnostics.
