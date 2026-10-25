@@ -1,0 +1,27 @@
+[
+  {
+    "case": "wrong-hash",
+    "rejected": true,
+    "reason": "Metadata hash mismatch"
+  },
+  {
+    "case": "missing-function",
+    "rejected": true,
+    "reason": "Incomplete/duplicate function list"
+  },
+  {
+    "case": "wrong-edge",
+    "rejected": true,
+    "reason": "Call graph mismatch: 005456d0"
+  },
+  {
+    "case": "truncated-code",
+    "rejected": true,
+    "reason": "Decompilation failed: 005456d0"
+  },
+  {
+    "case": "runtime-claim",
+    "rejected": true,
+    "reason": "Unsupported runtime claim"
+  }
+]

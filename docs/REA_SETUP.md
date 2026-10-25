@@ -91,3 +91,8 @@ Reproduced the provider prerequisite failure in ordinary and PTY execution. Node
 Full original control compile was repeated with native declarations and still fails at Pix/VertexTL and subsequent input/font/utility dependencies. No further menu functionality or APK runtime success resulted from this troubleshooting. Standalone Ghidra remains the usable analysis path. A normal Linux execution host with matching PID/procfs visibility is the concrete REA prerequisite; no additional game files are needed.
 
 Scheduling remains uncertain before full control/IFace linkage. A provisional engineering allowance is 2–6 focused developer-weeks for the original menu, with substantial overrun risk from startup dependencies; this is a planning estimate, not a measured delivery forecast or a promise of background execution. Re-estimate after the first original interactive window and an integrated desktop startup loop.
+
+
+## Research and menu trace follow-up
+
+See [REA assessment](REA_ASSESSMENT.md) for primary project reports, the decision to continue standalone Ghidra here, and 13 verified menu-path decompilations. The earlier scheduling allowance above is unmeasured, not a validated forecast; reassess after integrated original control-tree linkage and rendering.

@@ -1,4 +1,8 @@
-# Build status — 2026-10-24
+# Build status — latest update 2026-10-25
+
+## Latest increment: menu binary trace
+
+Standalone Ghidra decompiled 13 Login/Shell lifecycle functions and callees from the owner-supplied executable. Six direct-call sequences verified; five corrupt evidence reports rejected. REA provider launch remains blocked by process/procfs inspection. No new C++ build, original-menu launch or APK runtime result is claimed in this increment. [Research, reproduction and next integration gates](REA_ASSESSMENT.md). Earlier sections below retain their dated build history.
 
 ## Milestones
 
