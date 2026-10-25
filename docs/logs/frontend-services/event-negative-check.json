@@ -1,0 +1,6 @@
+{
+  "mutation": "Expect outer loop context during inner binding",
+  "exit_code": 1,
+  "stderr": "Native context check 3\n",
+  "rejected": true
+}

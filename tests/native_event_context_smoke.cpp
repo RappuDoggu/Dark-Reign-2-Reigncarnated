@@ -7,7 +7,7 @@ static Bool receive(native::Event &e){
  *sum+=e.iface.p1;return FALSE;
 }
 int main(){try{
- unsigned checks=0;auto check=[&](bool b){++checks;if(!b)throw std::runtime_error("Native context check "+std::to_string(checks));};
+ unsigned checks=0;auto check=[&](bool b){++checks;if(!b)throw std::logic_error("Native context check "+std::to_string(checks));};
  reign::EventLoop first,second;U16 a=0,b=0;U32 totalA=0,totalB=0;
  first.run_native([&]{native::EventSys::RegisterEvent("IFACE",a);native::EventSys::SetHandler(a,receive,&totalA);});
  second.run_native([&]{native::EventSys::RegisterEvent("IFACE",b);native::EventSys::SetHandler(b,receive,&totalB);});
