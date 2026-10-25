@@ -1,4 +1,4 @@
-name: Native primitives and Android diagnostic
+name: Native engine slices and Android checks
 on:
   push:
     branches: [main, 'dev/**']
@@ -21,6 +21,27 @@ jobs:
           cmake -S . -B build-host -DREIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream" -DREIGN_SANITIZE=ON 2>&1 | tee evidence/configure.log
           cmake --build build-host --verbose 2>&1 | tee evidence/build.log
           ctest --test-dir build-host -V 2>&1 | tee evidence/tests.log
+      - name: Record original frontend compilation boundary
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess, sys
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])
+          upstream=root/"dr2-upstream"
+          summaries=[]
+          for name,opaque in [("vendor",False),("opaque",True)]:
+              out=root/("frontend-probe-"+name)
+              command=[sys.executable,"tools/probe_original_frontend.py",str(upstream),str(upstream)+"-runtime-overlay",str(upstream)+"-config-overlay",str(out)]
+              if opaque: command.append("--opaque-video-declarations")
+              result=subprocess.run(command,text=True,capture_output=True)
+              pathlib.Path("evidence/frontend-"+name+".log").write_text(result.stdout+result.stderr)
+              report=out/"result.json"
+              if not report.exists(): raise RuntimeError("Frontend probe failed before producing compiler metadata")
+              meta=json.loads(report.read_text())
+              if meta["compiler_exit_code"]!=result.returncode: raise RuntimeError("Probe exit status disagrees with compiler metadata")
+              summaries.append(meta)
+          pathlib.Path("evidence/frontend-boundary.log").write_text(json.dumps({"kind":"compile-only diagnostic; no frontend link or engine/menu runtime validation","attempts":summaries},indent=2)+"\n")
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
