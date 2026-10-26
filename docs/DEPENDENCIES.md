@@ -1,3 +1,11 @@
+# Original list/menu widgets — 2026-10-26 UTC
+
+Original Listbox, ListSlider, Slider and Menu now compile and link. Live profile
+selection/menu-item checks pass; **51/51 host tests pass**. Real Login configuration
+reaches statement 104, stopping at UI Sound configuration. No main-menu APK yet.
+[Scope and remaining dependencies](LIST_MENU_CONTROLS.md),
+[actual probe](logs/widget-menu-probe.log), [tests](logs/widget-host-tests.log).
+
 # Cursor configuration increment — 2026-10-26 UTC
 
 Original cursor and console-color code now builds; **51/51 host tests pass**.

@@ -27,13 +27,28 @@ def prepare(upstream, output):
         if s.count(old) != 1:
             raise ValueError('Expected one occurrence: '+old)
         return s.replace(old, new)
-    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic']:
+    reapers = texts['system/reaperlist.h'].replace('#include "dtrack.h"','')
+    reapers = reapers.replace('public:', 'public:\n  using Iterator = typename NList<NODE>::Iterator;',1)
+    reapers = reapers.replace('NList<NODE>::Node *', 'typename NList<NODE>::Node *')
+    for method in ['SetNodeMember','GetHeadNode','GetTailNode','GetHead','Unlink','Dispose','GetCount']:
+        reapers = re.sub(r'(?<![\w:.>])'+method+r'\(', 'this->'+method+'(', reapers)
+    (output/'native_reaperlist.hpp').write_text(reapers)
+    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic', 'iclistbox', 'iclistslider', 'icslider', 'icmenu']:
         s = texts['interface/'+name+'.cpp']
         s = s.replace('#include "input.h"', '#include "control_input.hpp"')
         s = s.replace('#include "stdload.h"', '#include "control_stdload.hpp"')
         # Explicit dependencies in frontend_prelude replace legacy precompiled headers.
         for header in ['vid.h', 'debug_memory.h', 'perfstats.h']:
             s = s.replace('#include "'+header+'"', '')
+        if name in ['iclistbox','iclistslider','icslider']:
+            s = '#include "reign/listbox_support.hpp"\n'+s
+        if name == 'iclistbox':
+            start=s.index('U32 ICListBox::FillFromPath(');end=s.index('{',start)+1;depth=1;cursor=end
+            while depth:
+                depth+=(s[cursor]=='{')-(s[cursor]=='}');cursor+=1
+            s=s[:end]+'\n  throw std::runtime_error("Listbox directory enumeration not bound");\n}'+s[cursor:]
+        if name == 'iclistslider':
+            s=s.replace(', 0L)', ', S32(0))')
         if name == 'iface_messagebox':
             s = replace_once(s, 'for (U32 b = 0; events[b] && (b < 3); b++)',
                              'for (U32 b = 0; (b < 3) && events[b]; b++)')
@@ -78,7 +93,7 @@ def prepare(upstream, output):
         depth += (source[b] == '{') - (source[b] == '}')
         b += 1
     helpers = [source[a:b]]
-    for signature in ['  void RenderSheets(', '  void UpdateSheets(', '  void FScopeToSheetInfo(']:
+    for signature in ['  const CH * BreakText(', '  void RenderSheets(', '  void UpdateSheets(', '  void FScopeToSheetInfo(']:
         a = source.index(signature); b = source.index('{',a)+1; depth = 1
         while depth:
             depth += (source[b]=='{')-(source[b]=='}'); b += 1
@@ -95,7 +110,7 @@ def prepare(upstream, output):
     (output/'frontend_helpers.cpp').write_text('#include "reign/frontend_draw.hpp"\n#include "reign/frontend_bitmap.hpp"\n#include "control_stdload.hpp"\nnamespace IFace {\n'+'\n'.join(helpers)+'\n}\n')
     s = replace_once(texts['interface/input.h'], 'void Init(HINSTANCE inst, HWND window);',
                      '// Windows startup declaration excluded; native input lifecycle remains separate.')
-    for declaration in ['extern U16 eventId;', 'extern Point<S32> mousePos;', 'extern U32 lButton;']:
+    for declaration in ['extern U16 eventId;', 'extern Point<S32> mousePos;', 'extern U32 lButton;', 'extern U32 rButton;']:
         s = replace_once(s, declaration, declaration.replace('extern ', 'extern thread_local '))
     (output/'control_input.hpp').write_text(s)
     s = texts['system/array.h']

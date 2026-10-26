@@ -16,10 +16,17 @@
 #include "reign/frontend_draw.hpp"
 #include "reign/localization.hpp"
 #include "icbutton.h"
+#include "iclistbox.h"
+#include "icmenu.h"
+#include "iclistslider.h"
 #include "icstatic.h"
 #include "iface_messagebox.h"
 #include <iostream>
 namespace {
+IControl *menu(U32,IControl *p,U32){return new ICMenu(p);}
+IControl *listbox(U32,IControl *p,U32){return new ICListBox(p);}
+IControl *slider(U32,IControl *p,U32){return new ICSlider(p);}
+IControl *listSlider(U32,IControl *p,U32){return new ICListSlider(p);}
 IControl *button(U32,IControl *p,U32){return new ICButton(p);}
 IControl *label(U32,IControl *p,U32){return new ICStatic(p);}
 IControl *window(U32,IControl *p,U32){return new ICWindow(p);}
@@ -42,6 +49,8 @@ int main(int argc,char **argv){try{
   ICRoot root;root.SetName("Root");auto &state=reign::iface_event_detail::state();state.root=&root;state.treeReady=TRUE;
   struct Cleanup{ICRoot &r;reign::iface_event_detail::State &s;~Cleanup(){if(r.IsActive())r.Deactivate();s.root=nullptr;s.treeReady=FALSE;}} cleanup{root,state};
   IFace::RegisterControlClass("Button",button);IFace::RegisterControlClass("Static",label);IFace::RegisterControlClass("Window",window);IFace::RegisterControlClass("MessageBoxWindow",message);
+  IFace::RegisterControlClass("Listbox",listbox);IFace::RegisterControlClass("Slider",slider);IFace::RegisterControlClass("ListSlider",listSlider);
+  IFace::RegisterControlClass("Menu",menu);
   root.Activate();
   try{reign::run_console([&]{scopes.execute(argc==3?argv[2]:"runcode_main_login.cfg");},[&](VarSys::VarItem *,U32){++consoleDisplays;});}
   catch(const std::exception &e){blocker=e.what();}

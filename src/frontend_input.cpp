@@ -5,6 +5,7 @@ namespace Input {
 thread_local U16 eventId=0;
 thread_local Point<S32> mousePos{};
 thread_local U32 lButton=0;
+thread_local U32 rButton=1;
 }
 namespace reign {
 struct FrontendInput::Impl {

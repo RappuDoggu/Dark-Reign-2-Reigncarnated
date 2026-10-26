@@ -1,0 +1,244 @@
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original tracking, events and variables externally: /tmp/reign-upstream-runtime-overlay
+Staged original IControl declarations and coordinate/border methods externally: /tmp/reign-upstream-control-overlay
+Staged six full original frontend translation units; runtime linkage still required
+Staged 30 original IFace event/registry methods and 12 factory/lifecycle methods
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+Staged original Bitmap::Manager naming/fallback/animation/release loops externally: /tmp/reign-upstream-bitmap-manager-overlay
+Staged original font reader/layout/draw/IFace batching externally: /tmp/reign-upstream-font-overlay
+Staged original IFace metric configuration/default/read functions externally: /tmp/reign-upstream-metrics-overlay
+Staged original FontSys alias/config/mode-change registration externally: /tmp/reign-upstream-font-registry-overlay
+-- Configuring done (2.7s)
+-- Generating done (0.2s)
+-- Build files have been written to: /workspace/scratch/2e29d93ded9e/reign-work/build-host
+[  2%] Built target reign_frontend_support
+[  4%] Built target dr2_primitives
+[  4%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[  4%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 11%] Built target reign_platform
+[ 13%] Building CXX object CMakeFiles/reign_frontend_effects.dir/tmp/reign-upstream-effects-overlay/frontend_effects_slice.cpp.o
+[ 13%] Building CXX object CMakeFiles/reign_frontend_effects.dir/src/frontend_effects.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 18%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+[ 20%] Linking CXX static library libdr2_tokenizer.a
+[ 20%] Built target dr2_tokenizer
+[ 23%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 23%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 23%] Linking CXX static library libreign_frontend_effects.a
+[ 23%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 23%] Built target reign_frontend_effects
+[ 25%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[100%] Linking CXX static library libdr2_bitmap_pixels.a
+[100%] Built target dr2_bitmap_pixels
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/tmp/reign-upstream-bitmap-manager-overlay/manager_slice.cpp.o
+[100%] Linking CXX static library libdr2_tracking.a
+[100%] Built target dr2_tracking
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[100%] Linking CXX static library libdr2_events.a
+[100%] Built target dr2_events
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/src/bitmap_manager.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /tmp/reign-upstream-runtime-overlay/varsys.h:3,
+                 from /tmp/reign-upstream-runtime-overlay/varitem.cpp:2:
+/tmp/reign-upstream-runtime-overlay/varitem.cpp: In destructor ‘reign::vars_detail::VarSys::VarItem::~VarItem()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+[100%] Linking CXX static library libdr2_config.a
+[100%] Built target dr2_config
+[100%] Building CXX object CMakeFiles/dr2_iface_metrics.dir/tmp/reign-upstream-metrics-overlay/metrics_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_fonts.dir/tmp/reign-upstream-font-overlay/font_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/runcodes.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_fonts.dir/src/native_font.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/main_exec.cpp.o
+[100%] Linking CXX static library libdr2_bitmap_manager.a
+[100%] Building CXX object CMakeFiles/dr2_runcodes.dir/src/runcode_host.cpp.o
+[100%] Linking CXX static library libdr2_vars.a
+[100%] Built target dr2_vars
+[100%] Built target dr2_bitmap_manager
+[100%] Building CXX object CMakeFiles/dr2_frontend_config.dir/tmp/reign-upstream-frontend-overlay/control_stdload.cpp.o
+[100%] Linking CXX static library libdr2_iface_metrics.a
+[100%] Built target dr2_iface_metrics
+[100%] Linking CXX static library libdr2_runcodes.a
+[100%] Linking CXX static library libdr2_frontend_config.a
+[100%] Built target dr2_runcodes
+[100%] Built target dr2_frontend_config
+[100%] Building CXX object CMakeFiles/dr2_varfile.dir/tmp/reign-upstream-varfile-overlay/varfile_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_console.dir/tmp/reign-upstream-console-overlay/console_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_console.dir/src/console.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/comparison.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/operation.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_iface_events.dir/tmp/reign-upstream-iface-events-overlay/iface_events.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_iface_events.dir/tmp/reign-upstream-iface-events-overlay/iface_factory.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /tmp/reign-upstream-console-overlay/console_slice.hpp:2,
+                 from /tmp/reign-upstream-console-overlay/console_slice.cpp:1:
+/tmp/reign-upstream-console-overlay/console_slice.cpp: In destructor ‘Console::CmdParse::~CmdParse()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+[100%] Linking CXX static library libdr2_fonts.a
+[100%] Building CXX object CMakeFiles/dr2_iface_events.dir/src/interface_events.cpp.o
+[100%] Built target dr2_fonts
+[100%] Building CXX object CMakeFiles/dr2_font_registry.dir/tmp/reign-upstream-font-registry-overlay/registry_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/switch.cpp.o
+[100%] Linking CXX static library libdr2_varfile.a
+[100%] Built target dr2_varfile
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/relationaloperator.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_localization.dir/tmp/reign-upstream-localization-overlay/localization_slice.cpp.o
+[100%] Linking CXX static library libdr2_console.a
+[100%] Built target dr2_console
+[100%] Building CXX object CMakeFiles/dr2_localization.dir/src/localization.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/font_registry.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/interface_metrics.cpp.o
+[100%] Linking CXX static library libdr2_interface_expressions.a
+[100%] Built target dr2_interface_expressions
+[100%] Linking CXX static library libdr2_localization.a
+[100%] Built target dr2_localization
+[100%] Building CXX object CMakeFiles/dr2_babel.dir/tmp/reign-upstream-babel-overlay/babel_slice.cpp.o
+[100%] Linking CXX static library libdr2_font_registry.a
+[100%] Built target dr2_font_registry
+[100%] Linking CXX static library libdr2_iface_events.a
+[100%] Building CXX object CMakeFiles/reign_frontend_fonts.dir/src/frontend_font.cpp.o
+[100%] Built target dr2_iface_events
+[100%] Building CXX object CMakeFiles/reign_frontend_frame.dir/src/frontend_frame.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_input.dir/src/frontend_input.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_draw.dir/src/frontend_draw.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_draw.dir/tmp/reign-upstream-frontend-draw-overlay/frontend_triangle.cpp.o
+[100%] Linking CXX static library libdr2_babel.a
+[100%] Built target dr2_babel
+[100%] Linking CXX static library libreign_frontend_frame.a
+[100%] Built target reign_frontend_frame
+[100%] Linking CXX static library libreign_frontend_draw.a
+[100%] Built target reign_frontend_draw
+[100%] Building CXX object CMakeFiles/reign_frontend_theme.dir/tmp/reign-upstream-theme-overlay/theme_slice.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_theme.dir/src/frontend_theme.cpp.o
+[100%] Linking CXX static library libreign_frontend_input.a
+[100%] Built target reign_frontend_input
+[100%] Linking CXX static library libreign_frontend_fonts.a
+[100%] Built target reign_frontend_fonts
+[100%] Linking CXX static library libreign_frontend_theme.a
+[100%] Built target reign_frontend_theme
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/messagebox_event.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp: In destructor ‘virtual IControl::~IControl()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/frontend_helpers.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistbox.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistslider.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icslider.cpp.o
+In file included from /tmp/reign-upstream/interface/iclistbox.h:20,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/listbox_support.hpp:4,
+                 from /tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1:
+/tmp/reign-upstream-frontend-overlay/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::Identical(const ReaperList<DATA, NODE>&) const’:
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:36: error: expected unqualified-id before ‘this’
+  326 |     if (this->GetCount() == target.this->GetCount())
+      |                                    ^~~~
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:36: error: expected ‘)’ before ‘this’
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:8: note: to match this ‘(’
+  326 |     if (this->GetCount() == target.this->GetCount())
+      |        ^
+In file included from /tmp/reign-upstream/interface/iclistbox.h:20,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/listbox_support.hpp:4,
+                 from /tmp/reign-upstream-frontend-overlay/icslider.cpp:1:
+/tmp/reign-upstream-frontend-overlay/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::Identical(const ReaperList<DATA, NODE>&) const’:
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:36: error: expected unqualified-id before ‘this’
+  326 |     if (this->GetCount() == target.this->GetCount())
+      |                                    ^~~~
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:36: error: expected ‘)’ before ‘this’
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:8: note: to match this ‘(’
+  326 |     if (this->GetCount() == target.this->GetCount())
+      |        ^
+gmake[3]: *** [CMakeFiles/dr2_frontend_controls.dir/build.make:219: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistbox.cpp.o] Error 1
+gmake[3]: *** Waiting for unfinished jobs....
+gmake[3]: *** [CMakeFiles/dr2_frontend_controls.dir/build.make:247: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icslider.cpp.o] Error 1
+In file included from /tmp/reign-upstream/interface/iclistbox.h:20,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/listbox_support.hpp:4,
+                 from /tmp/reign-upstream-frontend-overlay/iclistslider.cpp:1:
+/tmp/reign-upstream-frontend-overlay/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::Identical(const ReaperList<DATA, NODE>&) const’:
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:36: error: expected unqualified-id before ‘this’
+  326 |     if (this->GetCount() == target.this->GetCount())
+      |                                    ^~~~
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:36: error: expected ‘)’ before ‘this’
+/tmp/reign-upstream-frontend-overlay/reaperlist.h:326:8: note: to match this ‘(’
+  326 |     if (this->GetCount() == target.this->GetCount())
+      |        ^
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp: In member function ‘virtual U32 ICListSlider::HandleEvent(Event&)’:
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:299:17: error: ‘Input’ has not been declared
+  299 |   if (e.type == Input::EventID())
+      |                 ^~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:303:12: error: ‘Input’ has not been declared
+  303 |       case Input::MOUSEBUTTONDOWN:
+      |            ^~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:304:12: error: ‘Input’ has not been declared
+  304 |       case Input::MOUSEBUTTONDBLCLK:
+      |            ^~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:307:29: error: ‘Input’ has not been declared
+  307 |         if (e.input.code == Input::LeftButtonCode())
+      |                             ^~~~~
+gmake[3]: *** [CMakeFiles/dr2_frontend_controls.dir/build.make:233: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistslider.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/Makefile2:2018: CMakeFiles/dr2_frontend_controls.dir/all] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:2025: CMakeFiles/dr2_frontend_controls.dir/rule] Error 2
+gmake: *** [Makefile:758: dr2_frontend_controls] Error 2

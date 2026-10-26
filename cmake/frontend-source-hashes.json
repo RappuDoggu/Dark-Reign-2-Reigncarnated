@@ -17,5 +17,14 @@
   "interface/iface_messagebox.cpp": "e06f129b55f8c8e4218491ee2229c2d124b8390e897f9bd712e9fca0b90f37a6",
   "interface/icstatic.cpp": "d345b6cf9049ec6874dde76eed56f716cbe1fbec5e18ff2367e54b1197c86f04",
   "interface/icstatic.h": "3eb1df8201dd287540fb40efb1650c8b60a59eaedfea8a568df8a18e3fa8547b",
-  "interface/iface_messagebox.h": "812c5ab158957a68fbf959d66582823e499d771ff17f6252c033ba1fd6ea454b"
+  "interface/iface_messagebox.h": "812c5ab158957a68fbf959d66582823e499d771ff17f6252c033ba1fd6ea454b",
+  "interface/iclistbox.cpp": "b8c2649eaae9cb26f6d27ddaf7957f9a0b19f1428a8b7cc15f43bafa0c628bc4",
+  "interface/iclistbox.h": "75ef59350d23e42b723ee687b2e9bf9c7f181f815bc649016837569ee147ada3",
+  "interface/iclistslider.cpp": "55c4f0ad69b24fc29ccef351a04ef853164138c7934f6798158119086768d4a5",
+  "interface/iclistslider.h": "ed57aee836c26b0183cbdc5c5f46e96ab5d3b54b6a52b5dda618406a9acaebdd",
+  "interface/icslider.cpp": "8c618e46bdbc13fe9a05cd969f30cd6f7f01d3b89c2ca1363adfff2a2c0c54b3",
+  "interface/icslider.h": "b78ed2c7a68d022a0f7f5282c7d8e76883261790fe0369285926954cde2cfee4",
+  "system/reaperlist.h": "c42e84a39e05a805d1b482227150ac0ac0b731a28b1da15c3d529eaca74e3bf7",
+  "interface/icmenu.cpp": "8eceda51066b1974d791ee1f69d56e80034f4fb68930f7d795ac433454ffd07d",
+  "interface/icmenu.h": "d2ac52547a47c543ca19961e17ae87cb14f212816a81f5f26d66ab26351b5f4c"
 }

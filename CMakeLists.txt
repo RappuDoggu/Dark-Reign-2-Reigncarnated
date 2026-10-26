@@ -160,7 +160,8 @@ if(REIGN_UPSTREAM)
     "${REIGN_FRONTEND_OVERLAY}/icbutton.cpp" "${REIGN_FRONTEND_OVERLAY}/icwindow.cpp"
     "${REIGN_FRONTEND_OVERLAY}/ifvar.cpp" "${REIGN_FRONTEND_OVERLAY}/icsystembutton.cpp"
     "${REIGN_FRONTEND_OVERLAY}/messagebox_event.cpp" "${REIGN_FRONTEND_OVERLAY}/iface_messagebox.cpp" "${REIGN_FRONTEND_OVERLAY}/icstatic.cpp"
-    "${REIGN_FRONTEND_OVERLAY}/frontend_helpers.cpp")
+    "${REIGN_FRONTEND_OVERLAY}/frontend_helpers.cpp"
+    "${REIGN_FRONTEND_OVERLAY}/iclistbox.cpp" "${REIGN_FRONTEND_OVERLAY}/iclistslider.cpp" "${REIGN_FRONTEND_OVERLAY}/icslider.cpp" "${REIGN_FRONTEND_OVERLAY}/icmenu.cpp")
   set_target_properties(dr2_frontend_controls PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_link_libraries(dr2_frontend_controls PUBLIC dr2_frontend_config reign_frontend_support dr2_events dr2_iface_events)
   target_compile_options(dr2_frontend_controls PRIVATE -ffunction-sections -fdata-sections)

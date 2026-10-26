@@ -8,6 +8,8 @@
 #include "reign/frontend_draw.hpp"
 #include "reign/engine_file.hpp"
 #include "icbutton.h"
+#include "iclistbox.h"
+#include "icmenu.h"
 #include "font_fixture.hpp"
 #include <iostream>
 namespace {IControl *button_factory(U32,IControl *parent,U32){return new ICButton(parent);}}
@@ -39,6 +41,12 @@ int main(){try{
   text="ConfigureInterface(){UnknownSetting();}";rejects([&]{scopes.execute("menu.cfg");});
   text="ConfigureInterface(){Sound(){}}";rejects([&]{scopes.execute("menu.cfg");});
   text="CreateControl(\"Missing\",\"UnportedWidget\"){}";rejects([&]{scopes.execute("menu.cfg");});
+  auto *list=new ICListBox(&root);list->SetName("ProfileList");list->SetSize(150,80);
+  list->AddTextItem("ProfileA",nullptr);list->AddTextItem("ProfileB",nullptr);check(list->ItemCount()==2);
+  check(list->SetSelectedItem("ProfileB",TRUE,FALSE));const char *selected=nullptr;check(list->GetSelectedItem(selected)&&std::string(selected)=="ProfileB");
+  list->DeleteAllItems();check(list->ItemCount()==0);
+  auto *menu=new ICMenu(&root);menu->SetName("TestMenu");CH caption[]={'A',0};check(menu->AddItem("Action",caption,"TestAction")!=nullptr);
+
   check(root.Deactivate());events.process();
  });});});});});});
  text="ConfigureInterface(){}";rejects([&]{scopes.execute("menu.cfg");});
