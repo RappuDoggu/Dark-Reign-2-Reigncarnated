@@ -17,11 +17,11 @@ def prepare(upstream,output):
   while depth:depth+=(source[b]=='{')-(source[b]=='}');b+=1
   return source[a:b].replace('  static ','  ',1)
  declarations=[];bodies=[]
- for src,names in [('interface/iface.cpp',['GetColor','FindColorGroup','FindTextureSkin','CreateColorGroup','CreateSystemColorGroup','CreateTextureSkin','InitDefaultColorGroups','InitColors','ConfigureColors','ProcessCreateColorGroup','ProcessCreateSkin']),('interface/iface_util.cpp',['FScopeToColor','LoadPiece','LoadSkinState','FScopeToTextureSkin'])]:
+ for src,names in [('interface/iface.cpp',['GetColor','FindColorGroup','FindTextureSkin','CreateColorGroup','CreateSystemColorGroup','CreateTextureSkin','InitDefaultColorGroups','InitColors','ConfigureColors','ProcessCreateColorGroup','ProcessCreateSkin','ConfigureDefaultConsoleColor','ConfigureConsoleColors','GetConsoleColor']),('interface/iface_util.cpp',['FScopeToColor','LoadPiece','LoadSkinState','FScopeToTextureSkin'])]:
   for name in names:
    body=function(texts[src],name)
    declarations.append(body[:body.index('{')].strip()+';')
-   fields={'data':'data','colorTable':'colors','colorTableCrc':'keys','stdColorGroups':'standard','customColorGroups':'custom','textureSkins':'skins'}
+   fields={'consoleColors':'consoleColors','defaultConsoleColor':'defaultConsoleColor','data':'data','colorTable':'colors','colorTableCrc':'keys','stdColorGroups':'standard','customColorGroups':'custom','textureSkins':'skins'}
    token=r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\b(?:'+'|'.join(fields)+r')\b'
    body=re.sub(token,lambda m:'reign::theme_detail::state().'+fields[m[0]] if m[0] in fields else m[0],body)
    body=body.replace('sizeof ColorGroup', 'sizeof(ColorGroup)')
@@ -43,9 +43,9 @@ def prepare(upstream,output):
 namespace reign::theme_detail {
 struct State {
  IFace::SystemData data{};Color colors[IFace::MAX_COLORS]{};U32 keys[IFace::MAX_COLORS]{};
- BinTree<ColorGroup> standard,custom;BinTree<TextureSkin> skins;
+ BinTree<ColorGroup> standard,custom;BinTree<TextureSkin> skins;Color defaultConsoleColor{};BinTree<Color> consoleColors;
  State(){data.alphaScale=1;}
- ~State(){skins.DisposeAll();custom.DisposeAll();standard.DisposeAll();}
+ ~State(){consoleColors.DisposeAll();skins.DisposeAll();custom.DisposeAll();standard.DisposeAll();}
 };
 State &state();
 }

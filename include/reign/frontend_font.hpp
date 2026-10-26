@@ -9,6 +9,7 @@ class Font {
 public:
  explicit Font(std::shared_ptr<const reign::NativeFont>);
  S32 Height();
+ S32 AvgWidth(){return S32(native_->average_width());}
  S32 Width(const CH *,S32);
  S32 Width(CH c){return Width(&c,1); }
  void Draw(S32,S32,const CH *,U32,Color,const ClipRect * = nullptr,F32 = 1.0f,S32 = 0);

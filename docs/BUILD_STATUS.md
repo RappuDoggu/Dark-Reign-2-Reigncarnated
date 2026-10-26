@@ -1,3 +1,11 @@
+# Startup console increment — 2026-10-26 UTC
+
+Original UI sound configuration, Edit/ConsoleEdit/ConsoleViewer, TabGroup and
+TipWindow compile. **51/51 host tests pass**. Real Login config reaches statement
+107 and stops at **Vid::Options**. Audio playback and a main-menu APK remain
+unverified. [Implementation and limitations](STARTUP_CONSOLE_CONTROLS.md),
+[probe](logs/startup-console-probe.log), [tests](logs/startup-console-tests.log).
+
 # Verified list/menu increment CI — 2026-10-26 UTC
 
 Commit e7a6e25 passed both host and Android jobs in [run 40302917702](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40302917702).

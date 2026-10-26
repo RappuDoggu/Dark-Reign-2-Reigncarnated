@@ -1,6 +1,7 @@
 #include "console_slice.hpp"
 #include <iostream>
-namespace {unsigned calls=0;int got=0;std::string text;bool nested=false;unsigned argc_seen=0;std::string raw_offset;
+namespace {struct Output {unsigned calls=0;U32 last=0;};Bool output(const CH *,U32 &type,void *context){auto &o=*static_cast<Output *>(context);++o.calls;o.last=type;return TRUE;}
+unsigned calls=0;int got=0;std::string text;bool nested=false;unsigned argc_seen=0;std::string raw_offset;
 void handler(U32 crc){
  ++calls;argc_seen=Console::ArgCount();
  if(crc==Crc::CalcStr("test.raw")){const char *s=nullptr;Console::GetArgString(1,s);text=s?s:"";raw_offset=Console::GetCmdString(1);return;}
@@ -41,6 +42,17 @@ int main(){try{
  },display);
  rejects([&]{Console::ProcessCmd("test.capture 1");});
  rejects([&]{reign::run_console([]{},{});});
+ reign::run_console([&]{
+  Output seen;BinTree<U32> filter;filter.Add(7);
+  Console::RegisterMsgHook(&filter,output,&seen);
+  rejects([&]{Console::RegisterMsgHook(nullptr,output,&seen);});
+  Console::AddString("Visible",7);Console::AddString("Filtered",9);check(seen.calls==1&&seen.last==7);
+  Console::UnregisterMsgHook(output,&seen);rejects([&]{Console::UnregisterMsgHook(output,&seen);});
+  seen.calls=0;Console::EnumStrings(&filter,output,&seen);check(seen.calls==1);
+  for(unsigned i=0;i<120;++i)Console::AddString("Ring",i);
+  seen.calls=0;Console::EnumStrings(nullptr,output,&seen);check(seen.calls==100&&seen.last==119);
+  Console::ClearScrollBack();seen.calls=0;Console::EnumStrings(nullptr,output,&seen);check(seen.calls==0);filter.DisposeAll();
+ },display);
  VarSys::DeleteItem("test");VarSys::DeleteItem("console");
  std::cout<<"Original console parsing/assignment/arguments/dispatch/unwind: PASS ("<<checks<<" checks)\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -1,3 +1,11 @@
+# Startup console increment — 2026-10-26 UTC
+
+Original UI sound configuration, Edit/ConsoleEdit/ConsoleViewer, TabGroup and
+TipWindow compile. **51/51 host tests pass**. Real Login config reaches statement
+107 and stops at **Vid::Options**. Audio playback and a main-menu APK remain
+unverified. [Implementation and limitations](STARTUP_CONSOLE_CONTROLS.md),
+[probe](logs/startup-console-probe.log), [tests](logs/startup-console-tests.log).
+
 # Original list/menu widgets — 2026-10-26 UTC
 
 Original Listbox, ListSlider, Slider and Menu now compile and link. Live profile

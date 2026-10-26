@@ -33,7 +33,7 @@ def prepare(upstream, output):
     for method in ['SetNodeMember','GetHeadNode','GetTailNode','GetHead','Unlink','Dispose','GetCount']:
         reapers = re.sub(r'(?<![\w:.>])'+method+r'\(', 'this->'+method+'(', reapers)
     (output/'native_reaperlist.hpp').write_text(reapers)
-    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic', 'iclistbox', 'iclistslider', 'icslider', 'icmenu']:
+    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic', 'iclistbox', 'iclistslider', 'icslider', 'icmenu', 'icedit', 'ictipwindow', 'ictabgroup', 'console_edit', 'console_viewer']:
         s = texts['interface/'+name+'.cpp']
         s = s.replace('#include "input.h"', '#include "control_input.hpp"')
         s = s.replace('#include "stdload.h"', '#include "control_stdload.hpp"')
@@ -42,6 +42,25 @@ def prepare(upstream, output):
             s = s.replace('#include "'+header+'"', '')
         if name in ['iclistbox','iclistslider','icslider']:
             s = '#include "reign/listbox_support.hpp"\n'+s
+        if name == 'console_viewer':
+            header=texts['util/stdload.h'];start=header.index('  template <U32 SIZE> void TypeStrCrcList(FScope *fScope, List<StrCrc<SIZE> > &strings)');end=header.index('{',start)+1;depth=1;cursor=end
+            while depth:
+                depth+=(header[cursor]=='{')-(header[cursor]=='}');cursor+=1
+            (output/'console_viewer_support.hpp').write_text('#pragma once\n#include "console_slice.hpp"\n#include "control_stdload.hpp"\nnamespace StdLoad {\n'+header[start:cursor]+'\n}\n')
+            s='#include "console_viewer_support.hpp"\n'+s
+            s=s.replace('#include "console.h"','#include "console_slice.hpp"')
+        if name == 'console_edit':
+            s='#include "reign/console_edit_support.hpp"\n'+s
+            s=s.replace('#include "console.h"','#include "console_slice.hpp"').replace('#include "console_edit.h"','#include "native_console_edit.hpp"')
+            (output/'native_console_edit.hpp').write_text(texts['interface/console_edit.h'].replace('#include "console.h"','#include "reign/console_edit_support.hpp"'))
+        if name == 'icedit':
+            s='#include "reign/edit_support.hpp"\n'+s
+            s=s.replace('#include "fontsys.h"','').replace('0L','S32(0)').replace('(long)0','S32(0)').replace('1L','S32(1)')
+            for sig in ['void ICEdit::ClipboardCopy(Bool cut)','void ICEdit::ClipboardPaste()']:
+                start=s.index(sig);end=s.index('{',start)+1;depth=1;cursor=end
+                while depth:
+                    depth+=(s[cursor]=='{')-(s[cursor]=='}');cursor+=1
+                s=s[:end]+'\n  throw std::runtime_error("Native clipboard service not bound");\n}'+s[cursor:]
         if name == 'iclistbox':
             start=s.index('U32 ICListBox::FillFromPath(');end=s.index('{',start)+1;depth=1;cursor=end
             while depth:
@@ -98,6 +117,8 @@ def prepare(upstream, output):
         while depth:
             depth += (source[b]=='{')-(source[b]=='}'); b += 1
         body = source[a:b]
+        if 'BreakText(' in signature:
+            body=body.replace('{','{\n  if(!src||!font) throw std::invalid_argument("Text wrapping requires text and font");',1)
         if 'FScopeToSheetInfo(' in signature:
             body = replace_once(body, '    sheets.x = U8(StdLoad::TypeU32(fScope, 2));\n    sheets.y = U8(StdLoad::TypeU32(fScope, 2));',
                 '    U32 sx = StdLoad::TypeU32(fScope, 2), sy = StdLoad::TypeU32(fScope, 2);\n    if (!sx || !sy || sx > 255 || sy > 255) throw std::range_error("Invalid sheet grid");\n    sheets.x = U8(sx); sheets.y = U8(sy);')

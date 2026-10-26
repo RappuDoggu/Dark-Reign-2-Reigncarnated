@@ -10,6 +10,8 @@
 #include "icbutton.h"
 #include "iclistbox.h"
 #include "icmenu.h"
+#include "console_viewer.h"
+#include "console_slice.hpp"
 #include "font_fixture.hpp"
 #include <iostream>
 namespace {IControl *button_factory(U32,IControl *parent,U32){return new ICButton(parent);}}
@@ -47,8 +49,11 @@ int main(){try{
   list->DeleteAllItems();check(list->ItemCount()==0);
   auto *menu=new ICMenu(&root);menu->SetName("TestMenu");CH caption[]={'A',0};check(menu->AddItem("Action",caption,"TestAction")!=nullptr);
 
+  auto *viewer=new ConsoleViewer(&root);viewer->SetName("TestConsole");viewer->SetSize(150,80);VarSys::CreateString("testconsole.selected","");viewer->SetSelectedItemVar("testconsole.selected");FScope item(nullptr,"ItemConfig");item.AddFunction("Font")->AddArgString("System");item.InitIterators();viewer->Setup(&item);
+  reign::run_console([&]{try {check(viewer->Activate());Console::AddString("AB",7);check(viewer->ItemCount()==1);viewer->Rebuild();check(viewer->ItemCount()==1);check(viewer->Deactivate());}catch(const std::exception &e){std::cerr<<"Viewer failure: "<<e.what()<<"\n";if(viewer->IsActive())viewer->Deactivate();root.Deactivate();throw;}},[](VarSys::VarItem *,U32){});
   check(root.Deactivate());events.process();
  });});});});});});
+ VarSys::DeleteItem("testconsole");
  text="ConfigureInterface(){}";rejects([&]{scopes.execute("menu.cfg");});
  std::cout<<"Original config execution/font/metrics/derived type/live control/draw: PASS ("<<checks<<" checks)\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

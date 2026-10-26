@@ -18,11 +18,21 @@
 #include "icbutton.h"
 #include "iclistbox.h"
 #include "icmenu.h"
+#include "icedit.h"
+#include "ictabgroup.h"
+#include "ictipwindow.h"
+#include "native_console_edit.hpp"
+#include "console_viewer.h"
 #include "iclistslider.h"
 #include "icstatic.h"
 #include "iface_messagebox.h"
 #include <iostream>
 namespace {
+IControl *consoleViewer(U32,IControl *p,U32){return new ConsoleViewer(p);}
+IControl *edit(U32,IControl *p,U32){return new ICEdit(p);}
+IControl *tabgroup(U32,IControl *p,U32){return new ICTabGroup(p);}
+IControl *tip(U32,IControl *p,U32){return new ICTipWindow(p);}
+IControl *consoleEdit(U32,IControl *p,U32){return new ConsoleEdit(p);}
 IControl *menu(U32,IControl *p,U32){return new ICMenu(p);}
 IControl *listbox(U32,IControl *p,U32){return new ICListBox(p);}
 IControl *slider(U32,IControl *p,U32){return new ICSlider(p);}
@@ -43,20 +53,22 @@ int main(int argc,char **argv){try{
  reign::FrontendTheme theme;reign::FontRegistry fonts(loader);reign::FrontendEffects effects;reign::InterfaceEvents events;
  reign::BitmapManager bitmaps(loader,[&](const std::string &name){return archive.find(filename(name))!=nullptr;});reign::FrontendTextures textures(bitmaps);
  unsigned glyphs=0,consoleDisplays=0,cursorBatches=0;reign::FrontendFonts fontBridge(fonts,[&](const auto &,const auto &){++glyphs;});fontBridge.set_frame({{0,0},{640,480}},128);
- reign::CommandScopes scopes(loader);reign::KeyNames keys;reign::Cursors cursors;reign::FrontendConfiguration config(theme,fonts,metrics,[&](FScope *s){if(s->NameCrc()==Crc::CalcStr("Scancodes")||s->NameCrc()==Crc::CalcStr("Modifiers"))keys.configure(s);else cursors.configure(s);});config.register_scopes(scopes);
+ reign::CommandScopes scopes(loader);reign::KeyNames keys;reign::Cursors cursors;reign::FrontendConfiguration config(theme,fonts,metrics,[&](FScope *s){if(s->NameCrc()==Crc::CalcStr("Scancodes")||s->NameCrc()==Crc::CalcStr("Modifiers"))keys.configure(s);else if(s->NameCrc()==Crc::CalcStr("Sound"))effects.configure(s,[&](const std::string &name){auto bytes=loader(name);if(bytes.empty())throw std::runtime_error("Empty UI sound");return [name](float){throw std::runtime_error("Audio playback not available in configuration probe: "+name);};});else cursors.configure(s);});config.register_scopes(scopes);
  std::string blocker;unsigned classes=0;
- language.run([&]{config.initialize_language();events.run([&]{theme.run([&]{frame.run([&]{effects.run([&]{fontBridge.run([&]{textures.run([&]{config.run([&]{
+ language.run([&]{cursors.run([&]{config.initialize_language();events.run([&]{theme.run([&]{frame.run([&]{effects.run([&]{fontBridge.run([&]{textures.run([&]{config.run([&]{
   ICRoot root;root.SetName("Root");auto &state=reign::iface_event_detail::state();state.root=&root;state.treeReady=TRUE;
   struct Cleanup{ICRoot &r;reign::iface_event_detail::State &s;~Cleanup(){if(r.IsActive())r.Deactivate();s.root=nullptr;s.treeReady=FALSE;}} cleanup{root,state};
   IFace::RegisterControlClass("Button",button);IFace::RegisterControlClass("Static",label);IFace::RegisterControlClass("Window",window);IFace::RegisterControlClass("MessageBoxWindow",message);
   IFace::RegisterControlClass("Listbox",listbox);IFace::RegisterControlClass("Slider",slider);IFace::RegisterControlClass("ListSlider",listSlider);
   IFace::RegisterControlClass("Menu",menu);
+  IFace::RegisterControlClass("Edit",edit);IFace::RegisterControlClass("TabGroup",tabgroup);IFace::RegisterControlClass("TipWindow",tip);IFace::RegisterControlClass("ConsoleEdit",consoleEdit);
+  IFace::RegisterControlClass("ConsoleViewer",consoleViewer);
   root.Activate();
   try{reign::run_console([&]{scopes.execute(argc==3?argv[2]:"runcode_main_login.cfg");},[&](VarSys::VarItem *,U32){++consoleDisplays;});}
   catch(const std::exception &e){blocker=e.what();}
   if(cursors.select(nullptr))reign::FrontendDraw::run_batches([&]{cursors.draw(100,100,16);},[&](const auto &){++cursorBatches;});
   classes=state.ctrlTypes.GetCount();root.Deactivate();events.process();
- });});});});});});});});
+ });});});});});});});});});
  std::cout<<"Original PTree/Main/IFace configuration attempt: "<<(blocker.empty()?"COMPLETED":"BLOCKED")<<"\nInterface statements attempted: "<<config.processed()<<"\nRegistered classes: "<<classes<<"\nFont aliases: "<<fonts.alias_count()<<"\nBitmaps: "<<bitmaps.count()<<"\n";
  std::cout<<"Cursors: "<<cursors.count()<<" cursor batches: "<<cursorBatches<<'\n';
  std::cout<<"Configured key names: "<<keys.key_count()<<" modifiers: "<<keys.modifier_count()<<'\n';

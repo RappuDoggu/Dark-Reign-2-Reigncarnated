@@ -17,3 +17,12 @@ void run_console(const std::function<void()> &call,const std::function<void(VarS
  console_detail::State state{display};console_detail::Binding binding(state);call();
 }
 }
+
+namespace Console {
+void RegisterMsgHook(BinTree<U32> *filter,ConsoleHookProc *proc,void *context){
+ auto &s=reign::console_detail::state();if(!context||!proc||s.delivering||s.hooks.count(context))throw std::runtime_error("Invalid console hook registration");s.hooks.emplace(context,reign::console_detail::Hook{proc,filter,context});
+}
+void UnregisterMsgHook(ConsoleHookProc *proc,void *context){
+ auto &s=reign::console_detail::state();auto it=s.hooks.find(context);if(s.delivering||it==s.hooks.end()||it->second.proc!=proc)throw std::runtime_error("Invalid console hook removal");s.hooks.erase(it);
+}
+}

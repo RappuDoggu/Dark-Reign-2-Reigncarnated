@@ -26,5 +26,15 @@
   "interface/icslider.h": "b78ed2c7a68d022a0f7f5282c7d8e76883261790fe0369285926954cde2cfee4",
   "system/reaperlist.h": "c42e84a39e05a805d1b482227150ac0ac0b731a28b1da15c3d529eaca74e3bf7",
   "interface/icmenu.cpp": "8eceda51066b1974d791ee1f69d56e80034f4fb68930f7d795ac433454ffd07d",
-  "interface/icmenu.h": "d2ac52547a47c543ca19961e17ae87cb14f212816a81f5f26d66ab26351b5f4c"
+  "interface/icmenu.h": "d2ac52547a47c543ca19961e17ae87cb14f212816a81f5f26d66ab26351b5f4c",
+  "interface/icedit.cpp": "daaba3be3ea777a0ba39c3a0405b888d6150efe8a9f8d996715613fe6d4f7030",
+  "interface/icedit.h": "17369faf0c5346226139bb9d8038e334e339ab96c79f89001251c0a6a459fbf7",
+  "interface/ictipwindow.cpp": "10ea17507cc7d9ad8ba805c4c6436a8ce03b3ceee1548602053b40cda0ebbd5b",
+  "interface/ictipwindow.h": "6c89072e846344c421738e887549d2f1a6befa5ddb01ebc6047486820e5e5432",
+  "interface/ictabgroup.cpp": "098415aa71a5b3ded2f18788c6878e594e88d9653140d268d5141905bb978d0b",
+  "interface/ictabgroup.h": "3be1986de7d1fcbc33a984b6e245099b2cb95e228d675c37d52f169e5626a28d",
+  "interface/console_edit.cpp": "6527e2c250b24946db16777eac6011a5edf5a7d0b54a99fe0258e623539f87cd",
+  "interface/console_edit.h": "c25def3c0fb00478c23df9bb43d629498fc3da1a4de604275f4541125f036c3d",
+  "interface/console_viewer.cpp": "465d2c7eee4d6c8c681b3fc8d766c031f4e97724f132b0fe07e584a11b42d64b",
+  "interface/console_viewer.h": "6fc04b2eb7e68aa2a9b4f33cf54c3d705c1ea2abc15acbb2a3160d1dcf38e5dc"
 }

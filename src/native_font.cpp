@@ -58,6 +58,7 @@ struct NativeFont::Impl {
 };
 NativeFont::NativeFont(std::vector<U8> file,bool half):impl_(std::make_unique<Impl>(std::move(file),half)){}
 NativeFont::~NativeFont()=default;
+unsigned NativeFont::average_width()const{return impl_->font.AvgWidth();}
 unsigned NativeFont::version()const{return impl_->info.version;}
 unsigned NativeFont::glyph_count()const{return impl_->info.count;}
 unsigned NativeFont::height()const{return impl_->font.Height();}

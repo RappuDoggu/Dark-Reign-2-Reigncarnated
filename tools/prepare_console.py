@@ -48,18 +48,48 @@ def prepare(upstream,output):
  '  Bool GetArgString(', '  Bool GetArgFloat(', '  Bool GetArgScope(', '  const char * GetCmdString()',
  '  const char * GetCmdString(U32 index)', '  void ProcessCmd(const char *cmd, void *context)']:
   funcs.append(function(sig).replace('(U32)arg->Float()', 'reign::console_detail::integer(arg->Float())').replace('    CmdParse c;', '    (void)reign::console_detail::state();\n    CmdParse c;'))
+ extra=['template <class T>\n'+function('  T CircularAdd('),function('  static Bool FilterMsg(')]
+ for sig in ['  void ClearScrollBack()', '  void AddString(const char *str, U32 id)', '  void AddString(const CH *str, U32 id)', '  void EnumStrings(']:
+  text=function(sig)
+  if 'void AddString(const CH' in text:
+   start=text.index('    // Hook here');end=text.index('    sbTail =',start)
+   text=text[:start]+'''    if (reign::console_detail::state().delivering) throw std::runtime_error("Recursive console output");
+    reign::console_detail::state().delivering=true;
+    struct Restore{~Restore(){reign::console_detail::state().delivering=false;}} restore;
+    for (auto &entry : reign::console_detail::state().hooks) {
+      auto &item=entry.second;
+      if(!FilterMsg(item.filter,scrollBuf[sbTail].id))item.proc(scrollBuf[sbTail].text,scrollBuf[sbTail].id,item.context);
+    }
+'''+text[end:]
+  text=text.replace('Clock::Time::Ms()', 'U32(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count())')
+  import re
+  for name in ['consoleItemCount','scrollBuf','sbTail','sbCount']:text=re.sub(r'\b'+name+r'\b','reign::console_detail::state().'+name,text)
+  extra.append(text)
+ funcs.extend(extra)
  output.mkdir(parents=True,exist_ok=True)
  (output/'console_slice.hpp').write_text('''#pragma once
 #include "control_types.hpp"
+#include "reign/frontend_support.hpp"
 #include "ptree.h"
 #include "stdparse.h"
 #include <functional>
+#include <array>
+#include <map>
+#include <chrono>
+namespace Console {using ConsoleHookProc=Bool(const CH *,U32 &,void *);}
+
 namespace reign::console_detail {
-struct State {std::function<void(VarSys::VarItem *,U32)> display;};
+struct BufItem {CH text[192]{};U32 id=0,time=0;};
+struct Hook {Console::ConsoleHookProc *proc;BinTree<U32> *filter;void *context;};
+struct State {std::function<void(VarSys::VarItem *,U32)> display;std::array<BufItem,100> scrollBuf{};S32 sbTail=0,sbCount=0;U32 consoleItemCount=0;std::map<void *,Hook> hooks;bool delivering=false;};
 State &state();
 S32 integer(F32);
 }
 namespace Console {
+constexpr U32 MAX_ROWS=100,MAX_BUF=192;
+void AddString(const CH *,U32);void AddString(const char *,U32);
+void ClearScrollBack();void EnumStrings(BinTree<U32> *,ConsoleHookProc *,void *);
+void RegisterMsgHook(BinTree<U32> *,ConsoleHookProc *,void *);void UnregisterMsgHook(ConsoleHookProc *,void *);
 void ProcessCmd(const char *,void * = nullptr);
 void MakeArgName(U32,VarPathIdent &,U32);
 void MakeArgCount(U32,VarPathIdent &);

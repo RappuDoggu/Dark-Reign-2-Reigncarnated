@@ -17,5 +17,10 @@ int main(){try{
  rejects([&]{effects.set(1,2,[](float){});});rejects([&]{effects.set(1,1,{});});
  effects.set(255,1,[](float){throw std::runtime_error("Playback failure");});
  rejects([&]{effects.run([]{IFace::Sound::Play(255,nullptr);});});rejects([&]{IFace::Sound::Play(1,nullptr);});
+ FScope cfg(nullptr,"Sound");auto *entry=cfg.AddFunction("MenuCommand");entry->AddArgString("click.wav");entry->AddArgFPoint(.5f);cfg.InitIterators();
+ effects.configure(&cfg,[&](const std::string &name){check(name=="click.wav");return [&](float v){volume=v;++calls;};});
+ effects.run([&]{IFace::Sound::Play(2,nullptr);});check(volume==.5f&&calls==4);
+ cfg.InitIterators();rejects([&]{effects.configure(&cfg,{});});
+ FScope unknown(nullptr,"Sound");unknown.AddFunction("Unknown");unknown.InitIterators();rejects([&]{effects.configure(&unknown,[](const std::string &){return [](float){};});});
  std::cout<<"Original IFace effect selection/volume/context/failure routing: PASS ("<<checks<<" checks); audio device not tested\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

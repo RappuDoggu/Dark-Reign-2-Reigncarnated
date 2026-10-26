@@ -22,6 +22,7 @@ public:
  ~NativeFont();
  NativeFont(const NativeFont&)=delete;NativeFont &operator=(const NativeFont&)=delete;
  unsigned version()const;unsigned glyph_count()const;
+ unsigned average_width()const;
  unsigned height()const;unsigned width(const std::u16string &)const;
  unsigned atlas_count()const;const RgbaImage &atlas(unsigned)const;
  // Caller owns any GPU handles and can upload again after context recreation.
