@@ -1,3 +1,17 @@
+# Console dispatch increment — 2026-10-26 UTC
+
+The original console parser/VarSys command dispatch now builds on host. Focused
+checks pass (21); the full host suite passes 45/45 with local LeakSanitizer off.
+A missing execute bit again prevented one initial test process from starting;
+restoring that bit allowed the complete suite to pass. CI remains the independent
+clean build check. The full staged-control link has three unresolved services:
+IFace::MsgBox, IFace::Sound::Play and movie deactivation. No menu runtime yet.
+[Implementation and limits](CONSOLE_DISPATCH.md), [host test log](logs/console-host-tests.log).
+
+The preceding localization/Babel commit b4f2b1e passed both host (44/44 tests)
+and ARM64/GLES/package CI: run 40265745495, host job 121387664105,
+Android job 121387664003. Console ARM64 verification is pending.
+
 # Localization lookup and Babel increment — 2026-10-26 UTC
 
 Original MultiLanguage lookup and Babel substitution now compile on the restored

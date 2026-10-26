@@ -1,0 +1,19 @@
+#include "console_slice.hpp"
+#include <cmath>
+#include <limits>
+namespace reign::console_detail {
+namespace {thread_local State *active=nullptr;}
+State &state(){if(!active)throw std::runtime_error("Console output binding missing");return *active;}
+S32 integer(F32 value){
+ if(!std::isfinite(value)||double(value)<std::numeric_limits<S32>::min()||double(value)>std::numeric_limits<S32>::max())throw std::range_error("Console integer conversion out of range");
+ return static_cast<S32>(value);
+}
+struct Binding {State *previous;explicit Binding(State &s):previous(active){active=&s;}~Binding(){active=previous;}};
+}
+namespace Console {void DisplayVarItem(VarSys::VarItem *item,U32 indent){reign::console_detail::state().display(item,indent);}}
+namespace reign {
+void run_console(const std::function<void()> &call,const std::function<void(VarSys::VarItem *,U32)> &display){
+ if(!call||!display)throw std::invalid_argument("Console requires work and output callbacks");
+ console_detail::State state{display};console_detail::Binding binding(state);call();
+}
+}
