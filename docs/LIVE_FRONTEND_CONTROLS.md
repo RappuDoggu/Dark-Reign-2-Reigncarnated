@@ -76,3 +76,35 @@ execution, remaining menu widget registration, Main/GameGod command handlers,
 Login/Shell transitions, real installation resources and Android frame/lifecycle
 integration. The shell configuration also launches a shell mission, so rendering
 these synthetic controls does not establish a working original main menu.
+
+
+## Inspected next dependencies
+
+The next layer was checked against implementation, not inferred from remaining
+link symbols. `main/maincmd.cpp::ScopeHandler` dispatches If/Switch, console
+commands, Exec, file-system/language configuration and registered root scopes.
+The current RunCodeHost only supplies the callback boundary; these application
+handlers still need integration. `interface/iface.cpp::Init` also registers input
+handling, configuration root scopes, standard control factories, command scopes,
+cursors and key bindings before owning both Root and Overlays.
+
+`game/game_login.cpp::Login::Activate` requires a real ICListBox named UserList.
+Its handlers use User::Find/Login/Create/Delete and update login statistics.
+`game/user.cpp::Init` enumerates profile directories and automatically logs in
+when exactly one profile exists. User::Login reads original PTree profile data,
+restores statistics, sound settings, campaign progress, addons and config scopes.
+Consequently replacing Login with a decorative menu or bypassing profile loading
+would not establish the requested original startup path. Next concrete work is
+configuration/root ownership, required remaining widgets, profile storage and
+those command/lifecycle services, followed by the real asset-backed screen.
+
+
+## Clean CI verification
+
+Commit d468c50ffe29531c0d3e9bfac0cd22ee35fa4a60 passed run 40267250825:
+host job 121392224195 (47/47 including leak checking) and Android job
+121392224339 (ARM64 compilation/package and software-GLES checks).
+`logs/live-controls-ci.json` preserves selected actual provider output and
+artifact IDs. Engine-derived binaries remain excluded from published artifacts.
+The uploaded v0.4 APK is the existing original-tools-only renderer diagnostic,
+not an APK of these live controls and not a main-menu build.

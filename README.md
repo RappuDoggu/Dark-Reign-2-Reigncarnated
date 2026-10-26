@@ -2,6 +2,22 @@
 
 Dark Reign 2 preservation and native Android source port.
 
+## Latest verified progress — 2026-10-26 UTC
+
+Original root, button, static-text and modal message-box controls now link and
+execute in a host test. The test activates and draws the original controls,
+renders synthetic font text, dispatches a dialog-button notification, then
+verifies modal release and destruction. Host CI passes 47 tests; ARM64 compilation and GLES/package CI also pass
+in [run 40267250825](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40267250825). Original Babel
+localization and console/VarSys dispatch are also integrated into that target.
+
+This is not yet the original Login/Shell menu or a new main-menu APK. Production
+root lifetime, remaining widgets, user profiles, application commands, real menu
+configuration and Android lifecycle integration remain. See
+[verified behavior and remaining dependencies](docs/LIVE_FRONTEND_CONTROLS.md).
+Historical checkpoints below describe earlier increments; workspace-installed
+tools are transient and must be rechecked before reuse.
+
 ## Objective
 
 Produce a native ARM64 Android build of the original C++ engine, preserving gameplay, AI, missions, balance and asset formats. AYN Thor dual-screen tactical controls follow working single-screen gameplay. The owner's working Winlator installation is a behavioral baseline; this project builds native components.

@@ -4,7 +4,9 @@ The ten-object staged UI now links with zero unresolved symbols and no section
 GC. Live original root/button/static/modal message-box tests pass: 20 checks,
 21 geometry batches, actual notification callback and modal/death cleanup.
 Host suite: **47/47 PASS**, local ASan/UBSan with LeakSanitizer disabled.
-The independent ARM64/host CI for this increment is pending. Earlier console
+Independent host and ARM64/GLES/package CI passed for d468c50f in
+[run 40267250825](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40267250825).
+[Actual provider output and artifacts](logs/live-controls-ci.json). Earlier console
 commit 1d5c34d2 passed both jobs in run 40266263136 (host 121389256848,
 Android 121389257046). No real menu configuration or original-menu APK yet.
 
