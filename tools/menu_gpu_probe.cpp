@@ -23,13 +23,13 @@ struct Context {
 };
 }
 int main(int argc,char **argv){try{
- if(argc!=3)throw std::invalid_argument("Usage: menu_gpu_probe base.zwp output.ppm");
- reign::Archive archive(argv[1]);auto loader=[&](const std::string &name){auto pos=name.find_last_of("/\\");auto key=pos==std::string::npos?name:name.substr(pos+1);if(!archive.find(key))throw FileSys::FileNotFound(key);return archive.read(key);};
+ if(argc!=3&&argc!=4)throw std::invalid_argument("Usage: menu_gpu_probe base.zwp output.ppm [shell.zwp]");
+ reign::Archive archive(argv[1]);std::unique_ptr<reign::Archive> shell;if(argc==4)shell=std::make_unique<reign::Archive>(argv[3]);auto loader=[&](const std::string &name){auto pos=name.find_last_of("/\\");auto key=pos==std::string::npos?name:name.substr(pos+1);if(shell&&shell->find(key))return shell->read(key);if(!archive.find(key))throw FileSys::FileNotFound(key);return archive.read(key);};
  auto root=std::filesystem::temp_directory_path()/("reign-menu-gpu-"+std::to_string(reign::monotonic_ns()));struct Cleanup{std::filesystem::path p;~Cleanup(){std::filesystem::remove_all(p);}} cleanup{root};
- reign::MenuFrontend menu(loader,root,W,H);std::vector<std::uint8_t> previous,pixels(W*H*4);
+ reign::MenuFrontend menu(loader,root,W,H,[](const std::string &){return [](float){};});if(shell){menu.create_profile("GPU Pilot");menu.login_selected_profile();}std::vector<std::uint8_t> previous,pixels(W*H*4);
  for(unsigned generation=0;generation<2;++generation){Context context;reign::LegacyGles renderer(resolve);reign::FrontendPresenter presenter(renderer);
   for(unsigned frame=0;frame<2;++frame){presenter.begin(W,H);auto report=menu.draw([&](const auto &batch){presenter.submit(batch);},[&](const auto &font,const auto &batch){presenter.submit(font,batch);},0,0);presenter.present();renderer.read_presented_rgba(W,H,pixels.data());
-   if(!report.login_active||!report.backdrop_active||!report.font_batches)throw std::runtime_error("Original Login not active/drawn");
+   if((shell?!menu.control_active("Shell::Main"):!report.login_active)||!report.backdrop_active||!report.font_batches)throw std::runtime_error("Original Login not active/drawn");
    if(!previous.empty()&&pixels!=previous)throw std::runtime_error("Static original menu frame changed across frame/context recreation");previous=pixels;
    unsigned nonblack=0;for(unsigned i=0;i<W*H;++i)if(pixels[i*4]||pixels[i*4+1]||pixels[i*4+2])++nonblack;
    if(nonblack<W*H/10)throw std::runtime_error("Menu frame unexpectedly empty");

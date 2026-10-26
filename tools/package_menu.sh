@@ -14,7 +14,12 @@ cmake -S "$repo" -B "$build" \
  -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DREIGN_UPSTREAM="$REIGN_UPSTREAM" -DREIGN_ANDROID_MENU=ON
 cmake --build "$build" --target reign_menu --parallel 2
 mkdir -p "$build/classes" "$build/dex"
-javac --release 8 -classpath "$platform" -d "$build/classes" \
+if command -v javac >/dev/null 2>&1; then
+ compiler=(javac)
+else
+ compiler=(java com.sun.tools.javac.Main)
+fi
+"${compiler[@]}" --release 8 -classpath "$platform" -d "$build/classes" \
  "$repo"/android/menu/org/reigncarnated/menu/*.java
 mapfile -d '' classes < <(find "$build/classes" -name '*.class' -print0)
 "$tools/d8" --lib "$platform" --min-api 26 --output "$build/dex" "${classes[@]}"
@@ -36,12 +41,12 @@ if [ ! -f "$build/debug.keystore" ]; then
  -alias androiddebugkey -dname 'CN=Reigncarnated Private Original Menu' -keyalg RSA -keysize 2048 -validity 3650
 fi
 "$tools/apksigner" sign --ks "$build/debug.keystore" --ks-pass pass:android \
- --out "$build/Reigncarnated-Original-Login-v01.apk" "$build/aligned.apk"
-"$tools/apksigner" verify --verbose "$build/Reigncarnated-Original-Login-v01.apk"
-"$tools/zipalign" -c -P 16 4 "$build/Reigncarnated-Original-Login-v01.apk"
-"$tools/aapt2" dump badging "$build/Reigncarnated-Original-Login-v01.apk"
+ --out "$build/Reigncarnated-Main-Menu-v02.apk" "$build/aligned.apk"
+"$tools/apksigner" verify --verbose "$build/Reigncarnated-Main-Menu-v02.apk"
+"$tools/zipalign" -c -P 16 4 "$build/Reigncarnated-Main-Menu-v02.apk"
+"$tools/aapt2" dump badging "$build/Reigncarnated-Main-Menu-v02.apk"
 
-python3 - "$build/Reigncarnated-Original-Login-v01.apk" <<'PYZIP'
+python3 - "$build/Reigncarnated-Main-Menu-v02.apk" <<'PYZIP'
 import sys, zipfile
 with zipfile.ZipFile(sys.argv[1]) as apk:
  assert apk.testzip() is None, 'APK ZIP entry checksum mismatch'

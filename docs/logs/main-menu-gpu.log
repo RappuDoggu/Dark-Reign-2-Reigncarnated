@@ -1,0 +1,8 @@
+[engine] Logout [GPU Pilot]
+[engine] Login [GPU Pilot]
+[engine] Logout [GPU Pilot]
+Context 1 frame 1: 24 geometry, 9 fonts, 292954 nonblack pixels
+Context 1 frame 2: 24 geometry, 9 fonts, 292954 nonblack pixels
+Context 2 frame 1: 24 geometry, 9 fonts, 292954 nonblack pixels
+Context 2 frame 2: 24 geometry, 9 fonts, 292954 nonblack pixels
+Original Login GPU rendering, repeated frames and context recreation: PASS

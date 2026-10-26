@@ -58,3 +58,13 @@ unresolved; these private recovery copies do not authorize public redistribution
 ## Repeatable archive verification
 
 Run `python3 tools/verify_recovery_archives.py /path/to/installation.7z /path/to/upstream.tar.gz`. This checks both complete archives and matches all 155 reviewed source files against the archived snapshot. The current inputs do not require the original desktop.
+
+## v0.2 compatible-update signing recovery
+
+[Reigncarnated-v02-Build-Recovery.zip](https://chatgpt.com/library?file_id=libfile_d4a951db49b08191b4a78404f284b4b3&account_id=personal)
+preserves the private development signing key and package receipt for
+`org.reigncarnated.menu.v02`. Restore its debug.keystore to the chosen menu build
+directory before signing future updates. It is not the earlier v0.1 key. Keep it
+private and outside Git. The archive README contains the standard debug-key
+alias/password and restoration instructions. The APK and companion asset links
+are in MAIN_MENU_V02.md.
