@@ -13,5 +13,9 @@
   "util/stdload.cpp": "bc61b8baba06939c0f55f233840a05aa6da4ac08ba6e4afb4b5a90daf5782b68",
   "util/utiltypes.cpp": "4da07b6f869ae7d7a10069197c4b073fb2007ce5c458fca6f770c3720ddc1b9a",
   "interface/messagebox_event.cpp": "76cae977adac8c4c146f79dac494738f3a9e0d70e61da2aa6e5e9bf920c067fa",
-  "interface/iface_util.cpp": "b464102949c932f1bbee108064634a22ee9f62f3aafab4a5564ce3dc8fa9e0ab"
+  "interface/iface_util.cpp": "b464102949c932f1bbee108064634a22ee9f62f3aafab4a5564ce3dc8fa9e0ab",
+  "interface/iface_messagebox.cpp": "e06f129b55f8c8e4218491ee2229c2d124b8390e897f9bd712e9fca0b90f37a6",
+  "interface/icstatic.cpp": "d345b6cf9049ec6874dde76eed56f716cbe1fbec5e18ff2367e54b1197c86f04",
+  "interface/icstatic.h": "3eb1df8201dd287540fb40efb1650c8b60a59eaedfea8a568df8a18e3fa8547b",
+  "interface/iface_messagebox.h": "812c5ab158957a68fbf959d66582823e499d771ff17f6252c033ba1fd6ea454b"
 }

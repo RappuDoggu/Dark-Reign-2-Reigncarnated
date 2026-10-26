@@ -27,13 +27,28 @@ def prepare(upstream, output):
         if s.count(old) != 1:
             raise ValueError('Expected one occurrence: '+old)
         return s.replace(old, new)
-    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event']:
+    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic']:
         s = texts['interface/'+name+'.cpp']
         s = s.replace('#include "input.h"', '#include "control_input.hpp"')
         s = s.replace('#include "stdload.h"', '#include "control_stdload.hpp"')
         # Explicit dependencies in frontend_prelude replace legacy precompiled headers.
         for header in ['vid.h', 'debug_memory.h', 'perfstats.h']:
             s = s.replace('#include "'+header+'"', '')
+        if name == 'iface_messagebox':
+            s = replace_once(s, 'for (U32 b = 0; events[b] && (b < 3); b++)',
+                             'for (U32 b = 0; (b < 3) && events[b]; b++)')
+            s = replace_once(s, '        lineBuf[lineCount++] = s;',
+                             '        if (lineCount >= MAX_LINES) throw std::length_error("Too many message box lines");\n        lineBuf[lineCount++] = s;')
+            # Both escape branches increment s. Do not advance beyond final NUL.
+            if s.count('          s++;') != 2:
+                raise ValueError('Message line scanner changed')
+            s = s.replace('          s++;', "          if (!s[1]) break;\n          s++;")
+            s = replace_once(s, '    ASSERT(btn1);',
+                '    ASSERT(btn1);\n    if (btn3 && !btn2) throw std::invalid_argument("Noncontiguous message buttons");\n    if (Utils::Strlen(string) >= 1024) throw std::length_error("Message text too long");')
+        if name == 'icstatic':
+            s = '#include "babel_slice.hpp"\n#include <cmath>\n'+s
+            s = replace_once(s, '        Utils::Sprintf(buf, 128, (const CH*)L"%02u:%02u", (U32)(v / 60.0F), (U32)fmod(v, 60.0F));',
+                '        if (!std::isfinite(v) || v < 0 || double(v)/60 > 2147483647.0) throw std::range_error("Static timer out of range");\n        Utils::Strmcpy(buf, Babel::Translate("{1:02u}:{2:02u}", 2, int(v/60), int(std::fmod(v,60))), 128);')
         if name == 'ifvar':
             macro = re.search(r'^#define MULTILANGUAGE_MAXDATA .*$', texts['util/multilanguage.h'], re.M).group(0)
             s = replace_once(s, '#include "multilanguage.h"', macro)
@@ -62,7 +77,22 @@ def prepare(upstream, output):
     while depth:
         depth += (source[b] == '{') - (source[b] == '}')
         b += 1
-    (output/'frontend_helpers.cpp').write_text('namespace IFace {\n'+source[a:b]+'\n}\n')
+    helpers = [source[a:b]]
+    for signature in ['  void RenderSheets(', '  void UpdateSheets(', '  void FScopeToSheetInfo(']:
+        a = source.index(signature); b = source.index('{',a)+1; depth = 1
+        while depth:
+            depth += (source[b]=='{')-(source[b]=='}'); b += 1
+        body = source[a:b]
+        if 'FScopeToSheetInfo(' in signature:
+            body = replace_once(body, '    sheets.x = U8(StdLoad::TypeU32(fScope, 2));\n    sheets.y = U8(StdLoad::TypeU32(fScope, 2));',
+                '    U32 sx = StdLoad::TypeU32(fScope, 2), sy = StdLoad::TypeU32(fScope, 2);\n    if (!sx || !sy || sx > 255 || sy > 255) throw std::range_error("Invalid sheet grid");\n    sheets.x = U8(sx); sheets.y = U8(sy);')
+            body = replace_once(body, '        TextureInfo *ti = new TextureInfo;', '        auto owned = std::make_unique<TextureInfo>();\n        TextureInfo *ti = owned.get();')
+            begin = body.index('        ti->texture = new Bitmap(')
+            end = body.index('        ti->texMode',begin)
+            body = body[:begin] + '        ti->texture = Bitmap::Manager::FindCreate(Bitmap::reduceNONE, image);\n' + body[end:]
+            body = replace_once(body, '        images.Add(i, ti);', '        images.Add(i, ti);\n        owned.release();')
+        helpers.append(body)
+    (output/'frontend_helpers.cpp').write_text('#include "reign/frontend_draw.hpp"\n#include "reign/frontend_bitmap.hpp"\n#include "control_stdload.hpp"\nnamespace IFace {\n'+'\n'.join(helpers)+'\n}\n')
     s = replace_once(texts['interface/input.h'], 'void Init(HINSTANCE inst, HWND window);',
                      '// Windows startup declaration excluded; native input lifecycle remains separate.')
     for declaration in ['extern U16 eventId;', 'extern Point<S32> mousePos;', 'extern U32 lButton;']:

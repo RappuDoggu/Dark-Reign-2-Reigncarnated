@@ -13,7 +13,9 @@ int main(){try{
  reign::BitmapManager manager([&](const auto &n){return files.at(n);},[&](const auto &n){return files.count(n)!=0;});
  reign::FrontendTextures textures(manager);TextureInfo oldInfo,modern;
  rejects([&]{Bitmap::Manager::FindCreate(0,"menu.tga");});
+ rejects([&]{reign::deactivate_control_movie(nullptr);});
  textures.run([&]{
+  auto *staticImage=Bitmap::Manager::FindCreate(0,"menu.tga");reign::deactivate_control_movie(staticImage);check(staticImage->Width()==4);
   FScope s(nullptr,"Texture");s.AddArgString("menu.tga");s.InitIterators();IFace::FScopeToTextureInfo(&s,oldInfo);
   check(oldInfo.texture&&oldInfo.texture->Width()==4&&oldInfo.texture->Height()==2);
   check(oldInfo.pixels.p1.x==4&&oldInfo.uv.p1.x==1&&oldInfo.texMode==TextureInfo::TM_STRETCHED&&!oldInfo.filter);

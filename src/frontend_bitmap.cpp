@@ -45,3 +45,13 @@ void FrontendTextures::run(const std::function<void()> &call){
  struct Restore{TextureContext *previous;~Restore(){active=previous;}} restore{previous};call();
 }
 }
+
+namespace reign {
+void deactivate_control_movie(Bitmap *bitmap) {
+ if (!bitmap) throw std::invalid_argument("Null frontend bitmap");
+ // This concrete adapter owns only a decoded static CPU image. No movie can
+ // be installed in Bitmap; archive movie decoding is rejected by its loader.
+ // Therefore the original GetBink()!=nullptr branch is false for this type.
+ // A future movie-capable adapter must supply its actual stop operation here.
+}
+}

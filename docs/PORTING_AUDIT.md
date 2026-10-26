@@ -1,3 +1,17 @@
+# Live original UI increment — 2026-10-26 UTC
+
+The ten-object staged UI now links with zero unresolved symbols and no section
+GC. Live original root/button/static/modal message-box tests pass: 20 checks,
+21 geometry batches, actual notification callback and modal/death cleanup.
+Host suite: **47/47 PASS**, local ASan/UBSan with LeakSanitizer disabled.
+The independent ARM64/host CI for this increment is pending. Earlier console
+commit 1d5c34d2 passed both jobs in run 40266263136 (host 121389256848,
+Android 121389257046). No real menu configuration or original-menu APK yet.
+
+[Scope, fixes, failure evidence and remaining menu work](LIVE_FRONTEND_CONTROLS.md).
+[Host tests](logs/live-controls-host-tests.log),
+[complete link result](logs/live-controls-full-link.json).
+
 # Console dispatch increment — 2026-10-26 UTC
 
 The original console parser/VarSys command dispatch now builds on host. Focused
