@@ -2,19 +2,22 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
-## Current checkpoint: main menu and audio v0.2
+## Current checkpoint: one-folder setup v0.3
 
-Original Login now hands off to the release main-menu controls, using a temporary
-static backdrop. Options exposes effects/music volume, Logout returns to profiles,
-and Quit closes the app. Original WAV interface effects and optional imported OGG
-music are connected to Android playback. Gameplay-dependent actions are disabled;
-this is not a playable mission or the original animated shell.
+The Android app now imports its menu archives and music from one selected,
+legally owned installation folder. It remembers setup, plays music automatically,
+and keeps file management and diagnostics in Settings. v0.3 updates v0.2 in place.
 
-57/57 sanitizer host tests pass. Real-asset login/menu/logout flows and software
-GLES rendering pass. The ARM64 APK is packaged separately for private device
-validation; on-device main-menu behavior and audio remain to be confirmed.
+Original Login, the release menu layout, volume settings, Logout and Quit remain
+available. The backdrop is still static and gameplay-dependent actions disabled.
+The original camera spline now compiles and samples the real shell path on host;
+terrain/model rendering and cinematic integration remain.
 
-[Implementation, limitations and test instructions](docs/MAIN_MENU_V02.md)
+58 native tests and 24 real-installation importer checks pass. The signed ARM64
+APK is ready for device testing; Android folder-picker/audio behavior is pending.
+
+[Current implementation and test instructions](docs/FOLDER_SETUP_V03.md) •
+[Prior main-menu checkpoint](docs/MAIN_MENU_V02.md)
 
 [Source and installation recovery](docs/RECOVERY_ARCHIVES.md): neither requires
 the original desktop. Active implementation lives on `dev/native-arm64-primitives`.

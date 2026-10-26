@@ -19,6 +19,10 @@ final class MenuAudioPlayer {
  private boolean closed,focused,musicReady;
  private android.media.MediaPlayer music;
  private float musicVolume=0.4f;
+ private java.util.List<String> playlist=java.util.Collections.emptyList();
+ private int track,failedTracks;
+ void playPlaylist(java.util.List<String> paths){playlist=new java.util.ArrayList<>(paths);track=0;failedTracks=0;if(!playlist.isEmpty())playMusic(playlist.get(0));}
+ private void nextTrack(){if(!closed&&!playlist.isEmpty()){track=(track+1)%playlist.size();playMusic(playlist.get(track));}}
  void setMusicVolume(float v){musicVolume=Math.max(0,Math.min(1,v));if(musicReady)music.setVolume(musicVolume,musicVolume);}
  MenuAudioPlayer(Context context,Consumer<String> report){
   this.report=report;manager=(AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
@@ -32,10 +36,10 @@ final class MenuAudioPlayer {
   if(music!=null){music.release();music=null;}musicReady=false;
   android.media.MediaPlayer player=new android.media.MediaPlayer();music=player;
   player.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
-  player.setLooping(true);player.setVolume(musicVolume,musicVolume);
+  player.setLooping(false);player.setOnCompletionListener(p->{if(!closed&&music==p){failedTracks=0;nextTrack();}});player.setVolume(musicVolume,musicVolume);
   player.setOnPreparedListener(p->{if(closed||music!=p)return;musicReady=true;if(!focused)focused=manager.requestAudioFocus(focus)==AudioManager.AUDIOFOCUS_REQUEST_GRANTED;if(focused)p.start();else report.accept("Music is ready; audio focus is unavailable.");});
-  player.setOnErrorListener((p,what,extra)->{if(music==p){musicReady=false;report.accept("Music could not play ("+what+", "+extra+").");}return true;});
-  try{player.setDataSource(path);player.prepareAsync();}catch(Exception e){player.release();music=null;report.accept("Music could not load: "+e.getMessage());}
+  player.setOnErrorListener((p,what,extra)->{if(music==p){musicReady=false;report.accept("Music track could not play ("+what+", "+extra+").");if(++failedTracks<playlist.size())new android.os.Handler(android.os.Looper.getMainLooper()).post(this::nextTrack);}return true;});
+  try{player.setDataSource(path);player.prepareAsync();}catch(Exception e){player.release();music=null;report.accept("Music could not load: "+e.getMessage());if(++failedTracks<playlist.size())new android.os.Handler(android.os.Looper.getMainLooper()).post(this::nextTrack);}
  }
  void accept(String[] events){
   if(closed||events==null)return;

@@ -11,6 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Test transactional data-folder import
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence build-java
+          javac --release 8 -d build-java android/menu/org/reigncarnated/menu/DataFolderImporter.java tests/DataFolderImporterTest.java
+          java -cp build-java org.reigncarnated.menu.DataFolderImporterTest | tee evidence/data-folder-import.log
       - name: Fetch reviewed upstream separately
         run: bash tools/fetch_upstream.sh "$RUNNER_TEMP/dr2-upstream"
       - name: Compile and test original primitives and platform services

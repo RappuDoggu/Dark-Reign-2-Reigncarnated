@@ -1,0 +1,8 @@
+Shell objects=120 bookmarks=18 Main::Enter segments=2 duration=6s
+t=0 camera=341.759,70.2356,318.127 focus=219.894,10,231.64
+t=0.5 camera=338.518,67.0446,303.17 focus=213.202,9.25926,245.712
+t=1.5 camera=291.34,48.6963,279.386 focus=171.621,5,261.372
+t=3 camera=230.048,27.1571,288.156 focus=98.5285,0,269.105
+t=4 camera=226.057,23.0084,328.327 focus=107.977,4.56617,265.801
+t=5.5 camera=213.438,12.3402,395.719 focus=197.374,16.3077,251.794
+Terrain bytes=65184; original camera arithmetic validated. World rendering/cinematic scheduler NOT connected.
