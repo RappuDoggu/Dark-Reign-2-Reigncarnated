@@ -1,3 +1,20 @@
+# Localization lookup and Babel increment — 2026-10-26 UTC
+
+Original MultiLanguage lookup and Babel substitution now compile on the restored
+host workspace. Native checked formatting preserves UTF-16 menu strings and
+variadic integer/float/string arguments. Host ASan/UBSan tests: **44/44 PASS**
+with local LeakSanitizer disabled. Focused tests: 20 lookup and 39 Babel checks.
+The first run could not execute two files whose execute bits were absent;
+restoring those bits allowed the full suite to pass. Both logs are retained.
+ARM64 CI for this increment is pending; no new engine/menu APK is claimed.
+
+The eight-object full control link now has four unresolved services:
+Console::ProcessCmd, IFace::MsgBox, IFace::Sound::Play and movie deactivation.
+This is a staged-control link boundary, not a count of all menu startup work.
+See [implementation, compatibility limits and reproduction](LOCALIZATION_LOOKUP.md),
+[host tests](logs/localization-babel-host-tests.log), and
+[link evidence](logs/localization-babel-full-link.json).
+
 # Latest inspected menu initialization evidence
 
 The supplied community-fixed installation was recovered without replacing its
