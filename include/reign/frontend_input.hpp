@@ -12,6 +12,8 @@ public:
  std::uint16_t event_id()const;
  void run(const std::function<void()> &);
  // Queue-full returns false without changing the last accepted pointer state.
+ bool character(unsigned ascii);
+ bool key(unsigned scan,bool down);
  bool move(std::int32_t x,std::int32_t y);
  bool button(unsigned button,bool down,std::int32_t x,std::int32_t y);
 };

@@ -2,6 +2,7 @@
 // Isolated dependencies for the original TBuf/StrBuf headers and implementation.
 #include "reign/legacy_types.hpp"
 #include <cstring>
+#include "reign/string_copy.hpp"
 #include <cstdarg>
 #include <cstdio>
 #include <stdexcept>
@@ -21,10 +22,6 @@ namespace reign {
 #define ERR_CONFIG(args) reign::config_error args
 namespace Utils {
 inline char *Strcpy(char *out, const char *in) { return std::strcpy(out, in); }
-inline char *Strmcpy(char *out, const char *in, U32 capacity) {
- if (!capacity) throw std::runtime_error("Zero string capacity");
- std::strncpy(out, in, capacity); out[capacity - 1] = 0; return out;
-}
 inline int Strcmp(const char *a, const char *b) { return std::strcmp(a, b); }
 inline void *Memset(void *p, int c, U32 count) { return std::memset(p, c, count); }
 }

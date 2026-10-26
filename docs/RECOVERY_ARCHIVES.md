@@ -54,3 +54,7 @@ No access to the original desktop is required for these inputs. The additional
 medwards repository is a reference, not the source revision used for this build.
 Its contents are not claimed to be included in this snapshot. Licensing remains
 unresolved; these private recovery copies do not authorize public redistribution.
+
+## Repeatable archive verification
+
+Run `python3 tools/verify_recovery_archives.py /path/to/installation.7z /path/to/upstream.tar.gz`. This checks both complete archives and matches all 152 reviewed source files against the archived snapshot. The current inputs do not require the original desktop.

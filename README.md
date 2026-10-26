@@ -1,3 +1,5 @@
+Latest checkpoint: [persistent original Login runtime](docs/MENU_RUNTIME_PORT.md), with real-asset pointer/text/profile and host GPU validation. Private Android packaging is implemented; full shell/gameplay remain unfinished.
+
 Private installation and pinned upstream source are preserved online: [recovery instructions](docs/RECOVERY_ARCHIVES.md). Original desktop access is not required.
 
 Latest: real original Login configuration activates and emits draw batches; original profile persistence passes. Shell mission transition and Android menu host remain. [Current verified status](docs/LOGIN_PROFILE_PORT.md).

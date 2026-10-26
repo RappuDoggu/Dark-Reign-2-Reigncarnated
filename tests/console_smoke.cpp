@@ -1,3 +1,4 @@
+#include "reign/console_session.hpp"
 #include "console_slice.hpp"
 #include <iostream>
 namespace {struct Output {unsigned calls=0;U32 last=0;};Bool output(const CH *,U32 &type,void *context){auto &o=*static_cast<Output *>(context);++o.calls;o.last=type;return TRUE;}
@@ -53,6 +54,11 @@ int main(){try{
   seen.calls=0;Console::EnumStrings(nullptr,output,&seen);check(seen.calls==100&&seen.last==119);
   Console::ClearScrollBack();seen.calls=0;Console::EnumStrings(nullptr,output,&seen);check(seen.calls==0);filter.DisposeAll();
  },display);
+ {
+  reign::ConsoleSession persistent(display);Output seen;
+  persistent.run([&]{Console::RegisterMsgHook(nullptr,output,&seen);Console::AddString("Frame one",7);});
+  persistent.run([&]{Console::AddString("Frame two",9);check(seen.calls==2&&seen.last==9);Console::UnregisterMsgHook(output,&seen);seen.calls=0;Console::EnumStrings(nullptr,output,&seen);check(seen.calls==2);});
+ }
  VarSys::DeleteItem("test");VarSys::DeleteItem("console");
  std::cout<<"Original console parsing/assignment/arguments/dispatch/unwind: PASS ("<<checks<<" checks)\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

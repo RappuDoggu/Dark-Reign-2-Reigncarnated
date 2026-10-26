@@ -21,5 +21,7 @@ void original_presenter_gpu_checks(reign::LegacyGles &renderer){
  }
  presenter.begin(32,32);bool failed=false;try{presenter.draw([]{throw std::runtime_error("Draw failure");});}catch(const std::runtime_error&){failed=true;}
  if(!failed)throw std::runtime_error("UI failure not propagated");presenter.begin(32,32);presenter.present();
+ presenter.begin(32,32);presenter.draw([&]{IFace::RenderRectangle(ClipRect(0,0,32,32),Color(U32(0xffff0000)),nullptr,1);});presenter.present(32,16);renderer.read_presented_rgba(32,32,pixels.data());
+ if(!pixel(16,23,255,0,0)||!pixel(2,23,0,0,0)||!pixel(16,3,0,0,0))throw std::runtime_error("Aspect-preserving surface presentation");
  std::cout<<"Original UI ordered geometry/font GLES presenter and frame recovery: PASS\n";
 }

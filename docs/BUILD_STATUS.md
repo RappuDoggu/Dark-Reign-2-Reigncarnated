@@ -1,3 +1,18 @@
+# Persistent original Login checkpoint — 2026-10-26 UTC
+
+Original pointer/modal/text/Enter profile creation now passes against the supplied
+installation, including save and reopen. The host GPU probe renders four matching
+original Login frames across two EGL contexts (72 geometry batches, 4 font batches,
+295799 nonblack pixels each). Local sanitizer suite: 55/55 passed after repairing
+one generated executable's missing execute permission. Tests use leak detection
+disabled because local procfs is restricted; address/UB checks remain enabled.
+
+The private original-Login Android package and CI packaging step are implemented;
+Android compilation/runtime validation is pending for this increment. **Login is
+not the full main-menu shell or gameplay.** Audio is disabled. See
+[implementation and exact limitations](MENU_RUNTIME_PORT.md) and
+[host evidence](logs/menu-runtime-host-tests.log).
+
 # Login/profile checkpoint — 2026-10-26 UTC
 
 CI verified commit `487e3b9a974f2742b20a4b95a41d9479ac4ca207` in

@@ -169,6 +169,13 @@ void LegacyGles::present(){
  g.Disable(GL_SCISSOR_TEST);g.BindFramebuffer(GL_READ_FRAMEBUFFER,g.fbo);g.BindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
  g.BlitFramebuffer(0,0,g.width,g.height,0,g.height,g.width,0,GL_COLOR_BUFFER_BIT,GL_NEAREST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.check();
 }
+void LegacyGles::present_to(unsigned width,unsigned height){
+ auto &g=*impl_;if(!g.fbo||!width||!height||width>32768||height>32768)throw std::invalid_argument("Invalid presentation surface");
+ double scale=std::min(double(width)/g.width,double(height)/g.height);int w=int(g.width*scale),h=int(g.height*scale),x=(int(width)-w)/2,y=(int(height)-h)/2;
+ g.Disable(GL_SCISSOR_TEST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.ClearColor(0,0,0,1);g.Clear(GL_COLOR_BUFFER_BIT);
+ g.BindFramebuffer(GL_READ_FRAMEBUFFER,g.fbo);g.BindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
+ g.BlitFramebuffer(0,0,g.width,g.height,x,y+h,x+w,y,GL_COLOR_BUFFER_BIT,GL_NEAREST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.check();
+}
 void LegacyGles::read_presented_rgba(unsigned w,unsigned h,std::uint8_t *out){auto &g=*impl_;g.read_size(w,h,out);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.PixelStorei(GL_PACK_ALIGNMENT,1);g.ReadPixels(0,0,w,h,GL_RGBA,GL_UNSIGNED_BYTE,out);g.check();}
 void LegacyGles::read_rgba(unsigned w,unsigned h,std::uint8_t *out){
  auto &g=*impl_;g.read_size(w,h,out);g.BindFramebuffer(GL_FRAMEBUFFER,g.fbo);g.PixelStorei(GL_PACK_ALIGNMENT,1);g.ReadPixels(0,0,w,h,GL_RGBA,GL_UNSIGNED_BYTE,out);g.check();

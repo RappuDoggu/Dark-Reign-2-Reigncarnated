@@ -1,3 +1,7 @@
+# Persistent Login update — 2026-10-26
+
+The Android original-Login target depends on the staged original interface/profile stack, EGL/GLES3, JNI and Android platform APIs (API 26). It needs a user-provided base.zwp; no assets are embedded. Audio and the mission/world pipeline remain unbound. See [runtime checkpoint](MENU_RUNTIME_PORT.md).
+
 # Login/profile checkpoint — 2026-10-26 UTC
 
 Original Login configuration completes and activates Login plus its backdrop.

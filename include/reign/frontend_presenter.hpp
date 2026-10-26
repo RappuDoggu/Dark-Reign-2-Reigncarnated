@@ -14,8 +14,10 @@ public:
  FrontendPresenter &operator=(const FrontendPresenter&)=delete;
  void begin(unsigned width,unsigned height);
  void draw(const std::function<void()> &);
+ void submit(const FrontendBatch &);
  void submit(const NativeFont &,const FontBatch &);
  void present();
+ void present(unsigned surface_width,unsigned surface_height);
  void cancel();
  // Use after context loss; do not delete old handles in the replacement context.
  void abandon_context() noexcept;

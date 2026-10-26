@@ -1,9 +1,19 @@
 #include "reign/tokenizer.hpp"
+#include "reign/string_copy.hpp"
 #include <iostream>
 #include <stdexcept>
 int main() {
  int failures = 0;
  auto check = [&](bool b) { if (!b) ++failures; };
+ char overlap[16] = "profile";
+ Utils::Strmcpy(overlap, overlap, sizeof overlap);
+ check(std::string(overlap) == "profile");
+ Utils::Strmcpy(overlap, overlap + 2, sizeof overlap);
+ check(std::string(overlap) == "ofile");
+ Utils::Strmcpy(overlap + 1, overlap, sizeof overlap - 1);
+ check(std::string(overlap + 1) == "ofile");
+ Utils::Strmcpy(overlap, "abcdef", 4);
+ check(std::string(overlap) == "abc");
  auto parse = [](const std::string &s) { return reign::tokenize(s, "fixture"); };
  auto t = parse("// comment\r\nCall(\"a / b\", '', -12);\r\nNext();");
  check(t.size() == 14);

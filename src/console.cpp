@@ -1,3 +1,4 @@
+#include "reign/console_session.hpp"
 #include "console_slice.hpp"
 #include <cmath>
 #include <limits>
@@ -12,10 +13,11 @@ struct Binding {State *previous;explicit Binding(State &s):previous(active){acti
 }
 namespace Console {void DisplayVarItem(VarSys::VarItem *item,U32 indent){reign::console_detail::state().display(item,indent);}}
 namespace reign {
-void run_console(const std::function<void()> &call,const std::function<void(VarSys::VarItem *,U32)> &display){
- if(!call||!display)throw std::invalid_argument("Console requires work and output callbacks");
- console_detail::State state{display};console_detail::Binding binding(state);call();
-}
+struct ConsoleSession::Impl {console_detail::State state;explicit Impl(Display display):state{std::move(display)}{if(!state.display)throw std::invalid_argument("Console requires output callback");}};
+ConsoleSession::ConsoleSession(Display display):impl_(std::make_unique<Impl>(std::move(display))){}
+ConsoleSession::~ConsoleSession()=default;
+void ConsoleSession::run(const std::function<void()> &call){if(!call)throw std::invalid_argument("Console requires work callback");console_detail::Binding binding(impl_->state);call();}
+void run_console(const std::function<void()> &call,const std::function<void(VarSys::VarItem *,U32)> &display){ConsoleSession session(display);session.run(call);}
 }
 
 namespace Console {

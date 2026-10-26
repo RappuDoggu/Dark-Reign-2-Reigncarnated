@@ -103,6 +103,28 @@ namespace IFace { Bool IFaceEventHandler(Event &); }
     (output/'iface_factory.cpp').write_text('#include "iface_events.hpp"\nnamespace IFace {\n'+'\n\n'.join(factory)+'\n}\n')
     command_cases=source[source.index('      case 0x971AD37F:'):source.index('      case 0x7C2B3DA1:')]
     (output/'iface_commands.cpp').write_text('#include "iface_events.hpp"\n#include "console_slice.hpp"\n#define CON_ERR(args) throw std::invalid_argument("Interface command requires control name");\nnamespace IFace { void NativeControlCommand(U32 crc) { switch(crc) {\n'+command_cases+'default: throw std::invalid_argument("Unsupported interface command"); } } }\nnamespace reign { void register_interface_commands() { VarSys::RegisterHandler("iface",IFace::NativeControlCommand,VarSys::NOTIFY); for(auto name:{"iface.activate","iface.deactivate","iface.toggleactive"}) VarSys::CreateCmd(name,VarSys::NOTIFY); } }\n')
+    def extract(signature):
+        a=source.index(signature);b=source.index('{',a)+1;depth=1
+        while depth:depth+=(source[b]=='{')-(source[b]=='}');b+=1
+        return source[a:b]
+    routing=[]
+    for signature in ['  static void OnMouseOverChanged(IControl *over)\n','  static void OnMouseClick()\n','  static Bool HandleThisEvent(IControl *ctrl, Event &e, Bool hookCheck = FALSE)\n','  Bool InputEventHandler(Event &e)\n']:
+        body=extract(signature)
+        body=body.replace('Main::thisTime','IFace::ElapsedMs()').replace('ScreenDump();','throw std::runtime_error("Screenshot hotkey not bound");').replace('Vid::ToggleWindowedMode();','throw std::runtime_error("Window-mode hotkey unavailable on native menu");').replace('KeyBind::HandleEvent(e)','reign::iface_routing_detail::unbound_key(e)')
+        body=body.replace('if (p2->HasInputHook())','if (p2 && p2->HasInputHook())')
+        fields=['focus','modal','mouseCapture','mouseOver','tipCtrl']
+        token=r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\b(?:'+'|'.join(fields)+r')\b'
+        body=re.sub(token,lambda m:'reign::iface_event_detail::state().'+m[0] if m[0] in fields else m[0],body)
+        routing.append(body)
+    hover=source[source.index('    // Don\'t do any processing of controls'):source.index('      // Simulate the caret')]
+    hover=hover.replace('Input::MousePos().x, Input::MousePos().y','x, y')+'    }\n'
+    fields=['systemFlags','root','mouseCapture','mouseOver','modal']
+    token=r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\b(?:'+'|'.join(fields)+r')\b'
+    hover=re.sub(token,lambda m:'reign::iface_event_detail::state().'+m[0] if m[0] in fields else m[0],hover)
+    (output/'iface_routing.cpp').write_text('#include "iface_events.hpp"\n#include "control_input.hpp"\n#define PROCESS(c,e,s) (c)->HandleEvent(e)\nnamespace reign::iface_routing_detail {Bool unbound_key(Event &){return FALSE;}}\nnamespace IFace {\nstatic thread_local U32 lastInputEvent=0,nextTipDelay=0;\nstatic thread_local IControlPtr nextTipOwner;\nconstexpr S32 DIK_F10=0x44,DIK_SYSRQ=0xB7;\n'+'\n'.join(routing)+'\nvoid NativeUpdateHover(S32 x,S32 y){\n'+hover+'}\nvoid NativeClearRouting(){nextTipOwner.Clear();nextTipDelay=lastInputEvent=0;}\n}\n')
+    substitution=source[source.index("  const char VARCHAR = '$';"):source.index('  static Substitution substitution;')]
+    with (output/'iface_routing.cpp').open('a') as stream:
+        stream.write('\nnamespace IFace {\n'+substitution+'\nstatic thread_local Substitution nativeSubstitution;\nvoid NativeRegisterSubstitution(){VarSys::RegisterSubstitution(nativeSubstitution); }\nvoid NativeUnregisterSubstitution(){VarSys::UnregisterSubstitution(nativeSubstitution); }\n}\n')
     print('Staged 30 original IFace event/registry methods and 12 factory/lifecycle methods')
 
 if __name__=='__main__':

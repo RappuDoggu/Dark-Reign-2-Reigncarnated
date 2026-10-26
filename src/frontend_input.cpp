@@ -34,6 +34,16 @@ void FrontendInput::run(const std::function<void()> &call){
  struct Restore{Impl &self;Impl *active;U16 id;Point<S32> pos;U32 button;~Restore(){Impl::active=active;self.bound=false;Input::eventId=id;Input::mousePos=pos;Input::lButton=button;}} restore{*impl_,oldActive,oldId,oldPos,oldButton};
  impl_->events.run_native(call);
 }
+bool FrontendInput::character(unsigned ascii){
+ if(!impl_->bound||Impl::active!=impl_.get())throw std::runtime_error("Frontend input not bound");
+ if(ascii<32||ascii>126)throw std::invalid_argument("Initial menu text input supports printable ASCII only");
+ EngineEvent e;e.type=impl_->id;e.subtype=Input::KEYCHAR;e.character=static_cast<std::int16_t>(ascii);return impl_->events.put(e);
+}
+bool FrontendInput::key(unsigned scan,bool down){
+ if(!impl_->bound||Impl::active!=impl_.get())throw std::runtime_error("Frontend input not bound");
+ if(scan>255)throw std::invalid_argument("Scan code outside original range");
+ EngineEvent e;e.type=impl_->id;e.subtype=down?Input::KEYDOWN:Input::KEYUP;e.code=static_cast<std::int16_t>(scan);return impl_->events.put(e);
+}
 bool FrontendInput::move(std::int32_t x,std::int32_t y){return impl_->post(Input::MOUSEMOVE,0,x,y,impl_->buttons);}
 bool FrontendInput::button(unsigned button,bool down,std::int32_t x,std::int32_t y){
  if(button>2)throw std::invalid_argument("Mouse button outside supported range");

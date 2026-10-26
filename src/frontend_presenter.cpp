@@ -28,6 +28,7 @@ void FrontendPresenter::begin(unsigned width,unsigned height){
 void FrontendPresenter::draw(const std::function<void()> &draw){
  impl_->require();try{FrontendDraw::run_batches(draw,[&](const FrontendBatch &b){impl_->geometry(b);});}catch(...){cancel();throw;}
 }
+void FrontendPresenter::submit(const FrontendBatch &batch){impl_->geometry(batch);}
 void FrontendPresenter::submit(const NativeFont &font,const FontBatch &batch){
  impl_->require();auto key=std::make_pair(&font,batch.atlas);auto it=impl_->fonts.find(key);
  if(it==impl_->fonts.end())it=impl_->fonts.emplace(key,impl_->upload(font.atlas(batch.atlas))).first;
@@ -35,6 +36,7 @@ void FrontendPresenter::submit(const NativeFont &font,const FontBatch &batch){
  impl_->renderer.draw(impl_->width,impl_->height,batch.vertices.data(),batch.vertices.size(),batch.indices.data(),batch.indices.size(),state);
 }
 void FrontendPresenter::present(){impl_->require();impl_->renderer.present();impl_->open=false;}
+void FrontendPresenter::present(unsigned width,unsigned height){impl_->require();impl_->renderer.present_to(width,height);impl_->open=false;}
 void FrontendPresenter::cancel(){impl_->open=false;impl_->release();}
 void FrontendPresenter::abandon_context()noexcept{impl_->open=false;impl_->handles.clear();impl_->images.clear();impl_->fonts.clear();}
 }

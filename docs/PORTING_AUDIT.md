@@ -1,3 +1,7 @@
+# Persistent Login update — 2026-10-26
+
+Persistent original Login lifetime, original input routing and control-relative variable substitution are implemented. A self-copy in the string adapter was found by ASan during real Create clicks and fixed with overlap-safe bounded copying. See [runtime checkpoint](MENU_RUNTIME_PORT.md).
+
 # Login/profile checkpoint — 2026-10-26 UTC
 
 Original Login configuration completes and activates Login plus its backdrop.

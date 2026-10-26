@@ -1,3 +1,7 @@
+# Persistent Login update — 2026-10-26
+
+Next validate the private original-Login APK build and device lifecycle/input/profile persistence. Then implement original run-code transition ownership and the shell background-mission dependency chain. Do not label Login as the full main menu. See [runtime checkpoint](MENU_RUNTIME_PORT.md).
+
 # Login/profile checkpoint — 2026-10-26 UTC
 
 Original Login configuration completes and activates Login plus its backdrop.
