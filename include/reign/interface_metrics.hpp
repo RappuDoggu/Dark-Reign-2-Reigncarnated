@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+class FScope;
 namespace reign {
 class FontRegistry;class NativeFont;
 struct InterfaceViewport {std::int32_t width,height,depth;};
@@ -19,6 +20,7 @@ public:
  std::int32_t get_id(std::uint32_t type)const;
  InterfaceViewport viewport()const;
  void resize(unsigned width,unsigned height);
+ void configure_scope(FScope *);
  std::shared_ptr<const NativeFont> font(const std::string &metric,const FontRegistry &)const;
 };
 }

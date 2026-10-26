@@ -38,3 +38,5 @@ std::shared_ptr<const NativeFont> InterfaceMetrics::font(const std::string &metr
 }
 }
 
+
+namespace reign {void InterfaceMetrics::configure_scope(FScope *scope){configure_native(scope);}}

@@ -1,3 +1,13 @@
+# Menu configuration increment — 2026-10-26 UTC
+
+Original Main/IFace configuration dispatch and key-name configuration now build.
+Host CTest: **50/50 PASS** (local ASan/UBSan, LeakSanitizer disabled).
+The real Login configuration loads **128 key names and 12 modifiers**, then stops
+at unported **CreateCursor**. No original main-menu APK is demonstrated.
+[Implementation, reproduction and next dependencies](MENU_CONFIGURATION.md).
+[Host evidence](logs/configuration-host-tests.log),
+[actual asset-backed probe output](logs/menu-configuration-probe.log).
+
 # Live original UI increment — 2026-10-26 UTC
 
 The ten-object staged UI now links with zero unresolved symbols and no section

@@ -22,6 +22,7 @@ int main(){try {
  const CH *data=nullptr;U32 bytes=0,version=0;
  rejects([&]{MultiLanguage::Lookup("caption",data,bytes);});
  english.run([&]{
+  check(std::string(MultiLanguage::GetLanguage())=="english");
   MultiLanguage::Lookup("caption",data,bytes,version);check(bytes==4&&version==7&&data[0]=='A'&&data[1]=='B');
   other.run([&]{MultiLanguage::Lookup("caption",data,bytes,version);check(bytes==2&&version==9&&data[0]=='C');});
   MultiLanguage::Lookup("caption",data,bytes);check(bytes==4&&data[0]=='A');

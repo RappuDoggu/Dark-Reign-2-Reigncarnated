@@ -1,6 +1,7 @@
 #pragma once
 #include "reign/config.hpp"
 #include "reign/native_font.hpp"
+class FScope;
 namespace reign {
 class InterfaceMetrics;
 // Original FontSys alias/file registration behind native font and file adapters.
@@ -12,6 +13,7 @@ public:
  ~FontRegistry();
  FontRegistry(const FontRegistry &)=delete;FontRegistry &operator=(const FontRegistry &)=delete;
  void create(const std::string &alias,const std::string &file);
+ void configure_scope(FScope *);
  // Executes CreateFont scopes, at top level or in ConfigureInterface,
  // through original FontSys::Create(FScope*).
  // Metrics are also executed when a metrics consumer is supplied; other scopes are ignored; this does not initialize or interpret full IFace.

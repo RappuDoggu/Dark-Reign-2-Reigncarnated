@@ -27,6 +27,12 @@ struct FontRegistry::Impl {
 FontRegistry::FontRegistry(ConfigLoader loader):impl_(std::make_unique<Impl>(std::move(loader))){}
 FontRegistry::~FontRegistry()=default;
 void FontRegistry::create(const std::string &alias,const std::string &file){identifier(alias);identifier(file);registry_detail::Binding binding(impl_->state);registry_detail::Create(alias.c_str(),file.c_str());}
+void FontRegistry::configure_scope(FScope *scope){
+ if(!scope)throw std::invalid_argument("Missing font configuration");
+ registry_detail::Binding binding(impl_->state);
+ scope->InitIterators();const std::string alias=scope->NextArgString();auto *child=scope->GetFunction("File");const std::string path=child->NextArgString();identifier(alias);identifier(path);
+ scope->InitIterators();child->InitIterators();registry_detail::Create(scope);
+}
 unsigned FontRegistry::configure(const std::string &file,InterfaceMetrics *metrics){
  registry_detail::Binding binding(impl_->state);FileSys::Session session(impl_->state.loader);PTree tree;
  if(!tree.AddFile(file.c_str()))throw FileSys::FileNotFound(tree.LastError());

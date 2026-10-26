@@ -1,3 +1,5 @@
+Current increment: original menu configuration dispatch; 50/50 host tests pass. Real Login config reaches cursor creation after loading 128 key names and 12 modifiers. No main-menu APK yet. See [evidence](docs/MENU_CONFIGURATION.md).
+
 # Reigncarnated
 
 Dark Reign 2 preservation and native Android source port.

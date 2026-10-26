@@ -53,6 +53,8 @@ def prepare(upstream, output):
         lookup = replace(lookup, '    ASSERT(initialized);', '''    (void)reign::localization_detail::state();
     if (!path) throw std::invalid_argument("Null language key");''')
         lookups.append(lookup)
+    language=extract('  const char * GetLanguage()')
+    language=language.replace('    ASSERT(initialized)\n    ASSERT(currentLanguage)', '    (void)reign::localization_detail::state();').replace('currentLanguage->name.str', 'reign::localization_detail::state().language.c_str()')
     output.mkdir(parents=True, exist_ok=True)
     (output / 'localization_slice.hpp').write_text('''#pragma once
 #include "control_types.hpp"
@@ -63,12 +65,13 @@ struct State {std::string language; char path[VARSYS_MAXVARPATH]{};};
 State &state();
 }
 namespace MultiLanguage {
+const char *GetLanguage();
 void Lookup(const char *, const CH *&, U32 &, U32 &);
 void Lookup(const char *, const CH *&, U32 &);
 }
 ''')
     (output / 'localization_slice.cpp').write_text('#include "localization_slice.hpp"\nnamespace MultiLanguage {\n' +
-        extract('  struct Item') + ';\n' + path + '\n' + item + '\n' + '\n'.join(lookups) + '\n}\n')
+        extract('  struct Item') + ';\n' + language + '\n' + path + '\n' + item + '\n' + '\n'.join(lookups) + '\n}\n')
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('upstream', type=Path); parser.add_argument('output', type=Path)
