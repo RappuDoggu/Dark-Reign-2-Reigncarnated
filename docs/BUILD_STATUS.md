@@ -1,3 +1,35 @@
+# Verified private original Login APK — 2026-10-26 UTC
+
+[Download APK](https://chatgpt.com/library?file_id=libfile_59db52fc1db88191a8702b6d6d54864d&account_id=personal).
+Built from `bafbbcb0a55114b0df2f973be7eef15f90653e81` by successful
+[CI run 40328309171](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40328309171).
+Provider output confirms host 54/54, software-GLES checks, ARM64 native compilation,
+Java compilation, APK v2/v3 signatures, alignment and ZIP checks. Downloaded artifact
+ZIP digest matched GitHub; APK entry CRCs and AArch64 ELF machine were checked locally.
+[Provider excerpts](logs/menu-runtime-ci-verification.log).
+
+- APK: `Reigncarnated-Original-Login-v01.apk`, 19268212 bytes.
+- SHA256: `8fac881b59cc594b23ce03afa84e0ef8739b43f93c4ee6d9670c2bc7f68ba54e`.
+- Package `org.reigncarnated.menu`, minimum API 26, target 35, arm64-v8a.
+- No assets embedded. Original engine code included; private testing only.
+- Android device execution is **not yet verified**. Original Login is not the
+  complete main menu. Login-to-shell, background mission and gameplay remain unimplemented.
+
+Device test: select base.zwp, check original Login appearance, Create an ASCII-named
+profile using the Keyboard button, press keyboard Done/Enter, pause/resume, rotate,
+close/reopen and verify the profile remains. Share the report and any crash behavior.
+Audio is disabled and the Login button reaches the unfinished shell transition.
+Development signing keys are generated per clean build; future packages may require
+uninstalling this package (which removes app-private profiles and its copied archive).
+
+Next mission-loader dependency: original MoveTable and BalanceTable now compile
+locally. 274 checks pass; full local suite 56/56. Only standard template `typename`
+and header dependency adaptation are applied; original speed/slope/health rules and
+64x64 capacity remain unchanged. New target's Android CI is pending; it is not part
+of the APK above. See [movement evidence](logs/movement-table-tests.log).
+The first compile exposed a missing `Point` declaration in a shared loader header;
+using the existing original control-types header resolves it.
+
 # Persistent original Login checkpoint — 2026-10-26 UTC
 
 Original pointer/modal/text/Enter profile creation now passes against the supplied

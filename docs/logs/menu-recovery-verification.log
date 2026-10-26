@@ -2,6 +2,6 @@
   "installation_sha256": "e12ede0e457d79dc1d5d4cf220521b537421a899b7ff02cdb9ee1805991f630d",
   "source_sha256": "51e5ecfbb04c4d8fbd4b617ea15fc2d0351bafce0039fa71c725372d083acaf2",
   "source_files": 2136,
-  "reviewed_source_files_present": 152,
+  "reviewed_source_files_present": 155,
   "desktop_files_required_for_current_inputs": false
 }

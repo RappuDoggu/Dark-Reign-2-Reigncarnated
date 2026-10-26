@@ -57,4 +57,4 @@ unresolved; these private recovery copies do not authorize public redistribution
 
 ## Repeatable archive verification
 
-Run `python3 tools/verify_recovery_archives.py /path/to/installation.7z /path/to/upstream.tar.gz`. This checks both complete archives and matches all 152 reviewed source files against the archived snapshot. The current inputs do not require the original desktop.
+Run `python3 tools/verify_recovery_archives.py /path/to/installation.7z /path/to/upstream.tar.gz`. This checks both complete archives and matches all 155 reviewed source files against the archived snapshot. The current inputs do not require the original desktop.

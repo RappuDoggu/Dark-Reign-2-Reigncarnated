@@ -1,3 +1,5 @@
+[Private original Login APK](https://chatgpt.com/library?file_id=libfile_59db52fc1db88191a8702b6d6d54864d&account_id=personal) is built and verified as a package; device testing is pending. This is the original Login screen, not the full main-menu shell or gameplay. See [test steps and build receipt](docs/BUILD_STATUS.md).
+
 Latest checkpoint: [persistent original Login runtime](docs/MENU_RUNTIME_PORT.md), with real-asset pointer/text/profile and host GPU validation. Private Android packaging is implemented; full shell/gameplay remain unfinished.
 
 Private installation and pinned upstream source are preserved online: [recovery instructions](docs/RECOVERY_ARCHIVES.md). Original desktop access is not required.

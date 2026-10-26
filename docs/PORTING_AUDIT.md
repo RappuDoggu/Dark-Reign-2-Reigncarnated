@@ -1,3 +1,7 @@
+# Verified Login package and mission dependency — 2026-10-26
+
+Clean CI now builds the private original Login APK. Original MoveTable/BalanceTable are additionally staged and tested locally (274 checks; 56/56 complete host suite). No new decompilation addresses were inferred. Device execution and full shell transition remain unverified/unimplemented respectively.
+
 # Persistent Login update — 2026-10-26
 
 Persistent original Login lifetime, original input routing and control-relative variable substitution are implemented. A self-copy in the string adapter was found by ASan during real Create clicks and fixed with overlap-safe bounded copying. See [runtime checkpoint](MENU_RUNTIME_PORT.md).
