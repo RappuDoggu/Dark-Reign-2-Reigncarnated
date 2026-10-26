@@ -1,0 +1,13 @@
+Commit: 487e3b9a974f2742b20a4b95a41d9479ac4ca207
+Run: https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40319219515
+Job 121559549318
+2026-10-26T12:03:31.8290643Z [ 88%] Built target dr2_user_profiles
+2026-10-26T12:03:50.6889113Z       Start 39: original_profile_storage
+2026-10-26T12:03:50.7168318Z 39/53 Test #39: original_profile_storage ...................   Passed    0.04 sec
+2026-10-26T12:03:51.1075678Z 53/53 Test #53: native_bitmap_storage ......................   Passed    0.01 sec
+2026-10-26T12:03:51.1076780Z 100% tests passed, 0 tests failed out of 53
+Job 121559549845
+2026-10-26T12:02:08.0872798Z [ 98%] Built target dr2_user_profiles
+2026-10-26T12:02:52.7854803Z 52: Original UI ordered geometry/font GLES presenter and frame recovery: PASS
+2026-10-26T12:02:52.8709837Z 52: Original UI ordered geometry/font GLES presenter and frame recovery: PASS
+2026-10-26T12:02:52.8981443Z 100% tests passed, 0 tests failed out of 1

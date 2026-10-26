@@ -1,5 +1,11 @@
 # Login/profile checkpoint — 2026-10-26 UTC
 
+CI verified commit `487e3b9a974f2742b20a4b95a41d9479ac4ca207` in
+[run 40319219515](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40319219515):
+host 53/53, Android ARM64 compilation (including User/Stats/Login), and software-GLES
+presenter checks all pass. [Provider excerpts](logs/profile-ci-verification.log).
+This does not validate original menu runtime on Android.
+
 Original Login configuration completes and activates Login plus its backdrop.
 Original draw emits 72 geometry and 4 font batches. Scripted original Create/Login
 events reach the unimplemented `sys.runcode shell` transition. **53/53 host tests

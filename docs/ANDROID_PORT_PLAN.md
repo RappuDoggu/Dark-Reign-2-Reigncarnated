@@ -6,6 +6,18 @@ events reach the unimplemented `sys.runcode shell` transition. **53/53 host test
 pass**, including 18 profile persistence checks. No main-menu APK yet.
 [Implementation, reproduction and limits](LOGIN_PROFILE_PORT.md).
 
+Next source boundary confirmed: `runcode_main_shell.cfg` selects `shell` then
+enters the mission run code. The supplied archive exists at
+`missions/system/shell.zwp`. `GameRunCodes::Base::Init` calls Vid::InitResources,
+which allocates materials, light textures and the null mesh root.
+`Game::PreOpenMission` initializes Team, Environment, MoveTable, SidePlacement,
+UnitLimits, TerrainGroup, AI, TaskCtrl, Config and MissionVar before game.cfg;
+WorldCtrl, object controllers, pathfinding, physics, movement and effects follow.
+A complete original shell background therefore needs those dependencies. Merely
+binding `sys.runcode` or loading the main-menu CFG cannot prove the shell boots.
+A reusable Android UI host and actual frame/surface testing remain independent
+work alongside that original mission pipeline.
+
 # Campaign/Login boundary — 2026-10-26 UTC
 
 Original campaign/progress/difficulty/catalog, campaign selector, preview metadata,

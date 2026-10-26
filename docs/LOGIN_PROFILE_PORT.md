@@ -74,4 +74,10 @@ headers fixed the compile. A probe variable lookup required original `$newUser`
 syntax. No engine algorithm was changed for that probe correction.
 
 Campaign predecessor CI 40316306212 passed host job 121549643702 and Android job
-121549643511. CI for this checkpoint must be checked independently.
+121549643511. CI verified commit `487e3b9a974f2742b20a4b95a41d9479ac4ca207` in
+[run 40319219515](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40319219515):
+host 53/53, Android ARM64 compilation (including User/Stats/Login), and software-GLES
+presenter checks all pass. [Provider excerpts](logs/profile-ci-verification.log).
+This does not validate original menu runtime on Android.
+
+
