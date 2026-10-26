@@ -37,6 +37,9 @@ def prepare(upstream,output):
   body=body.replace('    ASSERT(sysInit)','    (void)reign::key_name_detail::state();\n    if (!fScope) throw std::invalid_argument("Missing key configuration");')
   for name in ['keysByScan','keysByNameCrc','modifiers']:body=body.replace(name,'reign::key_name_detail::state().'+name)
   bodies.append(body)
+ lookup=extract('  Bool FindKeyByScan(').replace('    if (keysByScan[scanCode])','    (void)state();\n    if (scanCode >= 256) return FALSE;\n    if (keysByScan[scanCode])')
+ lookup=lookup.replace('keysByScan','reign::key_name_detail::state().keysByScan')
+ bodies.append(lookup)
  output.mkdir(parents=True,exist_ok=True)
  (output/'key_names_slice.hpp').write_text('''#pragma once
 #include "control_types.hpp"
@@ -56,6 +59,7 @@ struct State {
 State &state();
 void ProcessScanCodes(FScope *);
 void ProcessModifiers(FScope *);
+Bool FindKeyByScan(U32,const char *&);
 }
 ''')
  (output/'key_names_slice.cpp').write_text('#include "key_names_slice.hpp"\nnamespace reign::key_name_detail {\n'+'\n'.join(bodies)+'\n}\n')

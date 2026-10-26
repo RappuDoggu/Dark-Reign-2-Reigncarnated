@@ -3,6 +3,7 @@
 #include "reign/display_options.hpp"
 #include "reign/save_load_services.hpp"
 #include "reign/sound_settings.hpp"
+#include "reign/campaign_selection.hpp"
 #include "reign/command_scopes.hpp"
 #include "reign/interface_events.hpp"
 #include "reign/frontend_frame.hpp"
@@ -19,6 +20,8 @@
 #include "reign/frontend_draw.hpp"
 #include "reign/localization.hpp"
 #include "icbutton.h"
+#include "icmonoview.h"
+#include "ickeyview.h"
 #include "colorbutton.h"
 #include "coloreditor.h"
 #include "iclistbox.h"
@@ -33,6 +36,8 @@
 #include "iface_messagebox.h"
 #include <iostream>
 namespace {
+IControl *keyView(U32,IControl *p,U32){return new KeyViewer(p);}
+IControl *mono(U32,IControl *p,U32){return new ICMonoView(p);}
 IControl *colorButton(U32,IControl *p,U32){return new ColorButton(p);}
 IControl *colorEditor(U32,IControl *p,U32){return new ColorEditor(p);}
 IControl *consoleViewer(U32,IControl *p,U32){return new ConsoleViewer(p);}
@@ -70,8 +75,9 @@ int main(int argc,char **argv){try{
   IFace::RegisterControlClass("Menu",menu);
   IFace::RegisterControlClass("Edit",edit);IFace::RegisterControlClass("TabGroup",tabgroup);IFace::RegisterControlClass("TipWindow",tip);IFace::RegisterControlClass("ConsoleEdit",consoleEdit);
   IFace::RegisterControlClass("ConsoleViewer",consoleViewer);
-  reign::DisplayOptions::register_class();reign::SaveLoadServices::register_class();reign::DisabledAudioSettings::register_class();
+  reign::DisplayOptions::register_class();reign::SaveLoadServices::register_class();reign::DisabledAudioSettings::register_class();reign::CampaignSelectionServices::register_classes();
   IFace::RegisterControlClass("ColorButton",colorButton);IFace::RegisterControlClass("ColorEditor",colorEditor);
+  IFace::RegisterControlClass("MonoView",mono);IFace::RegisterControlClass("Sys::KeyView",keyView);
   root.Activate();
   try{reign::run_console([&]{scopes.execute(argc==3?argv[2]:"runcode_main_login.cfg");},[&](VarSys::VarItem *,U32){++consoleDisplays;});}
   catch(const std::exception &e){blocker=e.what();}

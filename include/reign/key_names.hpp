@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <functional>
 #include <string>
 #include <cstdint>
 class FScope;
@@ -10,6 +11,7 @@ public:
  KeyNames();~KeyNames();
  KeyNames(const KeyNames&)=delete;KeyNames &operator=(const KeyNames&)=delete;
  void configure(FScope *);
+ void run(const std::function<void()> &);
  std::uint32_t scan_code(const std::string &)const;
  std::uint32_t modifier_flags(const std::string &)const;
  unsigned key_count()const;unsigned modifier_count()const;

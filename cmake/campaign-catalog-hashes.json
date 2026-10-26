@@ -1,0 +1,9 @@
+{
+  "game/missions.h": "19fc3fc4727b6de29bf6a2b8ad04c1fa35066d772c110e47405a0bdef15e05ec",
+  "game/missions.cpp": "67c35c0e20d70bfbc65e765a467253027f1bc9910baa9b581dc213b3f0171298",
+  "game/campaigns.h": "ec4e5fa648461f211664b033cc9b49543d244f4450aae58b6166a86336d08f06",
+  "game/campaigns.cpp": "57e2945e313fe29d8034f4418e41da9f18671b2f8851c6393c4aa9b7ba3e4737",
+  "game/difficulty.h": "1ca23dcf4a84dda95d63f8c275e33683bdc5309339e5dc777fc132bfd3d7309e",
+  "game/difficulty.cpp": "7e09baa975d9f4911ae5af4f42f5ecc3842edb97b01175e966d5d7cfce956160",
+  "util/stdload.cpp": "bc61b8baba06939c0f55f233840a05aa6da4ac08ba6e4afb4b5a90daf5782b68"
+}

@@ -1,3 +1,14 @@
+# Campaign/Login boundary — 2026-10-26 UTC
+
+Original campaign/progress/difficulty/catalog, campaign selector, preview metadata,
+drop lists and debug viewers now compile. **52/52 host tests pass**, including
+31 catalog/preview and 60 live-control checks. The real installation catalog finds
+60 missions, 9 groups, 2 campaigns and 4 difficulty settings. Startup reaches
+statement 120 and **Game::Login**, with 8 bitmaps loaded. No main-menu APK yet.
+[Implementation, test scope and remaining boundaries](CAMPAIGN_UI_PORT.md).
+The previous settings increment passed [CI run 40312030783](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40312030783);
+this increment's CI is pending.
+
 # Settings-control checkpoint — 2026-10-26 UTC
 
 Original display/graphics settings, save/load, color picker and sound-settings

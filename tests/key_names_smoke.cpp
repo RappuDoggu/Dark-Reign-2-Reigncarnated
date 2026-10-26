@@ -14,5 +14,6 @@ int main(){try{
  mods.InitIterators();rejects([&]{names.configure(&mods);});
  FScope bad(nullptr,"Modifiers");bad.AddFunction("NotAModifier")->AddArgString("bad");bad.InitIterators();rejects([&]{names.configure(&bad);});
  check(names.key_count()==2&&names.modifier_count()==2);
+ const char *found="unchanged";names.run([&]{check(reign::key_name_detail::FindKeyByScan(30,found)&&std::string(found)=="A");check(!reign::key_name_detail::FindKeyByScan(256,found));other.run([&]{check(!reign::key_name_detail::FindKeyByScan(30,found));});check(reign::key_name_detail::FindKeyByScan(255,found)&&std::string(found)=="Last");});rejects([&]{reign::key_name_detail::FindKeyByScan(30,found);});
  std::cout<<"Original key-name/modifier table and 256 boundary: PASS ("<<checks<<" checks); key events not tested\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -17,6 +17,8 @@
 #include "reign/save_load_services.hpp"
 #include "icsoundconfig.h"
 #include "reign/sound_settings.hpp"
+#include "reign/campaign_selection.hpp"
+#include "game_campaignselection.h"
 #include "console_viewer.h"
 #include "console_slice.hpp"
 #include "font_fixture.hpp"
@@ -104,6 +106,15 @@ int main(){try{
    rejects([&]{reign::disabled_audio_detail::Redbook::Play(1);});check(sound->Deactivate());
   });
   rejects([&]{reign::disabled_audio_detail::Digital::Volume();});
+  reign::CampaignSelectionServices::register_classes();IFace::RegisterControlClass("Listbox",[](U32,IControl *parent,U32)->IControl*{return new ICListBox(parent);});
+  Campaigns::Init();struct EndCampaigns{~EndCampaigns(){Campaigns::Done();}} endCampaigns;
+  text=R"(CreateControl("CampaignTest","Game::CampaignSelection"){
+   Size(300,200);
+   CreateControl("CampaignDropList","DropList"){UseVar("$<.campaignName");Size(100,20);ListBox("Listbox"){ItemConfig(){Font("System");}}}
+   CreateControl("MissionDropList","DropList"){UseVar("$<.missionName");Pos(0,25);Size(100,20);ListBox("Listbox"){ItemConfig(){Font("System");}}}
+  })";
+  check(scopes.execute("menu.cfg"));auto *campaign=IFace::FindByName("CampaignTest");check(campaign!=nullptr);
+  try{check(campaign->Activate());check(campaign->Deactivate());}catch(const std::exception &e){std::cerr<<"Campaign activation: "<<e.what()<<'\n';if(campaign->IsActive())campaign->Deactivate();root.Deactivate();throw;}
   auto *viewer=new ConsoleViewer(&root);viewer->SetName("TestConsole");viewer->SetSize(150,80);VarSys::CreateString("testconsole.selected","");viewer->SetSelectedItemVar("testconsole.selected");FScope item(nullptr,"ItemConfig");item.AddFunction("Font")->AddArgString("System");item.InitIterators();viewer->Setup(&item);
   reign::run_console([&]{try {check(viewer->Activate());Console::AddString("AB",7);check(viewer->ItemCount()==1);viewer->Rebuild();check(viewer->ItemCount()==1);check(viewer->Deactivate());}catch(const std::exception &e){std::cerr<<"Viewer failure: "<<e.what()<<"\n";if(viewer->IsActive())viewer->Deactivate();root.Deactivate();throw;}},[](VarSys::VarItem *,U32){});
   check(root.Deactivate());events.process();

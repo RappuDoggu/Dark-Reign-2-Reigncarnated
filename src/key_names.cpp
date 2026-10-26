@@ -9,6 +9,7 @@ namespace reign {
 struct KeyNames::Impl{key_name_detail::State state;};
 KeyNames::KeyNames():impl_(std::make_unique<Impl>()){}
 KeyNames::~KeyNames()=default;
+void KeyNames::run(const std::function<void()> &call){if(!call)throw std::invalid_argument("Missing key-name dispatch");key_name_detail::Binding binding(impl_->state);call();}
 void KeyNames::configure(FScope *scope){
  if(!scope)throw std::invalid_argument("Missing key-name scope");key_name_detail::Binding binding(impl_->state);
  auto crc=scope->NameCrc();if(crc==Crc::CalcStr("Scancodes"))key_name_detail::ProcessScanCodes(scope);

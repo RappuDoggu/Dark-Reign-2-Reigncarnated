@@ -33,7 +33,7 @@ def prepare(upstream, output):
     for method in ['SetNodeMember','GetHeadNode','GetTailNode','GetHead','Unlink','Dispose','GetCount']:
         reapers = re.sub(r'(?<![\w:.>])'+method+r'\(', 'this->'+method+'(', reapers)
     (output/'native_reaperlist.hpp').write_text(reapers)
-    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic', 'iclistbox', 'iclistslider', 'icslider', 'icmenu', 'icedit', 'ictipwindow', 'ictabgroup', 'console_edit', 'console_viewer', 'colorbutton', 'coloreditor']:
+    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic', 'iclistbox', 'iclistslider', 'icslider', 'icmenu', 'icedit', 'ictipwindow', 'ictabgroup', 'console_edit', 'console_viewer', 'colorbutton', 'coloreditor', 'icdroplist', 'icmonoview', 'ickeyview']:
         s = texts['interface/'+name+'.cpp']
         s = s.replace('#include "input.h"', '#include "control_input.hpp"')
         s = s.replace('#include "stdload.h"', '#include "control_stdload.hpp"')
@@ -42,6 +42,17 @@ def prepare(upstream, output):
             s = s.replace('#include "'+header+'"', '')
         if name in ['iclistbox','iclistslider','icslider']:
             s = '#include "reign/listbox_support.hpp"\n'+s
+        if name == 'ickeyview':
+            s = '#include "iclistbox.h"\n#include "key_names_slice.hpp"\n'+s.replace('KeyBind::FindKeyByScan', 'reign::key_name_detail::FindKeyByScan')
+        if name == 'icmonoview':
+            s = '#define MONO_DISABLED\n#include "reign/listbox_support.hpp"\n'+s.replace('#include "mono.h"','').replace('#include "font.h"','')
+            s = re.sub(r'\b(\d+)L\b', r'S32(\1)', s)
+            for color in ['colorBg','colorFg','colorBright']:s=s.replace(color+'.Set(',color+'.SetInline(')
+        if name == 'icdroplist':
+            (output/'icdroplist.h').write_text('#include "iclistbox.h"\n#include "ifvar.h"\n'+texts['interface/icdroplist.h'])
+            s = s.replace('controlStyle |= TRANSPARENT;', 'controlStyle |= STYLE_TRANSPARENT;').replace('delete selectedVarName;', 'delete[] selectedVarName;')
+            s = s.replace('#include "babel.h"', '#include "babel_slice.hpp"')
+            s = s.replace('[Drop%08X:%s]', '[Drop%p:%s]').replace('ContainerCtrlName, this, Name()', 'ContainerCtrlName, static_cast<void *>(this), Name()')
         if name == 'colorbutton':
             s = s.replace('SetTabStop(FALSE)', 'SetTabStop(nullptr)')
         if name == 'coloreditor':
