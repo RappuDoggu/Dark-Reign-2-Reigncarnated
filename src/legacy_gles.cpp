@@ -152,6 +152,7 @@ void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t
  g.UseProgram(g.program);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
  g.Uniform1i(g.uniform("fog_enabled"),state.fog);g.Uniform1i(g.uniform("specular_enabled"),state.specular);g.Uniform3fv(g.uniform("fog_rgb"),1,state.fog_rgb);g.Uniform1i(g.uniform("alpha_test"),state.alpha_test);g.Uniform1f(g.uniform("alpha_reference"),state.alpha_reference);
  g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,state.texture?state.texture:g.white);g.Uniform1i(g.uniform("image"),0);
+ g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);
  const GLint addressing=state.address==TextureAddress::wrap?GL_REPEAT:state.address==TextureAddress::mirror?GL_MIRRORED_REPEAT:GL_CLAMP_TO_EDGE;
  g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,addressing);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,addressing);
  g.BindVertexArray(g.vao);g.BindBuffer(GL_ARRAY_BUFFER,g.vbo);g.BufferData(GL_ARRAY_BUFFER,count*sizeof(LegacyTL),vertices,GL_STREAM_DRAW);

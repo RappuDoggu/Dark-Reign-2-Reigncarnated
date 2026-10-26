@@ -1,5 +1,6 @@
 #include "reign/frontend_font.hpp"
 #include <map>
+#include "reign/frontend_support.hpp"
 namespace {
 struct FontContext {
  reign::FontRegistry &registry;reign::FrontendFonts::Sink sink;
@@ -25,7 +26,7 @@ void Font::Draw(S32 x,S32 y,const CH *s,U32 length,Color color,const ClipRect *c
  reign::FontDrawOptions options;options.x=x;options.y=y;options.argb=U32(color);options.alpha_scale=alpha;
  options.shadow=shadow;options.shadow_alpha=c.shadow_alpha;options.clip=c.clip;
  if(clip)options.clip={{clip->p0.x,clip->p0.y},{clip->p1.x,clip->p1.y}};
- native_->draw(text(s,length),options,[&](const reign::FontBatch &batch){c.sink(*native_,batch);});
+ native_->draw(text(s,length),options,[&](const reign::FontBatch &batch){auto command=[font=native_,sink=c.sink,batch]{sink(*font,batch);};if(!reign::defer_frontend_submission(command))command();});
 }
 namespace FontSys {
 Font *GetFont(U32 crc){return context().find(crc);}

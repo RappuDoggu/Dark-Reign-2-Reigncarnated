@@ -65,3 +65,12 @@ void *AligningAlloc(U32 size,U32 alignment){
 }
 void AligningFree(void *p){std::free(p);}
 }
+
+namespace reign {
+namespace frontend_submission {thread_local std::function<void(std::function<void()>)> enqueue;}
+bool defer_frontend_submission(std::function<void()> command){
+ if(!command)throw std::invalid_argument("Missing frontend submission");
+ if(!frontend_submission::enqueue)return false;
+ frontend_submission::enqueue(std::move(command));return true;
+}
+}

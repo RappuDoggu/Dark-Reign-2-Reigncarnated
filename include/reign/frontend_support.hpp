@@ -1,5 +1,6 @@
 #pragma once
 #include "reign/legacy_types.hpp"
+#include <functional>
 namespace Utils {
 U32 Strlen(const CH *);
 CH *Strmcpy(CH *,const CH *,U32);
@@ -21,4 +22,11 @@ public:
 namespace Debug::Memory::Aligning {
 void *AligningAlloc(U32,U32);
 void AligningFree(void *);
+}
+
+namespace reign {
+namespace frontend_submission {extern thread_local std::function<void(std::function<void()>)> enqueue;}
+// Returns false outside a frontend draw collection. Retains command ownership
+// until that collection is submitted; nested collections restore their parent.
+bool defer_frontend_submission(std::function<void()>);
 }

@@ -1,13 +1,15 @@
 #include "reign/frontend_font.hpp"
 #include "font_fixture.hpp"
+#include "reign/frontend_draw.hpp"
 #include <iostream>
 int main(){try{
  unsigned checks=0;auto check=[&](bool b){++checks;if(!b)throw std::logic_error("Font bridge check "+std::to_string(checks));};
  auto rejects=[&](auto f){bool caught=false;try{f();}catch(const std::runtime_error&){caught=true;}check(caught);};
  reign::FontRegistry registry([](const std::string &){return font_fixture();});
  registry.create("System","a.fff");registry.create("Alias","a.fff");
+ std::vector<int> order;
  std::vector<reign::FontBatch> batches;const reign::NativeFont *submitted=nullptr;bool fail=false;
- reign::FrontendFonts bridge(registry,[&](const auto &font,const auto &batch){if(fail)throw std::runtime_error("Injected consumer failure");submitted=&font;batches.push_back(batch);});
+ reign::FrontendFonts bridge(registry,[&](const auto &font,const auto &batch){if(fail)throw std::runtime_error("Injected consumer failure");submitted=&font;batches.push_back(batch);order.push_back(2);});
  const CH letters[]={65,66,65};Font *old=nullptr;
  rejects([]{FontSys::GetFont("System");});
  bridge.run([&]{
@@ -40,5 +42,12 @@ int main(){try{
   registry.clear();check(!FontSys::GetFont("System"));check(old->Height()==4);
  });
  rejects([]{FontSys::GetFont("System");});
+ order.clear();bridge.run([&]{
+ reign::FrontendDraw::run_batches([&]{
+  IFace::RenderRectangle(ClipRect(0,0,8,8),Color(U32(0xffff0000)),nullptr,1);
+  old->Draw(1,1,letters,2,Color(U32(0xffffffff)));
+  IFace::RenderRectangle(ClipRect(8,0,16,8),Color(U32(0xff00ff00)),nullptr,1);
+ },[&](const auto &batch){order.push_back(batch.vertices[0].diffuse==0xffff0000?1:3);});
+ });check(order==std::vector<int>({1,2,3}));
  std::cout<<"Frontend Font adapter/original draw equivalence/lifetime: PASS ("<<checks<<" checks)\n";
  }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}

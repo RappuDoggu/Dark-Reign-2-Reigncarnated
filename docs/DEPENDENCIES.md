@@ -1,3 +1,12 @@
+# Ordered UI presentation — 2026-10-26 UTC
+
+Fixed background/font/foreground submission order and added a native GLES UI
+presenter with font/bitmap uploads and frame recovery. Fresh-directory host tests:
+**51/51 PASS** after repairing damaged local build artifacts. Software-GLES pixel
+checks are added for CI and are not yet verified for this increment.
+[Details and limitations](UI_PRESENTATION.md), [host tests](logs/ui-presenter-host-tests.log).
+Original Login remains blocked at Vid::Options; no main-menu APK yet.
+
 # Startup console increment — 2026-10-26 UTC
 
 Original UI sound configuration, Edit/ConsoleEdit/ConsoleViewer, TabGroup and

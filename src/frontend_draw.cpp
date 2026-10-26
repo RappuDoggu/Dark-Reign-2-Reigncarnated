@@ -1,7 +1,7 @@
 #include "reign/frontend_draw.hpp"
 #include <deque>
 namespace {
-struct PendingPrimitive {std::vector<VertexTL> vertices;reign::FrontendBatch batch;};
+struct PendingPrimitive {std::vector<VertexTL> vertices;reign::FrontendBatch batch;std::function<void()> deferred;};
 struct PrimitiveCollection {std::deque<PendingPrimitive> primitives;};
 thread_local PrimitiveCollection *active=nullptr;
 }
@@ -23,9 +23,12 @@ void FrontendDraw::run(const std::function<void()> &draw,const Sink &sink){
 void FrontendDraw::run_batches(const std::function<void()> &draw,const std::function<void(const FrontendBatch &)> &sink){
  if(!draw||!sink)throw std::invalid_argument("Drawing and submission callbacks required");
  PrimitiveCollection state;auto *previous=active;active=&state;
- struct Restore {PrimitiveCollection *previous;~Restore(){active=previous;}} restore{previous};
- draw();active=nullptr;
+ auto oldEnqueue=std::move(frontend_submission::enqueue);
+ struct Restore {PrimitiveCollection *previous;std::function<void(std::function<void()>)> enqueue;~Restore(){active=previous;frontend_submission::enqueue=std::move(enqueue);}} restore{previous,std::move(oldEnqueue)};
+ frontend_submission::enqueue=[&](std::function<void()> command){state.primitives.emplace_back();state.primitives.back().deferred=std::move(command);};
+ draw();active=nullptr;frontend_submission::enqueue={};
  for(auto &p:state.primitives){
+  if(p.deferred){p.deferred();continue;}
   p.batch.vertices.reserve(p.vertices.size());
   for(const auto &v:p.vertices){LegacyTL out{};out.x=v.vv.x;out.y=v.vv.y;out.z=v.vv.z;out.rhw=v.rhw;
    out.diffuse=v.diffuse;out.specular=v.specular;out.u=v.u;out.v=v.v;p.batch.vertices.push_back(out);}

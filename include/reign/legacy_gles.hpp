@@ -19,6 +19,7 @@ struct DrawState {
  Blend blend=Blend::opaque;
  BlendFactor source_factor=BlendFactor::source_alpha,destination_factor=BlendFactor::inverse_source_alpha;
  TextureAddress address=TextureAddress::clamp;
+ bool filtered=false;
  bool depth_test=false,depth_write=false,fog=false,alpha_test=false,specular=false;
  float alpha_reference=0;
  float fog_rgb[3]={0,0,0};
