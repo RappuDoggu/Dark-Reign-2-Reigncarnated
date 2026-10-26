@@ -15,7 +15,7 @@ cmake -S "$repo" -B "$build" \
 cmake --build "$build" --target reign_menu --parallel 2
 mkdir -p "$build/classes" "$build/dex"
 javac --release 8 -classpath "$platform" -d "$build/classes" \
- "$repo/android/menu/org/reigncarnated/menu/MenuActivity.java"
+ "$repo"/android/menu/org/reigncarnated/menu/*.java
 mapfile -d '' classes < <(find "$build/classes" -name '*.class' -print0)
 "$tools/d8" --lib "$platform" --min-api 26 --output "$build/dex" "${classes[@]}"
 "$tools/aapt2" link -o "$build/unsigned.apk" -I "$platform" \

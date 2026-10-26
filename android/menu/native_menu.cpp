@@ -1,4 +1,5 @@
 #include "reign/menu_frontend.hpp"
+#include "reign/menu_audio.hpp"
 #include "reign/frontend_presenter.hpp"
 #include "reign/legacy_gles.hpp"
 #include "reign/archive.hpp"
@@ -17,12 +18,11 @@ struct State {
  std::unique_ptr<reign::MenuFrontend> menu;
  std::unique_ptr<reign::LegacyGles> renderer;
  std::unique_ptr<reign::FrontendPresenter> presenter;
- unsigned suppressedSounds=0;
+ std::unique_ptr<reign::MenuAudio> audio;
  State(const std::string &pack,const std::string &profiles):archive(pack){
   auto loader=[this](const std::string &name){auto at=name.find_last_of("/\\");auto key=at==std::string::npos?name:name.substr(at+1);if(!archive.find(key))throw FileSys::FileNotFound(key);return archive.read(key);};
-  // Explicit disabled-audio backend for this private milestone, no claim of playback.
-  auto silent=[this](const std::string &){return std::function<void(float)>([this](float){++suppressedSounds;});};
-  menu=std::make_unique<reign::MenuFrontend>(loader,profiles,640,480,silent);reset(false);
+  audio=std::make_unique<reign::MenuAudio>(loader,std::filesystem::path(profiles).parent_path()/"menu-audio");
+  menu=std::make_unique<reign::MenuFrontend>(loader,profiles,640,480,[this](const std::string &name){return audio->load(name);});reset(false);
  }
  void reset(bool lost){if(lost){if(presenter)presenter->abandon_context();if(renderer)renderer->abandon_context();}presenter.reset();renderer.reset();renderer=std::make_unique<reign::LegacyGles>(resolve);presenter=std::make_unique<reign::FrontendPresenter>(*renderer);}
  ~State(){presenter.reset();renderer.reset();}
@@ -36,5 +36,10 @@ JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_errorNative(J
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_drawNative(JNIEnv *env,jobject,jlong h,jint width,jint height,jlong ms){try{auto &s=state(h);s.presenter->begin(640,480);auto report=s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms),16);s.presenter->present(width,height);return nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_inputNative(JNIEnv *env,jobject,jlong h,jint kind,jint x,jint y,jstring text){try{auto &s=state(h);if(kind==0)s.menu->pointer_move(x,y);else if(kind==1||kind==2)s.menu->pointer_button(kind==1,x,y);else if(kind==3)s.menu->text(utf(env,text));else if(kind==4){s.menu->key(unsigned(x),true);s.menu->key(unsigned(x),false);}else throw std::invalid_argument("Unknown input action");return nullptr;}catch(const std::exception &e){failure(e);return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_resetGpuNative(JNIEnv *env,jobject,jlong h){try{state(h).reset(true);return nullptr;}catch(const std::exception &e){failure(e);return env->NewStringUTF(error.c_str());}}
+JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MenuActivity_audioNative(JNIEnv *env,jobject,jlong h){
+ try{auto events=state(h).audio->drain();auto cls=env->FindClass("java/lang/String");if(!cls)return nullptr;auto result=env->NewObjectArray(events.size()*2,cls,nullptr);env->DeleteLocalRef(cls);if(!result)return nullptr;
+ for(std::size_t i=0;i<events.size();++i){auto path=env->NewStringUTF(events[i].path.c_str());auto volume=env->NewStringUTF(std::to_string(events[i].volume).c_str());if(!path||!volume)return nullptr;env->SetObjectArrayElement(result,i*2,path);env->SetObjectArrayElement(result,i*2+1,volume);env->DeleteLocalRef(path);env->DeleteLocalRef(volume);}return result;
+ }catch(const std::exception &e){failure(e);return nullptr;}
+}
 JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MenuActivity_closeNative(JNIEnv *,jobject,jlong h){if(!h)return;std::unique_ptr<State> s(reinterpret_cast<State *>(h));try{s->menu->close();}catch(const std::exception &e){failure(e);}}
 }

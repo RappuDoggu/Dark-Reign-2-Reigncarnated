@@ -115,7 +115,7 @@ struct MenuFrontend::Impl {
  config(theme,fonts,metrics,[this](FScope *s){
   if(s->NameCrc()==Crc::CalcStr("Scancodes")||s->NameCrc()==Crc::CalcStr("Modifiers"))keys.configure(s);
   else if(s->NameCrc()==Crc::CalcStr("Sound"))effects.configure(s,[this](const std::string &name){
-   if(soundLoader)return soundLoader(name);
+   if(soundLoader){auto play=soundLoader(name);return std::function<void(float)>([this,play](float volume){play(volume*audio.digital_volume);});}
    auto bytes=loader(name);if(bytes.empty())throw std::runtime_error("Empty UI sound");
    return std::function<void(float)>([name](float){throw std::runtime_error("Menu audio playback not bound: "+name);});
   });else cursors.configure(s);
