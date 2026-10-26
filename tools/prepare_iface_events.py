@@ -87,7 +87,7 @@ namespace IFace { Bool IFaceEventHandler(Event &); }
         ' if (!scope) throw std::invalid_argument("Missing registry scope");\n'
         ' IFace::CreateRegData(scope); } }\n')
     factory=[]
-    expected={'CreateControl':4,'Activate':2,'Deactivate':2,'FindByName':1,
+    expected={'CreateControl':4,'Activate':2,'Deactivate':2,'ToggleActive':1,'FindByName':1,
               'RootWindow':1,'OverlaysWindow':1,'GameWindow':1}
     for name,count in expected.items():
         matches=list(re.finditer(r'^  (?:Bool|IControl \*)\s*'+name+r'\([^\n]*\)\s*\n  \{',source,re.M))
@@ -101,6 +101,8 @@ namespace IFace { Bool IFaceEventHandler(Event &); }
             body=re.sub(token,lambda m:'reign::iface_event_detail::state().'+m[0] if m[0] in fields else m[0],body)
             factory.append(body)
     (output/'iface_factory.cpp').write_text('#include "iface_events.hpp"\nnamespace IFace {\n'+'\n\n'.join(factory)+'\n}\n')
+    command_cases=source[source.index('      case 0x971AD37F:'):source.index('      case 0x7C2B3DA1:')]
+    (output/'iface_commands.cpp').write_text('#include "iface_events.hpp"\n#include "console_slice.hpp"\n#define CON_ERR(args) throw std::invalid_argument("Interface command requires control name");\nnamespace IFace { void NativeControlCommand(U32 crc) { switch(crc) {\n'+command_cases+'default: throw std::invalid_argument("Unsupported interface command"); } } }\nnamespace reign { void register_interface_commands() { VarSys::RegisterHandler("iface",IFace::NativeControlCommand,VarSys::NOTIFY); for(auto name:{"iface.activate","iface.deactivate","iface.toggleactive"}) VarSys::CreateCmd(name,VarSys::NOTIFY); } }\n')
     print('Staged 30 original IFace event/registry methods and 12 factory/lifecycle methods')
 
 if __name__=='__main__':

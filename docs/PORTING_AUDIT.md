@@ -1,3 +1,11 @@
+# Login/profile checkpoint — 2026-10-26 UTC
+
+Original Login configuration completes and activates Login plus its backdrop.
+Original draw emits 72 geometry and 4 font batches. Scripted original Create/Login
+events reach the unimplemented `sys.runcode shell` transition. **53/53 host tests
+pass**, including 18 profile persistence checks. No main-menu APK yet.
+[Implementation, reproduction and limits](LOGIN_PROFILE_PORT.md).
+
 # Campaign/Login boundary — 2026-10-26 UTC
 
 Original campaign/progress/difficulty/catalog, campaign selector, preview metadata,

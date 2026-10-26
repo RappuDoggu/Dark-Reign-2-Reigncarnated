@@ -1,3 +1,5 @@
+Latest: real original Login configuration activates and emits draw batches; original profile persistence passes. Shell mission transition and Android menu host remain. [Current verified status](docs/LOGIN_PROFILE_PORT.md).
+
 Latest: original Listbox/Slider/Menu controls compile; live list selection passes. Login configuration reaches UI Sound. [Status](docs/LIST_MENU_CONTROLS.md).
 
 Latest: original cursors and console colors; 51/51 host tests pass. Login configuration reaches Listbox dependency. [Details](docs/CURSOR_PORT.md).

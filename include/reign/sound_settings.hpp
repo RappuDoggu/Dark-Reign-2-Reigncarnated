@@ -19,7 +19,7 @@ float Volume();void SetVolume(float);
 namespace Reserved {float Volume();void SetVolume(float);}
 }
 namespace Redbook {
-float Volume();void SetVolume(float);void SetEnabled(bool);bool GetEnabled();
+float Volume();void SetVolume(float);void SetEnabled(bool);bool GetEnabled();void SyncEnabled();
 bool Claimed();bool Claim();void Release();unsigned TrackCount();void Play(unsigned);
 }
 }

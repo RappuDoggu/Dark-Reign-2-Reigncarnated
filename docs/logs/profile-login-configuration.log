@@ -1,0 +1,10 @@
+[engine] VarItem 'console' (scope) not being deleted
+Original PTree/Main/IFace configuration attempt: COMPLETED
+Interface statements attempted: 120
+Registered classes: 58
+Font aliases: 9
+Bitmaps: 8
+Cursors: 46 cursor batches: 1
+Configured key names: 128 modifiers: 12
+Login active: 1 backdrop active: 1 geometry batches: 72 glyph batches: 4
+Full Login/Shell lifecycle, GPU screen rendering, Android APK: NOT demonstrated

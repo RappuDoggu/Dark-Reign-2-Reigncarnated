@@ -26,7 +26,7 @@ def prepare(upstream,output):
   if name=='difficulty':s=s.replace('    LoadConfig();','    try { LoadConfig(); } catch (...) { ClearSettings(); throw; }')
   (output/(name+'.cpp')).write_text(s)
  save=texts['util/stdload.cpp']
- signatures=['  FScope* TypeU32(FScope *scope,','  FScope* TypeU32(FScope *parent,','  FScope* TypeString(FScope *scope,','  FScope* TypeString(FScope *parent,']
+ signatures=['  FScope* TypeU32(FScope *scope,','  FScope* TypeU32(FScope *parent,','  FScope* TypeString(FScope *scope,','  FScope* TypeString(FScope *parent,','  FScope* TypeF32(FScope *scope,','  FScope* TypeF32(FScope *parent,']
  bodies=[extract(save,s) for s in signatures]
  (output/'catalog_save.hpp').write_text('#pragma once\n#include "catalog_types.hpp"\nnamespace StdSave {\n'+'\n'.join('inline '+b.lstrip() for b in bodies)+'\n}\n')
  mission=texts['game/missions.cpp']

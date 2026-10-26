@@ -29,6 +29,8 @@ fs::path resolve(const std::string &name){
 struct Binding {const fs::path *previous;explicit Binding(const fs::path &p):previous(root){root=&p;}~Binding(){root=previous;}};
 }
 namespace reign::mission_fs {
+void with_root(const fs::path &path,const std::function<void()> &call){auto canonical=fs::canonical(path);if(!fs::is_directory(canonical)||!call)throw std::invalid_argument("Invalid native filesystem binding");Binding binding(canonical);call();}
+fs::path resolve_path(const std::string &name){return resolve(name);}
 namespace File {bool Exists(const char *p){return fs::exists(resolve(p));}}
 namespace Dir {
 bool FindFirst(Find &out,const char *path,const char *pattern,unsigned flags){
