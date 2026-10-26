@@ -1,3 +1,5 @@
+Private installation and pinned upstream source are preserved online: [recovery instructions](docs/RECOVERY_ARCHIVES.md). Original desktop access is not required.
+
 Latest: real original Login configuration activates and emits draw batches; original profile persistence passes. Shell mission transition and Android menu host remain. [Current verified status](docs/LOGIN_PROFILE_PORT.md).
 
 Latest: original Listbox/Slider/Menu controls compile; live list selection passes. Login configuration reaches UI Sound. [Status](docs/LIST_MENU_CONTROLS.md).
