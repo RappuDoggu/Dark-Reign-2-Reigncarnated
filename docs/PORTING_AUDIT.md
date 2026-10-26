@@ -1,3 +1,15 @@
+# Settings-control checkpoint — 2026-10-26 UTC
+
+Original display/graphics settings, save/load, color picker and sound-settings
+controls now compile. **51/51 local host tests pass; 56 live control/configuration
+checks pass.** Real installation startup reaches statement 112, blocked by
+**Game::CampaignSelection**. Audio is explicitly disabled; save-game services
+remain a required binding. No original main-menu APK is ready.
+[Implementation, limits and actual failures](SETTINGS_CONTROL_PORT.md).
+The preceding UI-presenter CI passed host, ARM64 compilation and software-GLES
+pixel checks in [run 40310661006](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40310661006).
+CI for this settings increment is pending.
+
 # Ordered UI presentation — 2026-10-26 UTC
 
 Fixed background/font/foreground submission order and added a native GLES UI

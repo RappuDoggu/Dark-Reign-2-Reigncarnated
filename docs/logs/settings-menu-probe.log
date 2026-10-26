@@ -1,0 +1,9 @@
+Original PTree/Main/IFace configuration attempt: BLOCKED
+Interface statements attempted: 112
+Registered classes: 37
+Font aliases: 9
+Bitmaps: 4
+Cursors: 46 cursor batches: 1
+Configured key names: 128 modifiers: 12
+Blocking dependency: Control class [Game::CampaignSelection] not found
+Original Login/Shell lifecycle, screen rendering, Android APK: NOT demonstrated

@@ -33,7 +33,7 @@ def prepare(upstream, output):
     for method in ['SetNodeMember','GetHeadNode','GetTailNode','GetHead','Unlink','Dispose','GetCount']:
         reapers = re.sub(r'(?<![\w:.>])'+method+r'\(', 'this->'+method+'(', reapers)
     (output/'native_reaperlist.hpp').write_text(reapers)
-    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic', 'iclistbox', 'iclistslider', 'icslider', 'icmenu', 'icedit', 'ictipwindow', 'ictabgroup', 'console_edit', 'console_viewer']:
+    for name in ['icontrol', 'icroot', 'icbutton', 'icwindow', 'ifvar', 'icsystembutton', 'messagebox_event', 'iface_messagebox', 'icstatic', 'iclistbox', 'iclistslider', 'icslider', 'icmenu', 'icedit', 'ictipwindow', 'ictabgroup', 'console_edit', 'console_viewer', 'colorbutton', 'coloreditor']:
         s = texts['interface/'+name+'.cpp']
         s = s.replace('#include "input.h"', '#include "control_input.hpp"')
         s = s.replace('#include "stdload.h"', '#include "control_stdload.hpp"')
@@ -42,6 +42,12 @@ def prepare(upstream, output):
             s = s.replace('#include "'+header+'"', '')
         if name in ['iclistbox','iclistslider','icslider']:
             s = '#include "reign/listbox_support.hpp"\n'+s
+        if name == 'colorbutton':
+            s = s.replace('SetTabStop(FALSE)', 'SetTabStop(nullptr)')
+        if name == 'coloreditor':
+            s = re.sub(r'\b(\d+)l\b', r'S32(\1)', s)
+            s = s.replace('bar.Set(', 'bar.SetInline(')
+            s = s.replace('color1.Set(color2.R(), color2.G(), color2.B(), 0.0f)', 'color1.SetInline(S32(color2.R()), S32(color2.G()), S32(color2.B()), S32(0))')
         if name == 'console_viewer':
             header=texts['util/stdload.h'];start=header.index('  template <U32 SIZE> void TypeStrCrcList(FScope *fScope, List<StrCrc<SIZE> > &strings)');end=header.index('{',start)+1;depth=1;cursor=end
             while depth:
@@ -102,6 +108,9 @@ def prepare(upstream, output):
             s = s[:start]+'  if (texture && texture->texture) reign::deactivate_control_movie(texture->texture);\n'+s[end:]
         s = s.replace('IFace::data', 'IFace::FrontendData()')
         (output/(name+'.cpp')).write_text(s)
+    math = texts['util/utiltypes.cpp']
+    start = math.index('F32 Value(')
+    (output/'color_math.cpp').write_text('#include "control_types.hpp"\n'+math[start:].replace('color.Set(', 'color.SetInline('))
     # Preserve the original variable-name/dereference path; IControl supplies
     # parent-relative lookup. This remains unexecuted until live controls link.
     source = texts['interface/iface_util.cpp']

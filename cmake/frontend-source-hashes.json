@@ -36,5 +36,9 @@
   "interface/console_edit.cpp": "6527e2c250b24946db16777eac6011a5edf5a7d0b54a99fe0258e623539f87cd",
   "interface/console_edit.h": "c25def3c0fb00478c23df9bb43d629498fc3da1a4de604275f4541125f036c3d",
   "interface/console_viewer.cpp": "465d2c7eee4d6c8c681b3fc8d766c031f4e97724f132b0fe07e584a11b42d64b",
-  "interface/console_viewer.h": "6fc04b2eb7e68aa2a9b4f33cf54c3d705c1ea2abc15acbb2a3160d1dcf38e5dc"
+  "interface/console_viewer.h": "6fc04b2eb7e68aa2a9b4f33cf54c3d705c1ea2abc15acbb2a3160d1dcf38e5dc",
+  "interface/colorbutton.cpp": "8e39143e3ba30bdc438782be003aa7760b11f23550570bff280c9166407edcb0",
+  "interface/colorbutton.h": "709bc0021394d4cbd2ad136143baf8879c662c1f7c7db197fa06a222e7960b11",
+  "interface/coloreditor.cpp": "77bedfda5460000cedbf19f803248560d283b46a00519da643e7e844ef169eeb",
+  "interface/coloreditor.h": "0fb7e8f77b5a51978b28c5b925af97c18c3125b2f8a18497974157b687d8af44"
 }

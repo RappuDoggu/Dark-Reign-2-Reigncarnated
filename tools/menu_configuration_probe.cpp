@@ -1,5 +1,8 @@
 #include "frontend_configuration_slice.hpp"
 #include "reign/frontend_configuration.hpp"
+#include "reign/display_options.hpp"
+#include "reign/save_load_services.hpp"
+#include "reign/sound_settings.hpp"
 #include "reign/command_scopes.hpp"
 #include "reign/interface_events.hpp"
 #include "reign/frontend_frame.hpp"
@@ -16,6 +19,8 @@
 #include "reign/frontend_draw.hpp"
 #include "reign/localization.hpp"
 #include "icbutton.h"
+#include "colorbutton.h"
+#include "coloreditor.h"
 #include "iclistbox.h"
 #include "icmenu.h"
 #include "icedit.h"
@@ -28,6 +33,8 @@
 #include "iface_messagebox.h"
 #include <iostream>
 namespace {
+IControl *colorButton(U32,IControl *p,U32){return new ColorButton(p);}
+IControl *colorEditor(U32,IControl *p,U32){return new ColorEditor(p);}
 IControl *consoleViewer(U32,IControl *p,U32){return new ConsoleViewer(p);}
 IControl *edit(U32,IControl *p,U32){return new ICEdit(p);}
 IControl *tabgroup(U32,IControl *p,U32){return new ICTabGroup(p);}
@@ -63,6 +70,8 @@ int main(int argc,char **argv){try{
   IFace::RegisterControlClass("Menu",menu);
   IFace::RegisterControlClass("Edit",edit);IFace::RegisterControlClass("TabGroup",tabgroup);IFace::RegisterControlClass("TipWindow",tip);IFace::RegisterControlClass("ConsoleEdit",consoleEdit);
   IFace::RegisterControlClass("ConsoleViewer",consoleViewer);
+  reign::DisplayOptions::register_class();reign::SaveLoadServices::register_class();reign::DisabledAudioSettings::register_class();
+  IFace::RegisterControlClass("ColorButton",colorButton);IFace::RegisterControlClass("ColorEditor",colorEditor);
   root.Activate();
   try{reign::run_console([&]{scopes.execute(argc==3?argv[2]:"runcode_main_login.cfg");},[&](VarSys::VarItem *,U32){++consoleDisplays;});}
   catch(const std::exception &e){blocker=e.what();}
