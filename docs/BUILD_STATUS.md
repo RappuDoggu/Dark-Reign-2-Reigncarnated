@@ -1,3 +1,9 @@
+# Verified list/menu increment CI — 2026-10-26 UTC
+
+Commit e7a6e25 passed both host and Android jobs in [run 40302917702](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40302917702).
+This verifies compilation/tests, GLES checks and diagnostic packaging; it does not demonstrate an original-menu APK.
+[Actual provider result](logs/widgets-ci.json).
+
 # Original list/menu widgets — 2026-10-26 UTC
 
 Original Listbox, ListSlider, Slider and Menu now compile and link. Live profile
