@@ -12,6 +12,8 @@
 #include "console_slice.hpp"
 #include "varfile_slice.hpp"
 #include "reign/key_names.hpp"
+#include "reign/cursors.hpp"
+#include "reign/frontend_draw.hpp"
 #include "reign/localization.hpp"
 #include "icbutton.h"
 #include "icstatic.h"
@@ -33,8 +35,8 @@ int main(int argc,char **argv){try{
  reign::InterfaceMetrics metrics(640,480);reign::FrontendFrame frame(metrics);frame.set_time({0,0,0});
  reign::FrontendTheme theme;reign::FontRegistry fonts(loader);reign::FrontendEffects effects;reign::InterfaceEvents events;
  reign::BitmapManager bitmaps(loader,[&](const std::string &name){return archive.find(filename(name))!=nullptr;});reign::FrontendTextures textures(bitmaps);
- unsigned glyphs=0,consoleDisplays=0;reign::FrontendFonts fontBridge(fonts,[&](const auto &,const auto &){++glyphs;});fontBridge.set_frame({{0,0},{640,480}},128);
- reign::CommandScopes scopes(loader);reign::KeyNames keys;reign::FrontendConfiguration config(theme,fonts,metrics,[&](FScope *s){keys.configure(s);});config.register_scopes(scopes);
+ unsigned glyphs=0,consoleDisplays=0,cursorBatches=0;reign::FrontendFonts fontBridge(fonts,[&](const auto &,const auto &){++glyphs;});fontBridge.set_frame({{0,0},{640,480}},128);
+ reign::CommandScopes scopes(loader);reign::KeyNames keys;reign::Cursors cursors;reign::FrontendConfiguration config(theme,fonts,metrics,[&](FScope *s){if(s->NameCrc()==Crc::CalcStr("Scancodes")||s->NameCrc()==Crc::CalcStr("Modifiers"))keys.configure(s);else cursors.configure(s);});config.register_scopes(scopes);
  std::string blocker;unsigned classes=0;
  language.run([&]{config.initialize_language();events.run([&]{theme.run([&]{frame.run([&]{effects.run([&]{fontBridge.run([&]{textures.run([&]{config.run([&]{
   ICRoot root;root.SetName("Root");auto &state=reign::iface_event_detail::state();state.root=&root;state.treeReady=TRUE;
@@ -43,9 +45,11 @@ int main(int argc,char **argv){try{
   root.Activate();
   try{reign::run_console([&]{scopes.execute(argc==3?argv[2]:"runcode_main_login.cfg");},[&](VarSys::VarItem *,U32){++consoleDisplays;});}
   catch(const std::exception &e){blocker=e.what();}
+  if(cursors.select(nullptr))reign::FrontendDraw::run_batches([&]{cursors.draw(100,100,16);},[&](const auto &){++cursorBatches;});
   classes=state.ctrlTypes.GetCount();root.Deactivate();events.process();
  });});});});});});});});
  std::cout<<"Original PTree/Main/IFace configuration attempt: "<<(blocker.empty()?"COMPLETED":"BLOCKED")<<"\nInterface statements attempted: "<<config.processed()<<"\nRegistered classes: "<<classes<<"\nFont aliases: "<<fonts.alias_count()<<"\nBitmaps: "<<bitmaps.count()<<"\n";
+ std::cout<<"Cursors: "<<cursors.count()<<" cursor batches: "<<cursorBatches<<'\n';
  std::cout<<"Configured key names: "<<keys.key_count()<<" modifiers: "<<keys.modifier_count()<<'\n';
  if(!blocker.empty())std::cout<<"Blocking dependency: "<<blocker<<'\n';
  std::cout<<"Original Login/Shell lifecycle, screen rendering, Android APK: NOT demonstrated\n";

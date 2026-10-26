@@ -1,3 +1,5 @@
+Latest: original cursors and console colors; 51/51 host tests pass. Login configuration reaches Listbox dependency. [Details](docs/CURSOR_PORT.md).
+
 Current increment: original menu configuration dispatch; 50/50 host tests pass. Real Login config reaches cursor creation after loading 128 key names and 12 modifiers. No main-menu APK yet. See [evidence](docs/MENU_CONFIGURATION.md).
 
 # Reigncarnated

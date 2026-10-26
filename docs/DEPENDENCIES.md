@@ -1,3 +1,11 @@
+# Cursor configuration increment — 2026-10-26 UTC
+
+Original cursor and console-color code now builds; **51/51 host tests pass**.
+Real Login configuration reaches statement 96 with 46 cursors, 9 font aliases,
+4 bitmaps and one default-cursor draw batch. Next blocker: original Listbox class.
+No main-menu APK yet. [Implementation and evidence](CURSOR_PORT.md),
+[probe output](logs/cursor-menu-probe.log), [tests](logs/cursor-host-tests.log).
+
 # Menu configuration increment — 2026-10-26 UTC
 
 Original Main/IFace configuration dispatch and key-name configuration now build.

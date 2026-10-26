@@ -20,7 +20,7 @@ def prepare(upstream,output):
  'ConfigureColors(sScope)':'reign::frontend_configuration_detail::state().theme->configure_colors(sScope)',
  'FontSys::Create(sScope)':'reign::frontend_configuration_detail::state().fonts->configure_scope(sScope)',
  'ConfigureMetrics(sScope)':'reign::frontend_configuration_detail::state().metrics->configure_scope(sScope)'}
- for old in ['KeyBind::ProcessScanCodes','KeyBind::ProcessModifiers','CursorSys::ProcessCreateCursor','ConfigureDefaultConsoleColor','ConfigureConsoleColors','IFace::Sound::Configure','CursorSys::ProcessStandardCursors']:
+ for old in ['KeyBind::ProcessScanCodes','KeyBind::ProcessModifiers','CursorSys::ProcessCreateCursor','IFace::Sound::Configure','CursorSys::ProcessStandardCursors']:
   calls[old+'(sScope)']='reign::frontend_configuration_detail::forward(sScope)'
  for before,after in calls.items():
   if body.count(before)!=1:raise ValueError('Interface config anchor changed: '+before)
@@ -29,6 +29,7 @@ def prepare(upstream,output):
  anchor='      switch (sScope->NameCrc())'
  body=body.replace(anchor,'      ++reign::frontend_configuration_detail::state().processed;\n'+anchor)
  at=body.rfind('      }');body=body[:at]+'        default: throw std::runtime_error(std::string("Unknown interface configuration: ")+sScope->NameStr());\n'+body[at:]
+ colors='\n'.join(function(sig).replace('defaultConsoleColor','reign::frontend_configuration_detail::state().defaultConsoleColor').replace('consoleColors','reign::frontend_configuration_detail::state().consoleColors') for sig in ['  static void ConfigureDefaultConsoleColor(FScope *fScope)','  static void ConfigureConsoleColors(FScope *fScope)'])
  root=function('  static void CreateRootLevelControl(FScope *fScope)').replace('static void CreateRootLevelControl','void CreateNativeRootControl')
  root=root.replace('    CreateControl(fScope, NULL);','    (void)reign::frontend_configuration_detail::state();\n    if (!fScope) throw std::invalid_argument("Missing root control scope");\n    CreateControl(fScope, NULL);')
  start=source.index('    const char *language = MultiLanguage::GetLanguage();')
@@ -37,15 +38,16 @@ def prepare(upstream,output):
  output.mkdir(parents=True,exist_ok=True)
  (output/'frontend_configuration_slice.hpp').write_text('''#pragma once
 #include "iface_events.hpp"
+namespace IFace {void FScopeToColor(FScope *,Color &);}
 #include "reign/frontend_theme.hpp"
 #include "reign/font_registry.hpp"
 #include "reign/interface_metrics.hpp"
 namespace reign::frontend_configuration_detail {
-struct State {FrontendTheme *theme;FontRegistry *fonts;InterfaceMetrics *metrics;std::function<void(FScope *)> service;unsigned processed=0;};
+struct State {FrontendTheme *theme;FontRegistry *fonts;InterfaceMetrics *metrics;std::function<void(FScope *)> service;unsigned processed=0;Color defaultConsoleColor{};BinTree<Color> consoleColors;~State(){consoleColors.DisposeAll();}};
 State &state();void forward(FScope *);
 }
 namespace IFace {void InitializeNativeLanguage();void ConfigureNative(FScope *);void CreateNativeRootControl(FScope *);}
 ''')
- (output/'frontend_configuration_slice.cpp').write_text('#include "frontend_configuration_slice.hpp"\n#include "localization_slice.hpp"\nnamespace IFace {\n'+language+body+'\n'+root+'\n}\n')
+ (output/'frontend_configuration_slice.cpp').write_text('#include "frontend_configuration_slice.hpp"\n#include "localization_slice.hpp"\nnamespace IFace {\n'+colors+'\n'+language+body+'\n'+root+'\n}\n')
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('upstream',type=Path);p.add_argument('output',type=Path);a=p.parse_args();prepare(a.upstream,a.output)
