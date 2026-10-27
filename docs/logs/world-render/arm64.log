@@ -1,0 +1,8 @@
+ARM64 compile PASS: world_projection.cpp
+ARM64 compile PASS: world_math_slice.cpp
+ARM64 compile PASS: legacy_gles.cpp
+ARM64 compile PASS: renderer_checks.cpp
+/workspace/scratch/71fe0796f7e3/world-arm64/world_projection.o: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped
+/workspace/scratch/71fe0796f7e3/world-arm64/world_math_slice.o: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped
+/workspace/scratch/71fe0796f7e3/world-arm64/legacy_gles.o:      ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped
+/workspace/scratch/71fe0796f7e3/world-arm64/renderer_checks.o:  ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped

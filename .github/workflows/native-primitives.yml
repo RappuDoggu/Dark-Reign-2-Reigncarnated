@@ -122,7 +122,7 @@ jobs:
           export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk/27.2.12479018"
           export REIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream"
           bash tools/package_menu.sh 2>&1 | tee evidence/original-login-package.log
-          cmake --build build-menu --target reign_shell_camera reign_shell_terrain --parallel 2 2>&1 | tee evidence/native-shell-arm64.log
+          cmake --build build-menu --target reign_shell_camera reign_shell_terrain reign_world_projection --parallel 2 2>&1 | tee evidence/native-shell-arm64.log
       # Private test artifact: original engine code, no bundled game assets.
       - uses: actions/upload-artifact@v4
         with:

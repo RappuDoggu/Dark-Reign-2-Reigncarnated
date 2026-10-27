@@ -15,6 +15,9 @@ void original_font_gpu_checks(reign::LegacyGles &);
 void original_frontend_gpu_checks(reign::LegacyGles &);
 void original_presenter_gpu_checks(reign::LegacyGles &);
 #endif
+#ifdef REIGN_WORLD_PROJECTION_CHECKS
+void original_world_gpu_checks(reign::LegacyGles &);
+#endif
 namespace {
 constexpr unsigned W=32,H=32;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
@@ -38,6 +41,9 @@ const std::uint16_t indices[]={0,1,2,0,2,3};
 }
 int main(){
  try{for(int pass=0;pass<2;++pass){Context context;reign::LegacyGles renderer(resolve);std::cout<<"Context "<<pass+1<<"\n"<<reign::renderer_checks(renderer);
+#ifdef REIGN_WORLD_PROJECTION_CHECKS
+ original_world_gpu_checks(renderer);
+#endif
 #ifdef REIGN_ORIGINAL_VID_CHECKS
  original_vid_gpu_checks(renderer);
  original_bucket_gpu_checks(renderer);

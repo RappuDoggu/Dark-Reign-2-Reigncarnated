@@ -28,6 +28,30 @@ std::string renderer_checks(LegacyGles &renderer){
   state={};state.specular=true;auto spec=quad(0xff800000,.5f,0xff000040);renderer.clear(W,H,0,0,0);draw(spec,state);check(pixel(16,16,128,0,64),"Specular RGB addition");
   state={};auto rhs=quad(0xffff0000);rhs[1].rhw=.25f;rhs[2].rhw=.5f;renderer.clear(W,H,0,0,0);draw(rhs,state);check(pixel(16,16,255,0,0),"Reciprocal homogeneous W path");
   bool rejected=false;const std::uint16_t bad[]={0,1,99};try{renderer.draw(W,H,red.data(),red.size(),bad,3,state);}catch(const std::exception &){rejected=true;}check(rejected,"Invalid index rejection");
+  // Homogeneous world batches must match the already-projected original TL path.
+  auto varied=quad(0xffffffff);varied[1].rhw=.4f;varied[2].rhw=.6f;varied[3].rhw=.8f;
+  varied[0].diffuse=0xffff0000;varied[1].diffuse=0xff00ff00;varied[2].diffuse=0xff0000ff;
+  state={};state.texture=texture;state.texture_op=TextureOp::modulate_rgba;
+  renderer.clear(W,H,0,0,0);draw(varied,state);std::vector<std::uint8_t> tlPixels(W*H*4);renderer.read_rgba(W,H,tlPixels.data());
+  std::array<LegacyClip,4> homogeneous{};
+  for(unsigned i=0;i<4;++i){auto &v=varied[i];float w=1/v.rhw;homogeneous[i]={(v.x*2/W-1)*w,(v.y*2/H-1)*w,v.z*w,w,v.diffuse,v.specular,v.u,v.v};}
+  renderer.clear(W,H,0,0,0);renderer.draw_clip(W,H,homogeneous.data(),4,indices,6,state);renderer.read_rgba(W,H,pixels.data());
+  bool same=true;for(std::size_t i=0;i<pixels.size();++i)if(std::abs(int(pixels[i])-int(tlPixels[i]))>2)same=false;
+  check(same,"World/TL perspective texture and affine color parity");
+  const std::uint16_t triangle[]={0,1,2};
+  std::array<LegacyClip,3> crossing={{{-.8f,-.8f,.5f,1,0xffff0000,0xff000000,0,0},{.8f,-.8f,.5f,1,0xffff0000,0xff000000,0,0},{0,.8f,-.5f,1,0xffff0000,0xff000000,0,0}}};
+  state={};state.depth_test=true;state.depth_write=true;renderer.clear(W,H,0,0,0);renderer.draw_clip(W,H,crossing.data(),3,triangle,3,state);
+  check(pixel(16,8,255,0,0)&&pixel(16,24,0,0,0),"World near-plane triangle clipping");
+  for(auto &v:crossing){v.w=-1;v.z=-.5f;}
+  renderer.clear(W,H,0,0,0);renderer.draw_clip(W,H,crossing.data(),3,triangle,3,state);
+  check(pixel(16,8,0,0,0)&&pixel(16,24,0,0,0),"Behind-camera world geometry rejected by GPU clipping");
+  crossing[0]={-.8f,-.8f,.5f,1,0xffff0000,0xff000000,0,0};crossing[1]={.8f,-.8f,.5f,1,0xffff0000,0xff000000,0,0};crossing[2]={0,1.2f,-1,-1,0xffff0000,0xff000000,0,0};
+  renderer.clear(W,H,0,0,0);renderer.draw_clip(W,H,crossing.data(),3,triangle,3,state);
+  check(pixel(16,5,255,0,0)&&pixel(0,31,0,0,0),"World triangle crossing W=0 stays bounded");
+  for(auto &v:homogeneous){v.diffuse=0xff0000ff;v.z=.8f*v.w;}
+  state={};state.depth_test=true;state.depth_write=true;renderer.clear(W,H,0,0,0);draw(near,state);renderer.draw_clip(W,H,homogeneous.data(),4,indices,6,state);
+  check(pixel(16,16,255,0,0),"World and TL batches share zero-to-one depth");
+  state={};renderer.clear(W,H,0,0,0);draw(red,state);check(pixel(16,16,255,0,0),"TL UI state restored after world draw");
   std::array<std::uint8_t,4*4*4> glyph{};for(unsigned n=0;n<16;++n)glyph[n*4]=glyph[n*4+1]=glyph[n*4+2]=255;
   glyph[(1*4+1)*4+3]=255;glyph[(1*4+2)*4+3]=128;glyph[(2*4+1)*4+3]=64;
   auto glyph_texture=renderer.texture_rgba(4,4,glyph.data());auto integer_quad=quad(0xffffffff);

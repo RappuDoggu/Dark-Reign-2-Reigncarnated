@@ -73,14 +73,21 @@ layout(location=1) in vec4 diffuse_bgra;
 layout(location=2) in vec4 specular_bgra;
 layout(location=3) in vec2 uv;
 uniform vec2 viewport_size;
+uniform int homogeneous_input;
 out vec2 texcoord;
 out vec4 screen_diffuse;
 out vec4 screen_specular;
 out float screen_w;
 void main(){
- float w=1.0/position.w;
- vec2 ndc=vec2((position.x+0.5)*2.0/viewport_size.x-1.0,(position.y+0.5)*2.0/viewport_size.y-1.0);
- gl_Position=vec4(ndc*w,(position.z*2.0-1.0)*w,w);
+ float w;
+ if(homogeneous_input!=0){
+  w=position.w;
+  gl_Position=vec4(position.xy+vec2(w)/viewport_size,2.0*position.z-w,w);
+ }else{
+  w=1.0/position.w;
+  vec2 ndc=vec2((position.x+0.5)*2.0/viewport_size.x-1.0,(position.y+0.5)*2.0/viewport_size.y-1.0);
+  gl_Position=vec4(ndc*w,(position.z*2.0-1.0)*w,w);
+ }
  texcoord=uv;
  screen_diffuse=diffuse_bgra.bgra*w;
  screen_specular=specular_bgra.bgra*w;
@@ -138,9 +145,18 @@ void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
  auto &gl=*impl_;gl.target(w,h);gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);gl.ClearColor(r,g,b,a);gl.ClearDepthf(1);gl.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);gl.check();
 }
 void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
+ if(!vertices||count>65536)throw std::runtime_error("Invalid TL batch");
+ for(std::size_t i=0;i<count;++i)if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid TL coordinates/rhw");
+ draw_batch(w,h,vertices,count,indices,index_count,state,false);
+}
+void LegacyGles::draw_clip(unsigned w,unsigned h,const LegacyClip *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
+ if(!vertices||count>65536)throw std::runtime_error("Invalid homogeneous batch");
+ for(std::size_t i=0;i<count;++i){const auto &v=vertices[i];if(!std::isfinite(v.x)||!std::isfinite(v.y)||!std::isfinite(v.z)||!std::isfinite(v.w)||!std::isfinite(v.u)||!std::isfinite(v.v))throw std::runtime_error("Invalid homogeneous coordinates");}
+ draw_batch(w,h,vertices,count,indices,index_count,state,true);
+}
+void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state,bool homogeneous){
  if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle batch");
  if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
- for(std::size_t i=0;i<count;++i)if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid TL coordinates/rhw");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
  auto &g=*impl_;g.target(w,h);g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);
  if(state.depth_test)g.Enable(GL_DEPTH_TEST);else g.Disable(GL_DEPTH_TEST);g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);g.DepthFunc(GL_LEQUAL);
@@ -149,7 +165,7 @@ void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t
   const GLenum factors[]={GL_ZERO,GL_ONE,GL_SRC_COLOR,GL_ONE_MINUS_SRC_COLOR,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_DST_ALPHA,GL_ONE_MINUS_DST_ALPHA,GL_DST_COLOR,GL_ONE_MINUS_DST_COLOR,GL_SRC_ALPHA_SATURATE};
   g.BlendFunc(factors[static_cast<unsigned>(state.source_factor)-1],factors[static_cast<unsigned>(state.destination_factor)-1]);
  }
- g.UseProgram(g.program);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
+ g.UseProgram(g.program);g.Uniform1i(g.uniform("homogeneous_input"),homogeneous);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
  g.Uniform1i(g.uniform("fog_enabled"),state.fog);g.Uniform1i(g.uniform("specular_enabled"),state.specular);g.Uniform3fv(g.uniform("fog_rgb"),1,state.fog_rgb);g.Uniform1i(g.uniform("alpha_test"),state.alpha_test);g.Uniform1f(g.uniform("alpha_reference"),state.alpha_reference);
  g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,state.texture?state.texture:g.white);g.Uniform1i(g.uniform("image"),0);
  g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);

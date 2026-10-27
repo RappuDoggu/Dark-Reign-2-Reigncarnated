@@ -1,5 +1,7 @@
 # Native shell camera and terrain checkpoint
 
+Subsequent projection/GLES integration is documented in [WORLD_RENDER_PROGRESS.md](WORLD_RENDER_PROGRESS.md).
+
 The target is the original real-time 3D menu scene from the game's data, with
 its original controls, music, effects and camera/cinematic behavior. A recorded
 background is not part of this port. v0.3 remains the released APK and still

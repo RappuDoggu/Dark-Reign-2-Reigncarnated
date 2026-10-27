@@ -2,26 +2,25 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
-## Current checkpoint: native shell camera and terrain loading
+## Current checkpoint: native world projection and terrain GPU integration
 
-The target is the original live 3D main-menu scene running natively on Android.
-The owner confirmed the v0.3 folder import, menu, music and effects on the Fold 5.
-Its released APK still has a static backdrop; gameplay-dependent actions remain
-unavailable.
+The target remains the original live 3D main-menu scene running natively on
+Android. The released v0.3 APK has working menu controls, folder import and audio,
+confirmed by the owner on the Fold 5. Its backdrop remains static.
 
-The original BookmarkObj curve runtime now handles all 18 shell bookmarks.
-The original terrain loader reads the shell's 60×60 map, with all 20 terrain
-textures decoded through the original bitmap manager. The folder importer now
-also preserves the available Sprawl/JDA/Sprawler scene packs. These native data
-components compile for ARM64; terrain/model drawing and cinematic integration
-are not yet wired into the APK. No video-background implementation is included.
+The original camera matrix math now feeds homogeneous world vertices into GLES,
+with near-plane clipping, depth and texture perspective verified. A developer
+probe renders the actual shell terrain and its 20 textures at three positions
+on the original Main::Enter camera path, reproducibly across context recreation.
+This is an unlit base-terrain diagnostic, not the complete original scene:
+models, overlays, water, lighting, effects and cinematic integration remain.
 
-60 host tests and 34 importer checks pass. This is a source checkpoint, not a
-new APK release.
+61 host tests pass. The projection and renderer components compile for ARM64.
+No new APK is released at this checkpoint.
 
-[Native shell implementation and validation](docs/NATIVE_SHELL_PROGRESS.md) •
-[Released v0.3 folder setup](docs/FOLDER_SETUP_V03.md) •
-[Prior main-menu checkpoint](docs/MAIN_MENU_V02.md)
+[World rendering boundary and validation](docs/WORLD_RENDER_PROGRESS.md) •
+[Camera/terrain data checkpoint](docs/NATIVE_SHELL_PROGRESS.md) •
+[Released v0.3 folder setup](docs/FOLDER_SETUP_V03.md)
 
 [Source and installation recovery](docs/RECOVERY_ARCHIVES.md): neither requires
 the original desktop. Active implementation lives on `dev/native-arm64-primitives`.
