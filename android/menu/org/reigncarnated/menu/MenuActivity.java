@@ -50,7 +50,7 @@ public final class MenuActivity extends Activity {
   FrameLayout.LayoutParams tools=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.END);screen.addView(toolbar,tools);
   setup=new LinearLayout(this);setup.setOrientation(LinearLayout.VERTICAL);setup.setGravity(Gravity.CENTER);setup.setPadding(dp(28),dp(24),dp(28),dp(24));setup.setBackgroundColor(0xff101710);
   TextView title=new TextView(this);title.setText("REIGNCARNATED");title.setTextColor(0xffaadd99);title.setTextSize(28);title.setGravity(Gravity.CENTER);setup.addView(title);
-  TextView description=new TextView(this);description.setText("Select your legally owned Dark Reign 2 installation folder.\n\nIt should contain packs and missions. Music is detected automatically from the music folder. Menu data is copied once into app storage.");description.setTextColor(0xffeeeeee);description.setGravity(Gravity.CENTER);description.setPadding(0,dp(20),0,dp(20));setup.addView(description);
+  TextView description=new TextView(this);description.setText("Select your legally owned Dark Reign 2 installation folder.\n\nIt should contain packs and missions. Music is detected automatically from the music folder. Menu data and available 3D shell resources are copied once into app storage.");description.setTextColor(0xffeeeeee);description.setGravity(Gravity.CENTER);description.setPadding(0,dp(20),0,dp(20));setup.addView(description);
   choose=new Button(this);choose.setText("Select game data folder");choose.setOnClickListener(v->pickFolder());setup.addView(choose);
   cancelImport=new Button(this);cancelImport.setText("Cancel import");cancelImport.setVisibility(View.GONE);cancelImport.setOnClickListener(v->{cancelled=true;status.setText("Cancelling import…");});setup.addView(cancelImport);
   Button back=new Button(this);back.setText("Return to existing game");back.setVisibility(hasData()?View.VISIBLE:View.GONE);back.setOnClickListener(v->{if(!importing)setup.setVisibility(View.GONE);});setup.addView(back);
@@ -120,6 +120,7 @@ public final class MenuActivity extends Activity {
   view.queueEvent(()->{if(view.handle!=0){closeNative(view.handle);view.handle=0;}view.pack=base;view.shell=shell;view.failed=false;
    if(previous!=null&&!previous.equals(path)){File old=new File(previous);if(old.getName().startsWith("data-")&&old.getParentFile().equals(new File(getFilesDir(),"installations")))new Thread(()->DataFolderImporter.remove(old),"ReignCleanup").start();}
   });view.requestRender();startAudio();
+  record("Native shell resource packs imported: "+imported.scenePacks+"/3. World rendering is not yet available.");
   message(imported.tracks==0?"Game data ready. No music tracks found; menu sound effects remain available.":"Game data ready. "+imported.tracks+" music tracks imported.");
  }
 }

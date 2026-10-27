@@ -1,4 +1,7 @@
 {
   "coregame/spline.h": "b6ce55c101e6eb607c3afcf4b6f52e667f7a7a194bf8d43b39e697d007639d92",
-  "coregame/spline.cpp": "c454b91db458c0eadfce82052b14121526e4088805b436d78ed418b153f1c3de"
+  "coregame/spline.cpp": "c454b91db458c0eadfce82052b14121526e4088805b436d78ed418b153f1c3de",
+  "coregame_objects/bookmarkobj.h": "5f916707cbc65a5bccd55312a60126bea3a8d0a8e6bb5e588944fdf40db212b9",
+  "coregame_objects/bookmarkobj.cpp": "f25313ea25abfab9133c8dd219eca93aab8835dce06809363b41c9a613bfd5cf",
+  "system/nlist.h": "94717e5f96eebc6e9c1b42fcdb9c2da8f17c3f6231e5a62e5bc4cae2f2069413"
 }

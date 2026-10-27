@@ -2,21 +2,25 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
-## Current checkpoint: one-folder setup v0.3
+## Current checkpoint: native shell camera and terrain loading
 
-The Android app now imports its menu archives and music from one selected,
-legally owned installation folder. It remembers setup, plays music automatically,
-and keeps file management and diagnostics in Settings. v0.3 updates v0.2 in place.
+The target is the original live 3D main-menu scene running natively on Android.
+The owner confirmed the v0.3 folder import, menu, music and effects on the Fold 5.
+Its released APK still has a static backdrop; gameplay-dependent actions remain
+unavailable.
 
-Original Login, the release menu layout, volume settings, Logout and Quit remain
-available. The backdrop is still static and gameplay-dependent actions disabled.
-The original camera spline now compiles and samples the real shell path on host;
-terrain/model rendering and cinematic integration remain.
+The original BookmarkObj curve runtime now handles all 18 shell bookmarks.
+The original terrain loader reads the shell's 60×60 map, with all 20 terrain
+textures decoded through the original bitmap manager. The folder importer now
+also preserves the available Sprawl/JDA/Sprawler scene packs. These native data
+components compile for ARM64; terrain/model drawing and cinematic integration
+are not yet wired into the APK. No video-background implementation is included.
 
-58 native tests and 24 real-installation importer checks pass. The signed ARM64
-APK is ready for device testing; Android folder-picker/audio behavior is pending.
+60 host tests and 34 importer checks pass. This is a source checkpoint, not a
+new APK release.
 
-[Current implementation and test instructions](docs/FOLDER_SETUP_V03.md) •
+[Native shell implementation and validation](docs/NATIVE_SHELL_PROGRESS.md) •
+[Released v0.3 folder setup](docs/FOLDER_SETUP_V03.md) •
 [Prior main-menu checkpoint](docs/MAIN_MENU_V02.md)
 
 [Source and installation recovery](docs/RECOVERY_ARCHIVES.md): neither requires

@@ -31,11 +31,16 @@ public final class DataFolderImporterTest {
   File parent=Files.createTempDirectory("reign-import-test-").toFile();
   try{
    Fake source=new Fake(true);DataFolderImporter.Result first=new DataFolderImporter(source,()->false,s->{}).run(source.root,parent);
-   check(first.tracks==2,"discover supported music only");check(first.directory.getName().startsWith("data-"),"finalized snapshot");
+   check(first.tracks==2,"discover supported music only");check(first.scenePacks==0,"compact menu-only folder remains supported");check(first.directory.getName().startsWith("data-"),"finalized snapshot");
    List<String> tracks=DataFolderImporter.playlist(first.directory);check(tracks.size()==2,"playlist persisted");check(Files.readAllBytes(Paths.get(tracks.get(0)))[0]==2,"track order");
    byte[] original=Files.readAllBytes(new File(first.directory,"base.zwp").toPath());
    Fake noMusic=new Fake(false);DataFolderImporter.Result silent=new DataFolderImporter(noMusic,()->false,s->{}).run(noMusic.root,parent);check(silent.tracks==0,"optional music");
    Fake unknown=new Fake(true);unknown.unknown=true;check(new DataFolderImporter(unknown,()->false,s->{}).run(unknown.root,parent).tracks==2,"unknown provider sizes");
+   Fake full=new Fake(true);full.dir("root","Worlds");full.file("root/Worlds","Sprawl.zwp",pack("types_world.cfg"));full.dir("root","Sides");full.dir("root/Sides","Client");full.file("root/Sides/Client","JDA.ZWP",pack("interface_game_side.cfg"));full.file("root/Sides/Client","sprawler.zwp",pack("interface_game_side.cfg"));
+   DataFolderImporter.Result scene=new DataFolderImporter(full,()->false,s->{}).run(full.root,parent);check(scene.scenePacks==3,"native shell packs discovered case insensitively");
+   check(Arrays.equals(Files.readAllBytes(new File(scene.directory,"worlds/sprawl.zwp").toPath()),full.files.get("root/Worlds/Sprawl.zwp")),"world data preserved exactly");
+   check(new File(scene.directory,"sides/client/jda.zwp").isFile()&&new File(scene.directory,"sides/client/sprawler.zwp").isFile(),"scene resource paths preserved");
+   full.files.get("root/Worlds/Sprawl.zwp")[0]=0;check(fails(full,parent,()->false),"corrupt optional scene pack fails transaction");
    Fake missing=new Fake(true);missing.dirs.get("root/Missions").clear();check(fails(missing,parent,()->false),"missing required directory");check(missing.reads==0,"preflight before copying");
    Fake duplicate=new Fake(true);duplicate.dirs.get("root/PACKS").add(duplicate.dirs.get("root/PACKS").get(0));check(fails(duplicate,parent,()->false),"duplicate names rejected");
    Fake wrong=new Fake(true);wrong.files.put("root/Missions/System/Shell.zwp",pack("other.cfg"));wrong.unknown=true;check(fails(wrong,parent,()->false),"wrong shell archive rejected");
@@ -51,6 +56,8 @@ public final class DataFolderImporterTest {
     };
     DataFolderImporter.Result real=new DataFolderImporter(local,()->false,System.out::println).run(new DataFolderImporter.Node(installation.getAbsolutePath(),installation.getName(),true,-1),parent);
     check(real.tracks==9,"real installation tracks");check(new File(real.directory,"base.zwp").length()==new File(installation,"packs/base.zwp").length(),"real base copied");
+    check(real.scenePacks==3,"real world and side packs detected");
+    for(String path:new String[]{"worlds/sprawl.zwp","sides/client/jda.zwp","sides/client/sprawler.zwp"})check(Arrays.equals(Files.readAllBytes(new File(real.directory,path).toPath()),Files.readAllBytes(new File(installation,path).toPath())),"real scene bytes preserved: "+path);
     System.out.println("Real installation: base + shell + "+real.tracks+" tracks validated and imported");
    }
    System.out.println("Data folder importer: PASS ("+checks+" checks)");

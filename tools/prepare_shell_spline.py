@@ -17,3 +17,16 @@ out.mkdir(parents=True,exist_ok=True)
 for name,text in [('spline.h',h),('spline.cpp',s)]:
  path=out/name
  if not path.exists() or path.read_text()!=text:path.write_text(text)
+
+# Original curve source-list construction and stepping, without GameObj ownership.
+bh=texts['coregame_objects/bookmarkobj.h']
+start=bh.index('  struct CurveSrcSegment')
+end=bh.index('  // List of all current bookmarks',start)
+header='#pragma once\n#include "spline.h"\n#include "reign/bookmark_types.hpp"\nnamespace reign::camera_detail {\n'
+header+='#include "camera_nlist.h"\nclass BookmarkObj { public:\n'+bh[start:end]+'};\n}\n'
+bc=texts['coregame_objects/bookmarkobj.cpp']
+start=bc.index('void BookmarkObj::CurveSrc::AddNode(')
+source='#include "bookmark_curve.h"\n#include <cmath>\nnamespace reign::camera_detail {\n'+bc[start:]+'\n}\n'
+for name,text in [('bookmark_curve.h',header),('bookmark_curve.cpp',source),('camera_nlist.h',texts['system/nlist.h'])]:
+ path=out/name
+ if not path.exists() or path.read_text()!=text:path.write_text(text)

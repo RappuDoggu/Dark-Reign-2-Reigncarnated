@@ -15,12 +15,19 @@ final class DataFolderImporter {
  }
  interface Source {List<Node> children(Node directory)throws IOException;InputStream open(Node file)throws IOException;}
  static final class Result {
-  final File directory; final int tracks;
-  Result(File directory,int tracks){this.directory=directory;this.tracks=tracks;}
+  final File directory; final int tracks,scenePacks;
+  Result(File directory,int tracks,int scenePacks){this.directory=directory;this.tracks=tracks;this.scenePacks=scenePacks;}
  }
  private final Source source; private final BooleanSupplier cancelled; private final Consumer<String> progress;
  private long total,lastProgress;
  DataFolderImporter(Source source,BooleanSupplier cancelled,Consumer<String> progress){this.source=source;this.cancelled=cancelled;this.progress=progress;}
+ private static final class ScenePack {
+  final Node node;final String destination,required;
+  ScenePack(Node node,String destination,String required){this.node=node;this.destination=destination;this.required=required;}
+ }
+ private void optionalPack(List<ScenePack> out,Node parent,String name,String destination,String required)throws IOException{
+  if(parent!=null){Node file=child(parent,name,false,false);if(file!=null)out.add(new ScenePack(file,destination,required));}
+ }
  private void check()throws IOException{if(cancelled.getAsBoolean()||Thread.currentThread().isInterrupted())throw new IOException("Import cancelled");}
  private Node child(Node directory,String name,boolean isDirectory,boolean required)throws IOException{
   check();Node found=null;
@@ -36,6 +43,12 @@ final class DataFolderImporter {
   Node packs=child(selected,"packs",true,true),missions=child(selected,"missions",true,true);
   Node system=child(missions,"system",true,true);
   Node base=child(packs,"base.zwp",false,true),shell=child(system,"shell.zwp",false,true);
+  List<ScenePack> scene=new ArrayList<>();
+  Node worlds=child(selected,"worlds",true,false),sides=child(selected,"sides",true,false);
+  Node client=sides==null?null:child(sides,"client",true,false);
+  optionalPack(scene,worlds,"sprawl.zwp","worlds/sprawl.zwp","types_world.cfg");
+  optionalPack(scene,client,"jda.zwp","sides/client/jda.zwp","interface_game_side.cfg");
+  optionalPack(scene,client,"sprawler.zwp","sides/client/sprawler.zwp","interface_game_side.cfg");
   Node music=child(selected,"music",true,false);List<Node> tracks=new ArrayList<>();
   if(music!=null)for(Node n:source.children(music)){
    String lower=n.name.toLowerCase(Locale.ROOT);
@@ -43,7 +56,7 @@ final class DataFolderImporter {
   }
   if(tracks.size()>128)throw new IOException("Music folder has more than 128 tracks");
   tracks.sort((a,b)->a.name.compareToIgnoreCase(b.name));
-  long known=0;List<Node> all=new ArrayList<>();all.add(base);all.add(shell);all.addAll(tracks);
+  long known=0;List<Node> all=new ArrayList<>();all.add(base);all.add(shell);for(ScenePack pack:scene)all.add(pack.node);all.addAll(tracks);
   for(Node n:all){if(n.size>MAX_FILE)throw new IOException("File exceeds 512 MiB: "+n.name);if(n.size>0)known+=n.size;}
   if(known>MAX_TOTAL)throw new IOException("Menu data exceeds 2 GiB");
   if(!parent.isDirectory()&&!parent.mkdirs())throw new IOException("Cannot create app data directory");
@@ -53,10 +66,11 @@ final class DataFolderImporter {
   try{
    copy(base,new File(staging,"base.zwp"));validatePack(new File(staging,"base.zwp"),"runcode_main_login.cfg","english.cfg");
    copy(shell,new File(staging,"shell.zwp"));validatePack(new File(staging,"shell.zwp"),"interface_shell.cfg");
+   for(ScenePack pack:scene){File destination=new File(staging,pack.destination);if(!destination.getParentFile().isDirectory()&&!destination.getParentFile().mkdirs())throw new IOException("Cannot create scene directory");copy(pack.node,destination);validatePack(destination,pack.required);}
    File musicOut=new File(staging,"music");if(!musicOut.mkdir())throw new IOException("Cannot create music directory");
    int i=0;for(Node track:tracks){String ext=track.name.substring(track.name.lastIndexOf('.')).toLowerCase(Locale.ROOT);copy(track,new File(musicOut,String.format(Locale.ROOT,"%03d%s",i++,ext)));}
    check();if(!staging.renameTo(ready))throw new IOException("Cannot finalize imported data");
-   complete=true;return new Result(ready,tracks.size());
+   complete=true;return new Result(ready,tracks.size(),scene.size());
   }finally{if(!complete)remove(staging);}
  }
  private void copy(Node node,File destination)throws IOException{

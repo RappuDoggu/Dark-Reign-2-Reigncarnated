@@ -1,0 +1,22 @@
+Original shell terrain: 60x60 pitch=61 cells=3660 normals=73 clusters=225 overlays=7 height-range=-10,30
+Texture Sprawl-Base-0-0.pic 128x128
+Texture Sprawl-Street-2-0.pic 128x128
+Texture Sprawl-Street-1-0.pic 128x128
+Texture Sprawl-Street-0-1.pic 128x128
+Texture Sprawl-Street-0-0.pic 128x128
+Texture Sprawl-Street-3-0.pic 128x128
+Texture Sprawl-Pool-2-0.pic 128x128
+Texture Sprawl-Pool-1-0.pic 128x128
+Texture Sprawl-Pool-3-0.pic 128x128
+Texture Sprawl-Pool-0-0.pic 128x128
+Texture Sprawl-Plaza-2-0.pic 128x128
+Texture Sprawl-Plaza-1-1.pic 128x128
+Texture Sprawl-Plaza-1-0.pic 128x128
+Texture Sprawl-Plaza-3-0.pic 128x128
+Texture Sprawl-Plaza-0-0.pic 128x128
+Texture Sprawl-Plaza-0-1.pic 128x128
+Texture Sprawl-Rubble-2-0.pic 128x128
+Texture Sprawl-Rubble-1-0.pic 128x128
+Texture Sprawl-Rubble-3-0.pic 128x128
+Texture engine_terrain_grid.tga 64x64
+Original terrain data and bitmap decoding: PASS. World geometry/rendering is not connected.
