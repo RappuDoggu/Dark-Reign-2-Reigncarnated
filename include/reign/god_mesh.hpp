@@ -48,4 +48,40 @@ struct GodMeshPrefix {
 // Bounded little-endian compatibility reader for MeshRoot::Load through its
 // initial state keys. No engine managers, GPU objects or original assets created.
 GodMeshPrefix read_god_mesh_prefix(ConfigLoader loader,const std::string &filename);
+struct GodAnimation {std::uint32_t state=0;float maxFrame=0;std::vector<GodAnimKey> keys;};
+struct GodCycle {
+ std::string name;std::uint32_t type=0;
+ float maxFrame=0,endFrame=0,speed=0,controlFrame=0,framesPerMeter=0;
+ std::vector<float> bounds;
+ std::vector<GodAnimKey> states;std::vector<GodAnimation> animations;
+};
+struct GodLocalGroup {
+ std::uint32_t state=0,vertexCount=0,indexCount=0,plane=0;
+ std::optional<GodMaterial> material;std::optional<GodTexture> texture;
+};
+struct GodNode {
+ std::string name;std::uint32_t state=0,flags=0;int parent=-1;
+ std::array<float,16> objectMatrix{};
+ std::vector<std::array<float,3>> vertices,normals;
+ std::vector<std::array<float,2>> uvs;
+ std::vector<std::uint32_t> colors;
+ std::vector<GodLocalGroup> groups;std::vector<std::uint16_t> indices;
+};
+struct GodMrmUpdate {std::uint32_t face=0,token=0;std::array<std::uint32_t,2> indices{};};
+struct GodMrmVertex {std::uint32_t newFaces=0,newNormals=0,newUvs=0;std::vector<GodMrmUpdate> updates;};
+struct GodMrm {
+ std::uint32_t maxVertices=0,minVertices=0,minMinVertices=0;
+ std::vector<GodMrmVertex> vertices;
+};
+// Complete serialized root tree. Raw keys/matrices are retained: runtime cycle
+// normalization, root state reset, pose evaluation and GPU setup are separate.
+struct GodMesh {
+ GodMeshPrefix geometry;
+ std::vector<GodCycle> cycles;std::optional<GodMrm> mrm;float mrmFactor=0;
+ std::vector<GodNode> nodes;
+ std::uint32_t chunkIndex=0;std::vector<GodMesh> chunks;
+ std::size_t serializedBytes=0;
+};
+GodMesh read_god_mesh(ConfigLoader loader,const std::string &filename);
+
 }

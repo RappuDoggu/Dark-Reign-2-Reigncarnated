@@ -22,6 +22,21 @@ Fixture payload(unsigned v){Fixture f;auto &b=f.bytes;str(b,"mesh");floats(b,v>1
  u32(b,1);floats(b,4);u32(b,1);floats(b,16);u32(b,1);f32(b,0);u32(b,7);floats(b,7);if(v>1)floats(b,3);return f;}
 Bytes block(const Bytes &p,unsigned version){Bytes b;u32(b,0x42434f44);u32(b,1);u32(b,1);b.resize(44);auto key="MeshRoot "+std::to_string(version==1?4:version)+".0";u32(b,reign::name_crc(key.c_str()));u32(b,p.size());b.insert(b.end(),p.begin(),p.end());return b;}
 reign::GodMeshPrefix load(const Bytes &p,unsigned version){auto bytes=block(p,version);return reign::read_god_mesh_prefix([bytes](auto &){return bytes;},"fixture.god");}
+void key(Bytes &b,unsigned v,float frame){f32(b,frame);u32(b,7);floats(b,7);if(v>1)floats(b,3);}
+struct Complete {Bytes bytes;std::size_t trackState,nodeState,mrmToken,end;};
+void nodeData(Bytes &b,unsigned v,const std::string &name){str(b,name);u32(b,0);u32(b,0);floats(b,20);floats(b,16);if(v>=10)u32(b,0);else for(int i=0;i<6;++i)u32(b,0);}
+Complete complete(unsigned v,bool chunk=false){Complete f;f.bytes=payload(v).bytes;auto &b=f.bytes;
+ if(v<2){u32(b,0);u32(b,0);u32(b,0);} // obsolete environment UVs/buckets/color
+ u32(b,1);str(b,"idle");u32(b,0);f32(b,10);f32(b,9);f32(b,40);if(v>=5)f32(b,5);f32(b,2);floats(b,v>1?7:20);
+ u32(b,1);key(b,v,0);u32(b,1);f.trackState=b.size();u32(b,0);f32(b,10);u32(b,2);key(b,v,0);key(b,v,10);
+ f32(b,1);u32(b,0xF18F2BDE);for(unsigned value:{3u,1u,1u,3u,1u,3u,1u})u32(b,value);if(v>=7)u32(b,1);
+ for(unsigned i=0;i<3;++i){u32(b,i==0?1:0);u32(b,0);u32(b,0);u32(b,i==0?1:0);if(i==0){u32(b,0);f.mrmToken=b.size();u32(b,1);u32(b,0);u32(b,1);}}
+ f.nodeState=b.size()+2+5;nodeData(b,v,"root");u32(b,0xF74C51EE);nodeData(b,v,"child");u32(b,0xA93EB864);u32(b,0xB8990880);nodeData(b,v,"sibling");u32(b,0xA93EB864);u32(b,0xA93EB864);
+ u32(b,0);u32(b,chunk?1:0);if(chunk){auto nested=complete(v);b.insert(b.end(),nested.bytes.begin(),nested.bytes.end());}
+ f.end=b.size();u32(b,0xE3BB47F1);return f;
+}
+reign::GodMesh loadComplete(const Bytes &p,unsigned version){auto bytes=block(p,version);return reign::read_god_mesh([bytes](auto &){return bytes;},"fixture.god");}
+
 }
 int main(){try{unsigned checks=0;auto check=[&](bool b){++checks;if(!b)throw std::runtime_error("GOD check "+std::to_string(checks));};
  for(unsigned v:{1u,2u,3u,5u,6u,7u,8u,9u,10u,11u,12u}){
@@ -39,6 +54,23 @@ int main(){try{unsigned checks=0;auto check=[&](bool b){++checks;if(!b)throw std
   // This API deliberately leaves the tail opaque and reports its exact boundary.
   auto tail=bytes;tail.insert(tail.end(),{1,2,3});auto withTail=load(tail,v);check(withTail.prefixBytes==bytes.size()&&withTail.blockBytes==tail.size());
  }
+ for(unsigned v:{1u,2u,3u,5u,6u,7u,8u,9u,10u,11u,12u}){
+  auto f=complete(v,true);auto m=loadComplete(f.bytes,v);
+  check(m.serializedBytes==f.bytes.size()&&m.nodes.size()==3&&m.chunks.size()==1);
+  check(m.nodes[0].parent==-1&&m.nodes[1].parent==0&&m.nodes[2].parent==0);
+  check(m.cycles.size()==1&&m.cycles[0].animations[0].keys[1].frame==10&&m.cycles[0].framesPerMeter==(v>1?2:.5f));
+  check(m.mrm&&m.mrm->vertices.size()==3&&m.mrm->vertices[0].updates[0].indices[1]==1);
+  auto rejects=[&](Bytes p){bool rejected=false;try{loadComplete(p,v);}catch(const std::exception&){rejected=true;}check(rejected);};
+  for(std::size_t len=payload(v).bytes.size();len<f.bytes.size();++len)rejects(Bytes(f.bytes.begin(),f.bytes.begin()+len));
+  for(auto at:{f.trackState,f.nodeState,f.mrmToken,f.end}){auto bad=f.bytes;bad[at]=255;rejects(bad);}
+  auto bad=f.bytes;bad.push_back(0);rejects(bad);
+  rejects(payload(v).bytes); // Prefix success must not imply full-root success.
+ }
+ {
+  auto leaf=complete(12);auto nested=leaf.bytes;
+  for(unsigned i=0;i<32;++i){Bytes parent(leaf.bytes.begin(),leaf.bytes.begin()+leaf.end-4);u32(parent,1);parent.insert(parent.end(),nested.begin(),nested.end());u32(parent,0xE3BB47F1);nested=std::move(parent);}
+  bool rejected=false;try{loadComplete(nested,12);}catch(const std::exception&){rejected=true;}check(rejected);
+ }
  bool rejected=false;try{load(payload(12).bytes,13);}catch(const std::exception&){rejected=true;}check(rejected);
- std::cout<<"GOD versions, geometry/material/weight fields, every prefix truncation and invalid references: PASS ("<<checks<<")\n";
+ std::cout<<"GOD prefix and complete root versions, truncations, animation/hierarchy/MRM/chunks and invalid references: PASS ("<<checks<<")\n";
 }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}

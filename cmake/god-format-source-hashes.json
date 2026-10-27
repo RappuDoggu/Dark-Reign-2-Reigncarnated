@@ -8,5 +8,7 @@
   "graphics/Vertex.h": "46ac054661f9829fc26250b20d7bbe07d772d2a6ec2754f0d5fec1c5ae01fc01",
   "graphics/family.h": "80f3a5d52e77e747828b3f880a4ae8851be822cbdf5eef5dd09677c558c3046a",
   "util/mathtypes.h": "98840b74597794ae5c23987e302b186e45685a80d16a047dab2f92c328405301",
-  "util/utiltypes.h": "d99680d5b7adfd680e1de0e0591ff4cf2226e8ceeed3ca730859edc882efa887"
+  "util/utiltypes.h": "d99680d5b7adfd680e1de0e0591ff4cf2226e8ceeed3ca730859edc882efa887",
+  "graphics/anim.h": "52ccb20b8f277cfdb2f54d0059bccd7edeee152bba3eaa981ab74fee2f58f17c",
+  "graphics/meshmrm.h": "96c5bc09dada7dfe98e3bad4cc4e3442de92a5f82e834196fda6df1804b7f964"
 }

@@ -1,0 +1,4 @@
+NDK 27.2.12479018 / aarch64-linux-android26-clang++ / C++17 / PIC / DEVELOPMENT=1
+Compiled complete src/god_mesh.cpp with repository, staged config and original system includes.
+Result: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped.
+Compile succeeded with no diagnostics. Compilation only; no on-device model test.

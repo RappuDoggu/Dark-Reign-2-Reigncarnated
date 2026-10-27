@@ -1,5 +1,8 @@
 # GOD model data boundary
 
+Historical prefix checkpoint. See [complete root trees](GOD_MODEL_TREE_PROGRESS.md)
+for the subsequent full-data reader and GLES diagnostic.
+
 The native model reader can now load and validate the root geometry, material
 references, vertex weights, bind matrices and initial animation keys in the
 original GOD assets. This is preparation for the shell's buildings and units.
