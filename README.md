@@ -2,7 +2,7 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
-## Current checkpoint: native world projection and terrain GPU integration
+## Current checkpoint: native GOD model data loading
 
 The target remains the original live 3D main-menu scene running natively on
 Android. The released v0.3 APK has working menu controls, folder import and audio,
@@ -15,9 +15,13 @@ on the original Main::Enter camera path, reproducibly across context recreation.
 This is an unlit base-terrain diagnostic, not the complete original scene:
 models, overlays, water, lighting, effects and cinematic integration remain.
 
-61 host tests pass. The projection and renderer components compile for ARM64.
-No new APK is released at this checkpoint.
+A bounded GOD reader now validates geometry, materials, weights and initial bone
+data across all 338 supplied base/Sprawl models. Animation cycles and hierarchy
+remain to be loaded before the models can enter the scene. The model reader,
+projection and renderer components compile for ARM64.
+All 62 host tests pass. No new APK is released at this checkpoint.
 
+[Model data boundary and validation](docs/GOD_MESH_PROGRESS.md) •
 [World rendering boundary and validation](docs/WORLD_RENDER_PROGRESS.md) •
 [Camera/terrain data checkpoint](docs/NATIVE_SHELL_PROGRESS.md) •
 [Released v0.3 folder setup](docs/FOLDER_SETUP_V03.md)
