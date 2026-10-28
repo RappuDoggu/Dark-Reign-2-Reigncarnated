@@ -373,3 +373,11 @@ path. Engine initialization, mission object creation, simulation, rendering and
 JNI input still require end-to-end execution. No new APK or successful Instant
 Action launch is claimed. The verified device baseline remains the v0.5 launch
 APK.
+
+The subsequent fresh inventory build compiled 598/705 declared units. These
+include unneeded desktop/editor/network projects; this is not a completion
+percentage. Linking only this fresh object set plus the native foundation reports
+**72 unresolved symbols and zero other linker errors**. No older object override
+was used. See `logs/instant-action/native-phase3-build.json` and
+`logs/instant-action/native-mission-link-phase3.json` for the exact failures and
+link command. All 255 gameplay, 62 AI and 22 utility units compiled in this run.
