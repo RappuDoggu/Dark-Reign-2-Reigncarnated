@@ -1,3 +1,5 @@
+> Historical checkpoint. See [model poses and shell scene validation](GOD_POSE_PROGRESS.md) for the current boundary.
+
 # Complete GOD root trees and model GLES diagnostic
 
 The model path now reads the remainder of the original serialized MeshRoot:

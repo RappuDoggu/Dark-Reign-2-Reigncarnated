@@ -1,4 +1,5 @@
 #include "reign/god_mesh.hpp"
+#include "reign/god_pose.hpp"
 #include "reign/world_projection.hpp"
 #include "reign/legacy_gles.hpp"
 #include "reign/resources.hpp"
@@ -25,12 +26,13 @@ struct Context {
 };
 }
 int main(int argc,char **argv){try{
- if(argc!=4)throw std::invalid_argument("Usage: god_mesh_gpu_probe installation-root model.god output.ppm");
+ if(argc!=4&&argc!=6)throw std::invalid_argument("Usage: god_mesh_gpu_probe installation-root model.god output.ppm [cycle frame]");
  reign::ResourceStore sources(argv[1]);sources.add_stream("gamedata","world");
  if(!sources.add_archive("gamedata","packs/base.zwp")&&!sources.add_archive("gamedata","base.zwp"))throw std::runtime_error("Missing base archive");
  sources.add_archive("world","worlds/sprawl.zwp");
  auto loader=[&](const std::string &name){return sources.load("gamedata",name);};
  auto model=reign::read_god_mesh(loader,argv[2]);auto &mesh=model.geometry;
+ auto vertices=argc==6?reign::GodPoseEvaluator(model).sample(argv[4],std::stof(argv[5])).vertices:mesh.vertices;
  if(mesh.vertices.empty()||mesh.faces.empty())throw std::runtime_error("Model has no root geometry");
  auto lo=mesh.vertices.front(),hi=lo;for(auto &p:mesh.vertices)for(unsigned i=0;i<3;++i){lo[i]=std::min(lo[i],p[i]);hi[i]=std::max(hi[i],p[i]);}
  std::array<float,3> center{};float radius=0;for(unsigned i=0;i<3;++i){center[i]=(lo[i]+hi[i])*.5f;radius=std::max(radius,(hi[i]-lo[i])*.5f);}if(radius<=0)throw std::runtime_error("Degenerate model bounds");
@@ -42,7 +44,7 @@ int main(int argc,char **argv){try{
   reign::BitmapManager bitmaps(loader,[&](const std::string &name){try{loader(name);return true;}catch(const FileSys::FileNotFound&){return false;}},
    {[&](const reign::RgbaImage &image){return renderer.texture_rgba(image.width,image.height,image.pixels.data());},[&](unsigned texture){renderer.delete_texture(texture);},[]{}});
   struct Batch{std::vector<reign::LegacyClip> vertices;std::vector<std::uint16_t> indices;};std::vector<Batch> batches(mesh.buckets.size());
-  for(auto &face:mesh.faces){auto &b=batches.at(face.bucket);for(unsigned i=0;i<3;++i){auto p=projection.transform(mesh.vertices.at(face.vertices[i]));auto uv=mesh.uvs.at(face.uvs[i]);
+  for(auto &face:mesh.faces){auto &b=batches.at(face.bucket);for(unsigned i=0;i<3;++i){auto p=projection.transform(vertices.at(face.vertices[i]));auto uv=mesh.uvs.at(face.uvs[i]);
    if(b.vertices.size()>=65536)throw std::runtime_error("Probe batch exceeds 16-bit indices");b.indices.push_back(std::uint16_t(b.vertices.size()));b.vertices.push_back({p[0],p[1],p[2],p[3],0xffffffff,0xff000000,uv[0],uv[1]});}}
   renderer.clear(W,H,0,0,0);reign::DrawState state;state.depth_test=true;state.depth_write=true;state.filtered=true;
   for(unsigned i=0;i<batches.size();++i){auto &b=batches[i];if(b.indices.empty())continue;auto &texture=mesh.buckets[i].texture0;
@@ -55,5 +57,5 @@ int main(int argc,char **argv){try{
   else if(reference!=pixels)throw std::runtime_error("Model pixels changed after context recreation");
   std::cout<<"Context "<<generation+1<<" model="<<argv[2]<<" triangles="<<mesh.faces.size()<<" nonblack="<<nonblack<<'\n';
  }
- std::cout<<"PASS: serialized root geometry and base textures through GLES. Diagnostic only: no node transforms, animation, lighting, overlays or original material policy.\n";
+ std::cout<<(argc==6?"PASS: original sampled animation/hierarchy/skinning through GLES. ":"PASS: serialized root geometry through GLES. ")<<"Diagnostic only: no animation clock/transitions, lighting, overlays or original material policy.\n";
 }catch(const std::exception &e){std::cerr<<"GOD_GPU_FAIL "<<e.what()<<'\n';return 1;}}

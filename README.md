@@ -2,27 +2,26 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
-## Current checkpoint: complete model data and GLES diagnostics
+## Current checkpoint: original model poses in the shell scene
 
 The target remains the original live 3D main-menu scene running natively on
 Android. The released v0.3 APK has working menu controls, folder import and audio,
 confirmed by the owner on the Fold 5. Its backdrop remains static.
 
-The original camera matrix math now feeds homogeneous world vertices into GLES,
-with near-plane clipping, depth and texture perspective verified. A developer
-probe renders the actual shell terrain and its 20 textures at three positions
-on the original Main::Enter camera path, reproducibly across context recreation.
-This is an unlit base-terrain diagnostic, not the complete original scene:
-models, overlays, water, lighting, effects and cinematic integration remain.
+The host GLES diagnostic now renders the original shell terrain and all 95 saved
+model placements (28 unique models), including four HQ attachments, along the
+original Main::Enter camera path. Original interpolation, hierarchy transforms
+and skinning evaluate model poses. Three scene samples reproduce exactly across
+graphics-context recreation. This is an unlit diagnostic: original material and
+blend policy, lighting, sky/water, effects, stateful animation/cinematic timing
+and the continuous Android menu scene loop remain to be connected.
 
-The GOD reader now consumes complete root trees for all 338 supplied base/Sprawl
-models, including 43,535 animation keys and 111 nested chunks. The original
-Sprawler HQ and JDA Guardian geometry/textures render in a GLES diagnostic,
-reproducibly across context recreation. Runtime posing, animation and scene
-placement remain to be connected. The model reader compiles for ARM64.
-All 62 host tests pass. No new APK is released at this checkpoint.
+All 63 host tests pass. The pose evaluator and staged original math compile for
+Android ARM64. Real-asset checks cover 449 model roots and 234 animation cycles.
+No new APK is released at this checkpoint.
 
-[Complete model tree and GPU checks](docs/GOD_MODEL_TREE_PROGRESS.md) •
+[Model poses and shell scene validation](docs/GOD_POSE_PROGRESS.md) •
+[Earlier complete model tree checks](docs/GOD_MODEL_TREE_PROGRESS.md) •
 [Earlier model prefix boundary](docs/GOD_MESH_PROGRESS.md) •
 [World rendering boundary and validation](docs/WORLD_RENDER_PROGRESS.md) •
 [Camera/terrain data checkpoint](docs/NATIVE_SHELL_PROGRESS.md) •

@@ -1,0 +1,8 @@
+Original shell placements=95 unique-models=28
+Context 1 t=0 triangles=7200 model-triangles=8499 pixels=219589
+Context 1 t=3 triangles=7200 model-triangles=8499 pixels=246988
+Context 1 t=5.5 triangles=7200 model-triangles=8499 pixels=225246
+Context 2 t=0 triangles=7200 model-triangles=8499 pixels=219589
+Context 2 t=3 triangles=7200 model-triangles=8499 pixels=246988
+Context 2 t=5.5 triangles=7200 model-triangles=8499 pixels=225246
+Original camera/terrain/model-pose GLES integration: PASS. UNLIT DIAGNOSTIC ONLY; overlays, water, lighting, material policy and cinematic runtime absent.
