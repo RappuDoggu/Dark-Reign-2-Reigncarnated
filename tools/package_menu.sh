@@ -41,12 +41,12 @@ if [ ! -f "$build/debug.keystore" ]; then
  -alias androiddebugkey -dname 'CN=Reigncarnated Private Original Menu' -keyalg RSA -keysize 2048 -validity 3650
 fi
 "$tools/apksigner" sign --ks "$build/debug.keystore" --ks-pass pass:android \
- --out "$build/Reigncarnated-Main-Menu-v03.apk" "$build/aligned.apk"
-"$tools/apksigner" verify --verbose "$build/Reigncarnated-Main-Menu-v03.apk"
-"$tools/zipalign" -c -P 16 4 "$build/Reigncarnated-Main-Menu-v03.apk"
-"$tools/aapt2" dump badging "$build/Reigncarnated-Main-Menu-v03.apk"
+ --out "$build/Reigncarnated-Native-Menu-v04.apk" "$build/aligned.apk"
+"$tools/apksigner" verify --verbose "$build/Reigncarnated-Native-Menu-v04.apk"
+"$tools/zipalign" -c -P 16 4 "$build/Reigncarnated-Native-Menu-v04.apk"
+"$tools/aapt2" dump badging "$build/Reigncarnated-Native-Menu-v04.apk"
 
-python3 - "$build/Reigncarnated-Main-Menu-v03.apk" <<'PYZIP'
+python3 - "$build/Reigncarnated-Native-Menu-v04.apk" <<'PYZIP'
 import sys, zipfile
 with zipfile.ZipFile(sys.argv[1]) as apk:
  assert apk.testzip() is None, 'APK ZIP entry checksum mismatch'

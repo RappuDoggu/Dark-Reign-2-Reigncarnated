@@ -2,29 +2,28 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
-## Current checkpoint: original model poses in the shell scene
+## Current checkpoint: native main-menu proof-of-concept APK v0.4
 
-The target remains the original live 3D main-menu scene running natively on
-Android. The released v0.3 APK has working menu controls, folder import and audio,
-confirmed by the owner on the Fold 5. Its backdrop remains static.
+The ARM64 Android proof of concept imports one or more game-data ZIPs and opens
+the original main-menu layout directly over the native 3D shell scene. No login
+is required. The original entrance camera runs, then holds its final view.
+Menu music and effects use the existing Android audio path. Options, logout and
+mission destinations are disabled for this milestone; Quit remains available.
 
-The host GLES diagnostic now renders the original shell terrain and all 95 saved
-model placements (28 unique models), including four HQ attachments, along the
-original Main::Enter camera path. Original interpolation, hierarchy transforms
-and skinning evaluate model poses. Three scene samples reproduce exactly across
-graphics-context recreation. This is an unlit diagnostic: original material and
-blend policy, lighting, sky/water, effects, stateful animation/cinematic timing
-and the continuous Android menu scene loop remain to be connected.
+Import requires base.zwp, shell.zwp and sprawl.zwp. The previous compact v0.3 ZIP
+may lack the world pack. Full installation ZIPs, enclosing folders and compact
+ZIPs are supported. Music is detected automatically. Files are copied once;
+later launches reuse app storage. Folder import remains available.
 
-All 63 host tests pass. The pose evaluator and staged original math compile for
-Android ARM64. Real-asset checks cover 449 model roots and 234 animation cycles.
-No new APK is released at this checkpoint.
+The scene is an unlit proof of concept: original lighting/material policy,
+sky/water, ambient effects and complete cinematic/object simulation remain.
+This is real scene geometry and original camera math, not video playback.
 
-[Model poses and shell scene validation](docs/GOD_POSE_PROGRESS.md) •
-[Earlier complete model tree checks](docs/GOD_MODEL_TREE_PROGRESS.md) •
-[Earlier model prefix boundary](docs/GOD_MESH_PROGRESS.md) •
-[World rendering boundary and validation](docs/WORLD_RENDER_PROGRESS.md) •
-[Camera/terrain data checkpoint](docs/NATIVE_SHELL_PROGRESS.md) •
+The signed APK, ZIP import with actual data, combined scene/UI GLES rendering,
+and 63 host tests are verified. Execution on the owner's Fold 5 is pending.
+See [v0.4 installation and validation](docs/NATIVE_MENU_POC_V04.md).
+
+[Previous model-pose checkpoint](docs/GOD_POSE_PROGRESS.md) •
 [Released v0.3 folder setup](docs/FOLDER_SETUP_V03.md)
 
 [Source and installation recovery](docs/RECOVERY_ARCHIVES.md): neither requires

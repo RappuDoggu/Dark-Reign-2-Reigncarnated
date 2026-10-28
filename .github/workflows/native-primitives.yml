@@ -20,8 +20,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p evidence build-java
-          javac --release 8 -d build-java android/menu/org/reigncarnated/menu/DataFolderImporter.java tests/DataFolderImporterTest.java
+          javac --release 8 -d build-java android/menu/org/reigncarnated/menu/DataFolderImporter.java android/menu/org/reigncarnated/menu/ZipGameSource.java tests/DataFolderImporterTest.java tests/ZipGameSourceTest.java
           java -cp build-java org.reigncarnated.menu.DataFolderImporterTest | tee evidence/data-folder-import.log
+          java -cp build-java org.reigncarnated.menu.ZipGameSourceTest | tee evidence/zip-import.log
       - name: Fetch reviewed upstream separately
         run: bash tools/fetch_upstream.sh "$RUNNER_TEMP/dr2-upstream"
       - name: Compile and test original primitives and platform services
@@ -126,8 +127,8 @@ jobs:
       # Private test artifact: original engine code, no bundled game assets.
       - uses: actions/upload-artifact@v4
         with:
-          name: Reigncarnated-Main-Menu-v03-private-arm64
-          path: build-menu/Reigncarnated-Main-Menu-v03.apk
+          name: Reigncarnated-Native-Menu-v04-private-arm64
+          path: build-menu/Reigncarnated-Native-Menu-v04.apk
 
       - uses: actions/upload-artifact@v4
         if: always()

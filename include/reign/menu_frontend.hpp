@@ -35,6 +35,8 @@ public:
  // text-input adapter. Shell transition requires the release shell archive.
  void create_profile(const std::string &);
  void login_selected_profile();
+ // Proof-of-concept shell entry: no login, navigation or static backdrop.
+ void open_shell_preview();
  void close();
 };
 }

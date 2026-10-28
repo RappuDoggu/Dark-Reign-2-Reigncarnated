@@ -162,7 +162,7 @@ struct MenuFrontend::Impl {
    VarSys::RegisterHandler("sys",runCodeCommand,VarSys::NOTIFY);
    VarSys::CreateCmd("sys.runcode",VarSys::NOTIFY);
    VarSys::CreateString("sys.buildtype","Release");
-   VarSys::CreateString("sys.buildver","Reigncarnated 0.2");
+   VarSys::CreateString("sys.buildver","Reigncarnated 0.4 POC");
    VarSys::CreateString("gamegod.flow.state","");
    root->Activate();scopes.execute("runcode_main_login.cfg");
   });}catch(...){destroy_tree();throw;}
@@ -246,5 +246,16 @@ void MenuFrontend::login_selected_profile(){if(impl_->closed)throw std::logic_er
 std::string MenuFrontend::take_action(){auto result=std::move(impl_->action);impl_->action.clear();return result;}
 float MenuFrontend::effect_volume()const{return impl_->audio.digital_volume;}
 void MenuFrontend::set_effect_volume(float v){if(!std::isfinite(v)||v<0||v>1)throw std::invalid_argument("Invalid volume");impl_->run([&]{impl_->audio.digital_volume=v;if(User::LoggedIn()&&!User::Save())throw std::runtime_error("Could not save volume");});}
+void MenuFrontend::open_shell_preview(){
+ if(impl_->closed)throw std::logic_error("Menu closed");
+ impl_->run([&]{impl_->load_shell();
+  for(auto name:{"DlgLogin","Backdrop"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();
+  auto *shell=IFace::FindByName("Shell::Main",impl_->root.get());shell->Activate();
+  for(auto name:{"Campaigns","LoadGame","InstantAction","Multi","Credits","Options","Logout"}){
+   auto path=std::string("Shell::Main.")+name;if(auto *c=IFace::FindByName(path.c_str(),impl_->root.get()))c->SetStateItem("Disabled",TRUE);
+  }
+  IFace::NativeClearRouting();
+ });
+}
 void MenuFrontend::close(){if(impl_->closed)return;impl_->destroy_tree();impl_->profiles.close();impl_->closed=true;}
 }
