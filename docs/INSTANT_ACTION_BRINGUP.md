@@ -5,6 +5,29 @@ selection of a real unit and construction of a real structure. The v0.5 launch
 APK remains the working baseline; the user has confirmed its intro/menu on device.
 No new mission APK is delivered by this checkpoint.
 
+Local Windows/WSL continuation: [step-by-step setup](LOCAL_WINDOWS_SETUP.md).
+
+## Shared ABI foundation checkpoint
+
+`engine/CMakeLists.txt` now provides a separate build tree for original global
+engine definitions. `prepare_engine_abi.py` verifies source hashes and stages
+complete original headers, changing U32/S32 to fixed-width types, supplying
+U64/S64 on native targets and mapping calling-convention declarations. It does
+not vend upstream code into this repository or implement missing Win32 APIs.
+The existing namespaced launch slices remain isolated from this future engine
+target; these are not two interchangeable class layouts.
+
+Host ASan/UBSan execution validates the original 56-byte PackInfo layout,
+intrusive list/tree pointers with nonzero node offsets and high-bit IDs, and
+fixed expected original random-generator states. Compiling against the unmodified
+original definitions fails the ABI assertions as expected. The same test links
+as an Android ARM64 ELF; device execution has not occurred. See
+`logs/instant-action/engine-abi.log`.
+
+This removes a foundational width issue for the new target. It does **not**
+mean the 705-source engine compiles: the Windows/DirectX services, mission
+runtime and original selection/construction integration below are still needed.
+
 ## Verified starting point
 
 Original source: grasmanek94/darkreign2 at
