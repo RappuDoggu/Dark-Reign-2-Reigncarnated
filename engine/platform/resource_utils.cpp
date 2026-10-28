@@ -32,3 +32,14 @@ void MakePath(char *out,U32 size,const char *dir,const char *name,const char *ex
   Strmcpy(out,p.str,size);
 }
 }
+namespace Utils {
+S32 Strnicmp(const char *a,const char *b,U32 count) {
+ for(U32 i=0;i<count;++i) {
+  unsigned char x=a[i],y=b[i];
+  if(x>='A'&&x<='Z') x+='a'-'A';
+  if(y>='A'&&y<='Z') y+='a'-'A';
+  if(x!=y || !x) return int(x)-int(y);
+ }
+ return 0;
+}
+}

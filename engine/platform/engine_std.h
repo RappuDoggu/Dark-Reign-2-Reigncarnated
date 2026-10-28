@@ -15,7 +15,7 @@ namespace Debug { namespace CallStack { void Dump(); } }
 #define DEBUG_STATIC_GUARD_BLOCK_CHECK
 namespace Debug { namespace Watchdog { void Create(); void Delete(); } }
 // Original DirectInput scan code; touch mapping must emit the same key value.
-#define DIK_ESCAPE 0x01
+#include "native_keycodes.h"
 #define LOGDEFLOCAL(name)
 #include <type_traits>
 #include <cmath>

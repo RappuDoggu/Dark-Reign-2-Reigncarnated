@@ -22,11 +22,12 @@ archive=a.output/'original_engine.a'
 archive.unlink(missing_ok=True)
 subprocess.run([str(a.compiler.parent/'llvm-ar'),'rcs',str(archive)]+[str(obj) for obj in objects.values()],check=True)
 cmd=[str(a.compiler),'-std=c++17','-I'+str(a.staged/'system'),'-I'+str(a.staged/'coregame'),str(repo/'tests/engine_mission_link_probe.cpp'),'-Wl,--gc-sections','-Wl,-u,RequireMissionEntryPoints','-Wl,--error-limit=0','-Wl,--start-group',str(archive)]
-cmd += [str(a.foundation_build/('libdr2_engine_'+name+'.a')) for name in ['io','resources','missions','type_idents']]
+cmd += [str(a.foundation_build/('libdr2_engine_'+name+'.a')) for name in ['io','resources','missions','type_idents','clock']]
 cmd+=['-Wl,--end-group','-o',str(a.output/'mission_link_probe')]
 r=subprocess.run(cmd,capture_output=True,text=True)
 (a.output/'link.log').write_text(r.stdout+r.stderr)
 errors=[line.split('undefined symbol: ',1)[1] for line in r.stderr.splitlines() if 'undefined symbol: ' in line]
-(a.output/'result.json').write_text(json.dumps({'linked':r.returncode==0,'mission_booted':False,'object_files':len(objects),'undefined_symbols':sorted(set(errors)),'command':cmd},indent=2)+'\n')
-print(f'Link exit {r.returncode}; {len(set(errors))} unresolved symbols; no mission executed.')
+other_errors=[line for line in r.stderr.splitlines() if 'error:' in line and 'undefined symbol:' not in line and 'linker command failed' not in line]
+(a.output/'result.json').write_text(json.dumps({'linked':r.returncode==0,'mission_booted':False,'object_files':len(objects),'undefined_symbols':sorted(set(errors)),'other_errors':other_errors,'command':cmd},indent=2)+'\n')
+print(f'Link exit {r.returncode}; {len(set(errors))} reported unresolved symbols; {len(other_errors)} other errors; no mission executed.')
 raise SystemExit(r.returncode)

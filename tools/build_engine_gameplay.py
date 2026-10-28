@@ -22,6 +22,7 @@ def main():
  p.add_argument('--jobs',type=int,default=4)
  p.add_argument('--retry-failed',action='store_true')
  p.add_argument('--all-projects',action='store_true')
+ p.add_argument('--project',action='append',help='Compile only the named original project directories')
  a=p.parse_args();repo=Path(__file__).resolve().parents[1]
  projects=inventory(a.upstream.resolve());root=a.staged.resolve()
  lock_file=root.with_name(root.name+'.lock').open('a')
@@ -45,7 +46,12 @@ def main():
  if a.retry_failed and report.exists():
   old=json.loads(report.read_text())
   if old.get('input_fingerprint')==fingerprint:previous={r['source']:r for r in old['units']}
- items=[(s,project['forced_includes']) for project in projects.values() for s in project['sources'] if a.all_projects or Path(s).parts[0] in ['coregame','coregame_objects','coregame_tasks','coregame_orders','game']]
+ items=[(s,project['forced_includes']) for project in projects.values() for s in project['sources'] if a.all_projects or a.project or Path(s).parts[0] in ['coregame','coregame_objects','coregame_tasks','coregame_orders','game']]
+ if a.project:
+  unknown=set(a.project)-{Path(item[0]).parts[0] for item in items}
+  if unknown:p.error('Unknown project directories: '+', '.join(sorted(unknown)))
+  items=[item for item in items if Path(item[0]).parts[0] in a.project]
+ if not items:p.error('No source units selected')
  def run(item):
   source,forced=item
   if source in previous and previous[source]['exit_code']==0:return previous[source]

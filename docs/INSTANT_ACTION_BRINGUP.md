@@ -282,3 +282,61 @@ Remaining release gate: supply the real native application/renderer/input/audio
 connections needed by those entry points, execute original world/team/player/
 object creation, advance simulation, then wire main-menu Instant Action and test
 on Android. The existing v0.5 main-menu APK remains unchanged.
+
+
+## UI, graphics dependencies and native timing (next recompilation pass)
+
+The mission-entry link gate now reports **155 unresolved symbols**, down from
+336. This pass resolved 217 previous symbols and exposed 36 new dependencies as
+additional implementations became reachable. There are no other linker errors
+in this recorded attempt. The executable still does not link or run.
+
+See `logs/instant-action/native-mission-link-phase2.json` for the remaining,
+resolved and newly exposed symbols. The preceding 336-symbol report is retained
+as the baseline, rather than being silently replaced.
+
+The selected `interface`, `coregame_interface` and `graphics` projects now compile
+189 of 205 complete translation units for ARM64. Newly available implementations
+include UI controls, interface initialization, terrain, mesh management and
+several rendering commands. This does not implement the missing native graphics
+device, bitmap allocation/video backend, or input device connection.
+
+Changes include:
+
+- Original DirectInput scan-code constants are staged without importing a
+  Windows input device implementation.
+- Integral color overloads, explicit VarInteger conversions and legacy C++
+  syntax fixes allow controls and render commands to compile.
+- Mesh lexer iteration and its end-token lookup use the actual token table.
+- Fixed-point UI number formatting uses bounded output instead of Windows-only
+  conversion functions; negative floating values retain their sign.
+- Original Clock calendar/statistics code uses native monotonic counters,
+  correctly sized `time_t` storage and thread-local date buffers. The February
+  leap-year offset and smoothed-average intermediate overflow are fixed.
+- Profiling CycleTimer/CycleWatch values are now **elapsed nanoseconds**, not
+  CPU cycles. They must not be used to infer CPU frequency.
+- Float-to-integer conversions and rounding-mode save/restore use native fenv
+  operations, including nearest-even rounding and checked invalid conversion.
+  Restore tokens are opaque native values, not x87 control words.
+- Bounded ASCII case comparison preserves original identifier comparisons.
+
+Five ASan/UBSan host tests pass, including the new clock/calendar, overflow,
+rounding restoration and comparison cases. Foundation executables compile and
+link for ARM64/API 26. They have not been executed on a device.
+
+To reproduce the selected module pass, add these options to the full-source
+compilation command, using a separate `build-controls-android` output directory:
+
+```sh
+--all-projects --project interface --project coregame_interface --project graphics
+```
+
+Add that directory as the final `--objects` argument to the mission link probe,
+after the broader inventory and gameplay objects. This pass uses an incremental
+composition of those object groups; it does not claim a fresh successful build
+of all 705 sources. The link report now records non-symbol errors separately so
+an early linker failure cannot be mistaken for zero missing dependencies.
+
+No new APK was packaged. Next dependencies are native bitmap/device operations,
+application runtime/config dispatch, input, audio, localization/console utilities
+and the remaining AI compilation fixes.

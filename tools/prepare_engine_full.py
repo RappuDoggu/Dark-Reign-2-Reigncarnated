@@ -13,7 +13,7 @@ if len(hashes)!=expected['source_files'] or digest!=expected['tree_sha256']:
  raise ValueError('Pinned original source tree differs from reviewed full-engine inputs')
 lock_file=out.with_name(out.name+'.lock').open('a')
 fcntl.flock(lock_file, fcntl.LOCK_EX)
-for stage in ['abi','resources','missions','dx7']:
+for stage in ['abi','resources','missions','dx7','clock']:
  subprocess.run([sys.executable,str(repo/'tools'/f'prepare_engine_{stage}.py'),str(root),str(root)+'-engine-'+stage],check=True)
 # Preserve relative include paths and source ownership, rather than flattening
 # duplicate headers or taking arbitrary files from an unreviewed search path.
@@ -25,7 +25,7 @@ for source in root.rglob('*'):
 locations={}
 for source in root.rglob('*'):
  if source.is_file(): locations.setdefault(source.name,[]).append(source.relative_to(root))
-for suffix in ['engine-abi','engine-resources','engine-missions']:
+for suffix in ['engine-abi','engine-resources','engine-missions','engine-clock']:
  for source in Path(str(root)+'-'+suffix).glob('*'):
   if source.is_file() and source.name in locations:
    matches=locations[source.name]
@@ -165,3 +165,43 @@ patch('coregame/game.cpp', [('  void PreOpenMission(const char *missionExecFile)
 patch('coregame/promote.h', [('namespace Promote\n{', 'namespace Promote\n{\n  template<class DEPENDENCY, class BASE> struct CompleteBase { using Type = BASE; };')])
 
 patch('coregame/movement_pathfollow.cpp', [('item->unit[0]->UnitType()->GetHitPoints(),','U32(item->unit[0]->UnitType()->GetHitPoints()),'),('item->unit[1]->UnitType()->GetHitPoints()\n','U32(item->unit[1]->UnitType()->GetHitPoints())\n')])
+
+# UI controls retain original scan-code values, without a DirectInput device.
+keys='\n'.join(line for line in (root/'3rdparty/dx7/dinput.h').read_text().splitlines() if re.match(r'#define DIK_',line))
+(out/'system/native_keycodes.h').write_text('#pragma once\n'+keys+'\n')
+patch('util/color.h', [('  void Set( S32 rIn,', '''  template<class R, class G, class B, class A=int,
+    std::enable_if_t<std::is_integral_v<R> && std::is_integral_v<G> && std::is_integral_v<B> && std::is_integral_v<A>,int> = 0>
+  void Set(R rIn, G gIn, B bIn, A aIn = 255) { Set(U32(rIn), U32(gIn), U32(bIn), U32(aIn)); }
+  void Set( S32 rIn,''')])
+patch('interface/icdroplist.cpp', [('controlStyle |= TRANSPARENT;', 'controlStyle |= STYLE_TRANSPARENT;')])
+patch('graphics/godfile.h', [('sizeof T','sizeof(T)')])
+patch('graphics/bitmap_manager.cpp', [('char * memtype', 'const char * memtype')])
+patch('coregame_interface/client_hud.cpp', [('sizeof ReticleProfile','sizeof(ReticleProfile)')])
+patch('coregame_objects/mapobjlist.h', [('ReaperList<DATA, NODE>::Iterator','typename ReaperList<DATA, NODE>::Iterator')])
+patch('interface/icontrol.cpp', [('alignTo->parent ? alignTo->parent : alignTo;', 'alignTo->parent ? alignTo->parent : static_cast<IControl *>(alignTo);')])
+patch('interface/iclistslider.cpp', [('0L)', 'S32(0))')])
+patch('interface/iface.cpp', [('sizeof ColorGroup', 'sizeof(ColorGroup)')])
+patch('interface/coloreditor.cpp', [('color2.B(), 0.0f)', 'color2.B(), U32(0))')])
+for name in ['graphics/mesh_render_vertextl.cpp','graphics/meshent_render_vertextl.cpp']:
+ patch(name, [('Vid::renderState.texShadowSize, TRUE, 0, 0)', 'Vid::renderState.texShadowSize, TRUE, 0, U32(0))')])
+for name in ['graphics/mesh.cpp','graphics/meshman.cpp','graphics/meshread.cpp']:
+ patch(name, [('strnicmp(', 'Utils::Strnicmp(')])
+patch('system/debug.h', [('#ifdef DEVELOPMENT\n  #define STATIC_GUARD_BLOCK_ENABLED\n#endif', '// Native builds use compiler sanitizers instead of Win32 static guards.')])
+source=out/'interface/iface_util.cpp';text=source.read_text()
+text=text.replace('len = Utils::Strlen(itoa(value, buf, 10));', 'Utils::Sprintf(buf, sizeof(buf), "%d", value);\n    len = Utils::Strlen(buf);')
+start=text.index('    // Convert S32 to a string',text.index('  void RenderF32('));end=text.index('    // Draw the text',start)
+text=text[:start]+'''    // F32 needs at most 39 integral digits. Keep precision bounded and
+    // preserve negative values without the Windows fcvt static buffer.
+    char buf[64];
+    Utils::Sprintf(buf, sizeof(buf), "%.*f", int(Min<U32>(decPt, 9)), double(value));
+    len = Utils::Strlen(buf);
+
+'''+text[end:]
+text=text.replace('    char *str;\n    U32 len;', '    U32 len;')
+source.write_text(text)
+patch('coregame_interface/common_mapwindow.cpp', [('sizeof VertexTL','sizeof(VertexTL)')])
+patch('graphics/lex.h', [('item->name; list++','item->name; item++'),('stricmp(', 'Utils::Stricmp('),('return _END_OF_FILE;', 'TokenItem *end = tokList; while (end->name) ++end; return end->token;')])
+patch('graphics/meshread.cpp', [('min(', 'Min(')])
+patch('graphics/vid_cmd_dialog.cpp', [('min(', 'Min('),('max(', 'Max(')])
+patch('graphics/vid_cmd.cpp', [('caps.clipGuard ? Vid::Var::clipGuard : FALSE', 'caps.clipGuard ? S32(Vid::Var::clipGuard) : FALSE'),('Color color = Vid::Var::suncolor;', 'Color color(U32(Vid::Var::suncolor));'),('min(', 'Min(')])
+patch('graphics/vid_cmd_mesh.cpp', [('Color color = Var::baseColor;', 'Color color(U32(Var::baseColor));')])

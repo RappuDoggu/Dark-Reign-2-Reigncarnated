@@ -1,0 +1,88 @@
+Start testing: Oct 28 17:19 EET
+----------------------------------------------------------
+1/5 Testing: original_global_engine_abi
+1/5 Test: original_global_engine_abi
+Command: "<workspace>/build-engine-host/engine_abi_smoke"
+Directory: <workspace>/build-engine-host
+"original_global_engine_abi" start time: Oct 28 17:19 EET
+Output:
+----------------------------------------------------------
+Original global definitions: packed data, intrusive pointers and 32-bit RNG: PASS
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"original_global_engine_abi" end time: Oct 28 17:19 EET
+"original_global_engine_abi" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/5 Testing: original_engine_native_io
+2/5 Test: original_engine_native_io
+Command: "<workspace>/build-engine-host/engine_io_test"
+Directory: <workspace>/build-engine-host
+"original_engine_native_io" start time: Oct 28 17:19 EET
+Output:
+----------------------------------------------------------
+PASS native File/Dir: I/O, mappings, paths, enumeration, CRC, failure paths
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_native_io" end time: Oct 28 17:19 EET
+"original_engine_native_io" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/5 Testing: original_engine_mission_resources
+3/5 Test: original_engine_mission_resources
+Command: "<workspace>/build-engine-host/engine_resources_test" "<workspace>/owned-installation/Dark Reign 2"
+Directory: <workspace>/build-engine-host
+"original_engine_mission_resources" start time: Oct 28 17:19 EET
+Output:
+----------------------------------------------------------
+DataFile: open files [0]
+PASS original FileSys + PTree: 2crazed, 100x100, 125 object definitions
+PASS original resource unload; gameplay simulation is not linked by this test
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_mission_resources" end time: Oct 28 17:19 EET
+"original_engine_mission_resources" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: original_engine_mission_start
+4/5 Test: original_engine_mission_start
+Command: "<workspace>/build-engine-host/engine_mission_start_test" "<workspace>/owned-installation/Dark Reign 2"
+Directory: <workspace>/build-engine-host
+"original_engine_mission_start" start time: Oct 28 17:19 EET
+Output:
+----------------------------------------------------------
+Found 60 missions in 9 groups
+DataFile: open files [0]
+PASS original Missions: discover -> select 2crazed -> activate -> open game.cfg -> queue Mission -> unload
+NOT EXECUTED: Game::PreOpenMission, player/team creation, simulation, renderer, touch controls
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_mission_start" end time: Oct 28 17:19 EET
+"original_engine_mission_start" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/5 Testing: original_engine_native_runtime
+5/5 Test: original_engine_native_runtime
+Command: "<workspace>/build-engine-host/engine_runtime_test"
+Directory: <workspace>/build-engine-host
+"original_engine_native_runtime" start time: Oct 28 17:19 EET
+Output:
+----------------------------------------------------------
+Type identifiers, native queues, timing/calendar, string comparison and unwinding passed
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_native_runtime" end time: Oct 28 17:19 EET
+"original_engine_native_runtime" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 28 17:19 EET
