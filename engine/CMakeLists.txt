@@ -95,7 +95,7 @@ add_library(dr2_engine_missions STATIC
  "${REIGN_ENGINE_MISSIONS}/utiltypes.cpp"
  "${REIGN_ENGINE_ABI}/random.cpp")
 target_include_directories(dr2_engine_missions BEFORE PUBLIC "${REIGN_ENGINE_MISSIONS}")
-target_link_libraries(dr2_engine_missions PUBLIC dr2_engine_resources)
+target_link_libraries(dr2_engine_missions PUBLIC dr2_engine_resources dr2_engine_type_idents)
 target_compile_options(dr2_engine_missions PRIVATE
  -include "${REIGN_REPO}/engine/platform/mission_prelude.h" -ffunction-sections -fdata-sections)
 add_executable(engine_mission_start_test "${REIGN_REPO}/tests/engine_mission_start_test.cpp")
@@ -105,4 +105,14 @@ target_link_libraries(engine_mission_start_test PRIVATE dr2_engine_missions)
 target_link_options(engine_mission_start_test PRIVATE -Wl,--gc-sections)
 if(NOT ANDROID AND REIGN_GAME_DATA)
  add_test(NAME original_engine_mission_start COMMAND engine_mission_start_test "${REIGN_GAME_DATA}")
+endif()
+
+# Native runtime mechanisms needed by complete gameplay sources.
+add_library(dr2_engine_type_idents STATIC platform/type_ident_registry.cpp)
+target_link_libraries(dr2_engine_type_idents PUBLIC dr2_engine_resources)
+target_include_directories(dr2_engine_type_idents PUBLIC "${REIGN_UPSTREAM}-engine-missions")
+add_executable(engine_runtime_test "${REIGN_REPO}/tests/engine_runtime_test.cpp")
+target_link_libraries(engine_runtime_test PRIVATE dr2_engine_type_idents)
+if(NOT ANDROID)
+ add_test(NAME original_engine_native_runtime COMMAND engine_runtime_test)
 endif()

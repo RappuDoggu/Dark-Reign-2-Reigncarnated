@@ -156,7 +156,7 @@ Validation with the owned installation:
 - Original Missions: discover 60 missions in 9 groups; select `2crazed` from
   the Instant Action group; SetActive/OpenActiveStream; parse the active
   game.cfg; LaunchMission queues the original Mission run-code; unload.
-- Four host CTest checks pass with ASan/UBSan, with LeakSanitizer disabled
+- Five host CTest checks pass with ASan/UBSan, with LeakSanitizer disabled
   because this execution environment cannot enumerate process threads.
 - All targets compile and link for Android ARM64/API 26 using NDK 27.2.12479018.
   ARM64 execution on a device has not been performed.
@@ -169,12 +169,15 @@ objects, simulation and rendering remain unlinked. No new APK is produced.
 The test executable uses function-section garbage collection to omit uncalled
 save/UI/full-game entry points. This is not a claim that every function in those
 libraries has all its dependencies ported. In particular, original
-StdLoad::GetIdentAsU32 stores a heap pointer in a 32-bit ID. Its unsafe inline
-body is replaced by an unresolved declaration until the matching original
-Resolver::Type path is ported; using it currently fails at link time, rather
-than silently truncating pointers. Original Matrix retains its 64-byte row
-layout; its unused, nonstandard anonymous SIMD `Mat` alias is removed. The
-original Windows-only RECT conversion is excluded on native builds.
+StdLoad::GetIdentAsU32 originally stored a heap pointer in a 32-bit ID. The
+native implementation now returns an owning-registry token; the full-source
+Resolver::Type adapter consumes that token by value. Object instance IDs remain
+32-bit. Tokens are not recycled, and missing/consumed tokens fail explicitly.
+The original loader is exercised by the native runtime test. This does not yet
+establish end-to-end GameObjType creation in a running mission.
+Original Matrix retains its 64-byte row layout; its unused, nonstandard
+anonymous SIMD `Mat` alias is removed. The original Windows-only RECT conversion
+is excluded on native builds.
 
 Fixed while exercising the real resource path: DataFilePack::Read copied the
 requested byte count after calculating a shorter remaining count. It now copies
@@ -210,3 +213,72 @@ D7VK was also inspected: its `devel` branch's `src/ddraw/ddraw_main.cpp` loads a
 underlying Windows/Wine ddraw library and forwards DirectDrawCreateEx. It is not
 a standalone native Android renderer that can simply replace DR2's device layer.
 No D7VK build was attempted.
+
+
+## Complete gameplay compilation and mission link gate (2026-10-28)
+
+The full-source adapter now compiles all 255 translation units from the original
+`coregame`, `coregame_objects`, `coregame_tasks`, `coregame_orders` and `game`
+projects on native Linux and Android ARM64/API 26. These are complete translation
+units, including original mission initialization, unit construction tasks and
+orders. This is object compilation, not executable linking or gameplay testing.
+
+The broader 705-source app-project inventory produced 556 successful ARM64 object
+files before the final gameplay fixes. That inventory includes unused Windows
+application/network/editor code, so its success fraction is not a completion
+estimate. A mission-entry link probe combining successful broader objects with
+the final gameplay objects reaches the linker but reports 336 unresolved symbols.
+See `logs/instant-action/native-mission-link.json` for the exact dependency list.
+No mission executable, APK, or device run is claimed.
+
+New native adaptations:
+
+- Original DX7 declarations use fixed-width Windows data types without defining
+  `_WIN32`. They declare the device interfaces; they do not implement a renderer.
+- Standard C++ dependent-name lookup, state-machine member pointers, complete-type
+  lookup, and explicit specializations replace MSVC-only acceptance rules.
+- The runtime-only bookmark union uses separate fields, while individual field
+  serialization stays unchanged. Animation frame setters now return their value.
+- Object type-name resolution uses the checked owning registry described above.
+- Dynamic objective/radio message strings are native UTF-16 pointers passed through
+  the native variadic ABI, replacing manual x86 pushes/pops and U32 pointer casts.
+- Original queue mutexes and semaphores use real process-local C++ synchronization.
+  Unsupported named kernel objects throw; no success stubs are supplied.
+- Debug stack collection uses native unwinding rather than x86 EBP inspection.
+- The existing aligned allocator now preserves the original class-shaped API.
+
+The five ASan/UBSan host tests pass, including original-loader token creation,
+consumption/stale-token rejection, concurrent registry ownership, synchronization
+and unwinding. Foundation tests also compile/link for ARM64. LeakSanitizer remains
+disabled for the execution environment restriction described above. No ARM64
+binary was executed here.
+
+Reproduce complete gameplay compilation after the foundation configuration:
+
+```sh
+python3 "$REIGN_REPO/tools/prepare_engine_full.py" "$REIGN_UPSTREAM" "$REIGN_WORK_ROOT/upstream-native"
+python3 "$REIGN_REPO/tools/build_engine_gameplay.py"   "$REIGN_UPSTREAM" "$REIGN_WORK_ROOT/upstream-native" "$REIGN_WORK_ROOT/build-gameplay-host"
+python3 "$REIGN_REPO/tools/build_engine_gameplay.py"   "$REIGN_UPSTREAM" "$REIGN_WORK_ROOT/upstream-native" "$REIGN_WORK_ROOT/build-gameplay-android"   --compiler "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang++"
+```
+
+The staging script validates all 1,791 original source/header inputs against the
+pinned tree digest and regenerates its reviewed prerequisite overlays. Build and
+staging scripts use a shared/exclusive lock to prevent concurrent source rewrites.
+Failed compiles remove stale objects. Cached successes require an identical input
+fingerprint. The scripts target Linux/WSL and the Linux NDK host toolchain.
+
+For the broader dependency inventory, add `--all-projects` and use a separate
+output directory. To run the link gate:
+
+```sh
+python3 "$REIGN_REPO/tools/link_engine_mission_probe.py"   "$REIGN_WORK_ROOT/upstream-native" "$REIGN_WORK_ROOT/build-engine-android"   "$REIGN_WORK_ROOT/build-mission-link-android"   --compiler "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang++"   --objects "$REIGN_WORK_ROOT/build-engine-all-android"   --objects "$REIGN_WORK_ROOT/build-gameplay-android"
+```
+
+The probe retains real Game mission entry points for linking. Its main function
+explicitly reports that it is a link check and exits with failure; it is not a
+bootstrap or a substitute mission runner.
+
+Remaining release gate: supply the real native application/renderer/input/audio
+connections needed by those entry points, execute original world/team/player/
+object creation, advance simulation, then wire main-menu Instant Action and test
+on Android. The existing v0.5 main-menu APK remains unchanged.

@@ -53,8 +53,8 @@ def prepare(upstream, output):
     texts['stdload.h']=texts['stdload.h'].replace('TypeStrBufBinTree(fScope->Getfunction(name), idents);','TypeStrBufBinTree(parent->GetFunction(name), strings);')
     texts['stdload.h']=texts['stdload.h'].replace('TypeStrCrcList(fScope->GetFunction(name), idents);','TypeStrCrcList(fScope->GetFunction(name), strings);')
     # This original API encodes a heap pointer in a 32-bit object ID. Do not
-    # silently truncate it. It remains an explicit link-time integration gap
-    # until the matching coregame Resolver::Type name-resolution path is ported.
+    # silently truncate it. The native type-ident registry implements this API;
+    # the full-source adapter ports matching Resolver::Type to consume tokens.
     old='inline U32 GetIdentAsU32(const char *ident)\n  {\n    return (reinterpret_cast<U32>(new GameIdent(ident)));\n  }'
     if old not in texts['stdload.h']: raise ValueError('Unexpected reaper name encoding')
     texts['stdload.h']=texts['stdload.h'].replace(old,'U32 GetIdentAsU32(const char *ident);')

@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-28",
+  "host_gameplay": {
+    "compiled": 255,
+    "total": 255,
+    "linked": false,
+    "mission_booted": false
+  },
+  "android_gameplay": {
+    "compiled": 255,
+    "total": 255,
+    "linked": false,
+    "mission_booted": false
+  },
+  "broader_android_inventory": {
+    "compiled": 556,
+    "total": 705,
+    "linked": false,
+    "mission_booted": false
+  },
+  "host_tests": {
+    "passed": 5,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "leak_detection": false
+  },
+  "device_executed": false,
+  "mission_booted": false,
+  "apk_created": false
+}

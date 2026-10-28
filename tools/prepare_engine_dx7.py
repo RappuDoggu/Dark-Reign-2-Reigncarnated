@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""Adapt pinned DX7 declarations without defining _WIN32 on native compilers."""
+import argparse,hashlib,json,re
+from pathlib import Path
+p=argparse.ArgumentParser();p.add_argument('upstream',type=Path);p.add_argument('output',type=Path);a=p.parse_args()
+repo=Path(__file__).resolve().parents[1];out=a.output.resolve();source=a.upstream.resolve()
+if out==repo or repo in out.parents or out in repo.parents or out==source or source in out.parents or out in source.parents: raise ValueError('External staging required')
+out.mkdir(parents=True,exist_ok=True)
+for name,digest in json.loads((repo/'cmake/engine-dx7-source-hashes.json').read_text()).items():
+ raw=(source/'3rdparty/dx7'/name).read_bytes()
+ if hashlib.sha256(raw).hexdigest()!=digest: raise ValueError('Unreviewed SDK header '+name)
+ text=raw.decode().replace('\r\n','\n')
+ text=re.sub(r'\b_WIN32\b|\bWIN32\b','REIGN_DX7_DECLARATIONS',text)
+ # SDK uses pack(4)/pack() rather than balanced push/pop. Isolate its ABI packing.
+ text='#pragma pack(push)\n'+text+'\n#pragma pack(pop)\n'
+ dest=out/name
+ if not dest.exists() or dest.read_text()!=text: dest.write_text(text)
