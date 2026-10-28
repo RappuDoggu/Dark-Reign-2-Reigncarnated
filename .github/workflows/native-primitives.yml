@@ -115,20 +115,16 @@ jobs:
         with:
           name: Reigncarnated-Renderer-Test-v04-arm64
           path: build-asset-probe/Reigncarnated-Renderer-Test-v04.apk
-      - name: Build private original Login APK
+      - name: Compile native launch with original Bink decoding (no incremental APK release)
         shell: bash
         run: |
           set -euo pipefail
-          export ANDROID_SDK_ROOT="$RUNNER_TEMP/reign-sdk"
-          export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk/27.2.12479018"
-          export REIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream"
-          bash tools/package_menu.sh 2>&1 | tee evidence/original-login-package.log
-          cmake --build build-menu --target reign_shell_camera reign_shell_terrain reign_world_projection reign_god_mesh reign_god_pose --parallel 2 2>&1 | tee evidence/native-shell-arm64.log
-      # Private test artifact: original engine code, no bundled game assets.
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Reigncarnated-Native-Menu-v04-private-arm64
-          path: build-menu/Reigncarnated-Native-Menu-v04.apk
+          export ANDROID_NDK_HOME="$RUNNER_TEMP/reign-sdk/ndk/27.2.12479018"
+          bash tools/build_bink_decoder.sh "$RUNNER_TEMP/reign-bink" android > evidence/bink-build.log 2>&1
+          cmake -S . -B build-menu -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake" -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DREIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream" -DREIGN_ANDROID_MENU=ON -DREIGN_FFMPEG_ROOT="$RUNNER_TEMP/reign-bink/android/install"
+          cmake --build build-menu --target reign_menu --parallel 2 2>&1 | tee evidence/native-launch-arm64.log
+          mkdir -p build-java-launch
+          javac --release 8 -classpath "$RUNNER_TEMP/reign-sdk/platforms/android-35/android.jar" -d build-java-launch android/menu/org/reigncarnated/menu/*.java
 
       - uses: actions/upload-artifact@v4
         if: always()

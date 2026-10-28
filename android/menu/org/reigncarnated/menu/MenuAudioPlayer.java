@@ -17,7 +17,8 @@ final class MenuAudioPlayer {
  private final HashSet<Integer> ready=new HashSet<>();
  private final HashMap<Integer,Float> pending=new HashMap<>();
  private boolean closed,focused,musicReady;
- private android.media.MediaPlayer music;
+ private android.media.MediaPlayer music,ambient;
+ private boolean ambientReady;
  private float musicVolume=0.4f;
  private java.util.List<String> playlist=java.util.Collections.emptyList();
  private int track,failedTracks;
@@ -28,8 +29,15 @@ final class MenuAudioPlayer {
   this.report=report;manager=(AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
   AudioAttributes attributes=new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
   pool=new SoundPool.Builder().setMaxStreams(8).setAudioAttributes(attributes).build();
-  focus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).setAudioAttributes(attributes).setOnAudioFocusChangeListener(change->{if(closed)return;focused=change==AudioManager.AUDIOFOCUS_GAIN;if(focused){pool.autoResume();if(musicReady)music.start();}else{pool.autoPause();pending.clear();if(musicReady&&music.isPlaying())music.pause();}}).build();
+  focus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).setAudioAttributes(attributes).setOnAudioFocusChangeListener(change->{if(closed)return;focused=change==AudioManager.AUDIOFOCUS_GAIN;if(focused){pool.autoResume();if(musicReady)music.start();if(ambientReady)ambient.start();}else{pool.autoPause();pending.clear();if(musicReady&&music.isPlaying())music.pause();if(ambientReady&&ambient.isPlaying())ambient.pause();}}).build();
   pool.setOnLoadCompleteListener((p,id,status)->{if(closed)return;if(status!=0){pending.remove(id);report.accept("Menu sound failed to decode ("+status+").");return;}ready.add(id);Float volume=pending.remove(id);if(volume!=null&&focused)play(id,volume);});
+ }
+ void playAmbient(String path){
+  if(closed||path==null)return;if(ambient!=null)ambient.release();ambientReady=false;
+  android.media.MediaPlayer player=new android.media.MediaPlayer();ambient=player;player.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());player.setLooping(true);
+  player.setOnPreparedListener(p->{if(closed||ambient!=p)return;ambientReady=true;if(!focused)focused=manager.requestAudioFocus(focus)==AudioManager.AUDIOFOCUS_REQUEST_GRANTED;if(focused)p.start();});
+  player.setOnErrorListener((p,w,e)->{report.accept("Ambient sound decode failed ("+w+", "+e+").");return true;});
+  try{player.setDataSource(path);player.prepareAsync();}catch(Exception e){player.release();ambient=null;report.accept("Ambient sound: "+e.getMessage());}
  }
  void playMusic(String path){
   if(closed||path==null)return;
@@ -52,5 +60,5 @@ final class MenuAudioPlayer {
   }
  }
  private void play(int id,float volume){if(pool.play(id,volume,volume,1,0,1)==0)report.accept("Menu sound playback could not start.");}
- void close(){if(closed)return;closed=true;pending.clear();if(music!=null){music.release();music=null;}musicReady=false;pool.release();manager.abandonAudioFocusRequest(focus);}
+ void close(){if(closed)return;closed=true;pending.clear();if(ambient!=null){ambient.release();ambient=null;}ambientReady=false;if(music!=null){music.release();music=null;}musicReady=false;pool.release();manager.abandonAudioFocusRequest(focus);}
 }

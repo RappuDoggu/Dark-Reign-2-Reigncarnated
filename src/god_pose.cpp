@@ -52,6 +52,10 @@ struct GodPoseEvaluator::Impl {
   }
  }
 };
+std::array<float,3> original_sun_direction(float azimuth,float season,float minimum){
+ constexpr float pi=3.14159265358979323846f;finite(azimuth);finite(season);finite(minimum);
+ pose_detail::Quaternion q,angle;q.Set(azimuth*(2*minimum*pi/180-pi)-minimum*pi/180,{1,0,0});angle.Set(pi*.5f+season*pi/180,{0,1,0});q*=angle;pose_detail::Matrix m;m.Set(q);return {-m.front.x,-m.front.y,-m.front.z};
+}
 PoseMatrix compose_pose_matrices(const PoseMatrix &local,const PoseMatrix &parent){return packed(matrix(local)*matrix(parent));}
 GodPoseEvaluator::GodPoseEvaluator(const GodMesh &m):impl_(std::make_unique<Impl>(m)){}
 GodPoseEvaluator::~GodPoseEvaluator()=default;
@@ -64,8 +68,8 @@ GodPoseFrame GodPoseEvaluator::sample(const std::string &name,float frame,const 
   for(auto &t:found->tracks)t.animation.SetFrame(frame,states[t.state]);
  }
  auto root=matrix(world);require(world[3]==0&&world[7]==0&&world[11]==0&&world[15]==1,"Pose world matrix must be affine");
- std::vector<Matrix> worlds(states.size()),skin(states.size());GodPoseFrame result;result.worldMatrices.resize(states.size());
- for(auto &n:p.nodes){worlds[n.state]=n.parentState<0?root:object(states[n.state])*worlds[n.parentState];result.worldMatrices[n.state]=packed(worlds[n.state]);skin[n.state]=p.bind[n.state]*worlds[n.state];packed(skin[n.state]);}
+ std::vector<Matrix> worlds(states.size()),skin(states.size());GodPoseFrame result;result.worldMatrices.resize(states.size());result.skinMatrices.resize(states.size());
+ for(auto &n:p.nodes){worlds[n.state]=n.parentState<0?root:object(states[n.state])*worlds[n.parentState];result.worldMatrices[n.state]=packed(worlds[n.state]);skin[n.state]=p.bind[n.state]*worlds[n.state];result.skinMatrices[n.state]=packed(skin[n.state]);}
  MeshRoot original;result.vertices.reserve(p.vertices.size());for(std::size_t i=0;i<p.vertices.size();++i){Vector v;original.SetVert(v,p.vertices[i],skin.data(),p.weights[i],multiWeight);finite(v.x);finite(v.y);finite(v.z);result.vertices.push_back({v.x,v.y,v.z});}return result;
 }
 }

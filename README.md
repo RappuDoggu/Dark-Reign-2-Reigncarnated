@@ -2,6 +2,15 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
+## Current development: original launch sequence
+
+The owner confirmed that v0.4 runs on Android. Development now targets the
+original desktop launch after data import; incremental APK handoffs are paused.
+The source adds original Bink intros with decoded audio, shell lighting, sky,
+clouds, rain, ambience and animated billboard textures. Runtime import retains
+additional worlds, missions, sides and rule packs. See
+[launch progress and remaining parity gaps](docs/LAUNCH_PROGRESS.md).
+
 ## Current checkpoint: native main-menu proof-of-concept APK v0.4
 
 The ARM64 Android proof of concept imports one or more game-data ZIPs and opens
@@ -20,7 +29,7 @@ sky/water, ambient effects and complete cinematic/object simulation remain.
 This is real scene geometry and original camera math, not video playback.
 
 The signed APK, ZIP import with actual data, combined scene/UI GLES rendering,
-and 63 host tests are verified. Execution on the owner's Fold 5 is pending.
+and 63 host tests are verified. The owner confirmed successful Android execution.
 See [v0.4 installation and validation](docs/NATIVE_MENU_POC_V04.md).
 
 [Previous model-pose checkpoint](docs/GOD_POSE_PROGRESS.md) •

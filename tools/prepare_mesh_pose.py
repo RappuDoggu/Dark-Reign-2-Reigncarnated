@@ -31,6 +31,8 @@ using F32=float;using U32=std::uint32_t;using Bool=bool;constexpr Bool TRUE=true
 namespace Utils{inline void Memset(void *p,int value,std::size_t size){std::memset(p,value,size);}}
 struct Vector {
  F32 x=0,y=0,z=0;
+ F32 Dot(const Vector &b)const{return x*b.x+y*b.y+z*b.z;}
+ Vector Cross(const Vector &b)const{return {y*b.z-z*b.y,z*b.x-x*b.z,x*b.y-y*b.x};}
  Vector()=default;Vector(F32 a,F32 b,F32 c):x(a),y(b),z(c){}
  Vector operator+(const Vector &b)const{return {x+b.x,y+b.y,z+b.z};}
  Vector operator-(const Vector &b)const{return {x-b.x,y-b.y,z-b.z};}
@@ -45,7 +47,7 @@ struct Quaternion {
  Quaternion operator-(const Quaternion &b)const{return {s-b.s,v-b.v};}
  Quaternion operator*(F32 f)const{return {s*f,v*f};}
  F32 Dot(const Quaternion &q)const{return s*q.s+v.x*q.v.x+v.y*q.v.y+v.z*q.v.z;}
- void Set(const Matrix&);
+ void Set(const Matrix&);void Set(F32,const Vector&);void operator*=(const Quaternion&);
 };
 struct Matrix {
  Vector right;F32 rightw;Vector up;F32 upw;Vector front;F32 frontw;Vector posit;F32 positw;
@@ -72,7 +74,7 @@ struct MeshRoot {
 '''
 header+=function(texts['graphics/mesh.h'],'void SetVert( Vector & dst, const Vector & src, const Matrix * tranys, const VertIndex & vindex, Bool doMultiWeight) const')+'\n};\n}\n'
 source='#include "mesh_pose_slice.hpp"\nnamespace reign::pose_detail {\n'
-for sig in ['void Matrix::ClearData()','void Matrix::Set( const Vector &position)','void Matrix::SetScale( const Vector &scale)','void Matrix::Set( const Quaternion &qq)','F32 Matrix::Trace() const','void Quaternion::Set( const Matrix &matrix)','\nVector Matrix::Vector_Transform (const Vector &v) const','\nMatrix operator* (const Matrix &A, const Matrix &B)']:
+for sig in ['void Quaternion::operator*=(const Quaternion &qq)','void Quaternion::Set(F32 rads, const Vector &vv)','void Matrix::ClearData()','void Matrix::Set( const Vector &position)','void Matrix::SetScale( const Vector &scale)','void Matrix::Set( const Quaternion &qq)','F32 Matrix::Trace() const','void Quaternion::Set( const Matrix &matrix)','\nVector Matrix::Vector_Transform (const Vector &v) const','\nMatrix operator* (const Matrix &A, const Matrix &B)']:
  source+=function(texts['util/mathtypes.cpp'],sig)+'\n'
 for sig in ['void Animation::SetFrame( F32 frame, AnimKey &state) const','void Animation::Set( F32 frame, const AnimKey &lastKey, const AnimKey &thisKey, AnimKey &state)']:
  source+=function(texts['graphics/anim.cpp'],sig)+'\n'

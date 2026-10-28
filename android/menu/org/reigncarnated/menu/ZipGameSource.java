@@ -30,10 +30,17 @@ final class ZipGameSource implements DataFolderImporter.Source, AutoCloseable {
      else if(name.equals("sprawl.zwp"))dest="worlds/sprawl.zwp";
      else if(name.equals("jda.zwp")||name.equals("sprawler.zwp"))dest="sides/client/"+name;
      else if((lower.contains("music/")||name.matches("track[0-9]+\\.(ogg|mp3|wav)"))&&(name.endsWith(".ogg")||name.endsWith(".mp3")||name.endsWith(".wav")))dest="music/"+name;
+     if(dest==null){
+      // Preserve the runtime tree for worlds, missions, side data, movies and mods.
+      String[] parts=lower.split("/");
+      for(int j=0;j<parts.length-1;j++)if(Arrays.asList("packs","missions","worlds","sides","mods","movies","data").contains(parts[j])){dest=String.join("/",Arrays.copyOfRange(parts,j,parts.length));break;}
+      if(dest==null&&name.endsWith(".cfg"))dest=name;
+      if(dest!=null&&!name.matches(".*\\.(zwp|cfg|bik|ogg|mp3|wav|tga|bmp|pic|god|blk|fff|xsi|txt)"))dest=null;
+     }
      if(dest==null)continue;
      if(e.getSize()<0||e.getSize()>DataFolderImporter.MAX_FILE)throw new IOException("Invalid or oversized ZIP entry: "+name);
      if(nodes.containsKey(dest))throw new IOException("Duplicate game file across ZIPs: "+name);
-     directory(dest.substring(0,dest.lastIndexOf('/')));
+     if(dest.lastIndexOf('/')>=0)directory(dest.substring(0,dest.lastIndexOf('/')));
      nodes.put(dest,new DataFolderImporter.Node(dest,name,false,e.getSize()));owners.put(dest,zip);entries.put(dest,e);
     }
    }

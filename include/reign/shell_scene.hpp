@@ -12,5 +12,7 @@ public:
  ~ShellScene();
  void draw(float seconds);
  void abandon_context();
+ std::string ambient_sound()const;
+ void finish_frame(float seconds);
 };
 }

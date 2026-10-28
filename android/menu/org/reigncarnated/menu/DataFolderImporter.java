@@ -69,9 +69,23 @@ final class DataFolderImporter {
    for(ScenePack pack:scene){File destination=new File(staging,pack.destination);if(!destination.getParentFile().isDirectory()&&!destination.getParentFile().mkdirs())throw new IOException("Cannot create scene directory");copy(pack.node,destination);validatePack(destination,pack.required);}
    File musicOut=new File(staging,"music");if(!musicOut.mkdir())throw new IOException("Cannot create music directory");
    int i=0;for(Node track:tracks){String ext=track.name.substring(track.name.lastIndexOf('.')).toLowerCase(Locale.ROOT);copy(track,new File(musicOut,String.format(Locale.ROOT,"%03d%s",i++,ext)));}
+   copyRuntimeTree(selected,staging,"",0);
    check();if(!staging.renameTo(ready))throw new IOException("Cannot finalize imported data");
    complete=true;return new Result(ready,tracks.size(),scene.size());
   }finally{if(!complete)remove(staging);}
+ }
+ private void copyRuntimeTree(Node dir,File target,String relative,int depth)throws IOException{
+  if(depth>16)throw new IOException("Game data folders nested too deeply");
+  Set<String> names=new HashSet<>();
+  for(Node node:source.children(dir)){
+   check();String name=node.name.toLowerCase(Locale.ROOT);
+   if(name.isEmpty()||name.equals(".")||name.equals("..")||name.indexOf('/')>=0||name.indexOf('\\')>=0||name.indexOf(0)>=0||name.indexOf(':')>=0||!names.add(name))throw new IOException("Invalid/duplicate runtime path");
+   String path=relative.isEmpty()?name:relative+"/"+name;
+   if(path.equals("packs/base.zwp")||path.equals("missions/system/shell.zwp")||path.equals("worlds/sprawl.zwp")||path.equals("sides/client/jda.zwp")||path.equals("sides/client/sprawler.zwp")||path.equals("music"))continue;
+   if(relative.isEmpty()&&node.directory&&!Arrays.asList("packs","missions","worlds","sides","mods","movies","data").contains(name))continue;
+   if(node.directory){File next=new File(target,name);if(!next.isDirectory()&&!next.mkdirs())throw new IOException("Cannot create runtime directory");copyRuntimeTree(node,next,path,depth+1);}
+   else if(name.matches(".*\\.(zwp|cfg|bik|ogg|mp3|wav|tga|bmp|pic|god|blk|fff|xsi|txt)")){File out=new File(target,name);copy(node,out);if(name.endsWith(".zwp"))validatePack(out);}
+  }
  }
  private void copy(Node node,File destination)throws IOException{
   check();progress.accept("Importing "+node.name+"…");long count=0;

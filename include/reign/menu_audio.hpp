@@ -14,5 +14,6 @@ public:
  MenuAudio(ConfigLoader,const std::filesystem::path &cache);
  std::function<void(float)> load(const std::string &);
  std::vector<MenuSoundEvent> drain();
+ std::string cached_path(const std::string &);
 };
 }

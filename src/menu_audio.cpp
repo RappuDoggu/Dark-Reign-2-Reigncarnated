@@ -39,5 +39,6 @@ std::function<void(float)> MenuAudio::load(const std::string &name){
  auto path=found->second;std::weak_ptr<State> weak=state_;
  return [weak,path](float volume){auto s=weak.lock();if(!s)throw std::runtime_error("Menu sound bank closed");if(!std::isfinite(volume)||volume<0||volume>1)throw std::invalid_argument("Invalid menu sound volume");if(volume==0)return;if(s->events.size()>=64)throw std::runtime_error("Menu sound queue full");s->events.push_back({path,volume});};
 }
+std::string MenuAudio::cached_path(const std::string &name){load(name);return state_->files.at(name);}
 std::vector<MenuSoundEvent> MenuAudio::drain(){std::vector<MenuSoundEvent> result;result.swap(state_->events);return result;}
 }

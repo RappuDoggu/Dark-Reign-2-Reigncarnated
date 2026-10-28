@@ -58,7 +58,11 @@ public final class DataFolderImporterTest {
     check(real.tracks==9,"real installation tracks");check(new File(real.directory,"base.zwp").length()==new File(installation,"packs/base.zwp").length(),"real base copied");
     check(real.scenePacks==3,"real world and side packs detected");
     for(String path:new String[]{"worlds/sprawl.zwp","sides/client/jda.zwp","sides/client/sprawler.zwp"})check(Arrays.equals(Files.readAllBytes(new File(real.directory,path).toPath()),Files.readAllBytes(new File(installation,path).toPath())),"real scene bytes preserved: "+path);
-    System.out.println("Real installation: base + shell + "+real.tracks+" tracks validated and imported");
+    check(new File(real.directory,"worlds/jungle.zwp").isFile(),"additional worlds imported");
+    check(new File(real.directory,"missions/multiplayer/2crazed.zwp").isFile(),"mission packs imported");
+    check(new File(real.directory,"mods/ruleset/koth.zwp").isFile(),"rule packs preserved without activation");
+    check(!new File(real.directory,"dr2.exe").exists(),"Windows executable not imported as runtime data");
+    System.out.println("Real installation: all supported runtime trees + "+real.tracks+" tracks validated and imported");
    }
    System.out.println("Data folder importer: PASS ("+checks+" checks)");
   }finally{DataFolderImporter.remove(parent);}

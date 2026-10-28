@@ -6,9 +6,11 @@ using PoseMatrix=std::array<float,16>;
 inline constexpr PoseMatrix identity_pose_matrix{1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
 // Original scalar row-vector matrix multiplication (local then parent).
 PoseMatrix compose_pose_matrices(const PoseMatrix &local,const PoseMatrix &parent);
+// Original quaternion composition used by Vid::Light::SetSun.
+std::array<float,3> original_sun_direction(float azimuth,float seasonDegrees=0,float minAngleDegrees=45);
 struct GodPoseFrame {
  std::vector<std::array<float,3>> vertices;
- std::vector<PoseMatrix> worldMatrices;
+ std::vector<PoseMatrix> worldMatrices,skinMatrices;
 };
 // Owns validated animation/geometry data. Samples a cycle from its initial state
 // at an explicit frame; does not implement MeshEnt's clock, transitions or overlays.

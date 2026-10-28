@@ -1,0 +1,13 @@
+{
+  "game/gameruncodes.cpp": "1f7327f3ab3de50fb731b9e8f3996f85be7948e84079cc470b9a00d152306968",
+  "game/movieplayer.cpp": "e608e5b20bbbf0cb3d3bc75c3cfd995794432071a69f47dc6c6d353388a0d218",
+  "graphics/light.cpp": "f9159ff16724be226b85358a5dca8bed27a605a9667029adec10bf5deaf9752b",
+  "graphics/lightvertsmodel.cpp": "88a9f99f17c0e28812dd96bf97846b1641b2ee5e70e71a94c36ff987c2f53385",
+  "graphics/mesh_render_vertextl.cpp": "6b1ddd55143bfba60ded657c27508dbedb391fb252c897e36b52f002432cacf9",
+  "graphics/terrain_sky.cpp": "29115ac02ee80cf7c155bd09575f7a4a2d5bba1ed01fc2ea3e518d1d1dcf053b",
+  "graphics/vidrend.cpp": "c3d1174fcded2483fefa7e7c242cc831fb1921149fe988f4a331c7feaef79690",
+  "graphics/vid_cmd_dialog.cpp": "2ddc5dd64a0a1c022f786703bedf797d7dd9035c9fab0ac3c7a0da38930160d6",
+  "coregame/environment_light.cpp": "6facdb6e9b19bc9c539232732ccc43b526f73c5b82c2b8da52c3b6ad9d6c5ff6",
+  "coregame/environment_rain.cpp": "ddff1933ef02ba3820263136bce6d84fe36bcc5005e37c8b43632a291d7ded2b",
+  "coregame/viewer_action.cpp": "80ec97baec1b48b83e3803250fdd8f9796c5ce414133eeba4bb64f55aaf072b2"
+}

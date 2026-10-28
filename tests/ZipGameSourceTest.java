@@ -14,10 +14,10 @@ public final class ZipGameSourceTest {
   File dir=Files.createTempDirectory("reign-zip-test").toFile(),dest=new File(dir,"imports");dest.mkdir();
   byte[] base=DataFolderImporterTest.pack("runcode_main_login.cfg","english.cfg"),shell=DataFolderImporterTest.pack("interface_shell.cfg"),world=DataFolderImporterTest.pack("types_world.cfg");
   try{
-   File first=zip(dir,"menu.zip",new String[]{"DR2/PACKS/BASE.ZWP","DR2/missions/system/shell.zwp","DR2/Music/Track02.ogg"},new byte[][]{base,shell,new byte[]{1,2,3}});
+   File first=zip(dir,"menu.zip",new String[]{"DR2/PACKS/BASE.ZWP","DR2/missions/system/shell.zwp","DR2/Music/Track02.ogg","DR2/worlds/jungle.zwp","DR2/missions/campaign/j01.zwp","DR2/dr2.exe"},new byte[][]{base,shell,new byte[]{1,2,3},world,shell,new byte[]{9}});
    File second=zip(dir,"world.zip",new String[]{"sprawl.zwp"},new byte[][]{world});
    File kept;
-   try(ZipGameSource source=new ZipGameSource(Arrays.asList(first,second))){DataFolderImporter.Result r=new DataFolderImporter(source,()->false,s->{}).run(source.root(),dest);check(r.tracks==1&&r.scenePacks==1);kept=r.directory;check(Arrays.equals(base,Files.readAllBytes(new File(kept,"base.zwp").toPath())));}
+   try(ZipGameSource source=new ZipGameSource(Arrays.asList(first,second))){DataFolderImporter.Result r=new DataFolderImporter(source,()->false,s->{}).run(source.root(),dest);check(r.tracks==1&&r.scenePacks==1);kept=r.directory;check(new File(kept,"worlds/jungle.zwp").isFile());check(new File(kept,"missions/campaign/j01.zwp").isFile());check(!new File(kept,"dr2.exe").exists());check(Arrays.equals(base,Files.readAllBytes(new File(kept,"base.zwp").toPath())));}
    check(fails(Arrays.asList(first),dest)); // explicit missing world
    check(fails(Arrays.asList(first,second,second),dest)); // ambiguous multi-ZIP contents
    File bad=zip(dir,"bad.zip",new String[]{"../sprawl.zwp"},new byte[][]{world});check(fails(Arrays.asList(first,bad),dest));
