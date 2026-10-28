@@ -24,10 +24,10 @@ ShellLightSample ShellLighting::sample(float seconds)const{
   out.ambient[i]=std::uint8_t(a.ambient[i]*(1-f)+b.ambient[i]*f)/255.f;out.sun[i]=std::uint8_t(a.sun[i]*(1-f)+b.sun[i]*f)/255.f;out.fog[i]=std::uint8_t(a.fog[i]*(1-f)+b.fog[i]*f)/255.f;
  }
  float day=set_-rise_;float azimuth=time>=rise_&&time<set_?(time-rise_)/day:(time>=set_?(time-set_):(time+1-set_))/(1-day);
- out.direction=original_sun_direction(azimuth,season_);return out;
+ out.direction=original_sun_direction(azimuth,season_);out.celestialDirection=original_sun_direction(azimuth,0,-14.4f);out.sunUp=time>=rise_&&time<set_;return out;
 }
 std::uint32_t ShellLighting::shade(const ShellLightSample &s,std::array<float,3> n,const GodMaterial *m,std::uint32_t vertex){
- float dot=std::max(0.f,n[0]*s.direction[0]+n[1]*s.direction[1]+n[2]*s.direction[2]);std::uint32_t out=vertex&0xff000000;
+ float dot=std::max(0.f,n[0]*s.direction[0]+n[1]*s.direction[1]+n[2]*s.direction[2]);std::uint32_t out=std::uint32_t(std::clamp(std::lround((vertex>>24)*(m?m->diffuse[3]:1.f)),0l,255l))<<24;
  for(int i=0;i<3;i++){unsigned shift=16-i*8;float diffuse=m?m->diffuse[i]:1.f;float channel=float((vertex>>shift)&255)*diffuse*(s.ambient[i]+s.sun[i]*dot);out|=std::uint32_t(std::clamp(std::lround(channel),0l,255l))<<shift;}return out;
 }
 }

@@ -9,10 +9,23 @@ repo=$(cd -- "$(dirname -- "$0")/.." && pwd)
 build=${REIGN_MENU_BUILD_DIR:-$repo/build-menu}
 tools="$ANDROID_SDK_ROOT/build-tools/35.0.0"
 platform="$ANDROID_SDK_ROOT/platforms/android-35/android.jar"
+if [ "${REIGN_REUSE_CONFIG:-0}" = 1 ]; then
+ python3 - "$build/CMakeCache.txt" "$ANDROID_NDK_HOME" "$REIGN_UPSTREAM" "$REIGN_FFMPEG_ROOT" <<'PYCACHE'
+import pathlib,sys
+cache={}
+for line in pathlib.Path(sys.argv[1]).read_text().splitlines():
+ if '=' in line and ':' in line.split('=',1)[0]:
+  key,value=line.split('=',1);cache[key.split(':',1)[0]]=value
+for key,value in [('ANDROID_ABI','arm64-v8a'),('ANDROID_PLATFORM','android-26'),('REIGN_ANDROID_MENU','ON'),('REIGN_UPSTREAM',sys.argv[3]),('REIGN_FFMPEG_ROOT',sys.argv[4])]:
+ assert cache.get(key)==value, 'Cached build differs: '+key
+assert pathlib.Path(cache['CMAKE_TOOLCHAIN_FILE']).resolve()==pathlib.Path(sys.argv[2],'build/cmake/android.toolchain.cmake').resolve()
+PYCACHE
+else
 cmake -S "$repo" -B "$build" \
  -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake" \
  -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 \
  -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DREIGN_UPSTREAM="$REIGN_UPSTREAM" -DREIGN_ANDROID_MENU=ON -DREIGN_FFMPEG_ROOT="$REIGN_FFMPEG_ROOT"
+fi
 cmake --build "$build" --target reign_menu --parallel 2
 mkdir -p "$build/classes" "$build/dex"
 if command -v javac >/dev/null 2>&1; then
@@ -44,12 +57,12 @@ if [ ! -f "$build/debug.keystore" ]; then
  -alias androiddebugkey -dname 'CN=Reigncarnated Private Original Menu' -keyalg RSA -keysize 2048 -validity 3650
 fi
 "$tools/apksigner" sign --ks "$build/debug.keystore" --ks-pass pass:android \
- --out "$build/Reigncarnated-Native-Menu-v04.apk" "$build/aligned.apk"
-"$tools/apksigner" verify --verbose "$build/Reigncarnated-Native-Menu-v04.apk"
-"$tools/zipalign" -c -P 16 4 "$build/Reigncarnated-Native-Menu-v04.apk"
-"$tools/aapt2" dump badging "$build/Reigncarnated-Native-Menu-v04.apk"
+ --out "$build/Reigncarnated-Native-Launch-v05.apk" "$build/aligned.apk"
+"$tools/apksigner" verify --verbose "$build/Reigncarnated-Native-Launch-v05.apk"
+"$tools/zipalign" -c -P 16 4 "$build/Reigncarnated-Native-Launch-v05.apk"
+"$tools/aapt2" dump badging "$build/Reigncarnated-Native-Launch-v05.apk"
 
-python3 - "$build/Reigncarnated-Native-Menu-v04.apk" <<'PYZIP'
+python3 - "$build/Reigncarnated-Native-Launch-v05.apk" <<'PYZIP'
 import sys, zipfile
 with zipfile.ZipFile(sys.argv[1]) as apk:
  assert apk.testzip() is None, 'APK ZIP entry checksum mismatch'

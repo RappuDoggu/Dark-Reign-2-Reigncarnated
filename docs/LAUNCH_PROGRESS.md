@@ -1,7 +1,8 @@
 # Original launch checkpoint
 
-The owner confirmed v0.4 Android execution and requested no further incremental
-APK tests. This checkpoint is source/compilation work, not a new APK release.
+The owner confirmed v0.4 Android execution, then authorized the remaining visual
+effect work and APK compilation/testing. v0.5 is now packaged; device execution
+remains to be checked. See NATIVE_LAUNCH_V05.md for the receipt.
 The menu is native geometry; only the game's original introduction and billboard
 assets use video decoding.
 
@@ -14,6 +15,13 @@ assets use video decoding.
 - Environment color keys and sun direction, ambient/directional model lighting,
   original fog settings, sky mesh and texture, drifting cloud texture, rain
   streaks, terrain texture animation and Bink billboard playback.
+- Sun/moon sprites, original water texture with checkerboard waves, ground rain
+  splashes and water rings. The original pinned SetupPerf disables the second
+  water layer, so this port also renders one layer.
+- Shell-selected smoke, flame, two-layer power glow and water-drop particles,
+  using original config keys and model attachment points. Thunder/lightning uses
+  the original sample and simulation cadence. Transparent model buckets are
+  ordered by depth without disabling depth writes on opaque alpha-blend textures.
 - ZIP/folder import retains supported runtime trees, including other worlds,
   missions, sides and rule packs. Additional ZWP tables are validated. Windows
   executables are excluded; imported mods are retained, not automatically enabled.
@@ -27,18 +35,25 @@ render path is already the original implementation.
 
 ## Validation and limits
 
-All 65 host tests pass. ZIP import passes 12 checks; importing the full owned
-installation passes 38 checks, retaining nine music tracks and supported runtime
-trees. Three original intros decode completely on the host, including audio (about
-15.4, 7.9 and 77.1 seconds). Combined scene/menu/fade rendering is identical across
-two recreated software GLES contexts. Android ARM64 JNI and Java compilation are
-checked. These checks do not establish device audio sync or visual equivalence.
+All 65 host tests pass (one restored executable needed its execute bit repaired,
+then its previously unstarted test passed). The current ZIP suite passes 13 checks
+including the real companion ZIP; the folder fixture passes 28 checks. A previous
+full-installation run passed 38 checks. Three original intros decode completely,
+including audio and resumed-frame/PCM equivalence. Seven combined scene/menu
+frames match exactly across two software GLES contexts, including a lightning
+flash and thunder event. The fixture yields 19 emitter layers and 23 water
+clusters. Rendering the Java-imported ZIP layout matches the original fixture.
 
-Still required for 1:1 launch: original ambient particle emitters, rain ground and
-water splashes, sun/moon sprites, water rendering, complete material and light
-policy, and full cinematic/object simulation. Rain distribution is deterministic
-for tests and its projection is adapted. Point lights, specular response and all
-legacy pass ordering are not restored. Pause/resume now checkpoints the active intro and its elapsed position, or the
+Still required to establish 1:1 launch: full cinematic/object simulation (including
+scripted unit routes), water reflections, complete point/specular lighting and
+legacy transparent pass ordering. Rain and particle distributions use deterministic
+seeds; splat placement and particle integration are adapted rather than running the
+entire original simulation. Ember ground collision uses a vertical normal. The
+sun/moon may be outside the menu camera; code support does not prove device parity.
+No Android device/emulator was available, so device startup, performance, AV sync
+and lifecycle behavior are unverified for v0.5. Menu destinations remain disabled.
+
+Pause/resume now checkpoints the active intro and its elapsed position, or the
 shell camera/fade time. Restoration recreates GPU resources and rebuilds Bink
 reference frames while discarding earlier PCM; reconstruction time is excluded
 from the launch clock. Old queued audio callbacks are rejected across pauses.
@@ -47,7 +62,7 @@ as uninterrupted host decoding. Reconstruction can delay return to a long clip;
 there may be an audio gap at the resume boundary. Music restarts on return.
 This checkpoint is Activity-local: process death/recreation starts a fresh launch.
 Android lifecycle execution, audio focus and synchronization still need device
-validation at the next agreed APK milestone. Login is intentionally bypassed in this proof of concept.
+validation at v0.5 testing. Login is intentionally bypassed in this proof of concept.
 
 ## Decoder build
 
@@ -59,6 +74,7 @@ are enabled. Source and libraries remain external to this repository.
 FFmpeg is LGPL 2.1 or later in this configuration. Any distributed static-linked
 APK must include its license/attribution and be accompanied by corresponding
 FFmpeg source/configuration plus application object files and instructions needed
-to relink a modified decoder. The packaging script embeds the license; preparing
-and verifying the relink materials remains a release requirement. No APK with
-this dependency is distributed by this checkpoint.
+to relink a modified decoder. The APK embeds the license and attribution. The accompanying decoder/relink ZIP
+includes the pinned FFmpeg source, build configuration, application objects and
+relink/repack instructions. Running its relink recipe reproduces the packaged
+native library byte for byte. It excludes game data and signing keys.

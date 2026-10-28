@@ -162,7 +162,7 @@ struct MenuFrontend::Impl {
    VarSys::RegisterHandler("sys",runCodeCommand,VarSys::NOTIFY);
    VarSys::CreateCmd("sys.runcode",VarSys::NOTIFY);
    VarSys::CreateString("sys.buildtype","Release");
-   VarSys::CreateString("sys.buildver","Reigncarnated 0.4 POC");
+   VarSys::CreateString("sys.buildver","Reigncarnated 0.5 Native Launch");
    VarSys::CreateString("gamegod.flow.state","");
    root->Activate();scopes.execute("runcode_main_login.cfg");
   });}catch(...){destroy_tree();throw;}

@@ -115,7 +115,7 @@ jobs:
         with:
           name: Reigncarnated-Renderer-Test-v04-arm64
           path: build-asset-probe/Reigncarnated-Renderer-Test-v04.apk
-      - name: Compile native launch with original Bink decoding (no incremental APK release)
+      - name: Compile native launch with original Bink decoding
         shell: bash
         run: |
           set -euo pipefail

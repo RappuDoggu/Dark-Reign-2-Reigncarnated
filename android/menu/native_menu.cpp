@@ -96,7 +96,7 @@ JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_drawNative(JN
 #ifdef REIGN_BINK
  if(s.drawMovie(ms,width,height))return nullptr;
 #endif
- if(s.startMs<0){s.startMs=ms;s.lastMs=ms;}auto step=static_cast<unsigned>(std::min<jlong>(100,std::max<jlong>(0,ms-s.lastMs)));s.lastMs=ms;s.presenter->begin(640,480);s.scene->draw(float(ms-s.startMs)/1000.f);if(ms-s.startMs>=4000)s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms-s.startMs),step);s.scene->finish_frame(float(ms-s.startMs)/1000.f);s.presenter->present(width,height);return nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
+ if(s.startMs<0){s.startMs=ms;s.lastMs=ms;}auto step=static_cast<unsigned>(std::min<jlong>(100,std::max<jlong>(0,ms-s.lastMs)));s.lastMs=ms;s.presenter->begin(640,480);s.scene->draw(float(ms-s.startMs)/1000.f);for(auto &sound:s.scene->take_sounds())s.audio->load(sound)(1.f);if(ms-s.startMs>=4000)s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms-s.startMs),step);s.scene->finish_frame(float(ms-s.startMs)/1000.f);s.presenter->present(width,height);return nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_inputNative(JNIEnv *env,jobject,jlong h,jint kind,jint x,jint y,jstring text){try{auto &s=state(h);
 #ifdef REIGN_BINK
  if(s.movie){if(kind==2||kind==4)s.nextMovie();return nullptr;}

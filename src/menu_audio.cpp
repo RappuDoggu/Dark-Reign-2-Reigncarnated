@@ -20,7 +20,7 @@ void validate(const std::vector<std::uint8_t>&b){
   }else if(!std::memcmp(b.data()+p,"data",4)){if(data||!n)throw std::runtime_error("Invalid menu PCM payload");data=true;samples=n;}
   auto padded=std::size_t(n)+(n&1u);if(padded>b.size()-start)throw std::runtime_error("Missing menu WAV padding");p=start+padded;
  }
- if(!fmt||!data||samples%align||samples/align>rate*5u)throw std::runtime_error("Invalid or oversized menu PCM samples");
+ if(!fmt||!data||samples%align||samples/align>rate*10u)throw std::runtime_error("Invalid or oversized menu PCM samples");
 }
 }
 namespace reign {
