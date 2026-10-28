@@ -30,7 +30,7 @@ struct State {
  }
 #endif
  std::string dataPath,ambientPath;
- jlong startMs=-1,lastMs=0;
+ jlong startMs=-1,lastMs=0,frameMs=0,resumeClock=-1;
  reign::Archive archive;
  std::unique_ptr<reign::Archive> shell;
  std::unique_ptr<reign::MenuFrontend> menu;
@@ -64,8 +64,35 @@ void failure(const std::exception &e){error=e.what();__android_log_print(ANDROID
 }
 extern "C" {
 JNIEXPORT jlong JNICALL Java_org_reigncarnated_menu_MenuActivity_openNative(JNIEnv *env,jobject,jstring pack,jstring profiles,jstring shell){try{error.clear();return reinterpret_cast<jlong>(new State(utf(env,pack),utf(env,profiles),shell?utf(env,shell):std::string{}));}catch(const std::exception &e){failure(e);return 0;}}
+// Checkpoints contain launch progress only, never GPU handles or filesystem paths.
+JNIEXPORT jlongArray JNICALL Java_org_reigncarnated_menu_MenuActivity_checkpointNative(JNIEnv *env,jobject,jlong h){
+ auto &s=state(h);jlong values[2]={0,s.startMs<0?0:std::max<jlong>(0,s.frameMs-s.startMs)};
+#ifdef REIGN_BINK
+ if(s.movie){values[0]=s.movieIndex;values[1]=s.movieStart<0?0:std::max<jlong>(0,s.frameMs-s.movieStart);}
+#endif
+ auto result=env->NewLongArray(2);if(result)env->SetLongArrayRegion(result,0,2,values);return result;
+}
+JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_restoreNative(JNIEnv *env,jobject,jlong h,jlong clip,jlong elapsed,jlong now){try{
+ if(clip<0||clip>256||elapsed<0||elapsed>now)throw std::runtime_error("Invalid launch checkpoint");auto &s=state(h);
+#ifdef REIGN_BINK
+ s.movie.reset();
+ if(clip){s.movieIndex=unsigned(clip-1);s.nextMovie();if(!s.movie)throw std::runtime_error("Checkpoint intro is missing");
+  double target=double(elapsed)/1000;if(target>=s.movie->duration())throw std::runtime_error("Checkpoint exceeds intro duration");
+  // Sequential Bink decode rebuilds reference frames. Drain skipped PCM to keep
+  // memory bounded and avoid replaying audio preceding the saved position.
+  s.movie->restore_position(target);s.movieStart=now-elapsed;s.movieFrame=-1;
+ }
+#endif
+ s.startMs=clip?-1:now-elapsed;s.lastMs=now;s.frameMs=now;s.resumeClock=now;return nullptr;
+ }catch(const std::exception &e){failure(e);return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_errorNative(JNIEnv *env,jobject){return env->NewStringUTF(error.c_str());}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_drawNative(JNIEnv *env,jobject,jlong h,jint width,jint height,jlong ms){try{auto &s=state(h);
+ if(s.resumeClock>=0){auto delay=ms-s.resumeClock;if(s.startMs>=0)s.startMs+=delay;
+#ifdef REIGN_BINK
+ if(s.movieStart>=0)s.movieStart+=delay;
+#endif
+ s.lastMs=ms;s.resumeClock=-1;}
+ s.frameMs=ms;
 #ifdef REIGN_BINK
  if(s.drawMovie(ms,width,height))return nullptr;
 #endif

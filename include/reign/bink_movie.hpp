@@ -13,6 +13,7 @@ public:
  double duration()const;
  std::int64_t frame_index()const;
  bool advance(double seconds); // false after the final frame's display interval
+ void restore_position(double seconds); // fresh decoder only; discard preceding PCM
  const std::vector<std::uint8_t>& rgba()const;
  std::vector<std::int16_t> drain_audio(); // interleaved stereo PCM, original rate
 };

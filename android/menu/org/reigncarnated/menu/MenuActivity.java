@@ -28,6 +28,10 @@ public final class MenuActivity extends Activity {
  private native String inputNative(long h,int kind,int x,int y,String text);
  private native String resetGpuNative(long h);
  private native void closeNative(long h);
+ private native long[] checkpointNative(long h);
+ private native String restoreNative(long h,long clip,long elapsed,long now);
+ private volatile long[] launchCheckpoint;
+ private volatile int audioGeneration;
  private native String[] audioNative(long h);
  private native String ambientNative(long h);
  private native int[] movieInfoNative(long h);
@@ -37,7 +41,7 @@ public final class MenuActivity extends Activity {
  private volatile MenuAudioPlayer audioPlayer;
  private MenuView view;private LinearLayout setup;private TextView status;private Button choose,chooseZip,cancelImport;
  private String report="",dataRoot;private volatile boolean importing,cancelled,destroyed;
- private boolean resumed;
+ private volatile boolean resumed;
  private final StringBuilder history=new StringBuilder();
  private int dp(int n){return Math.round(n*getResources().getDisplayMetrics().density);}
  private boolean hasData(){String base=getPreferences(0).getString("pack",null),shell=getPreferences(0).getString("shell",null);return base!=null&&shell!=null&&new File(base).isFile()&&new File(shell).isFile()&&dataRoot!=null&&new File(dataRoot,"worlds/sprawl.zwp").isFile();}
@@ -71,15 +75,15 @@ public final class MenuActivity extends Activity {
  private List<String> musicTracks(){if(dataRoot!=null)return DataFolderImporter.playlist(new File(dataRoot));String legacy=getPreferences(0).getString("music",null);return legacy!=null&&new File(legacy).isFile()?Collections.singletonList(legacy):Collections.emptyList();}
  private void startAudio(){if(!resumed)return;if(audioPlayer!=null)audioPlayer.close();audioPlayer=new MenuAudioPlayer(this,this::message);audioPlayer.setMusicVolume(getPreferences(0).getInt("musicVolume",40)/100f);if(menuReady)audioPlayer.playPlaylist(musicTracks());}
  @Override protected void onResume(){super.onResume();resumed=true;menuReady=false;startAudio();view.onResume();view.requestRender();}
- @Override protected void onPause(){resumed=false;menuReady=false;if(introAudio!=null){introAudio.close();introAudio=null;}MenuAudioPlayer old=audioPlayer;audioPlayer=null;if(old!=null)old.close();view.queueEvent(()->{if(view.handle!=0){closeNative(view.handle);view.handle=0;}});view.onPause();super.onPause();}
+ @Override protected void onPause(){resumed=false;audioGeneration++;menuReady=false;if(introAudio!=null){introAudio.close();introAudio=null;}MenuAudioPlayer old=audioPlayer;audioPlayer=null;if(old!=null)old.close();view.queueEvent(()->{if(view.handle!=0){launchCheckpoint=checkpointNative(view.handle);closeNative(view.handle);view.handle=0;}});view.onPause();super.onPause();}
  @Override protected void onDestroy(){destroyed=true;cancelled=true;super.onDestroy();}
  private final class MenuView extends GLSurfaceView implements GLSurfaceView.Renderer {
   long handle;int width,height;String pack,shell;boolean failed;String gpu="";
   MenuView(){super(MenuActivity.this);pack=getPreferences(0).getString("pack",null);shell=getPreferences(0).getString("shell",null);if(!hasData())pack=null;setFocusable(true);setFocusableInTouchMode(true);setEGLContextClientVersion(3);setEGLConfigChooser(8,8,8,8,16,0);setRenderer(this);setRenderMode(RENDERMODE_CONTINUOUSLY);}
   public void onSurfaceCreated(GL10 gl,EGLConfig c){gpu="Device: "+android.os.Build.MANUFACTURER+" "+android.os.Build.MODEL+" API "+android.os.Build.VERSION.SDK_INT+"\nGPU: "+gl.glGetString(GL10.GL_RENDERER);failed=false;if(handle!=0){String error=resetGpuNative(handle);if(error!=null){failed=true;message(error);}}}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;requestRender();}
-  public void onDrawFrame(GL10 gl){if(width<=0||height<=0||pack==null||failed||importing)return;if(handle==0){handle=openNative(pack,new File(getFilesDir(),"profiles").getAbsolutePath(),shell);if(handle==0){failed=true;startupFailure("Native startup failed: "+errorNative());return;}record(gpu+"\nOriginal intro sequence loaded. Native shell follows the movies; tap to skip the current clip.");}String e=drawNative(handle,width,height,android.os.SystemClock.uptimeMillis());String ambientPath=ambientNative(handle);int[] movie=movieInfoNative(handle);short[] pcm=moviePcmNative(handle);
-   runOnUiThread(()->{if(destroyed||!resumed)return;try{if(movie!=null&&movie[0]>0){if(movie[1]>0){if(introAudio==null||introAudio.movie!=movie[0]){if(introAudio!=null)introAudio.close();introAudio=new IntroAudioPlayer(MenuActivity.this,movie[0],movie[1],MenuActivity.this::message);}introAudio.accept(pcm);}}else if(!menuReady){if(introAudio!=null){introAudio.close();introAudio=null;}menuReady=true;startAudio();if(audioPlayer!=null)audioPlayer.playAmbient(ambientPath);}}catch(Exception ex){message("Intro audio failed: "+ex.getMessage());}});
+  public void onDrawFrame(GL10 gl){final int generation=audioGeneration;if(!resumed)return;if(width<=0||height<=0||pack==null||failed||importing)return;if(handle==0){handle=openNative(pack,new File(getFilesDir(),"profiles").getAbsolutePath(),shell);if(handle==0){failed=true;startupFailure("Native startup failed: "+errorNative());return;}long[] checkpoint=launchCheckpoint;if(checkpoint!=null){String restoreError=restoreNative(handle,checkpoint[0],checkpoint[1],android.os.SystemClock.uptimeMillis());if(restoreError!=null){failed=true;startupFailure(restoreError);return;}launchCheckpoint=null;}record(gpu+"\nOriginal intro sequence loaded. Native shell follows the movies; tap to skip the current clip.");}String e=drawNative(handle,width,height,android.os.SystemClock.uptimeMillis());String ambientPath=ambientNative(handle);int[] movie=movieInfoNative(handle);short[] pcm=moviePcmNative(handle);
+   runOnUiThread(()->{if(destroyed||!resumed||generation!=audioGeneration)return;try{if(movie!=null&&movie[0]>0){if(movie[1]>0){if(introAudio==null||introAudio.movie!=movie[0]){if(introAudio!=null)introAudio.close();introAudio=new IntroAudioPlayer(MenuActivity.this,movie[0],movie[1],MenuActivity.this::message);}introAudio.accept(pcm);}}else if(!menuReady){if(introAudio!=null){introAudio.close();introAudio=null;}menuReady=true;startAudio();if(audioPlayer!=null)audioPlayer.playAmbient(ambientPath);}}catch(Exception ex){message("Intro audio failed: "+ex.getMessage());}});
    String[] sounds=audioNative(handle);MenuAudioPlayer player=audioPlayer;if(player!=null&&sounds!=null&&sounds.length>0)runOnUiThread(()->{if(audioPlayer==player)player.accept(sounds);});if(e!=null){failed=true;startupFailure("Render failure: "+e);}}
   void input(int kind,int x,int y,String text){queueEvent(()->{if(handle!=0)message(inputNative(handle,kind,x,y,text));});requestRender();}
   @Override public boolean onTouchEvent(MotionEvent e){requestFocus();if(e.getPointerCount()!=1){input(2,-32768,-32768,null);return true;}float scale=Math.min(width/640f,height/480f);if(scale<=0)return true;int x=(int)((e.getX()-(width-640*scale)/2)/scale),y=(int)((e.getY()-(height-480*scale)/2)/scale);int a=e.getActionMasked();if(a==MotionEvent.ACTION_DOWN)input(1,x,y,null);else if(a==MotionEvent.ACTION_UP)input(2,x,y,null);else if(a==MotionEvent.ACTION_CANCEL)input(2,-32768,-32768,null);else if(a==MotionEvent.ACTION_MOVE)input(0,x,y,null);return true;}
@@ -121,7 +125,7 @@ public final class MenuActivity extends Activity {
    new Thread(()->DataFolderImporter.remove(imported.directory),"ReignCleanup").start();importing=false;choose.setEnabled(true);chooseZip.setEnabled(true);cancelImport.setVisibility(View.GONE);message("Could not save setup. Please try again.");return;
   }
   final String previous=dataRoot;dataRoot=path;importing=false;choose.setEnabled(true);chooseZip.setEnabled(true);cancelImport.setVisibility(View.GONE);setup.setVisibility(View.GONE);
-  view.queueEvent(()->{if(view.handle!=0){closeNative(view.handle);view.handle=0;}view.pack=base;view.shell=shell;view.failed=false;
+  view.queueEvent(()->{if(view.handle!=0){closeNative(view.handle);view.handle=0;}launchCheckpoint=null;audioGeneration++;view.pack=base;view.shell=shell;view.failed=false;
    if(previous!=null&&!previous.equals(path)){File old=new File(previous);if(old.getName().startsWith("data-")&&old.getParentFile().equals(new File(getFilesDir(),"installations")))new Thread(()->DataFolderImporter.remove(old),"ReignCleanup").start();}
   });view.requestRender();startAudio();
   record("Native shell resource packs imported: "+imported.scenePacks+"/3. Live scene rendering enabled.");

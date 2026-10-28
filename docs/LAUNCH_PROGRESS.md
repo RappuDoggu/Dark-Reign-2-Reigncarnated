@@ -38,9 +38,16 @@ Still required for 1:1 launch: original ambient particle emitters, rain ground a
 water splashes, sun/moon sprites, water rendering, complete material and light
 policy, and full cinematic/object simulation. Rain distribution is deterministic
 for tests and its projection is adapted. Point lights, specular response and all
-legacy pass ordering are not restored. Pause/resume currently restarts the intro;
-audio focus and device synchronization need execution validation at the next
-agreed APK milestone. Login is intentionally bypassed in this proof of concept.
+legacy pass ordering are not restored. Pause/resume now checkpoints the active intro and its elapsed position, or the
+shell camera/fade time. Restoration recreates GPU resources and rebuilds Bink
+reference frames while discarding earlier PCM; reconstruction time is excluded
+from the launch clock. Old queued audio callbacks are rejected across pauses.
+All three original movies reproduce the same resumed frame and subsequent PCM
+as uninterrupted host decoding. Reconstruction can delay return to a long clip;
+there may be an audio gap at the resume boundary. Music restarts on return.
+This checkpoint is Activity-local: process death/recreation starts a fresh launch.
+Android lifecycle execution, audio focus and synchronization still need device
+validation at the next agreed APK milestone. Login is intentionally bypassed in this proof of concept.
 
 ## Decoder build
 

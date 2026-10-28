@@ -60,6 +60,11 @@ BinkMovie::~BinkMovie()=default;
 unsigned BinkMovie::width()const{return impl_->w;}unsigned BinkMovie::height()const{return impl_->h;}unsigned BinkMovie::sample_rate()const{return impl_->rate;}double BinkMovie::duration()const{return impl_->length;}
 std::int64_t BinkMovie::frame_index()const{return impl_->decoded-1;}
 bool BinkMovie::advance(double seconds){auto &s=*impl_;if(!std::isfinite(seconds)||seconds<0)throw std::invalid_argument("Invalid movie time");if(seconds>=s.length)return false;auto target=static_cast<std::int64_t>(std::floor(seconds*s.fps));while(s.decoded<=target&&!s.eof)s.next();return s.decoded>0;}
+void BinkMovie::restore_position(double seconds){
+ if(frame_index()!=-1||!std::isfinite(seconds)||seconds<0||seconds>=duration())throw std::invalid_argument("Invalid movie restore position");
+ for(double t=0;t<seconds;t+=1./60){advance(t);drain_audio();}
+ advance(seconds);drain_audio();
+}
 const std::vector<std::uint8_t>& BinkMovie::rgba()const{return impl_->pixels;}
 std::vector<std::int16_t> BinkMovie::drain_audio(){std::vector<std::int16_t> p;p.swap(impl_->pcm);return p;}
 }
