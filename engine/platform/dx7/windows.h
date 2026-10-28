@@ -72,3 +72,12 @@ using WPARAM=std::uintptr_t;
 using LPARAM=std::intptr_t;
 using LRESULT=std::intptr_t;
 struct LOGFONT;
+// Original project uses ANSI LOGFONT, including its serialized 60-byte layout.
+struct LOGFONT {
+ LONG lfHeight,lfWidth,lfEscapement,lfOrientation,lfWeight;
+ BYTE lfItalic,lfUnderline,lfStrikeOut,lfCharSet,lfOutPrecision,lfClipPrecision,lfQuality,lfPitchAndFamily;
+ char lfFaceName[32];
+};
+static_assert(sizeof(LOGFONT)==60);
+
+using HTREEITEM=void *;

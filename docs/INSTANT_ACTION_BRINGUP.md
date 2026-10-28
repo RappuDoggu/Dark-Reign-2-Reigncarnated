@@ -340,3 +340,36 @@ an early linker failure cannot be mistaken for zero missing dependencies.
 No new APK was packaged. Next dependencies are native bitmap/device operations,
 application runtime/config dispatch, input, audio, localization/console utilities
 and the remaining AI compilation fixes.
+
+
+## Native input, text, AI and mesh integration checkpoint
+
+The native input backend now feeds the original EventSys queue. It supports
+pointer/button events, DirectInput-compatible key codes, character input and
+wheel events, preserves pending input when the queue fills, and sends releases
+on pause. Typed flush preserves other event types. The original SafeQueue full
+and empty checks now use its semaphore state. APK JNI touch callbacks have not
+yet been connected to this full-engine backend.
+
+Native text helpers preserve 16-bit CH storage and Windows-1252 conversion for
+the English installation. UTF-16 formatting no longer aliases 32-bit wchar_t;
+wide literals receive separately owned CH arrays. Console callback pointers use
+pointer-width keys. AI script callbacks use existing lifecycle IDs and placement
+requests use existing token IDs instead of truncated addresses.
+
+All 22 utility and 62 AI units compile for ARM64. Main configuration dispatch,
+mesh loading, runtime MRM allocation and video-variable commands also compile.
+The external COM mesh simplifier remains disabled by the original release
+feature flag; this is not a new mesh simplification implementation.
+
+Six host tests pass under ASan/UBSan. The ARM64 foundation targets link but have
+not run on Android. Incremental link checks reached 73 unresolved symbols before
+the final clean inventory rebuild. These counts are diagnostics, not a progress
+percentage or a claim that resolving names alone makes the game playable.
+
+Remaining platform integration includes Bitmap/DirectDraw device operations,
+original-engine audio, application bootstrap/frame state and the offline session
+path. Engine initialization, mission object creation, simulation, rendering and
+JNI input still require end-to-end execution. No new APK or successful Instant
+Action launch is claimed. The verified device baseline remains the v0.5 launch
+APK.

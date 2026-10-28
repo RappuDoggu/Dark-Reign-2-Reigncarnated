@@ -1,4 +1,5 @@
 #pragma once
+#include "text_native.h"
 #include "mission_prelude.h"
 #include "dx7/windows.h"
 #include "d3d.h"

@@ -14,15 +14,20 @@ objects={}
 for directory in a.objects:
  report=json.loads((directory/'results.json').read_text())
  for unit in report['units']:
+  # A failed newer build must not silently reuse an older successful object.
+  objects.pop(unit['source'],None)
   if unit['exit_code']==0:
-   source=unit['source'];obj=directory/(source.replace('/','__')+'.o')
+   source=unit['source']
+   # Native input owns the adapted original event queue and replaces DirectInput.
+   if source in ('util/event.cpp','interface/input.cpp'):continue
+   obj=directory/(source.replace('/','__')+'.o')
    if not obj.is_file():raise RuntimeError(f'Missing successful object: {obj}')
    objects[source]=obj
 archive=a.output/'original_engine.a'
 archive.unlink(missing_ok=True)
 subprocess.run([str(a.compiler.parent/'llvm-ar'),'rcs',str(archive)]+[str(obj) for obj in objects.values()],check=True)
 cmd=[str(a.compiler),'-std=c++17','-I'+str(a.staged/'system'),'-I'+str(a.staged/'coregame'),str(repo/'tests/engine_mission_link_probe.cpp'),'-Wl,--gc-sections','-Wl,-u,RequireMissionEntryPoints','-Wl,--error-limit=0','-Wl,--start-group',str(archive)]
-cmd += [str(a.foundation_build/('libdr2_engine_'+name+'.a')) for name in ['io','resources','missions','type_idents','clock']]
+cmd += [str(a.foundation_build/('libdr2_engine_'+name+'.a')) for name in ['io','resources','missions','type_idents','clock','input']]
 cmd+=['-Wl,--end-group','-o',str(a.output/'mission_link_probe')]
 r=subprocess.run(cmd,capture_output=True,text=True)
 (a.output/'link.log').write_text(r.stdout+r.stderr)

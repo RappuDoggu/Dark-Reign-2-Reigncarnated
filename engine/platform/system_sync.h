@@ -10,6 +10,8 @@
 // kernel objects require a separate backend and fail explicitly here.
 class System {
 public:
+ class Thread;
+ class Event;
  class Mutex {
   std::recursive_timed_mutex mutex;
  public:

@@ -13,7 +13,7 @@ if len(hashes)!=expected['source_files'] or digest!=expected['tree_sha256']:
  raise ValueError('Pinned original source tree differs from reviewed full-engine inputs')
 lock_file=out.with_name(out.name+'.lock').open('a')
 fcntl.flock(lock_file, fcntl.LOCK_EX)
-for stage in ['abi','resources','missions','dx7','clock']:
+for stage in ['abi','resources','missions','dx7','clock','events']:
  subprocess.run([sys.executable,str(repo/'tools'/f'prepare_engine_{stage}.py'),str(root),str(root)+'-engine-'+stage],check=True)
 # Preserve relative include paths and source ownership, rather than flattening
 # duplicate headers or taking arbitrary files from an unreviewed search path.
@@ -25,7 +25,7 @@ for source in root.rglob('*'):
 locations={}
 for source in root.rglob('*'):
  if source.is_file(): locations.setdefault(source.name,[]).append(source.relative_to(root))
-for suffix in ['engine-abi','engine-resources','engine-missions','engine-clock']:
+for suffix in ['engine-abi','engine-resources','engine-missions','engine-clock','engine-events']:
  for source in Path(str(root)+'-'+suffix).glob('*'):
   if source.is_file() and source.name in locations:
    matches=locations[source.name]
@@ -104,7 +104,7 @@ for source in (out/'coregame_tasks').glob('tasks_*.cpp'):
   text=re.sub(r'(stateMachine.AddState\([^\n]*,\s*)&(\w+)\)',lambda m:m[1]+'&'+cls[1]+'::'+m[2]+')',text)
  text=re.sub(r'(?m)^(GameTask<[^>]+>::~GameTask\(|void GameTask<[^>]+>::GameProcess\()',r'template <> \1',text)
  source.write_text(text)
-patch('system/queue.h', [('#include "system.h"','#include "system_sync.h"')])
+
 patch('coregame_ai/strategic_weighting.h', [('NBinTree<DATA, KEY>::Iterator','typename NBinTree<DATA, KEY>::Iterator')])
 # All dynamic parameters at these two sites are UTF-16 string pointers. Pass
 # those pointers using the native variadic ABI instead of x86 stack injection.
@@ -201,7 +201,35 @@ text=text.replace('    char *str;\n    U32 len;', '    U32 len;')
 source.write_text(text)
 patch('coregame_interface/common_mapwindow.cpp', [('sizeof VertexTL','sizeof(VertexTL)')])
 patch('graphics/lex.h', [('item->name; list++','item->name; item++'),('stricmp(', 'Utils::Stricmp('),('return _END_OF_FILE;', 'TokenItem *end = tokList; while (end->name) ++end; return end->token;')])
-patch('graphics/meshread.cpp', [('min(', 'Min(')])
+patch('graphics/meshread.cpp', [('min(', 'Min('), ('Min(srcVI.count, MAXWEIGHTS)', 'Min<U32>(srcVI.count, MAXWEIGHTS)')])
 patch('graphics/vid_cmd_dialog.cpp', [('min(', 'Min('),('max(', 'Max(')])
-patch('graphics/vid_cmd.cpp', [('caps.clipGuard ? Vid::Var::clipGuard : FALSE', 'caps.clipGuard ? S32(Vid::Var::clipGuard) : FALSE'),('Color color = Vid::Var::suncolor;', 'Color color(U32(Vid::Var::suncolor));'),('min(', 'Min(')])
-patch('graphics/vid_cmd_mesh.cpp', [('Color color = Var::baseColor;', 'Color color(U32(Var::baseColor));')])
+patch('graphics/vid_cmd.cpp', [('caps.clipGuard ? Vid::Var::clipGuard : FALSE', 'caps.clipGuard ? S32(Vid::Var::clipGuard) : FALSE'),('Color color = Vid::Var::suncolor;', 'Color color{U32(Vid::Var::suncolor)};'),('min(', 'Min('), ('max(', 'Max(')])
+patch('graphics/vid_cmd_mesh.cpp', [('Color color = Var::baseColor;', 'Color color{U32(Var::baseColor)};')])
+# Console callback keys are addresses, unlike the 32-bit message IDs.
+patch('util/console.cpp', [('BinTree<HookItem>', 'BinTree<HookItem, std::uintptr_t>'),('U32(context)', 'reinterpret_cast<std::uintptr_t>(context)'),('id = (U32)context;', 'id = U32(reinterpret_cast<std::uintptr_t>(context));'),('vswprintf((wchar_t *)fmtBuf, (const wchar_t *)format, args);', 'NativeEngine::VFormat16(fmtBuf, MAX_TEXTBUF, format, args);'),('strnicmp(', 'Utils::Strnicmp(')])
+source=out/'util/console.cpp';source.write_text('#include "text_native.h"\n'+source.read_text())
+patch('util/perfstats.cpp', [('return S32(p1->parent) - S32(p2->parent);', 'const auto a = reinterpret_cast<std::uintptr_t>(p1->parent);\n    const auto b = reinterpret_cast<std::uintptr_t>(p2->parent);\n    return (a > b) - (a < b);'),('stricmp(', 'Utils::Stricmp('),('WRITE(itoa(rec, ibuf, 10));', 'Utils::Sprintf(ibuf, sizeof(ibuf), "%u", rec);\n        WRITE(ibuf);'),('WRITE(itoa(n, ibuf, 10));','Utils::Sprintf(ibuf, sizeof(ibuf), "%u", n);\n          WRITE(ibuf);'),('hwSupport = Hardware::CPU::HasFeature(Hardware::CPU::TSC);', 'hwSupport = TRUE; // Native Clock provides monotonic profiling; no x86 TSC needed.')])
+# Native wchar_t is 32-bit. Preserve Windows UTF-16 literal code units with
+# separately owned CH arrays, not reinterpret_casts into char16_t storage.
+for source in out.rglob('*'):
+ if source.is_file() and not source.is_symlink() and source.suffix.lower() in ['.cpp','.h','.inl']:
+  try:text=source.read_text()
+  except UnicodeDecodeError:continue
+  text=re.sub(r'\(\s*const\s+(?:CH|U16)\s*\*\s*\)\s*L("(?:\\.|[^"\\])*?")',lambda m:'REIGN_TEXT16('+m[1]+')',text)
+  source.write_text(text)
+# AI orders already carry U32 IDs. Use existing lifecycle IDs rather than
+# truncating addresses; token IDs are unique within the owning base manager.
+patch('coregame_ai/strategic_script_state_actions.cpp', [('U32(&script)', 'script.dTrack.id')])
+patch('coregame_ai/strategic_script_manager.cpp', [('U32(*s)', '(*s)->dTrack.id'),('// The ID is the pointer to a script', '// The ID is the script lifecycle ID, not its address')])
+patch('coregame_ai/strategic_placement.cpp', [('U32(&token)', 'token.GetId()')])
+patch('system/weightedlist.h', [('    Append(', '    this->Append('),('!GetCount()', '!this->GetCount()'),('for (Iterator i(this);', 'for (typename List<WeightedListNode<DATA>>::Iterator i(this);')])
+source=out/'coregame_ai/strategic_asset_manager.cpp';text=source.read_text();text=re.sub(r'(stateMachine.AddState\([^\n]*,\s*)&(\w+)\)',r'\1&Asset::Manager::\2)',text);source.write_text(text)
+# Preserve the original profiler declaration graph. Its desktop implementation
+# remains unavailable; Main configuration dispatch needs declarations only.
+patch('system/profile.h', [('#include "system.h"', '#include "system_sync.h"'),('#include <commctrl.h>', '// Native HWND/HTREEITEM declarations come from the platform prelude.')])
+patch('main/maincmd.cpp', [('DebugBreak();', 'std::raise(SIGTRAP);')])
+source=out/'main/maincmd.cpp';source.write_text('#include <csignal>\n#include "debug_memory.h"\n'+source.read_text())
+
+# The original release path disables the external COM mesh simplifier. Its
+# conversion helper must follow the same feature guard as its only caller.
+patch('graphics/meshmrm.cpp', [('#pragma comment(lib, "ole32")', '// COM simplification is disabled in native release builds.'), ('MRMGenParams params;', '#ifdef DOMRMGEN\nMRMGenParams params;'), ('Bool MeshRoot::MRMGen( List<U16> * verts)', '#endif\nBool MeshRoot::MRMGen( List<U16> * verts)')])
