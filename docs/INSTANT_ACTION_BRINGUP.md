@@ -126,3 +126,87 @@ References inspected:
 Generals motivates preserving the engine and adapting subsystem boundaries;
 Fallout motivates input-independent commands and robust import. Neither is
 evidence that their renderer or gameplay code is directly reusable in DR2.
+
+## Native resource and mission-manager checkpoint (2026-10-28)
+
+The separate `engine/` build now compiles complete original translation units
+for FileSys (directory, pack and stream sources), DTrack, strings, PTree, FScope,
+VNode, StdParse, TBuf, BlockFile, Missions, Campaigns, Difficulty, StdLoad,
+Stats, utility types, RunCodes and Random. Global original class names are
+preserved. This target does not link the menu's replacement FileSys or its
+extracted mission-catalog slice.
+
+The native File/Dir implementation preserves the public original interface,
+uses POSIX descriptors/mappings, resolves Windows separators and ASCII case,
+and keeps engine-generated backslash paths unchanged for CRC identifiers.
+Mappings retain pointer-sized ownership and validate bounds. Read/write counts
+retain the original byte-count semantics. Unsupported DOS drive discovery
+returns failure; it does not invent a CD drive.
+
+Validation with the owned installation:
+
+- Native File/Dir regression tests: mapping offset and EOF handling, write maps,
+  append, overflow rejection, case-insensitive lookup, directory enumeration,
+  file CRC, missing files and path-identifier spelling.
+- All 5 entries in `2crazed.zwp` and all 2,074 entries in `packs/base.zwp` mapped
+  and compared byte-for-byte with sequential reads.
+- Original FileSys/PTree/BlockFile: mission and base streams, clipped reads,
+  absolute native paths, 100x100 mission config, 125 object definitions,
+  terrain block lookup, unload and no remaining open DataFiles.
+- Original Missions: discover 60 missions in 9 groups; select `2crazed` from
+  the Instant Action group; SetActive/OpenActiveStream; parse the active
+  game.cfg; LaunchMission queues the original Mission run-code; unload.
+- Four host CTest checks pass with ASan/UBSan, with LeakSanitizer disabled
+  because this execution environment cannot enumerate process threads.
+- All targets compile and link for Android ARM64/API 26 using NDK 27.2.12479018.
+  ARM64 execution on a device has not been performed.
+
+Important distinction: the mission-start test registers a null Mission callback
+solely to inspect the pending run-code request. It never calls RunCodes::Process
+and cannot run a fake mission. Game::PreOpenMission/OpenMission, players, teams,
+objects, simulation and rendering remain unlinked. No new APK is produced.
+
+The test executable uses function-section garbage collection to omit uncalled
+save/UI/full-game entry points. This is not a claim that every function in those
+libraries has all its dependencies ported. In particular, original
+StdLoad::GetIdentAsU32 stores a heap pointer in a 32-bit ID. Its unsafe inline
+body is replaced by an unresolved declaration until the matching original
+Resolver::Type path is ported; using it currently fails at link time, rather
+than silently truncating pointers. Original Matrix retains its 64-byte row
+layout; its unused, nonstandard anonymous SIMD `Mat` alias is removed. The
+original Windows-only RECT conversion is excluded on native builds.
+
+Fixed while exercising the real resource path: DataFilePack::Read copied the
+requested byte count after calculating a shorter remaining count. It now copies
+only the clipped count. The regression test verifies bytes beyond the returned
+count remain untouched. The directory index now unlinks its null-valued entries
+instead of instantiating delete-void. CRC string indexing accepts high bytes
+without indexing before its table. Existing reviewed parser fixes are reused.
+
+Run locally after the normal setup:
+
+```sh
+cmake -S "$REIGN_REPO/engine" -B "$REIGN_WORK_ROOT/build-engine-host" -G Ninja \
+  -DREIGN_UPSTREAM="$REIGN_UPSTREAM" -DREIGN_SANITIZE=ON \
+  -DREIGN_GAME_DATA="$REIGN_WORK_ROOT/owned/Dark Reign 2"
+cmake --build "$REIGN_WORK_ROOT/build-engine-host"
+ASAN_OPTIONS=detect_leaks=0 ctest --test-dir "$REIGN_WORK_ROOT/build-engine-host" --output-on-failure
+```
+
+Next runtime boundary: compile/link the original Game initialization and its
+object/type, world, team/player and task dependencies, and attach the actual
+Mission handler. The pending-run-code test must not be relabeled a mission boot.
+
+OpenDR review: its OpenRA-based DR1 recreation reinforces reuse of an established
+simulation and separation of input orders from execution. Its sprite terrain
+renderer is not a DR2 3D backend, and its map importer contains incomplete actor
+conversion. It does not change the native DR2 target.
+
+- https://github.com/drogoganor/OpenDR/blob/master/README.md
+- https://github.com/drogoganor/OpenDR/blob/master/OpenRA.Mods.Dr/Orders/BuilderUnitBuildingOrderGenerator.cs
+- https://github.com/drogoganor/OpenDR/blob/master/OpenRA.Mods.Dr/UtilityCommands/ImportDrMapCommand.cs
+
+D7VK was also inspected: its `devel` branch's `src/ddraw/ddraw_main.cpp` loads an
+underlying Windows/Wine ddraw library and forwards DirectDrawCreateEx. It is not
+a standalone native Android renderer that can simply replace DR2's device layer.
+No D7VK build was attempted.

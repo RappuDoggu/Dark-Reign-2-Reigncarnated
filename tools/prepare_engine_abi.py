@@ -40,7 +40,7 @@ def prepare(upstream, output):
 #define CDECL
 #define NAKED __attribute__((naked))
 #define THREAD thread_local
-#define NORETURN [[noreturn]]
+#define NORETURN __attribute__((noreturn))
 #define DLL_EXPORT __attribute__((visibility("default")))
 #define DLL_IMPORT
 #endif
@@ -57,6 +57,29 @@ inline U32 _rotr(U32 value, int count) noexcept {
 #endif
 '''
     sources['system/defines.h'] = definitions
+    # Keep the original public File/Dir API. Only replace OS-owned state and
+    # Windows constants; original callers remain unmodified.
+    file_header = sources['system/file.h']
+    file_header = file_header.replace('#include <io.h>', '#include "file_platform.h"')
+    first = file_header.index('  // Handle for current file')
+    last = file_header.index('public:', first)
+    file_header = file_header[:first] + '  NativeFileState *native;\n\n' + file_header[last:]
+    for old, new in [('FILE_BEGIN', '0'), ('FILE_CURRENT', '1'), ('FILE_END', '2'),
+                     ('int handle;', 'NativeFindState *handle = nullptr;'),
+                     ('_finddata_t finddata;', 'NativeFindData finddata;')]:
+        if file_header.count(old) != 1:
+            raise ValueError('Unexpected File API boundary: ' + old)
+        file_header = file_header.replace(old, new)
+    # Owning descriptors and directory iterators must never be shallow-copied.
+    file_header = file_header.replace('  File();',
+        '  File();\n  File(const File &) = delete;\n  File &operator=(const File &) = delete;')
+    file_header = file_header.replace('    friend class Dir;',
+        '    Find() = default;\n    ~Find();\n    Find(const Find &) = delete;\n'
+        '    Find &operator=(const Find &) = delete;\n    friend class Dir;')
+    sources['system/file.h'] = file_header
+    # Original signed char indexing reads before the CRC table for bytes >=128.
+    sources['system/crc.cpp'] = sources['system/crc.cpp'].replace(
+        'toLower[*p]', 'toLower[static_cast<U8>(*p)]')
     output.mkdir(parents=True, exist_ok=True)
     for name, text in sources.items():
         dest = output/Path(name).name

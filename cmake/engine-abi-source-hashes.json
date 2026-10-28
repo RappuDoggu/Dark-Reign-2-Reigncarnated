@@ -4,5 +4,10 @@
   "system/nlist.h": "94717e5f96eebc6e9c1b42fcdb9c2da8f17c3f6231e5a62e5bc4cae2f2069413",
   "system/ntree.h": "5e69ef620ce11d4414d3b86d6aa3c65f27a98ffbee886b70b36d6e2990fad21a",
   "system/random.h": "75bbf68776a7c3ce0f0f52d13b7538003e2cf9e5be80cff5d063114f4c347007",
-  "system/random.cpp": "bad2bd1ff6ad584594f8281b9be76e9ad7ec46d391c5d7a84d40443e3e4d8e8d"
+  "system/random.cpp": "bad2bd1ff6ad584594f8281b9be76e9ad7ec46d391c5d7a84d40443e3e4d8e8d",
+  "system/file.h": "029edfe99421e6aeb16ba5dc663dbe474645ca975470966dd2567ef0fff46df2",
+  "system/utils.h": "a614dd502cceb284e89d0004abd4e7bfabe45af58866d1da65653cdb60c4d942",
+  "system/strbuf.h": "d6c24b77098023fbab459c484332b35a97a4943ba183bf11ecdea63d59bda45f",
+  "system/crc.h": "fcb3049fa7aeed288bce1e3b034a86d5fd40f41d8b6d4ef0267cdbd82829cf84",
+  "system/crc.cpp": "55e6bba2f8be0be1c7a814e011907aa790bcadc8a7460ed157589a6f4b84816e"
 }
