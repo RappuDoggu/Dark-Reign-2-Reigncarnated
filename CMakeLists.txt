@@ -728,6 +728,8 @@ if(REIGN_UPSTREAM)
  add_test(NAME original_shell_terrain_data COMMAND shell_terrain_smoke)
  add_executable(shell_terrain_probe tools/shell_terrain_probe.cpp)
  target_link_libraries(shell_terrain_probe PRIVATE reign_shell_terrain dr2_config reign_platform dr2_bitmap_manager)
+ add_executable(instant_action_data_probe tools/instant_action_data_probe.cpp)
+ target_link_libraries(instant_action_data_probe PRIVATE dr2_campaign_catalog reign_shell_terrain)
 endif()
 
 if(REIGN_UPSTREAM)

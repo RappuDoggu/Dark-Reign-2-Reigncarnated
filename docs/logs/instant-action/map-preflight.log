@@ -1,0 +1,11 @@
+[engine] Found 60 missions in 9 groups
+Instant Action data preflight: PASS
+Mission: 2crazed
+Map: 100x100
+Terrain group: Dome
+Map team definitions: 2 (not instantiated players)
+Default clients: 1
+Object definitions: 125
+Terrain cells: 10100
+Default rule: protecthq
+Mission boot, no-opponent setup, touch selection and construction: NOT implemented/tested
