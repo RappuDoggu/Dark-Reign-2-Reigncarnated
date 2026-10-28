@@ -5,6 +5,7 @@
 #include "native_stack.h"
 #include "clock.h"
 #include "text_native.h"
+#include "debug_native.h"
 #include <thread>
 #include <iostream>
 #include <vector>
@@ -98,6 +99,15 @@ int main() {
   check(mutex.Wait() && mutex.Wait(0));mutex.Signal();mutex.Signal();
   std::uintptr_t frames[32];check(CaptureStack(frames,32)>0);
   if(std::strcmp(Utils::ChopPath("data\\models/unit.god"),"unit.god") || std::strcmp(Utils::ChopPath("unit.god"),"unit.god") || *Utils::ChopPath("data/")) throw std::runtime_error("Path basename failed");
+  Debug::Error::Set("mission.cfg",42,"test",Debug::Error::CONFIG);
+  std::thread diagnostic([] { Debug::Error::Set("worker.cfg",9,"test",Debug::Error::FATAL); });diagnostic.join();
+  bool diagnosticCaught=false;
+  try { Debug::Error::Err("Missing type %s", "test.unit"); }
+  catch(const std::runtime_error &error) { diagnosticCaught=std::string(error.what()).find("mission.cfg:42 [1] Missing type test.unit")!=std::string::npos; }
+  check(diagnosticCaught);
+  Debug::Watchdog::Create();Debug::Watchdog::Poll();Debug::Watchdog::Delete();
+  Debug::Watchdog::Enable();
+  for(int i=0;i<3;++i){Debug::Watchdog::Create();Debug::Watchdog::Create();Debug::Watchdog::Poll();Debug::Watchdog::Delete();}
   std::cout<<"Type identifiers, native queues, timing/calendar, string comparison and unwinding passed\n";
  }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}
 }

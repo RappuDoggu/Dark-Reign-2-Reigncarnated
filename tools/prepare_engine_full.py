@@ -233,3 +233,20 @@ source=out/'main/maincmd.cpp';source.write_text('#include <csignal>\n#include "d
 # The original release path disables the external COM mesh simplifier. Its
 # conversion helper must follow the same feature guard as its only caller.
 patch('graphics/meshmrm.cpp', [('#pragma comment(lib, "ole32")', '// COM simplification is disabled in native release builds.'), ('MRMGenParams params;', '#ifdef DOMRMGEN\nMRMGenParams params;'), ('Bool MeshRoot::MRMGen( List<U16> * verts)', '#endif\nBool MeshRoot::MRMGen( List<U16> * verts)')])
+
+# Retain the original Debug API with a shared, fixed-width native declaration.
+source=out/'system/debug.h';text=source.read_text();start=text.index('    enum Type',text.index('namespace Error'));end=text.index('    // Used by the macro',start)
+text=text[:start]+text[end:];source.write_text('#include "debug_native.h"\n'+text)
+patch('graphics/bitmapprimitive.cpp', [('FIXME(919378333, "aiarossi");', '// Original note: LineX draws one extra pixel (1999-02-18).'), ('wsprintf( name.str,', 'Utils::Sprintf( name.str, sizeof(name.str),')])
+
+# Keep original human-readable DirectX diagnostics without importing device APIs.
+# Numeric DS/DI expressions come from the already hash-verified SDK source tree.
+error_text='#pragma once\n#include "dx7/errors.h"\n'
+for sdk,names in [('dsound.h',None),('dinput.h',set(re.findall(r'case\s+(DI\w+)\s*:',(root/'graphics/viderror.cpp').read_text())))]:
+ text=(root/'3rdparty/dx7'/sdk).read_text().replace('\\\n','')
+ for line in text.splitlines():
+  match=re.match(r'#define\s+(\w+)',line)
+  if match and ((names is None and (match[1].startswith('DSERR_') or match[1] in ['_FACDS','MAKE_DSHRESULT'])) or (names is not None and match[1] in names)):
+   error_text+=line+'\n'
+(out/'3rdparty/native_dx_errors.h').write_text(error_text)
+source=out/'graphics/viderror.cpp';source.write_text('#include "native_dx_errors.h"\n'+source.read_text())

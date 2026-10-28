@@ -381,3 +381,38 @@ percentage. Linking only this fresh object set plus the native foundation report
 was used. See `logs/instant-action/native-phase3-build.json` and
 `logs/instant-action/native-mission-link-phase3.json` for the exact failures and
 link command. All 255 gameplay, 62 AI and 22 utility units compiled in this run.
+
+## Native diagnostics and frame state checkpoint
+
+The mission link now reports **62 unresolved symbols**, down from 72, with zero
+other linker errors. The ten resolved dependencies are the four Debug entry
+points, the original DirectX error mapper/global error value, and the original
+Main run-code controller/frame time/frame number state. No success-returning
+placeholder implementations were added.
+
+`debug_native.cpp` preserves file/line/error-category context per thread, emits
+pointer-width stack addresses and raises a native exception. Its opt-in watchdog
+uses a real background thread: it warns after four minutes without a heartbeat
+and aborts after another minute. Native fatal termination replaces the original
+Windows thread-context/code-injection mechanism. Watchdog lifecycle calls belong
+to the engine thread and must stop the watchdog before Android suspends it.
+
+`frame_native.cpp` owns the real Main RunCodes object and original frame timing
+state. Its engine-thread API accepts monotonic milliseconds, handles U32 clock
+rollover and excludes suspended time from the next frame delta. It does not
+register fake Mission handlers or execute gameplay. The Android scheduler still
+needs to call this API and the original run-code processor during integration.
+
+The complete original bitmap primitive implementation now compiles, using bounded
+formatting for pixel-format names. The original `viderror.cpp` error-message
+switch also compiles: DirectSound/DirectInput error expressions are generated
+from the pinned SDK headers; only fixed Windows error-number declarations are
+supplied locally. This does not provide a DirectSound/DirectInput device.
+
+Seven host ASan/UBSan tests pass, including diagnostic context isolation and
+watchdog start/stop, frame timing, pause/resume, backward-clock rejection and
+rollover. Native foundation targets link for ARM64. The graphics/main compilation
+and mission link are incremental against the preceding fresh full-engine build;
+no ARM64 executable or new APK has been run. See
+`logs/instant-action/native-mission-link-phase4.json` and
+`logs/instant-action/native-phase4-tests.log`.
