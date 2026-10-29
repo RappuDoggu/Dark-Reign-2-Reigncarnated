@@ -15,6 +15,23 @@ Bool RenderFlush()
 } // namespace Vid
 
 namespace NativeEngine {
+HRESULT AttachGlesVideo(reign::LegacyGles &renderer,unsigned width,unsigned height,PresentVideo present,void *context){
+ if(!present||!width||!height||width>16384||height>16384)return E_INVALIDARG;
+ if(Vid::device||Vid::back)return E_FAIL;
+ DDSURFACEDESC2 desc{};desc.dwSize=sizeof(desc);desc.dwWidth=width;desc.dwHeight=height;
+ desc.dwFlags=DDSD_WIDTH|DDSD_HEIGHT|DDSD_PIXELFORMAT|DDSD_CAPS;
+ desc.ddsCaps.dwCaps=DDSCAPS_SYSTEMMEMORY|DDSCAPS_OFFSCREENPLAIN;
+ auto &format=desc.ddpfPixelFormat;format.dwSize=sizeof(format);format.dwFlags=DDPF_RGB|DDPF_ALPHAPIXELS;
+ format.dwRGBBitCount=32;format.dwRBitMask=0xff0000;format.dwGBitMask=0xff00;format.dwBBitMask=0xff;format.dwRGBAlphaBitMask=0xff000000;
+ IDirectDrawSurface7 *target=nullptr;HRESULT result=CreateMemorySurface(desc,&target);if(FAILED(result))return result;
+ IDirect3DDevice7 *device=nullptr;
+ result=CreateGlesDevice(renderer,target,&device);
+ if(SUCCEEDED(result)){
+  try{result=AttachVideo(device,target,present,context);}catch(...){DetachVideo();result=E_FAIL;}
+  device->Release();
+ }
+ target->Release();return result;
+}
 void DetachVideo()
 {
   using namespace Vid;

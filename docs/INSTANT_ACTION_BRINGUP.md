@@ -749,3 +749,33 @@ state tests cover depth-write read/change/restore, null outputs, unsupported
 lighting enable, texture-address readback and failed-update preservation.
 All 13 ASan/UBSan foundation tests pass; ARM64 renderer compilation succeeds.
 Evidence: native-phase13-tests.log. No mission startup or new APK yet.
+
+
+## Phase 14: original Vid draw and presentation integration
+
+AttachGlesVideo now creates a native RGBA surface and real GLES device, attaches
+them to Vid, and releases temporary references. DetachVideo owns final release;
+invalid sizes/present callbacks and duplicate attachment are rejected. Renderer
+and current context must outlive attachment. This does not initialize engine
+managers, cameras, resources, or mark the full engine initialized.
+
+A new software EGL integration test attaches through this helper, invokes the
+original Vid::SetZWriteState read/change/restore sequence and original
+Vid::DrawIndexedPrimitive with RS_BLEND_DEF, presents through Vid::RenderFlush,
+and verifies displayed red pixels. It then detaches and repeats with a second
+context. Initial zero flags in the test generated invalid blend selections;
+using the original wrapper's required packed blend flags removes those warnings.
+The completed test passes cleanly. Harness/foundation are sanitizer-enabled;
+reused original host objects are not all instrumented.
+
+The broader ARM64 frame-loop probe now retains AttachGlesVideo and links the
+real surface/GLES device library as well as the original game callbacks. It
+still links with zero unresolved symbols and zero other errors. The updated
+original vid.cpp compiles for ARM64. No mission or Android activity executed.
+Full engine-manager/application startup remains the next integration target.
+Evidence: native-frame-link-phase14.json, native-phase14-tests.log.
+
+Run real host integration with tools/test_engine_vid.py --test-source
+engine_vid_gles_test.cpp --khronos-headers <headers>, supplying compiled original
+graphics/math/adapted Vid objects, foundation libraries and FFmpeg root. Use
+LIBGL_ALWAYS_SOFTWARE=1 and ASAN_OPTIONS=detect_leaks=0 in this environment.

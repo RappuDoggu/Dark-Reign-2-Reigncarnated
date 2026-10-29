@@ -290,7 +290,7 @@ formats=original_function((out/'graphics/vid_enumdx.cpp').read_text(),'  Pix & P
 formats=formats.replace('    return i <', '    if (!pixFormatList.GetCount()) throw std::logic_error("Native video formats are not initialized");\n    return i <')
 device_source=(out/'graphics/vid_enumdx.cpp').read_text()
 caps_code=original_function(device_source,'  void DriverD3D::SetDesc(')+original_function(device_source,'  void DriverD3D::SetCaps()').replace('    Config::Setup();','    // Native backend reports its own caps; no Windows driver-quirk override.')
-source.write_text('#include "light_priv.h"\n#include "mesh.h"\n#include "vid_private.h"\n#include "vid_native.h"\n#include "surface_native.h"\n#include <memory>\n#include <vector>\n#include <stdexcept>\nnamespace Vid {\n'+state+callback+formats+caps_code+resources+'\n#include "vid_native.inc"\n}\n')
+source.write_text('#include "light_priv.h"\n#include "mesh.h"\n#include "vid_private.h"\n#include "vid_native.h"\n#include "device_gles.h"\n#include "surface_native.h"\n#include <memory>\n#include <vector>\n#include <stdexcept>\nnamespace Vid {\n'+state+callback+formats+caps_code+resources+'\n#include "vid_native.inc"\n}\n')
 # Original bug: clearing sizeof(this) only clears a pointer-sized prefix.
 patch('graphics/vid_decl.h', [('sizeof( this)', 'sizeof( *this)')])
 

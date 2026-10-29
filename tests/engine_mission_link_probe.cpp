@@ -17,7 +17,8 @@ extern "C" void RequireMissionEntryPoints() {
  Game::PostCloseMission();
  Game::Done();
 }
-extern "C" void RequireNativeVideoBoundary() {
+extern "C" void RequireNativeVideoBoundary(reign::LegacyGles &renderer) {
+ NativeEngine::AttachGlesVideo(renderer,640,480,nullptr,nullptr);
  NativeEngine::AttachVideo(nullptr, nullptr, nullptr, nullptr);
  NativeEngine::DetachVideo();
 }
