@@ -27,8 +27,8 @@ for directory in a.objects:
 archive=a.output/'original_engine.a'
 archive.unlink(missing_ok=True)
 subprocess.run([str(a.compiler.parent/'llvm-ar'),'rcs',str(archive)]+[str(obj) for obj in objects.values()],check=True)
-cmd=[str(a.compiler),'-std=c++17','-I'+str(a.staged/'system'),'-I'+str(a.staged/'coregame'),str(repo/'tests/engine_mission_link_probe.cpp'),'-Wl,--gc-sections','-Wl,-u,RequireMissionEntryPoints','-Wl,--error-limit=0','-Wl,--start-group',str(archive)]
-cmd += [str(a.foundation_build/('libdr2_engine_'+name+'.a')) for name in ['io','resources','missions','type_idents','clock','input','main_runtime','surfaces']]
+cmd=[str(a.compiler),'-std=c++17','-I'+str(repo/'engine/platform'),'-I'+str(repo/'engine/platform/dx7'),'-I'+str(a.staged/'3rdparty/dx7'),'-I'+str(a.staged/'system'),'-I'+str(a.staged/'coregame'),str(repo/'tests/engine_mission_link_probe.cpp'),'-Wl,--gc-sections','-Wl,-u,RequireMissionEntryPoints','-Wl,-u,RequireNativeVideoBoundary','-Wl,--error-limit=0','-Wl,--start-group',str(archive)]
+cmd += [str(a.foundation_build/('libdr2_engine_'+name+'.a')) for name in ['io','resources','missions','type_idents','clock','input','main_runtime','surfaces','music']]
 if a.ffmpeg_root:
  cmd += [str(a.foundation_build/'libdr2_engine_movies.a')]
  cmd += [str(a.ffmpeg_root/'lib'/('lib'+name+'.a')) for name in ['avformat','avcodec','swscale','avutil']]

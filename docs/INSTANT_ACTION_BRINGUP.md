@@ -492,3 +492,63 @@ native-phase6-build.json, and native-phase6-tests.log. Host GLES tests require
 REIGN_KHRONOS_HEADERS pointing to externally staged EGL/GLES headers; Android
 uses NDK headers. Owned game data and external SDK/decoder sources stay outside
 this repository.
+
+
+## Native display, music and local-session boundary (phase 7)
+
+The retained mission-entry probe plus the new video attachment/detachment entry
+points now report **15 unresolved symbols, zero other linker errors**. Twelve
+are digital audio and three are MultiPlayer::IsHost, Data::Online and Load.
+The whole-inventory ARM64 build compiled 603/705 adapted entries; subsequent
+focused session builds bring the combined result to 606/705. This counts declared
+project entries, including the previously documented duplicate PCH entries.
+
+This is source-level separation of portable code from desktop platform services.
+The Vid, setup and multiplayer staging explicitly selects portable portions;
+unported Windows startup, CD discovery, socket and session entry points remain
+undefined. It does not compile those discarded portions or supply success stubs.
+The original checksum accessors and local StyxNet key/index store are retained.
+
+Vid owns its original globals, render state, pixel-format objects and callback
+registration. AttachVideo requires a real device, its matching target surface,
+actual capabilities/texture formats, and an application presentation callback.
+It configures viewport, backbuffer metadata, driver capabilities and formats.
+RenderFlush fails when unattached or when presentation fails. Detach releases
+references and clears display data. Engine managers, camera startup and the
+original D3D7 draw/state-to-GLES device adapter still need integration; attaching
+a display deliberately does not assert that the full engine is initialized.
+The original Windows driver-quirk override is not applied to native device caps.
+
+The original Status::ClearData used sizeof(this), which can overwrite adjacent
+memory on ARM64; staging now uses sizeof(*this). Session storage now uses array
+delete, copies aliased replacements before freeing old data, releases owned
+records on destruction, and uses RAII for deserialization buffers.
+
+The Redbook adapter uses imported numbered music files instead of a CD drive.
+InstallMusicPlayer requires an application player and validated track paths;
+without it Play reports failure. TrackCount preserves disc numbering (highest
+track number, including the skipped data-track slot), not the number of imported
+files. Tests cover wrap, gaps, completion, volume, invalid replacement and player
+failure. The existing Android audio player is not yet wired to this boundary;
+no audible Android playback is claimed by these tests.
+
+Twelve foundation CTest cases pass with ASan/UBSan. Two additional host tests
+pass: a fixture-device display attachment/presentation/lifetime test (also
+checking the status canary and original sound ABI declarations), and original
+session-store serialization, permissions, aliased replacement and CRC tests.
+The additional harness/foundation are sanitizer-linked; reused original host
+object files were not all built with sanitizer instrumentation. Neither fixture
+is a mission render or network-session test. Native music and display/session
+components compile for ARM64; no device execution occurred.
+
+For the host boundary tests, compile graphics/ and util/mathtypes.cpp using
+build_engine_gameplay.py with the host compiler. Supply those reports and later
+focused vid/session reports to tools/test_engine_vid.py using repeated --objects,
+plus the host foundation build and --ffmpeg-root. Select the session test with
+--test-source engine_session_test.cpp. All sources and owned data stay external
+to generated staging and binary output.
+
+Evidence: logs/instant-action/native-phase7-build.json,
+native-phase7-tests.log and native-mission-link-phase7.json.
+No new APK or Instant Action boot is claimed. Link completion will still need
+application startup integration and runtime validation before a test APK.

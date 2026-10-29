@@ -30,3 +30,17 @@ for line in block.splitlines():
 header='#pragma once\n#include "ddraw.h"\nnamespace NativeEngine {\nstruct UnsupportedSurface : IDirectDrawSurface7 {\n'+'\n'.join(methods)+'\n};\n}\n'
 dest=out/'surface_unsupported.h'
 if not dest.exists() or dest.read_text()!=header:dest.write_text(header)
+
+# Test/device adapters share the exact original virtual interface. Unsupported
+# operations fail explicitly; ownership methods remain abstract.
+text=(out/'d3d.h').read_text()
+block=text.split('DECLARE_INTERFACE_(IDirect3DDevice7, IUnknown)',1)[1].split('};',1)[0]
+methods=[]
+for line in block.splitlines():
+ match=re.search(r'STDMETHOD\((\w+)\)\s*\((.*?)\)\s*PURE;',line)
+ if match:
+  name,args=match.groups();args=args.replace('THIS_','').replace('THIS','').replace('FAR','').strip()
+  methods.append(f' HRESULT {name}({args}) override {{ return E_NOTIMPL; }}')
+header='#pragma once\n#include "d3d.h"\nnamespace NativeEngine {\nstruct UnsupportedDevice : IDirect3DDevice7 {\n'+'\n'.join(methods)+'\n};\n}\n'
+dest=out/'device_unsupported.h'
+if not dest.exists() or dest.read_text()!=header:dest.write_text(header)

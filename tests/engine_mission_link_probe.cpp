@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdio>
 #include "game.h"
+#include "vid_native.h"
 extern "C" void RequireMissionEntryPoints() {
  Game::Init();
  Game::PreOpenMission();
@@ -11,6 +12,10 @@ extern "C" void RequireMissionEntryPoints() {
  Game::CloseMission();
  Game::PostCloseMission();
  Game::Done();
+}
+extern "C" void RequireNativeVideoBoundary() {
+ NativeEngine::AttachVideo(nullptr, nullptr, nullptr, nullptr);
+ NativeEngine::DetachVideo();
 }
 int main() {
  std::fputs("Link check only; not a mission runner or Android app.\n",stderr);

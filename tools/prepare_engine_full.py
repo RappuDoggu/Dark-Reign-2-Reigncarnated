@@ -268,3 +268,46 @@ source.write_text('#include "palette_native.h"\n'+text)
 # native pixel storage. Window/device creation remains a separate renderer task.
 patch('graphics/bitmap.cpp', [('Vid::ddx->CreateSurface( &desc, &surface, NULL)', 'NativeEngine::CreateMemorySurface(desc, &surface)')])
 source=out/'graphics/bitmap.cpp';source.write_text('#include "surface_native.h"\n'+source.read_text())
+
+# Split portable setup/renderer ownership from Windows process/device creation.
+# Unported entry points stay undefined; they are not replaced with success stubs.
+source=out/'main/setup.cpp';text=source.read_text();text=text[:text.index('  Bool FindOriginalCD()')]+'}\n';source.write_text(text)
+source=out/'graphics/vid.cpp';text=source.read_text()
+def original_function(text, signature):
+ start=text.index(signature);opening=text.index('{',start);depth=1;end=opening+1
+ while depth:
+  if text[end]=='{':depth+=1
+  elif text[end]=='}':depth-=1
+  end+=1
+ return text[start:end]+'\n'
+state=text[text.index('  U8   startVar;'):text.index('  // wipe data members')]
+state=re.sub(r'^.*\b(?:HFONT|HMENU)\b.*\n','',state,flags=re.M)
+state=state.replace('Vid::isStatus','isStatus').replace('Vid::renderState','renderState')
+callback=original_function(text,'  MODECHANGEPROC * SetModeChangeCallback(')
+formats=original_function((out/'graphics/vid_enumdx.cpp').read_text(),'  Pix & PixForm(')
+formats=formats.replace('    return i <', '    if (!pixFormatList.GetCount()) throw std::logic_error("Native video formats are not initialized");\n    return i <')
+device_source=(out/'graphics/vid_enumdx.cpp').read_text()
+caps_code=original_function(device_source,'  void DriverD3D::SetDesc(')+original_function(device_source,'  void DriverD3D::SetCaps()').replace('    Config::Setup();','    // Native backend reports its own caps; no Windows driver-quirk override.')
+source.write_text('#include "vid_private.h"\n#include "vid_native.h"\n#include "surface_native.h"\n#include <memory>\n#include <vector>\n#include <stdexcept>\nnamespace Vid {\n'+state+callback+formats+caps_code+'\n#include "vid_native.inc"\n}\n')
+# Original bug: clearing sizeof(this) only clears a pointer-sized prefix.
+patch('graphics/vid_decl.h', [('sizeof( this)', 'sizeof( *this)')])
+
+# Keep session checksums and the original local key/index store independently
+# of Windows sockets. Network/host/session restoration entry points stay absent.
+source=out/'multiplayer/multiplayer.cpp';text=source.read_text()
+source.write_text('#include "multiplayer.h"\nnamespace MultiPlayer {\n  static U32 dataCrc;\n'+original_function(text,'  U32 GetDataCrc()')+original_function(text,'  void SetDataCrc(')+'}\n')
+source=out/'styxnet/styxnet_data.h';text=source.read_text();source.write_text('namespace Win32 { class Socket; }\n'+text)
+source=out/'styxnet/styxnet_data.cpp';text=source.read_text();text=text[:text.index('  void Data::SendAll(')]+'}\n'
+for header in ['styxnet_private.h','styxnet_packet.h','styxnet_servermessage.h']:
+ text=text.replace('#include "'+header+'"','')
+text=text.replace('delete data;', 'delete[] data;')
+text=text.replace('LDIAG("Attempt to set host data by non-host")','LOG_DIAG(("Attempt to set host data by non-host"));').replace('LDIAG("Attempt to clear host data by non-host")','LOG_DIAG(("Attempt to clear host data by non-host"));')
+text=re.sub(r'LDIAG\("([^"\n]*)"\)',r'LOG_DIAG(("\1"));',text)
+text=text.replace('  Data::~Data()\n  {\n  }','  Data::~Data()\n  {\n    Flush();\n  }')
+old_set=original_function(text,'    void Set(')
+text=text.replace(old_set,'    void Set(U32 _length, const U8 *_data)\n    {\n      if (_length && !_data) throw std::invalid_argument("Null session data");\n      auto fresh = std::make_unique<U8[]>(_length);\n      if (_length) Utils::Memcpy(fresh.get(), _data, _length);\n      delete[] data;\n      data = fresh.release();\n      length = _length;\n    }\n')
+text=text.replace('U8 *data = new U8[length];','auto data = std::make_unique<U8[]>(length);').replace('TypeBinary(sScope, length, data);','TypeBinary(sScope, length, data.get());').replace('Store(key, index, length, data, host);','Store(key, index, length, data.get(), host);').replace('          delete[] data;','          // Temporary buffer is owned by unique_ptr.')
+source.write_text('#include <memory>\n#include <stdexcept>\n'+text)
+source=out/'multiplayer/multiplayer_data.cpp';text=source.read_text()
+functions=['    void Save(','    void Load(','    Bool HaveData()','    Bool Get(','    void LocalClear(','    void LocalFlush()']
+source.write_text('#include "multiplayer_data.h"\n#include "styxnet_data.h"\nnamespace MultiPlayer { namespace Data {\nstatic StyxNet::Data data;\n'+''.join(original_function(text,s) for s in functions)+'}}\n')
