@@ -27,7 +27,14 @@ U16 SetMode(U16 token) {
 }
 }
 namespace Utils {
+U32 Div(U32 upper, U32 lower, U32 divisor) {
+ if (!divisor) throw std::domain_error("Integer division by zero");
+ const std::uint64_t quotient=((std::uint64_t(upper)<<32)|lower)/divisor;
+ if (quotient>std::numeric_limits<U32>::max()) throw std::overflow_error("Integer division overflow");
+ return U32(quotient);
+}
 namespace FP {
+void Reset() { std::feclearexcept(FE_ALL_EXCEPT); SetMode(3); }
 // Returned U16 values are opaque restore tokens, not x87 control words.
 U16 FASTCALL SetTruncMode() { return SetMode(3); }
 U16 FASTCALL SetRoundUpModeProc() { return SetMode(2); }

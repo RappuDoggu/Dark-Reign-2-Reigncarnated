@@ -10,10 +10,25 @@
 #include <iostream>
 #include <vector>
 #include <atomic>
+#include <cfenv>
+#include <climits>
 static void check(bool value) { if(!value) throw std::runtime_error("Native runtime invariant"); }
 int main() {
  try {
   using namespace NativeEngine;
+  check(Utils::Div(U32(1),U32(0),U32(2))==0x80000000u);
+  bool zero=false,overflow=false;
+  try { Utils::Div(U32(0),U32(1),U32(0)); } catch(const std::domain_error &) {zero=true;}
+  try { Utils::Div(U32(1),U32(0),U32(1)); } catch(const std::overflow_error &) {overflow=true;}
+  check(zero && overflow);
+  const int initialRound=std::fegetround();std::feraiseexcept(FE_INVALID);
+  Utils::FP::Reset();check(std::fegetround()==FE_TOWARDZERO && !std::fetestexcept(FE_ALL_EXCEPT));std::fesetround(initialRound);
+  CH integer[34];
+  check(Utils::ItoA(INT_MIN,integer,10)==integer && Utils::Strcmp(integer,REIGN_TEXT16("-2147483648"))==0);
+  Utils::ItoA(-1,integer,16);check(Utils::Strcmp(integer,REIGN_TEXT16("ffffffff"))==0);
+  Utils::ItoA(0,integer,2);check(integer[0]=='0' && integer[1]==0);
+  Utils::ItoA(-1,integer,2);check(Utils::Strlen(integer)==32);
+
   check(Utils::Strnicmp("AbC-tail","aBc-other",3)==0);
   check(Utils::Strnicmp("a","AB",3)<0);
   check(Utils::Strnicmp("z","Y",1)>0);

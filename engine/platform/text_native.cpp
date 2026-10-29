@@ -106,3 +106,15 @@ char *ChopPath(const char *path) {
  return const_cast<char *>(name);
 }
 }
+
+namespace Utils {
+CH *ItoA(int value, CH *buffer, int radix) {
+ if (!buffer || radix<2 || radix>36) throw std::invalid_argument("Invalid integer conversion");
+ const bool negative=radix==10 && value<0;
+ U32 magnitude=negative?U32(0)-U32(value):U32(value);
+ CH digits[32]; unsigned count=0;
+ do { const U32 digit=magnitude%U32(radix); digits[count++]=CH(digit<10?'0'+digit:'a'+digit-10); magnitude/=U32(radix); } while(magnitude);
+ CH *out=buffer; if(negative)*out++='-';
+ while(count)*out++=digits[--count]; *out=0; return buffer;
+}
+}

@@ -2,7 +2,9 @@
 namespace {
   NativeEngine::PresentVideo nativePresent = nullptr;
   void *nativePresentContext = nullptr;
+  Bool nativeTrilinearOff = TRUE;
 }
+namespace Config { Bool TrilinearOff() { return nativeTrilinearOff; } }
 Bool RenderFlush()
 {
   // An unattached backend is a failure, never a successful invisible frame.
@@ -16,6 +18,7 @@ namespace NativeEngine {
 void DetachVideo()
 {
   using namespace Vid;
+  nativeTrilinearOff = TRUE;
   nativePresent = nullptr;
   nativePresentContext = nullptr;
   backBmp.ReleaseDD();
@@ -113,6 +116,10 @@ HRESULT AttachVideo(IDirect3DDevice7 *next, IDirectDrawSurface7 *target,
   viewRect = mode.rect; clipRect.Set(0, 0, float(desc.dwWidth), float(desc.dwHeight));
   viewDesc = viewport;
   currentBucketMan = &bucket;
+  // Use the attached backend's DX7 filter capabilities rather than Windows
+  // PCI driver-quirk tables. Trilinear requires linear minification and mip blend.
+  const DWORD requiredFilters = D3DPTFILTERCAPS_MINFLINEAR | D3DPTFILTERCAPS_MIPFLINEAR;
+  nativeTrilinearOff = (deviceCaps.dpcTriCaps.dwTextureFilterCaps & requiredFilters) != requiredFilters;
   nativePresent = present; nativePresentContext = context;
   isStatus.active = TRUE;
   return S_OK;

@@ -9,13 +9,14 @@
 #define check(b) do { if (!(b)) throw std::runtime_error("Native Vid boundary check failed at line " + std::to_string(__LINE__)); } while (0)
 struct Device : NativeEngine::UnsupportedDevice {
  ULONG references=1; IDirectDrawSurface7 *target; bool rejectViewport=false, emptyFormats=false;
+ DWORD filters=0;
  D3DVIEWPORT7 viewport{};
  explicit Device(IDirectDrawSurface7 *s):target(s){target->AddRef();}
  ~Device(){target->Release();}
  ULONG AddRef()override{return ++references;}
  ULONG Release()override{return --references;} // Stack-owned test fixture.
  HRESULT GetRenderTarget(IDirectDrawSurface7 **out)override{if(!out)return E_INVALIDARG;target->AddRef();*out=target;return S_OK;}
- HRESULT GetCaps(D3DDEVICEDESC7 *out)override{*out={};out->dwMaxTextureWidth=out->dwMaxTextureHeight=1024;return S_OK;}
+ HRESULT GetCaps(D3DDEVICEDESC7 *out)override{*out={};out->dwMaxTextureWidth=out->dwMaxTextureHeight=1024;out->dpcTriCaps.dwTextureFilterCaps=filters;return S_OK;}
  HRESULT SetViewport(D3DVIEWPORT7 *v)override{if(rejectViewport)return E_FAIL;viewport=*v;return S_OK;}
  HRESULT EnumTextureFormats(LPD3DENUMPIXELFORMATSCALLBACK cb,void *ctx)override{
   if(emptyFormats)return S_OK;
@@ -30,7 +31,7 @@ int main(){try{
  guarded.status.active = TRUE; guarded.status.ClearData();
  check(!guarded.status.active && guarded.canary == 0x12345678);
  check(AttachVideo(nullptr,nullptr,nullptr,nullptr)==E_INVALIDARG);
- check(!Vid::RenderFlush());
+ check(!Vid::RenderFlush());check(Vid::Config::TrilinearOff());
  bool rejected=false;try{Vid::PixForm(0);}catch(const std::logic_error&){rejected=true;}check(rejected);
  DDSURFACEDESC2 desc{};desc.dwSize=sizeof(desc);desc.dwWidth=64;desc.dwHeight=32;
  desc.dwFlags=DDSD_WIDTH|DDSD_HEIGHT|DDSD_PIXELFORMAT|DDSD_CAPS;
@@ -46,6 +47,7 @@ int main(){try{
  check(AttachVideo(&d,surface,present,&p)==E_FAIL);check(!Vid::device);
  d.rejectViewport=false;
  check(AttachVideo(&d,surface,present,&p)==S_OK);check(d.references==2);
+ check(Vid::Config::TrilinearOff());
  check(Vid::viewRect.Width()==64&&Vid::viewRect.Height()==32);
  check(d.viewport.dwWidth==64&&d.viewport.dwHeight==32);
  check(Vid::caps.maxTexWid==1024&&Vid::caps.maxTexHgt==1024);
@@ -57,6 +59,12 @@ int main(){try{
  DetachVideo();check(d.references==1&&!Vid::device&&!Vid::backBmp.GetSurface());
  check(!Vid::RenderFlush()&&p.calls==2);
  DetachVideo();check(d.references==1);
+ d.filters=D3DPTFILTERCAPS_MINFLINEAR|D3DPTFILTERCAPS_MIPFLINEAR;
+ check(AttachVideo(&d,surface,present,&p)==S_OK && !Vid::Config::TrilinearOff());
+ DetachVideo();check(Vid::Config::TrilinearOff());
+ d.filters=D3DPTFILTERCAPS_MIPFLINEAR;
+ check(AttachVideo(&d,surface,present,&p)==S_OK && Vid::Config::TrilinearOff());
+ DetachVideo();
  }
  check(surface->Release()==0);
  std::puts("Native Vid attachment, format selection, presentation failure and cleanup pass; fixture device only, no mission rendered.");

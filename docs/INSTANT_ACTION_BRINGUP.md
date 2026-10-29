@@ -601,3 +601,37 @@ this lifecycle from the Android application.
 
 Evidence: native-mission-link-phase8.json, native-frame-link-phase8.json,
 native-phase8-build.json and native-phase8-tests.log in logs/instant-action.
+
+
+## Phase 9: original frame-loop dependencies
+
+The broader ARM64 frame-loop probe now reports 15 unresolved symbols (down
+from 27), with no other link errors. This is still a failing link check, not
+an executed mission or APK. The narrow mission lifecycle milestone remains
+separate from complete startup and rendering.
+
+Retained original Vid::InitResources, DisposeAll and LogPerf from the pinned
+source, with a null-file guard for performance logging. Original Client::Debug
+now compiles with its monochrome-only weapon display call properly guarded.
+Portable unsigned wide division rejects zero and overflowing quotients; FP
+reset clears exception flags and selects truncation; UTF-16 integer conversion
+preserves signed decimal and unsigned nondecimal behavior, including INT_MIN.
+Native GUI hooks retain full-width function pointers and dispatch activation
+transitions to the original client's game-time readjustment callback. Duplicate
+registration and missing removal are rejected. Hooks are engine-thread-only.
+Trilinear availability follows the attached device's minification/mip-filter
+caps and resets to disabled on detach, replacing Windows driver-quirk lookup.
+
+Validation: both affected original translation units compile for ARM64; all
+13 foundation CTest cases pass with ASan/UBSan; the native Vid fixture tests
+pass, including full and partial filter capabilities and detach reset. The
+Vid harness/foundation are sanitizer-enabled but reused original objects are
+not all instrumented. Resource creation/disposal is retained and link-checked,
+not executed against a complete initialized engine in this checkpoint.
+
+Remaining symbols are Main::elapCap/triCount; local-session readiness, setup,
+processing, saving and transport-facing interfaces; Version::GetBuildString;
+and associated local player enumeration. Define these with coherent lifecycle
+and offline mission behavior, not unconditional success returns. Real DX7 draw
+submission into GLES, engine/app startup and a device mission boot remain.
+Evidence: native-frame-link-phase9.json and native-phase9-tests.log.

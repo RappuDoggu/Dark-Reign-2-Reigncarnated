@@ -2,6 +2,9 @@
 #include "mission_prelude.h"
 #include "runcodes.h"
 namespace Main {
+using GUIHookProc=void(U32,unsigned int,std::uintptr_t,std::intptr_t);
+void RegisterGUIHook(const char *name,GUIHookProc *proc);
+void UnregisterGUIHook(const char *name,GUIHookProc *proc);
 extern RunCodes runCodes;
 extern Bool active;
 extern U32 thisTime,elapTime,elapLast,frameNumber;

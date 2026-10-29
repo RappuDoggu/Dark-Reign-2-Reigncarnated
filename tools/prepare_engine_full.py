@@ -283,12 +283,14 @@ def original_function(text, signature):
 state=text[text.index('  U8   startVar;'):text.index('  // wipe data members')]
 state=re.sub(r'^.*\b(?:HFONT|HMENU)\b.*\n','',state,flags=re.M)
 state=state.replace('Vid::isStatus','isStatus').replace('Vid::renderState','renderState')
+resources='  extern U32 clipScreenCounter;\n'+''.join(original_function(text,sig) for sig in ['  void InitResources(', '  void DisposeAll()', '  void CDECL LogPerf('])
+resources=resources.replace('    first = FALSE;', '    if (!fp) { LOG_WARN(("Unable to open performance log")); return; }\n    first = FALSE;')
 callback=original_function(text,'  MODECHANGEPROC * SetModeChangeCallback(')
 formats=original_function((out/'graphics/vid_enumdx.cpp').read_text(),'  Pix & PixForm(')
 formats=formats.replace('    return i <', '    if (!pixFormatList.GetCount()) throw std::logic_error("Native video formats are not initialized");\n    return i <')
 device_source=(out/'graphics/vid_enumdx.cpp').read_text()
 caps_code=original_function(device_source,'  void DriverD3D::SetDesc(')+original_function(device_source,'  void DriverD3D::SetCaps()').replace('    Config::Setup();','    // Native backend reports its own caps; no Windows driver-quirk override.')
-source.write_text('#include "vid_private.h"\n#include "vid_native.h"\n#include "surface_native.h"\n#include <memory>\n#include <vector>\n#include <stdexcept>\nnamespace Vid {\n'+state+callback+formats+caps_code+'\n#include "vid_native.inc"\n}\n')
+source.write_text('#include "light_priv.h"\n#include "mesh.h"\n#include "vid_private.h"\n#include "vid_native.h"\n#include "surface_native.h"\n#include <memory>\n#include <vector>\n#include <stdexcept>\nnamespace Vid {\n'+state+callback+formats+caps_code+resources+'\n#include "vid_native.inc"\n}\n')
 # Original bug: clearing sizeof(this) only clears a pointer-sized prefix.
 patch('graphics/vid_decl.h', [('sizeof( this)', 'sizeof( *this)')])
 
@@ -322,3 +324,6 @@ patch('sound/sound_digital_effect.cpp', [('    Effect::~Effect()\n    {','    Ef
 # Explicit local-only session target. Multiplayer saves fail before changing
 # state; transport, lobby and remote players are not represented as working.
 source=out/'multiplayer/multiplayer.cpp';source.write_text(source.read_text()+'\n#include "session_native.inc"\n')
+
+# The monochrome developer display is not part of native Android builds.
+patch('coregame_interface/client_debug.cpp', [('      Weapon::Object::SetupMono(monoClientInfo2);', '#ifndef MONO_DISABLED\n      Weapon::Object::SetupMono(monoClientInfo2);\n#endif')])
