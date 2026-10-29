@@ -81,3 +81,12 @@ struct LOGFONT {
 static_assert(sizeof(LOGFONT)==60);
 
 using HTREEITEM=void *;
+
+// Serialized BMP headers use the Win32 on-disk field widths and pack(2).
+#pragma pack(push,2)
+struct BITMAPFILEHEADER { WORD bfType;DWORD bfSize;WORD bfReserved1,bfReserved2;DWORD bfOffBits; };
+#pragma pack(pop)
+struct BITMAPINFOHEADER { DWORD biSize;LONG biWidth,biHeight;WORD biPlanes,biBitCount;DWORD biCompression,biSizeImage;LONG biXPelsPerMeter,biYPelsPerMeter;DWORD biClrUsed,biClrImportant; };
+static_assert(sizeof(BITMAPFILEHEADER)==14&&sizeof(BITMAPINFOHEADER)==40);
+constexpr DWORD BI_RGB=0,BI_BITFIELDS=3;
+inline BOOL SetRect(RECT *r,int left,int top,int right,int bottom){if(!r)return 0;*r={left,top,right,bottom};return 1;}

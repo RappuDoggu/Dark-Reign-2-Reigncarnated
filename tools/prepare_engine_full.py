@@ -53,7 +53,7 @@ for source in out.rglob('*'):
 
 # Graphics only owns an opaque movie handle. Actual movie calls must be adapted
 # to the existing FFmpeg backend rather than linked to the x86 Bink DLL.
-(out/'3rdparty/bink.h').write_text('#pragma once\nstruct BINK; using HBINK=BINK *;\n')
+(out/'3rdparty/bink.h').write_text('#pragma once\n#include "bink_native.h"\n')
 
 # Standard C++ dependent-name lookup and explicit declarations.
 def patch(path, pairs):
@@ -250,3 +250,16 @@ for sdk,names in [('dsound.h',None),('dinput.h',set(re.findall(r'case\s+(DI\w+)\
    error_text+=line+'\n'
 (out/'3rdparty/native_dx_errors.h').write_text(error_text)
 source=out/'graphics/viderror.cpp';source.write_text('#include "native_dx_errors.h"\n'+source.read_text())
+
+patch('graphics/bitmap.cpp', [('BinkOpen( (char *) binkFile->GetMemoryPtr(), BINKFROMMEMORY)', 'NativeEngine::OpenMovie(binkFile->GetMemoryPtr(), binkFile->Size())'), ('min(', 'Min('), ('register ', ''), ('strnicmp(', 'Utils::Strnicmp('), ('Sleep(1);', 'std::this_thread::sleep_for(std::chrono::milliseconds(1));')])
+source=out/'graphics/bitmap.cpp';source.write_text('#include <thread>\n#include <chrono>\n'+source.read_text())
+
+patch('graphics/bitmap.cpp', [('MAKEWORD(buf[0], buf[1])','U16(U16(buf[0]) | (U16(buf[1]) << 8))'), ('Min(bmpWidth, fileHdr.imageWidth)', 'Min<S32>(bmpWidth, fileHdr.imageWidth)'), ('Min(bmpWidth, fileHeader.width)', 'Min<S32>(bmpWidth, fileHeader.width)')])
+source=out/'graphics/bitmap.cpp';text=source.read_text();start=text.index('  const FOURCC ckidData',text.index('Bool Palette::ReadMSPal'));end=text.index('\n  // Generate CLUT if needed',start)
+text=text[:start]+'''  auto file = std::unique_ptr<FileSys::DataFile, void (*)(FileSys::DataFile *)>(FileSys::Open(filename), FileSys::Close);
+  if (!file) return FALSE;
+  std::array<PALETTEENTRY, 256> colors;
+  if (!NativeEngine::DecodeRiffPalette(file->GetMemoryPtr(), file->Size(), colors)) return FALSE;
+  Utils::Memcpy(pal, colors.data(), sizeof(pal));
+'''+text[end:]
+source.write_text('#include "palette_native.h"\n'+text)

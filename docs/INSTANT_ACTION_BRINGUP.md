@@ -416,3 +416,52 @@ and mission link are incremental against the preceding fresh full-engine build;
 no ARM64 executable or new APK has been run. See
 `logs/instant-action/native-mission-link-phase4.json` and
 `logs/instant-action/native-phase4-tests.log`.
+
+## Full Bitmap source and native movie adapter checkpoint
+
+The complete original `graphics/bitmap.cpp` now compiles for ARM64. A fresh
+whole-inventory rebuild compiles 601/705 declared units and the mission link
+reports **52 unresolved symbols, zero other linker errors**. All 16 previously
+missing Bitmap symbols resolve. Six previously hidden Vid pixel-format/device
+symbols are now exposed; the count is diagnostic, not a completion percentage.
+
+The source adapter supplies the exact 14-byte BMP file header and 40-byte info
+header, replaces obsolete compiler/Win32 conveniences, and reads RIFF palettes
+through the native original FileSys implementation. The palette parser validates
+container/chunk bounds, version and entry count before changing the palette;
+unknown chunks and odd-byte padding are handled without WinMM.
+
+`bink_native.cpp` is a source-level adapter for the original Bitmap movie calls.
+It uses the existing FFmpeg-backed `reign::BinkMovie`, with bounded memory input,
+original one-based frame state, pause/seek/loop behavior, and 32-bit BGRX plus
+555/565/655/664 pixel output. An audio movie requires an explicitly configured
+PCM sink before opening; audio is not silently discarded. The sink receives
+stereo PCM on the engine thread and must consume/copy it before returning.
+Android playback/seek flushing and renderer integration remain to be wired.
+This does not replace the device-tested v0.5 launch APK's existing intro path.
+
+Nine host ASan/UBSan tests pass. The adapter was additionally checked against the
+owned 294-frame animated billboard. The owned 154-frame intro matched the
+existing decoder's frame pixels and all 1,359,360 interleaved PCM samples.
+Tests cover all five output formats, padded destination rows, bounds rejection,
+repeat decode, pause, seek, loop, and missing audio-sink rejection. These are
+decoder/callback tests, not audible Android playback or mission rendering.
+The native foundation and movie test also link as ARM64 executables; device
+execution has not occurred.
+
+Build the external decoder with `tools/build_bink_decoder.sh`, then configure
+`engine/` with `REIGN_FFMPEG_ROOT` set to that platform's `install` directory.
+Use `REIGN_TEST_MOVIE` for an owned Bink fixture and `REIGN_GAME_DATA` for the
+owned installation. Pass the same FFmpeg install to the mission link checker
+using `--ffmpeg-root`. These inputs stay outside Git.
+
+`build_engine_gameplay.py --source graphics/bitmap.cpp` now supports focused,
+inventory-validated source builds, avoiding a whole-project compile for each
+local correction. Use the resulting object report as a later `--objects`
+override; the link checker still removes older successes when a new build fails.
+
+Evidence: `logs/instant-action/native-phase5-build.json`,
+`native-phase5-tests.log`, and `native-mission-link-phase5.json`.
+The temporary workspace was rebuilt from the pinned upstream commit, this
+repository, the pinned NDK/FFmpeg downloads and the owner's stored installation.
+No APK or successful Instant Action boot is claimed by this checkpoint.
