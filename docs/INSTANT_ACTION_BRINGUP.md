@@ -848,3 +848,26 @@ removed from the old Miles stream unit; native sound_digital owns them.
 Evidence: native-phase17-tests.log, native-phase17-startup-failure.log. The
 foundation tests pass; fixed original source units compile on host and ARM64.
 The language configuration blocker and full application integration remain.
+
+
+## Phase 18: language, interface and Game initialization execute
+
+The startup runner now reads the owned library/engine/startup.cfg and applies
+its ConfigureMultiLanguage scope, loading the original English database from
+base.zwp. Fixed VarItem::Clear deleting binary byte arrays with scalar delete;
+ASan caught this while loading/cleaning the language database. Added native
+music SyncEnabled for original profile login's claim/release sequence.
+
+Original IFace::Init now completes. Original Game::Init/Common::Init needs an
+active User, so the runner creates two temporary profiles in an isolated temp
+directory, leaving the owned installation untouched. Both passes now execute
+Game::Init, Game::Done, User shutdown and IFace shutdown successfully. The second
+pass exposed stale data.cgDefault after its owning color tree was disposed;
+clearing that pointer fixes the ASan use-after-free. Repeated startup, drawing,
+resource shutdown and profile-directory cleanup now complete with zero open
+files. Harness/foundation use sanitizers; original objects are not all instrumented.
+
+The binary-variable and interface fixes compile for ARM64. This is a successful
+host initialization milestone, not a mission boot: PreOpenMission/OpenMission
+and simulation are not called yet. Full mission preloading remains next.
+Evidence: native-phase18-startup.log.

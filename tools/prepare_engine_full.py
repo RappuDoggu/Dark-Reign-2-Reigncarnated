@@ -356,3 +356,8 @@ source.write_text('#include <string>\nnamespace {std::string nativeEditClipboard
 patch('graphics/mesheffect_system.cpp',[('U32 MeshEffectSystem::Report','U32 Report')])
 # Stream API is implemented by sound_native.inc; exclude the old Miles owner.
 (out/'sound/sound_digital_stream.cpp').write_text('// Native stream ownership lives in sound_digital.cpp.\n')
+# Binary variables own byte arrays, including the language database payloads.
+patch('util/varitem.cpp',[('delete binary.data;', 'delete[] binary.data;')])
+# Default colors are copied during the next interface startup; clear the owner
+# pointer when disposing its tree to prevent reinitialization reading freed data.
+patch('interface/iface.cpp',[('    stdColorGroups.DisposeAll();','    stdColorGroups.DisposeAll();\n    data.cgDefault = NULL;')])

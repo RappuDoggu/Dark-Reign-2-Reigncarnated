@@ -6,6 +6,10 @@
 #include "multilanguage.h"
 #include "console.h"
 #include "game.h"
+#include "user.h"
+#include "ptree.h"
+#include <filesystem>
+#include <chrono>
 #include "light_priv.h"
 #include "mesh.h"
 #include "camera.h"
@@ -47,10 +51,17 @@ struct Context {
 struct Presentation {reign::LegacyGles *renderer;unsigned calls=0;};
 bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.renderer->present();++p.calls;return true;}
 int main(int argc,char **argv){try{
+ const auto previousPath=std::filesystem::current_path();
+ const auto profilePath=std::filesystem::temp_directory_path()/("reign-startup-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+ std::filesystem::create_directories(profilePath);std::filesystem::current_path(profilePath);
+ struct ProfilePath {std::filesystem::path previous,path;~ProfilePath(){std::filesystem::current_path(previous);std::filesystem::remove_all(path);}} profile{previousPath,profilePath};
  if(argc!=2)throw std::runtime_error("Provide owned base.zwp path");
  TrackSys::Init();VarSys::Init();FileSys::Init();EventSys::Init();MultiLanguage::Init();FontSys::Init();Console::Init();Input::Init(nullptr,nullptr);
  struct Foundation {~Foundation(){Input::Done();Console::Done();FontSys::Done();MultiLanguage::Done();EventSys::Done();FileSys::Done();VarSys::Done();TrackSys::Done();}} foundation;
  check(FileSys::AddSrcPack("base",argv[1])&&FileSys::SetActiveStream("base"));
+ const auto startup=std::filesystem::path(argv[1]).parent_path().parent_path()/"library/engine/startup.cfg";
+ PTree configuration;check(configuration.AddFile(startup.string().c_str()));
+ MultiLanguage::Configure(configuration.GetGlobalScope()->GetFunction("GameConfig")->GetFunction("ConfigureMultiLanguage"));
  for(unsigned pass=0;pass<2;++pass){
   Vid::Heap::Init(2048,6144);
   struct DrawingBuffers {~DrawingBuffers(){Vid::DoneBuckets();Vid::Heap::Done();}} buffers;
@@ -78,7 +89,7 @@ int main(int argc,char **argv){try{
   struct CameraGuard {~CameraGuard(){Vid::curCamera=nullptr;}} cameraGuard;
   check(Terrain::Init());
   struct TerrainGuard {bool active=true;~TerrainGuard(){if(active)Terrain::Done();}} terrain;
-  IFace::Init();Game::Init();Game::Done();IFace::Done();
+  std::cerr<<"Entering IFace::Init\n";IFace::Init();User::Init();check(User::Create(FileIdent(pass?"TestTwo":"TestOne")));std::cerr<<"Entering Game::Init\n";Game::Init();Game::Done();User::Done();IFace::Done();
   check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
   check(Vid::device->BeginScene()==S_OK);
   check(!Vid::SetZWriteState(TRUE));check(Vid::SetZWriteState(FALSE));

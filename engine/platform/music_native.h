@@ -31,6 +31,7 @@ float Volume();
 void Poll();
 int Claimed();
 int Claim();
+void SyncEnabled();
 int Release();
 int GetEnabled();
 void SetEnabled(int);

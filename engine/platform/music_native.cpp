@@ -51,5 +51,6 @@ int GetEnabled(){return enabled?1:0;}
 void SetEnabled(int value){enabled=value!=0;if(!enabled)Stop();}
 int Claim(){claimed=bool(player)&&enabled;return claimed?1:0;}
 int Release(){const bool previous=player&&claimed;Stop();claimed=false;return previous?1:0;}
+void SyncEnabled(){if(enabled)Claim();else Release();}
 int Claimed(){return player&&claimed?1:0;}
 } }
