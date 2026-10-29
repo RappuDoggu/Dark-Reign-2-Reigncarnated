@@ -730,3 +730,22 @@ clear preserving depth. All 13 foundation tests pass under ASan/UBSan, and the
 updated renderer/adapter compiles for ARM64. Evidence: native-phase12-tests.log.
 These are software EGL rendering tests; no original mission or APK execution.
 Startup integration and remaining renderer API coverage are still pending.
+
+
+## Phase 13: state readback and additional triangle topologies
+
+Added GetRenderState for supported depth/write/blend/fog/specular/cull/alpha
+state and GetTextureStageState for the supported single-stage configuration.
+This restores the read-before-temporary-write pattern used by original
+Vid::SetZWriteState. Failed unsupported setters leave existing state intact.
+Fixed pipeline configuration explicitly accepts clipping enabled, lighting and
+extent generation disabled, solid fill and Gouraud shading, consistent with
+the implemented prelit TL/GLES path; incompatible configurations fail.
+
+Triangle fans and strips now expand to triangle lists with strip parity
+preserved before culling. Input indices and bounded counts are validated before
+expansion. Tests sample both sides of the rendered quads under CCW culling;
+state tests cover depth-write read/change/restore, null outputs, unsupported
+lighting enable, texture-address readback and failed-update preservation.
+All 13 ASan/UBSan foundation tests pass; ARM64 renderer compilation succeeds.
+Evidence: native-phase13-tests.log. No mission startup or new APK yet.

@@ -50,6 +50,20 @@ int main(){try{
   DDSURFACEDESC2 targetDesc=desc;targetDesc.dwWidth=W;targetDesc.dwHeight=H;
   IDirectDrawSurface7 *target=nullptr;check(NativeEngine::CreateMemorySurface(targetDesc,&target)==S_OK);
   IDirect3DDevice7 *device=nullptr;check(NativeEngine::CreateGlesDevice(renderer,target,&device)==S_OK);target->Release();
+  DWORD queried=99;
+  check(device->GetRenderState(D3DRENDERSTATE_ZWRITEENABLE,&queried)==S_OK&&queried==0);
+  check(device->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE,1)==S_OK);
+  check(device->GetRenderState(D3DRENDERSTATE_ZWRITEENABLE,&queried)==S_OK&&queried==1);
+  check(device->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE,0)==S_OK);
+  check(device->GetRenderState(D3DRENDERSTATE_ZWRITEENABLE,nullptr)==E_INVALIDARG);
+  check(device->SetRenderState(D3DRENDERSTATE_LIGHTING,0)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_LIGHTING,1)==E_NOTIMPL);
+  check(device->GetRenderState(D3DRENDERSTATE_LIGHTING,&queried)==S_OK&&queried==0);
+  check(device->SetTextureStageState(0,D3DTSS_ADDRESS,D3DTADDRESS_MIRROR)==S_OK);
+  check(device->GetTextureStageState(0,D3DTSS_ADDRESS,&queried)==S_OK&&queried==D3DTADDRESS_MIRROR);
+  check(device->SetTextureStageState(0,D3DTSS_ADDRESS,D3DTADDRESS_BORDER)==E_NOTIMPL);
+  check(device->GetTextureStageState(0,D3DTSS_ADDRESS,&queried)==S_OK&&queried==D3DTADDRESS_MIRROR);
+  check(device->GetTextureStageState(1,D3DTSS_COLOROP,&queried)==S_OK&&queried==D3DTOP_DISABLE);
   auto vertices=quad(0xffff0000);WORD triangleIndices[]={0,1,2,0,2,3};
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);
   check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
@@ -65,6 +79,14 @@ int main(){try{
   check(device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW)==S_OK);
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
   renderer.read_rgba(W,H,result.data());check(result[center]==255);
+  // Both fan triangles and alternating strip triangles must retain winding.
+  for(auto topology:{D3DPT_TRIANGLEFAN,D3DPT_TRIANGLESTRIP}){
+   WORD ordered[]={0,1,2,3};if(topology==D3DPT_TRIANGLESTRIP){ordered[2]=3;ordered[3]=2;}
+   check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
+   check(device->DrawIndexedPrimitive(topology,D3DFVF_TLVERTEX,vertices.data(),4,ordered,4,0)==S_OK);
+   renderer.read_rgba(W,H,result.data());
+   check(result[(H/4*W+3*W/4)*4]==255&&result[(3*H/4*W+W/4)*4]==255);
+  }
   check(device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE)==S_OK);
   check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
   check(device->SetRenderState(D3DRENDERSTATE_ALPHAFUNC,D3DCMP_GREATER)==S_OK);

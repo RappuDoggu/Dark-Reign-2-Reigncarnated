@@ -4,7 +4,7 @@
 namespace reign {class LegacyGles;}
 namespace NativeEngine {
 // Render-thread only. Renderer and its current context must outlive this device.
-// Initial adapter supports full-target TL triangle lists and one texture stage.
+// Adapter supports full-target TL triangle lists/strips/fans and one texture stage.
 // Unsupported DX7 operations return E_NOTIMPL rather than accepting lost state.
 HRESULT CreateGlesDevice(reign::LegacyGles &,IDirectDrawSurface7 *,IDirect3DDevice7 **);
 }

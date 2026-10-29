@@ -18,6 +18,7 @@ class Device final:public UnsupportedDevice {
  reign::DrawState state;
  DWORD colorOp=D3DTOP_MODULATE,alphaOp=D3DTOP_MODULATE;
  DWORD color1=D3DTA_TEXTURE,color2=D3DTA_DIFFUSE,alpha1=D3DTA_TEXTURE,alpha2=D3DTA_DIFFUSE;
+ DWORD fogColor=0;
  DWORD cullMode=D3DCULL_NONE;
  DWORD minFilter=D3DTFN_POINT,magFilter=D3DTFG_POINT;
 
@@ -60,6 +61,42 @@ public:
   if(!out)return E_INVALIDARG;*out=nullptr;if(stage)return E_NOTIMPL;
   if(texture)texture->AddRef();*out=texture;return S_OK;
  }
+ HRESULT GetTextureStageState(DWORD stage,D3DTEXTURESTAGESTATETYPE type,DWORD *out)override{
+  if(!out)return E_INVALIDARG;*out=0;
+  if(stage){if(stage==1&&type==D3DTSS_COLOROP){*out=D3DTOP_DISABLE;return S_OK;}return E_NOTIMPL;}
+  switch(type){
+   case D3DTSS_COLOROP:*out=colorOp;break;case D3DTSS_ALPHAOP:*out=alphaOp;break;
+   case D3DTSS_COLORARG1:*out=color1;break;case D3DTSS_COLORARG2:*out=color2;break;
+   case D3DTSS_ALPHAARG1:*out=alpha1;break;case D3DTSS_ALPHAARG2:*out=alpha2;break;
+   case D3DTSS_MINFILTER:*out=minFilter;break;case D3DTSS_MAGFILTER:*out=magFilter;break;
+   case D3DTSS_MIPFILTER:*out=D3DTFP_NONE;break;
+   case D3DTSS_ADDRESS:*out=state.address==reign::TextureAddress::wrap?D3DTADDRESS_WRAP:state.address==reign::TextureAddress::mirror?D3DTADDRESS_MIRROR:D3DTADDRESS_CLAMP;break;
+   default:return E_NOTIMPL;
+  }return S_OK;
+ }
+ HRESULT GetRenderState(D3DRENDERSTATETYPE type,DWORD *out)override{
+  if(!out)return E_INVALIDARG;*out=0;
+  switch(type){
+   case D3DRENDERSTATE_CLIPPING:*out=1;break;
+   case D3DRENDERSTATE_EXTENTS:case D3DRENDERSTATE_LIGHTING:*out=0;break;
+   case D3DRENDERSTATE_FILLMODE:*out=D3DFILL_SOLID;break;
+   case D3DRENDERSTATE_SHADEMODE:*out=D3DSHADE_GOURAUD;break;
+   case D3DRENDERSTATE_ZENABLE:*out=state.depth_test;break;
+   case D3DRENDERSTATE_ZWRITEENABLE:*out=state.depth_write;break;
+   case D3DRENDERSTATE_ALPHABLENDENABLE:*out=state.blend!=reign::Blend::opaque;break;
+   case D3DRENDERSTATE_SRCBLEND:*out=DWORD(state.source_factor);break;
+   case D3DRENDERSTATE_DESTBLEND:*out=DWORD(state.destination_factor);break;
+   case D3DRENDERSTATE_FOGENABLE:*out=state.fog;break;
+   case D3DRENDERSTATE_FOGCOLOR:*out=fogColor;break;
+   case D3DRENDERSTATE_SPECULARENABLE:*out=state.specular;break;
+   case D3DRENDERSTATE_CULLMODE:*out=cullMode;break;
+   case D3DRENDERSTATE_ZFUNC:*out=D3DCMP_LESSEQUAL;break;
+   case D3DRENDERSTATE_ALPHAFUNC:*out=D3DCMP_GREATER;break;
+   case D3DRENDERSTATE_ALPHATESTENABLE:*out=state.alpha_test;break;
+   case D3DRENDERSTATE_ALPHAREF:*out=DWORD(std::lround(state.alpha_reference*255));break;
+   default:return E_NOTIMPL;
+  }return S_OK;
+ }
  HRESULT SetTextureStageState(DWORD stage,D3DTEXTURESTAGESTATETYPE type,DWORD value)override{
   if(stage)return (stage==1&&type==D3DTSS_COLOROP&&value==D3DTOP_DISABLE)?S_OK:E_NOTIMPL;
   switch(type){
@@ -82,6 +119,11 @@ public:
  }
  HRESULT SetRenderState(D3DRENDERSTATETYPE type,DWORD value)override{
   switch(type){
+   // TL vertices are already lit; GLES clips and rasterizes solid interpolated triangles.
+   case D3DRENDERSTATE_CLIPPING:return value==1?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_EXTENTS:case D3DRENDERSTATE_LIGHTING:return value==0?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_FILLMODE:return value==D3DFILL_SOLID?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_SHADEMODE:return value==D3DSHADE_GOURAUD?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_ZENABLE:if(value>1)return E_NOTIMPL;state.depth_test=value!=0;return S_OK;
    case D3DRENDERSTATE_ZWRITEENABLE:state.depth_write=value!=0;return S_OK;
    case D3DRENDERSTATE_ALPHABLENDENABLE:state.blend=value?reign::Blend::custom:reign::Blend::opaque;return S_OK;
@@ -89,7 +131,7 @@ public:
     if(value<1||value>(type==D3DRENDERSTATE_SRCBLEND?11u:10u))return E_NOTIMPL;
     (type==D3DRENDERSTATE_SRCBLEND?state.source_factor:state.destination_factor)=static_cast<reign::BlendFactor>(value);return S_OK;
    case D3DRENDERSTATE_FOGENABLE:state.fog=value!=0;return S_OK;
-   case D3DRENDERSTATE_FOGCOLOR:for(unsigned i=0;i<3;++i)state.fog_rgb[i]=float((value>>(16-i*8))&255)/255;return S_OK;
+   case D3DRENDERSTATE_FOGCOLOR:fogColor=value;for(unsigned i=0;i<3;++i)state.fog_rgb[i]=float((value>>(16-i*8))&255)/255;return S_OK;
    case D3DRENDERSTATE_SPECULARENABLE:state.specular=value!=0;return S_OK;
    case D3DRENDERSTATE_CULLMODE:if(value<D3DCULL_NONE||value>D3DCULL_CCW)return E_INVALIDARG;cullMode=value;return S_OK;
    case D3DRENDERSTATE_ZFUNC:return value==D3DCMP_LESSEQUAL?S_OK:E_NOTIMPL;
@@ -100,10 +142,22 @@ public:
   }
  }
  HRESULT DrawIndexedPrimitive(D3DPRIMITIVETYPE kind,DWORD fvf,void *vertices,DWORD count,WORD *indices,DWORD n,DWORD flags)override{
-  if(!scene||!vertices||!indices||!count||!n||n%3||count>65536)return E_INVALIDARG;
-  if(kind!=D3DPT_TRIANGLELIST||fvf!=D3DFVF_TLVERTEX||flags)return E_NOTIMPL;
+  if(!scene||!vertices||!indices||!count||n<3||n>196608||count>65536)return E_INVALIDARG;
+  if((kind!=D3DPT_TRIANGLELIST&&kind!=D3DPT_TRIANGLESTRIP&&kind!=D3DPT_TRIANGLEFAN)||fvf!=D3DFVF_TLVERTEX||flags)return E_NOTIMPL;
+  if(kind==D3DPT_TRIANGLELIST&&n%3)return E_INVALIDARG;
   for(DWORD i=0;i<n;++i)if(indices[i]>=count)return E_INVALIDARG;
-  try{auto draw=state;draw.texture_op=texture?reign::TextureOp::modulate_rgba:reign::TextureOp::diffuse;
+  try{
+   std::vector<WORD> triangles;
+   if(kind!=D3DPT_TRIANGLELIST){
+    triangles.reserve(std::size_t(n-2)*3);
+    for(DWORD i=2;i<n;++i){
+     if(kind==D3DPT_TRIANGLEFAN)triangles.insert(triangles.end(),{indices[0],indices[i-1],indices[i]});
+     else if(i&1)triangles.insert(triangles.end(),{indices[i-1],indices[i-2],indices[i]});
+     else triangles.insert(triangles.end(),{indices[i-2],indices[i-1],indices[i]});
+    }
+    indices=triangles.data();n=DWORD(triangles.size());
+   }
+   auto draw=state;draw.texture_op=texture?reign::TextureOp::modulate_rgba:reign::TextureOp::diffuse;
    if(texture){
     if(color1!=D3DTA_TEXTURE||alpha1!=D3DTA_TEXTURE||
        (colorOp!=D3DTOP_SELECTARG1&&color2!=D3DTA_DIFFUSE&&color2!=D3DTA_CURRENT)||
