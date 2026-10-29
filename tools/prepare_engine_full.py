@@ -361,3 +361,8 @@ patch('util/varitem.cpp',[('delete binary.data;', 'delete[] binary.data;')])
 # Default colors are copied during the next interface startup; clear the owner
 # pointer when disposing its tree to prevent reinitialization reading freed data.
 patch('interface/iface.cpp',[('    stdColorGroups.DisposeAll();','    stdColorGroups.DisposeAll();\n    data.cgDefault = NULL;')])
+# Startup tracing identifies the last original subsystem reached on device/host.
+source=out/'coregame/game.cpp';text=source.read_text()
+for call in ['Team::Init();','Environment::Init();','MoveTable::Init();','SidePlacement::Init();','UnitLimits::Init();','TerrainGroup::Init();','AI::Init();','TaskCtrl::Init();','Config::Init();','MissionVar::Init();']:
+ text=text.replace('    '+call,'    LOG_DIAG(("PreOpenMission: '+call[:-3]+'"));\n    '+call)
+source.write_text(text)

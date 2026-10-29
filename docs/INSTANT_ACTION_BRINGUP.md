@@ -871,3 +871,28 @@ The binary-variable and interface fixes compile for ARM64. This is a successful
 host initialization milestone, not a mission boot: PreOpenMission/OpenMission
 and simulation are not called yet. Full mission preloading remains next.
 Evidence: native-phase18-startup.log.
+
+
+## Phase 19: original 2crazed PreOpenMission entered
+
+The development runner now applies the owned ConfigureFileSystem scope, exposes
+owned mission/world/side/pack directories through read-only-intent symlinks in
+its isolated profile workspace, initializes campaign/mission/difficulty/mod
+managers, selects the original 2crazed entry and begins an offline session.
+It calls Game::PreOpenMission(nullptr) for the first time. No mission files
+are modified; generated profiles remain temporary.
+
+PreOpenMission tracing confirms Team, Environment, MoveTable, SidePlacement,
+UnitLimits, TerrainGroup, AI, TaskCtrl, Config and MissionVar initialization.
+The runner then fails on an invalid VarPtr during configuration/preload.
+Video command/default variable initialization is still missing. An attempted
+original Vid::Command::Init introduces desktop-only mode switching, gamma,
+hardware detection and driver-policy link requirements; its failing link log
+is preserved separately. That call is not left in the default runner so the
+original preload failure remains reproducible. Adapt that variable setup with
+real native behavior before continuing. MissionPreLoaded is not reached and
+OpenMission is not called. Partial-startup exception cleanup still aborts.
+
+Original game.cpp startup diagnostics compile for ARM64. This checkpoint is a
+failing integrated runtime attempt, not a passing mission test or new APK.
+Evidence: native-phase19-runtime-failure.log and native-phase19-video-init-link.log.
