@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <cstring>
+#include <unordered_map>
 namespace NativeEngine {
 namespace {
 class Device final:public UnsupportedDevice {
@@ -13,7 +14,11 @@ class Device final:public UnsupportedDevice {
  reign::LegacyGles &renderer;
  IDirectDrawSurface7 *target;
  IDirectDrawSurface7 *texture=nullptr;
- std::unique_ptr<SurfaceTexture> upload;
+ SurfaceTexture *upload=nullptr;
+ struct CachedTexture {std::unique_ptr<SurfaceTexture> image;std::uint64_t used,bytes;};
+ std::unordered_map<IDirectDrawSurface7 *,CachedTexture> textures;
+ std::uint64_t textureBytes=0,textureTick=0;
+ std::vector<WORD> alignedIndices,triangles,visible,sequential;
  DWORD width,height;
  bool scene=false;
  D3DMATERIAL7 material{};
@@ -27,7 +32,7 @@ class Device final:public UnsupportedDevice {
 
 public:
  Device(reign::LegacyGles &r,IDirectDrawSurface7 *t,DWORD w,DWORD h):renderer(r),target(t),width(w),height(h){target->AddRef();}
- ~Device(){upload.reset();target->Release();}
+ ~Device(){textures.clear();target->Release();}
  ULONG AddRef()override{return ++refs;}
  ULONG Release()override{auto remaining=--refs;if(!remaining)delete this;return remaining;}
  HRESULT BeginScene()override{if(scene)return E_FAIL;scene=true;return S_OK;}
@@ -65,7 +70,24 @@ public:
  HRESULT SetTexture(DWORD stage,IDirectDrawSurface7 *surface)override{
   if(stage)return E_NOTIMPL;
   if(texture==surface)return S_OK;
-  try{std::unique_ptr<SurfaceTexture> next;if(surface)next=std::make_unique<SurfaceTexture>(surface);upload=std::move(next);texture=surface;return S_OK;}catch(...){return E_FAIL;}
+  try{
+   if(!surface){upload=nullptr;texture=nullptr;return S_OK;}
+   auto found=textures.find(surface);
+   if(found==textures.end()){
+    DDSURFACEDESC2 desc{};desc.dwSize=sizeof(desc);if(FAILED(surface->GetSurfaceDesc(&desc)))return E_FAIL;
+    const std::uint64_t bytes=std::uint64_t(desc.dwWidth)*desc.dwHeight*4;
+    auto image=std::make_unique<SurfaceTexture>(surface);
+    // Bound retained CPU surface references and GPU storage. LRU entries own a
+    // surface reference, preventing stale pointer reuse after bitmap deletion.
+    while(!textures.empty()&&(textures.size()>=512||textureBytes+bytes>64*1024*1024)){
+     auto oldest=textures.begin();for(auto i=textures.begin();i!=textures.end();++i)if(i->second.used<oldest->second.used)oldest=i;
+     if(upload==oldest->second.image.get()){upload=nullptr;texture=nullptr;}
+     textureBytes-=oldest->second.bytes;textures.erase(oldest);
+    }
+    found=textures.emplace(surface,CachedTexture{std::move(image),0,bytes}).first;textureBytes+=bytes;
+   }
+   found->second.used=++textureTick;upload=found->second.image.get();texture=surface;return S_OK;
+  }catch(...){return E_FAIL;}
  }
  HRESULT GetTexture(DWORD stage,IDirectDrawSurface7 **out)override{
   if(!out)return E_INVALIDARG;*out=nullptr;if(stage)return E_NOTIMPL;
@@ -177,11 +199,11 @@ public:
   try{
    // Original bucket allocations can place the index array at an odd address.
    // Copy its bytes before accessing WORDs, including on strict-alignment ARM64.
-   std::vector<WORD> alignedIndices(n);
+   alignedIndices.resize(n);
    std::memcpy(alignedIndices.data(),indices,std::size_t(n)*sizeof(WORD));
    indices=alignedIndices.data();
    for(DWORD i=0;i<n;++i)if(indices[i]>=count)return E_INVALIDARG;
-   std::vector<WORD> triangles;
+   triangles.clear();
    if(kind!=D3DPT_TRIANGLELIST){
     triangles.reserve(std::size_t(n-2)*3);
     for(DWORD i=2;i<n;++i){
@@ -205,7 +227,7 @@ public:
    draw.filtered=minFilter==D3DTFN_LINEAR;
    draw.texture=upload?upload->Refresh(renderer):0;
    const auto *tl=static_cast<const reign::LegacyTL *>(vertices);
-   std::vector<WORD> visible;
+   visible.clear();
    if(cullMode!=D3DCULL_NONE){
     visible.reserve(n);
     for(DWORD i=0;i<n;i+=3){const auto &a=tl[indices[i]],&b=tl[indices[i+1]],&c=tl[indices[i+2]];
@@ -221,7 +243,7 @@ public:
  }
  HRESULT DrawPrimitive(D3DPRIMITIVETYPE kind,DWORD fvf,void *vertices,DWORD count,DWORD flags)override{
   if(count>65536||!count)return E_INVALIDARG;
-  try{std::vector<WORD> indices(count);for(DWORD i=0;i<count;++i)indices[i]=WORD(i);return DrawIndexedPrimitive(kind,fvf,vertices,count,indices.data(),count,flags);}catch(...){return E_FAIL;}
+  try{sequential.resize(count);for(DWORD i=0;i<count;++i)sequential[i]=WORD(i);return DrawIndexedPrimitive(kind,fvf,vertices,count,sequential.data(),count,flags);}catch(...){return E_FAIL;}
  }
 };
 }

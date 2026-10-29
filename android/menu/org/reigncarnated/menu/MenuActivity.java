@@ -40,27 +40,23 @@ public final class MenuActivity extends Activity {
  private native float volumeNative(long h);
  private volatile MenuAudioPlayer audioPlayer;
  private MenuView view;private LinearLayout setup;private TextView status;private Button choose,chooseZip,cancelImport;
- private String report="",dataRoot;private volatile boolean importing,cancelled,destroyed;
+ private String report="",dataRoot;private RenderMetrics metrics;private volatile boolean importing,cancelled,destroyed;
  private volatile boolean resumed;
  private final StringBuilder history=new StringBuilder();
  private int dp(int n){return Math.round(n*getResources().getDisplayMetrics().density);}
  private boolean hasData(){String base=getPreferences(0).getString("pack",null),shell=getPreferences(0).getString("shell",null);return base!=null&&shell!=null&&new File(base).isFile()&&new File(shell).isFile()&&dataRoot!=null&&new File(dataRoot,"worlds/sprawl.zwp").isFile();}
  private void record(String s){runOnUiThread(()->{if(destroyed)return;report=s;if(history.length()>12000)history.delete(0,6000);history.append(s).append('\n');});}
  private void message(String s){if(s==null)return;runOnUiThread(()->{
-  if(destroyed)return;if(s.equals("@quit")){finish();return;}if(s.equals("@options")){showOptions();return;}
+  if(destroyed)return;if(s.equals("@quit")){finish();return;}if(s.equals("@options")){showOptions();return;}if(s.equals("@instant")){showInstantAction();return;}
   record(s);if(setup.getVisibility()==View.VISIBLE)status.setText(s);else Toast.makeText(this,s,Toast.LENGTH_LONG).show();
  });}
  private void startupFailure(String s){runOnUiThread(()->{if(destroyed)return;setup.setVisibility(View.VISIBLE);message(s);});}
  @Override public void onCreate(Bundle saved){
   super.onCreate(saved);dataRoot=getPreferences(0).getString("dataRoot",null);
   FrameLayout screen=new FrameLayout(this);view=new MenuView();screen.addView(view,new FrameLayout.LayoutParams(-1,-1));
-  Button reportButton=new Button(this);reportButton.setText("Report / data");reportButton.setOnClickListener(v->new android.app.AlertDialog.Builder(this).setTitle("Native menu proof of concept").setMessage("Original intros, native 3D menu and atmospheric effects. Menu navigation is deferred.").setPositiveButton("Share report",(d,w)->{Intent i=new Intent(Intent.ACTION_SEND);i.setType("text/plain");i.putExtra(Intent.EXTRA_TEXT,"Reigncarnated 0.6 Instant Action candidate\n"+history.toString());startActivity(Intent.createChooser(i,"Share report"));}).setNeutralButton("Import ZIP",(d,w)->pickZip()).setNegativeButton("Close",null).show());
+  Button reportButton=new Button(this);reportButton.setText("Report / data");reportButton.setOnClickListener(v->new android.app.AlertDialog.Builder(this).setTitle("Native menu proof of concept").setMessage("Performance test: optimized native menu and mission renderer. Instant Action opens the available test map.").setPositiveButton("Share report",(d,w)->{Intent i=new Intent(Intent.ACTION_SEND);i.setType("text/plain");i.putExtra(Intent.EXTRA_TEXT,"Reigncarnated 0.7 Performance Test\n"+metrics.latest()+"\n"+history.toString());startActivity(Intent.createChooser(i,"Share report"));}).setNeutralButton("Import ZIP",(d,w)->pickZip()).setNegativeButton("Close",null).show());
   FrameLayout.LayoutParams tools=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.END);screen.addView(reportButton,tools);
-  Button instant=new Button(this);instant.setText("Instant Action (test)");instant.setOnClickListener(v->{
-   if(!hasData()){message("Import your complete game data first.");return;}
-   if(!new File(dataRoot,"library/engine/startup.cfg").isFile()){message("Reimport a complete installation ZIP including the library folder for Instant Action.");return;}
-   Intent launch=new Intent(this,MissionActivity.class);launch.putExtra("installation",dataRoot);startActivity(launch);
-  });screen.addView(instant,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
+  Button instant=new Button(this);instant.setText("Instant Action (test)");instant.setOnClickListener(v->showInstantAction());screen.addView(instant,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
   setup=new LinearLayout(this);setup.setOrientation(LinearLayout.VERTICAL);setup.setGravity(Gravity.CENTER);setup.setPadding(dp(28),dp(24),dp(28),dp(24));setup.setBackgroundColor(0xff101710);
   TextView title=new TextView(this);title.setText("REIGNCARNATED");title.setTextColor(0xffaadd99);title.setTextSize(28);title.setGravity(Gravity.CENTER);setup.addView(title);
   TextView description=new TextView(this);description.setText("Select ZIP files from your legally owned Dark Reign 2 installation.\n\nFor Instant Action, include the complete packs, missions, worlds, sides, mods and library folders. Music is imported automatically. Select multiple ZIPs together if needed. Data is copied once; later launches play the original introduction and open the native menu.");description.setTextColor(0xffeeeeee);description.setGravity(Gravity.CENTER);description.setPadding(0,dp(20),0,dp(20));setup.addView(description);
@@ -69,10 +65,15 @@ public final class MenuActivity extends Activity {
   cancelImport=new Button(this);cancelImport.setText("Cancel import");cancelImport.setVisibility(View.GONE);cancelImport.setOnClickListener(v->{cancelled=true;status.setText("Cancelling import…");});setup.addView(cancelImport);
   Button back=new Button(this);back.setText("Return to existing game");back.setVisibility(hasData()?View.VISIBLE:View.GONE);back.setOnClickListener(v->{if(!importing)setup.setVisibility(View.GONE);});setup.addView(back);
   status=new TextView(this);status.setTextColor(0xffdddddd);status.setGravity(Gravity.CENTER);status.setPadding(0,dp(16),0,0);setup.addView(status);
-  screen.addView(setup,new FrameLayout.LayoutParams(-1,-1));setup.setVisibility(hasData()?View.GONE:View.VISIBLE);setContentView(screen);
+  screen.addView(setup,new FrameLayout.LayoutParams(-1,-1));setup.setVisibility(hasData()?View.GONE:View.VISIBLE);metrics=new RenderMetrics(this,screen,"Menu");setContentView(screen);
   // Delete only unreferenced importer-owned snapshots, captured before a new import can start.
   final String keepRoot=dataRoot;File parent=new File(getFilesDir(),"installations");File[] abandoned=parent.listFiles();
   if(abandoned!=null)new Thread(()->{for(File f:abandoned)if((f.getName().startsWith("import-")||f.getName().startsWith("data-"))&&!f.getAbsolutePath().equals(keepRoot))DataFolderImporter.remove(f);},"ReignCleanup").start();
+ }
+ private void showInstantAction(){
+  if(!hasData()){message("Import your complete game data first.");return;}
+  if(!new File(dataRoot,"library/engine/startup.cfg").isFile()){message("Reimport the v0.6 game-data ZIP, including the library folder.");return;}
+  new android.app.AlertDialog.Builder(this).setTitle("Instant Action — test map").setSingleChoiceItems(new String[]{"2crazed"},0,(d,which)->{}).setPositiveButton("Launch",(d,w)->{Intent launch=new Intent(this,MissionActivity.class);launch.putExtra("installation",dataRoot);startActivity(launch);}).setNegativeButton("Cancel",null).show();
  }
  private void showKeyboard(){view.requestFocus();((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);}
  private void pickZip(){if(importing)return;Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT);i.addCategory(Intent.CATEGORY_OPENABLE);i.setType("*/*");i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);startActivityForResult(i,PICK_ZIP);}
@@ -87,7 +88,7 @@ public final class MenuActivity extends Activity {
   MenuView(){super(MenuActivity.this);pack=getPreferences(0).getString("pack",null);shell=getPreferences(0).getString("shell",null);if(!hasData())pack=null;setFocusable(true);setFocusableInTouchMode(true);setEGLContextClientVersion(3);setEGLConfigChooser(8,8,8,8,16,0);setRenderer(this);setRenderMode(RENDERMODE_CONTINUOUSLY);}
   public void onSurfaceCreated(GL10 gl,EGLConfig c){gpu="Device: "+android.os.Build.MANUFACTURER+" "+android.os.Build.MODEL+" API "+android.os.Build.VERSION.SDK_INT+"\nGPU: "+gl.glGetString(GL10.GL_RENDERER);failed=false;if(handle!=0){String error=resetGpuNative(handle);if(error!=null){failed=true;message(error);}}}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;requestRender();}
-  public void onDrawFrame(GL10 gl){final int generation=audioGeneration;if(!resumed)return;if(width<=0||height<=0||pack==null||failed||importing)return;if(handle==0){handle=openNative(pack,new File(getFilesDir(),"profiles").getAbsolutePath(),shell);if(handle==0){failed=true;startupFailure("Native startup failed: "+errorNative());return;}long[] checkpoint=launchCheckpoint;if(checkpoint!=null){String restoreError=restoreNative(handle,checkpoint[0],checkpoint[1],android.os.SystemClock.uptimeMillis());if(restoreError!=null){failed=true;startupFailure(restoreError);return;}launchCheckpoint=null;}record(gpu+"\nOriginal intro sequence loaded. Native shell follows the movies; tap to skip the current clip.");}String e=drawNative(handle,width,height,android.os.SystemClock.uptimeMillis());String ambientPath=ambientNative(handle);int[] movie=movieInfoNative(handle);short[] pcm=moviePcmNative(handle);
+  public void onDrawFrame(GL10 gl){final int generation=audioGeneration;if(!resumed)return;if(width<=0||height<=0||pack==null||failed||importing)return;if(handle==0){handle=openNative(pack,new File(getFilesDir(),"profiles").getAbsolutePath(),shell);if(handle==0){failed=true;startupFailure("Native startup failed: "+errorNative());return;}long[] checkpoint=launchCheckpoint;if(checkpoint!=null){String restoreError=restoreNative(handle,checkpoint[0],checkpoint[1],android.os.SystemClock.uptimeMillis());if(restoreError!=null){failed=true;startupFailure(restoreError);return;}launchCheckpoint=null;}record(gpu+"\nOriginal intro sequence loaded. Native shell follows the movies; tap to skip the current clip.");}long drawStart=System.nanoTime();String e=drawNative(handle,width,height,android.os.SystemClock.uptimeMillis());metrics.frame(drawStart,System.nanoTime(),()->null);String ambientPath=ambientNative(handle);int[] movie=movieInfoNative(handle);short[] pcm=moviePcmNative(handle);
    runOnUiThread(()->{if(destroyed||!resumed||generation!=audioGeneration)return;try{if(movie!=null&&movie[0]>0){if(movie[1]>0){if(introAudio==null||introAudio.movie!=movie[0]){if(introAudio!=null)introAudio.close();introAudio=new IntroAudioPlayer(MenuActivity.this,movie[0],movie[1],MenuActivity.this::message);}introAudio.accept(pcm);}}else if(!menuReady){if(introAudio!=null){introAudio.close();introAudio=null;}menuReady=true;startAudio();if(audioPlayer!=null)audioPlayer.playAmbient(ambientPath);}}catch(Exception ex){message("Intro audio failed: "+ex.getMessage());}});
    String[] sounds=audioNative(handle);MenuAudioPlayer player=audioPlayer;if(player!=null&&sounds!=null&&sounds.length>0)runOnUiThread(()->{if(audioPlayer==player)player.accept(sounds);});if(e!=null){failed=true;startupFailure("Render failure: "+e);}}
   void input(int kind,int x,int y,String text){queueEvent(()->{if(handle!=0)message(inputNative(handle,kind,x,y,text));});requestRender();}

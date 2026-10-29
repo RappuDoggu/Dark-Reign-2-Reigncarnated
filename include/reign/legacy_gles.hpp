@@ -39,6 +39,8 @@ class LegacyGles {
  struct Impl;std::unique_ptr<Impl> impl_;
  void draw_batch(unsigned,unsigned,const void*,std::size_t,const std::uint16_t*,std::size_t,const DrawState&,bool);
 public:
+ struct Statistics {std::uint64_t draws=0,texture_uploads=0,texture_bytes=0,geometry_bytes=0,presents=0;};
+ Statistics statistics() const;
  using Resolver=void *(*)(const char *);
  // Requires a current GLES3 context; destruction must occur before releasing that context.
  explicit LegacyGles(Resolver);
@@ -46,6 +48,7 @@ public:
  LegacyGles(const LegacyGles&)=delete;
  LegacyGles &operator=(const LegacyGles&)=delete;
  unsigned texture_rgba(unsigned width,unsigned height,const std::uint8_t *rgba);
+ void update_texture_rgba(unsigned texture,unsigned width,unsigned height,const std::uint8_t *rgba);
  void delete_texture(unsigned);
  void abandon_context() noexcept;
  void clear(unsigned width,unsigned height,float r,float g,float b,float a=1);

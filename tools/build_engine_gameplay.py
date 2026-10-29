@@ -19,19 +19,23 @@ def main():
  p.add_argument('staged',type=Path)
  p.add_argument('output',type=Path)
  p.add_argument('--compiler',default='c++')
+ p.add_argument('--optimization',choices=['0','1','2','3'],default='2')
+ p.add_argument('--source-list',type=Path,help='JSON array of exact original source paths')
  p.add_argument('--jobs',type=int,default=4)
  p.add_argument('--retry-failed',action='store_true')
  p.add_argument('--all-projects',action='store_true')
  p.add_argument('--project',action='append',help='Compile only the named original project directories')
  p.add_argument('--source',action='append',help='Compile exact source paths from the original inventory')
- a=p.parse_args();repo=Path(__file__).resolve().parents[1]
+ a=p.parse_args()
+ if a.source_list:a.source=(a.source or [])+json.loads(a.source_list.read_text())
+ repo=Path(__file__).resolve().parents[1]
  projects=inventory(a.upstream.resolve());root=a.staged.resolve()
  lock_file=root.with_name(root.name+'.lock').open('a')
  fcntl.flock(lock_file,fcntl.LOCK_SH)
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
  directories=sorted({str(root/Path(s).parent) for project in projects.values() for s in project['sources']})
  directories += [str(root/'3rdparty'),str(root/'3rdparty/dx7'),str(root/'3rdparty/won')]
- base=[a.compiler,'-std=c++17','-DDEVELOPMENT=1','-DNO_ASM_MATH','-DMONO_DISABLED','-ffunction-sections','-fdata-sections','-c']
+ base=[a.compiler,'-O'+a.optimization,'-fno-strict-aliasing','-fwrapv','-fPIC','-fvisibility=hidden','-std=c++17','-DDEVELOPMENT=1','-DNO_ASM_MATH','-DMONO_DISABLED','-ffunction-sections','-fdata-sections','-c']
  for path in [repo/'engine/platform',repo/'engine/platform/dx7']+directories:
   base+=['-I',str(path)]
  fingerprint=hashlib.sha256()
@@ -57,6 +61,9 @@ def main():
   if unknown:p.error('Unknown or excluded source paths: '+', '.join(sorted(unknown)))
   items=[item for item in items if item[0] in a.source]
  if not items:p.error('No source units selected')
+ # Several original projects list the same translation unit. Compile each path
+ # once; concurrent duplicate compiler writes can corrupt the shared output.
+ items=list({source:(source,forced) for source,forced in items}.values())
  def run(item):
   source,forced=item
   if source in previous and previous[source]['exit_code']==0:return previous[source]

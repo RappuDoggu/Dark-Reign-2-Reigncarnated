@@ -679,6 +679,8 @@ if(REIGN_ANDROID_MENU)
     message(FATAL_ERROR "Original menu requires Android NDK and separate upstream source")
   endif()
   add_library(reign_menu SHARED android/menu/native_menu.cpp)
+  target_link_options(reign_menu PRIVATE -Wl,-Bsymbolic -Wl,-z,max-page-size=16384 "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/android/menu/menu_exports.map")
+  set_property(TARGET reign_menu APPEND PROPERTY LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/android/menu/menu_exports.map")
   target_link_libraries(reign_menu PRIVATE reign_menu_frontend reign_frontend_presenter reign_gles android log EGL GLESv3)
 endif()
 
@@ -870,3 +872,4 @@ if(TARGET reign_bink)
  target_link_libraries(bink_smoke PRIVATE reign_bink)
  add_test(NAME bink_header_validation COMMAND bink_smoke)
 endif()
+

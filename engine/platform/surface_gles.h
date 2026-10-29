@@ -10,6 +10,7 @@ class SurfaceTexture {
  reign::LegacyGles *renderer=nullptr;
  unsigned texture=0;
  DWORD uploadedRevision=0;
+ DWORD uploadedWidth=0,uploadedHeight=0;
 public:
  explicit SurfaceTexture(IDirectDrawSurface7 *);
  ~SurfaceTexture();

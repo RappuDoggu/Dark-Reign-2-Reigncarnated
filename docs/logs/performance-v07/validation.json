@@ -1,0 +1,18 @@
+{
+  "build": "0.7-performance-test",
+  "previous_commit": "5c419beb4f0094f13cd558af08ee1052e2301fe5",
+  "apk": {
+    "name": "Reigncarnated-Performance-v07.apk",
+    "bytes": 8922032,
+    "sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b"
+  },
+  "original_unique_sources": 603,
+  "all_original_compiles_optimized": true,
+  "foundation_tests_passed": 10,
+  "menu_lifecycle_checks_passed": 26,
+  "menu_real_instant_action_host_route_passed": true,
+  "mission_two_lifecycles_passed": true,
+  "v07_android_executed": false,
+  "v06_device_feedback": "Fold 5 loads mission and constructs command center and solar panel; poor performance; original Instant Action selection did not work",
+  "signing_certificate_sha256": "96aa655dce399b4f0c97472d3b227ff21070834fb0ac878cd35940624d7944df"
+}

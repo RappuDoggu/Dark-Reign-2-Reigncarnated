@@ -10,10 +10,14 @@ unsigned SurfaceTexture::Refresh(reign::LegacyGles &next){
  if(texture&&version==uploadedRevision)return texture;
  std::vector<std::uint8_t> rgba;DWORD width=0,height=0;
  if(FAILED(ReadSurfaceRGBA(surface,rgba,width,height,version)))throw std::runtime_error("Cannot read a locked or unsupported native surface");
- const auto replacement=next.texture_rgba(width,height,rgba.data());
- if(texture)renderer->delete_texture(texture);
- renderer=&next;texture=replacement;uploadedRevision=version;return texture;
+ if(texture&&width==uploadedWidth&&height==uploadedHeight)next.update_texture_rgba(texture,width,height,rgba.data());
+ else {
+  const auto replacement=next.texture_rgba(width,height,rgba.data());
+  if(texture)renderer->delete_texture(texture);
+  texture=replacement;
+ }
+ renderer=&next;uploadedWidth=width;uploadedHeight=height;uploadedRevision=version;return texture;
 }
 void SurfaceTexture::ReleaseGpu(){if(texture&&renderer)renderer->delete_texture(texture);AbandonContext();}
-void SurfaceTexture::AbandonContext()noexcept{texture=0;renderer=nullptr;uploadedRevision=0;}
+void SurfaceTexture::AbandonContext()noexcept{texture=0;renderer=nullptr;uploadedRevision=uploadedWidth=uploadedHeight=0;}
 }

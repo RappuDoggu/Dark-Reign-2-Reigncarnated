@@ -20,7 +20,7 @@ for source,obj in mapping.items():
  with obj.open('rb') as file:header=file.read(20)
  if header[:4]!=b'\x7fELF' or header[18:20]!=b'\xb7\x00':raise ValueError('Not an ARM64 ELF object: '+source)
 include=[repo/'engine/platform',repo/'engine/platform/dx7',repo/'include']+sorted({x.parent for x in a.staged.rglob('*.cpp')})+[a.staged/'3rdparty',a.staged/'3rdparty/dx7',a.staged/'3rdparty/won']
-flags=['-std=c++17','-DDEVELOPMENT=1','-DNO_ASM_MATH','-DMONO_DISABLED','-ffunction-sections','-fdata-sections','-fPIC','-fvisibility=hidden']
+flags=['-O2','-fno-strict-aliasing','-fwrapv','-std=c++17','-DDEVELOPMENT=1','-DNO_ASM_MATH','-DMONO_DISABLED','-ffunction-sections','-fdata-sections','-fPIC','-fvisibility=hidden']
 for directory in include:flags+=['-I',str(directory)]
 flags+=['-include',str(a.staged/'system/std.h')]
 source_files=[repo/'engine/platform/mission_app.cpp',repo/'android/mission/native_mission.cpp',repo/'engine/platform/device_gles.cpp',repo/'src/legacy_gles.cpp',repo/'engine/platform/debug_native.cpp',a.staged/'graphics/vid.cpp',a.staged/'graphics/vid_cmd_dialog.cpp',a.staged/'util/perfstats.cpp']

@@ -131,6 +131,22 @@ int main(){try{
   fill(surface,0x07e0);vertices=quad(0xffffffff);
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
   renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==255&&result[center+2]==0);
+  // A/B/A switching must retain each GPU upload, including after caller Release.
+  IDirectDrawSurface7 *other=nullptr;check(NativeEngine::CreateMemorySurface(desc,&other)==S_OK);fill(other,0xf800);
+  auto uploads=renderer.statistics().texture_uploads;
+  for(unsigned repeat=0;repeat<100;++repeat){
+   check(device->SetTexture(0,other)==S_OK);
+   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+   check(device->SetTexture(0,surface)==S_OK);
+   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  }
+  check(renderer.statistics().texture_uploads==uploads+1);
+  renderer.read_rgba(W,H,result.data());check(result[center+1]==255);
+  // Mutations while unbound must be visible when selected again.
+  check(device->SetTexture(0,other)==S_OK);fill(surface,0x07e0);other->Release();
+  check(device->SetTexture(0,surface)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  check(renderer.statistics().texture_uploads==uploads+2);
   fill(surface,0x001f);
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
   renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==0&&result[center+2]==255);
@@ -160,7 +176,7 @@ int main(){try{
   renderer.delete_texture(stripeTexture);
   fill(surface,0xf800);draw(renderer,texture,255,0,0);
   const auto first=texture.Refresh(renderer);check(texture.Refresh(renderer)==first);
-  fill(surface,0x001f);draw(renderer,texture,0,0,255);
+  fill(surface,0x001f);draw(renderer,texture,0,0,255);check(texture.Refresh(renderer)==first);
   DDSURFACEDESC2 mapped{};mapped.dwSize=sizeof(mapped);check(surface->Lock(nullptr,&mapped,0,nullptr)==S_OK);
   auto *p=static_cast<std::uint16_t *>(mapped.lpSurface);for(unsigned i=0;i<4;++i)p[i]=0x07e0;
   check(surface->Unlock(nullptr)==S_OK);draw(renderer,texture,0,255,0);

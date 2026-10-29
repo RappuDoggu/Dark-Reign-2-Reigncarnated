@@ -222,7 +222,7 @@ struct ShellScene::Impl {
  unsigned animatedTexture(const std::string &name,float seconds){
 #ifdef REIGN_BINK
   auto stem=name.substr(0,name.find_last_of('.'));if(stem=="movie-billboard"){
-   auto &m=movies[stem];if(!m.decoder)m.decoder=std::make_unique<BinkMovie>(loader(stem+".bik"));float t=std::fmod(seconds,float(m.decoder->duration()));if(t<m.last){m.decoder=std::make_unique<BinkMovie>(loader(stem+".bik"));m.frame=-1;}m.last=t;m.decoder->advance(t);m.decoder->drain_audio();if(m.frame!=m.decoder->frame_index()){if(m.texture)renderer.delete_texture(m.texture);m.texture=renderer.texture_rgba(m.decoder->width(),m.decoder->height(),m.decoder->rgba().data());m.frame=m.decoder->frame_index();}return m.texture;
+   auto &m=movies[stem];if(!m.decoder)m.decoder=std::make_unique<BinkMovie>(loader(stem+".bik"));float t=std::fmod(seconds,float(m.decoder->duration()));if(t<m.last){m.decoder=std::make_unique<BinkMovie>(loader(stem+".bik"));m.frame=-1;}m.last=t;m.decoder->advance(t);m.decoder->drain_audio();if(m.frame!=m.decoder->frame_index()){if(m.texture)renderer.update_texture_rgba(m.texture,m.decoder->width(),m.decoder->height(),m.decoder->rgba().data());else m.texture=renderer.texture_rgba(m.decoder->width(),m.decoder->height(),m.decoder->rgba().data());m.frame=m.decoder->frame_index();}return m.texture;
   }
 #endif
  auto first=bitmaps->load(name);auto frames=bitmaps->animation(name);return frames.empty()?first->texture:frames[std::size_t(std::floor(seconds*std::max(0.f,terrain.environment.animationRate)))%frames.size()]->texture;}
@@ -266,3 +266,4 @@ void ShellScene::finish_frame(float seconds){
  LegacyTL v[]={{0,0,0,1,packed(0,0,0,alpha),0xff000000,0,0},{640,0,0,1,packed(0,0,0,alpha),0xff000000,0,0},{640,480,0,1,packed(0,0,0,alpha),0xff000000,0,0},{0,480,0,1,packed(0,0,0,alpha),0xff000000,0,0}};std::uint16_t indices[]={0,1,2,0,2,3};DrawState state;state.blend=Blend::alpha;impl_->renderer.draw(640,480,v,4,indices,6,state);
 }
 }
+

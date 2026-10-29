@@ -76,6 +76,13 @@ bool runtimeOwned=false;
 thread_local std::function<void(const std::string &)> *hostCommand=nullptr;
 void requestHost(const std::string &action){if(!hostCommand)throw std::runtime_error("Menu host not bound");(*hostCommand)(action);}
 void runCodeCommand(U32){const char *name=nullptr;if(Console::ArgCount()!=2||!Console::GetArgString(1,name))throw std::invalid_argument("Expected one run code");requestHost(name);}
+void instantCommand(U32 id){
+ const char *target=nullptr;
+ if(id!=Crc::CalcStr("gamegod.verify")||Console::ArgCount()!=2||!Console::GetArgString(1,target)||std::string(target)!="Shell::Main.InstantAction")throw std::invalid_argument("Unsupported shell host command");
+ // The original button requests this command before entering Instant Action.
+ // Route it to the available native mission chooser after event dispatch.
+ requestHost("instant");
+}
 class ShellHandler final:public ICWindow {
 public:explicit ShellHandler(IControl *p):ICWindow(p){}
  U32 HandleEvent(Event &e) override {
@@ -161,6 +168,7 @@ struct MenuFrontend::Impl {
    IFace::NativeRegisterSubstitution();substitutionRegistered=true;register_interface_commands();register_standalone_launch_commands();
    VarSys::RegisterHandler("sys",runCodeCommand,VarSys::NOTIFY);
    VarSys::CreateCmd("sys.runcode",VarSys::NOTIFY);
+   VarSys::RegisterHandler("gamegod",instantCommand,VarSys::NOTIFY);VarSys::CreateCmd("gamegod.verify",VarSys::NOTIFY);
    VarSys::CreateString("sys.buildtype","Release");
    VarSys::CreateString("sys.buildver","Reigncarnated 0.5 Native Launch");
    VarSys::CreateString("gamegod.flow.state","");
@@ -196,7 +204,7 @@ struct MenuFrontend::Impl {
   defs->InitIterators();IFace::ConfigureNative(defs);
   auto *handler=new ShellHandler(root.get());handler->SetName("Shell::EventHandler");handler->Activate();
   IFace::CreateNativeRootControl(main);
-  for(auto name:{"Campaigns","LoadGame","InstantAction","Multi","Credits"}){
+  for(auto name:{"Campaigns","LoadGame","Multi","Credits"}){
    auto path=std::string("Shell::Main.")+name;auto *c=IFace::FindByName(path.c_str(),root.get());
    if(c)c->SetStateItem("Disabled",TRUE);
   }
@@ -212,7 +220,7 @@ struct MenuFrontend::Impl {
   }else if(next=="login"){
    User::Logout();auto *shell=IFace::FindByName("Shell::Main",root.get());if(shell)shell->Deactivate();
    IFace::NativeClearRouting();IFace::FindByName("DlgLogin",root.get())->Activate();action="Select a profile to log in.";
-  }else if(next=="quit"||next=="options")action="@"+next;
+  }else if(next=="quit"||next=="options"||next=="instant")action="@"+next;
   else throw std::runtime_error("Run code not implemented: "+next);
  }
  void destroy_tree(){
@@ -251,7 +259,7 @@ void MenuFrontend::open_shell_preview(){
  impl_->run([&]{impl_->load_shell();
   for(auto name:{"DlgLogin","Backdrop"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();
   auto *shell=IFace::FindByName("Shell::Main",impl_->root.get());shell->Activate();
-  for(auto name:{"Campaigns","LoadGame","InstantAction","Multi","Credits","Options","Logout"}){
+  for(auto name:{"Campaigns","LoadGame","Multi","Credits","Options","Logout"}){
    auto path=std::string("Shell::Main.")+name;if(auto *c=IFace::FindByName(path.c_str(),impl_->root.get()))c->SetStateItem("Disabled",TRUE);
   }
   IFace::NativeClearRouting();
@@ -259,3 +267,4 @@ void MenuFrontend::open_shell_preview(){
 }
 void MenuFrontend::close(){if(impl_->closed)return;impl_->destroy_tree();impl_->profiles.close();impl_->closed=true;}
 }
+

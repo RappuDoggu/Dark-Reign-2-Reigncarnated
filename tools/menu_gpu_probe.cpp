@@ -40,6 +40,8 @@ int main(int argc,char **argv){try{
    std::cout<<"Context "<<generation+1<<" frame "<<frame+1<<": "<<report.geometry_batches<<" geometry, "<<report.font_batches<<" fonts, "<<nonblack<<" nonblack pixels\n";
   }
  }
+ if(argc==5){auto point=menu.control_center("Shell::Main.InstantAction");menu.take_action();menu.pointer_move(point[0],point[1]);menu.pointer_button(true,point[0],point[1]);menu.pointer_button(false,point[0],point[1]);if(menu.take_action()!="@instant")throw std::runtime_error("Original Instant Action button did not request the native map chooser");std::cout<<"Original Instant Action button -> native chooser: PASS\n";}
  std::ofstream out(argv[2],std::ios::binary);out<<"P6\n"<<W<<' '<<H<<"\n255\n";for(unsigned row=0;row<H;++row)for(unsigned x=0;x<W;++x)out.write(reinterpret_cast<const char *>(&pixels[((H-1-row)*W+x)*4]),3);if(!out)throw std::runtime_error("Snapshot write failed");menu.close();
  std::cout<<"Original menu GPU rendering and context recreation: PASS\n";
 }catch(const std::exception &e){std::cerr<<"MENU_GPU_FAIL "<<e.what()<<'\n';return 1;}}
+

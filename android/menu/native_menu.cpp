@@ -20,11 +20,11 @@ void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddres
 struct State {
 #ifdef REIGN_BINK
  std::unique_ptr<reign::BinkMovie> movie;unsigned movieIndex=0,movieTexture=0;std::int64_t movieFrame=-1;jlong movieStart=-1;
- void nextMovie(){movie.reset();auto name="intro-movie-"+std::to_string(movieIndex++)+".bik";if(archive.find(name))movie=std::make_unique<reign::BinkMovie>(archive.read(name));movieStart=-1;movieFrame=-1;startMs=-1;}
+ void nextMovie(){if(movieTexture&&renderer)renderer->delete_texture(movieTexture);movieTexture=0;movie.reset();auto name="intro-movie-"+std::to_string(movieIndex++)+".bik";if(archive.find(name))movie=std::make_unique<reign::BinkMovie>(archive.read(name));movieStart=-1;movieFrame=-1;startMs=-1;}
  bool drawMovie(jlong ms,int width,int height){
   if(!movie)return false;if(movieStart<0)movieStart=ms;
   if(!movie->advance(double(ms-movieStart)/1000)){nextMovie();renderer->clear(640,480,0,0,0);renderer->present_to(width,height);return bool(movie);}
-  if(movieFrame!=movie->frame_index()){if(movieTexture)renderer->delete_texture(movieTexture);movieTexture=renderer->texture_rgba(movie->width(),movie->height(),movie->rgba().data());movieFrame=movie->frame_index();}
+  if(movieFrame!=movie->frame_index()){if(movieTexture)renderer->update_texture_rgba(movieTexture,movie->width(),movie->height(),movie->rgba().data());else movieTexture=renderer->texture_rgba(movie->width(),movie->height(),movie->rgba().data());movieFrame=movie->frame_index();}
   renderer->clear(640,480,0,0,0);float scale=std::min(640.f/movie->width(),480.f/movie->height());float w=movie->width()*scale,h=movie->height()*scale,x=(640-w)*.5f,y=(480-h)*.5f;
   reign::LegacyTL v[]={{x,y,0,1,0xffffffff,0xff000000,0,0},{x+w,y,0,1,0xffffffff,0xff000000,1,0},{x+w,y+h,0,1,0xffffffff,0xff000000,1,1},{x,y+h,0,1,0xffffffff,0xff000000,0,1}};std::uint16_t indices[]={0,1,2,0,2,3};reign::DrawState state;state.texture=movieTexture;state.texture_op=reign::TextureOp::texture;state.filtered=true;renderer->draw(640,480,v,4,indices,6,state);renderer->present_to(width,height);return true;
  }
@@ -122,3 +122,4 @@ JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MenuActivity_audioNat
 }
 JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MenuActivity_closeNative(JNIEnv *,jobject,jlong h){if(!h)return;std::unique_ptr<State> s(reinterpret_cast<State *>(h));try{s->menu->close();}catch(const std::exception &e){failure(e);}}
 }
+

@@ -15,10 +15,10 @@ namespace reign {
  X(UseProgram,PFNGLUSEPROGRAMPROC) X(GetUniformLocation,PFNGLGETUNIFORMLOCATIONPROC) X(Uniform1i,PFNGLUNIFORM1IPROC) \
  X(Uniform1f,PFNGLUNIFORM1FPROC) X(Uniform2f,PFNGLUNIFORM2FPROC) X(Uniform3fv,PFNGLUNIFORM3FVPROC) \
  X(GenVertexArrays,PFNGLGENVERTEXARRAYSPROC) X(BindVertexArray,PFNGLBINDVERTEXARRAYPROC) X(DeleteVertexArrays,PFNGLDELETEVERTEXARRAYSPROC) \
- X(GenBuffers,PFNGLGENBUFFERSPROC) X(BindBuffer,PFNGLBINDBUFFERPROC) X(BufferData,PFNGLBUFFERDATAPROC) X(DeleteBuffers,PFNGLDELETEBUFFERSPROC) \
+ X(GenBuffers,PFNGLGENBUFFERSPROC) X(BindBuffer,PFNGLBINDBUFFERPROC) X(BufferData,PFNGLBUFFERDATAPROC) X(BufferSubData,PFNGLBUFFERSUBDATAPROC) X(DeleteBuffers,PFNGLDELETEBUFFERSPROC) \
  X(EnableVertexAttribArray,PFNGLENABLEVERTEXATTRIBARRAYPROC) X(VertexAttribPointer,PFNGLVERTEXATTRIBPOINTERPROC) \
  X(GenTextures,PFNGLGENTEXTURESPROC) X(BindTexture,PFNGLBINDTEXTUREPROC) X(TexParameteri,PFNGLTEXPARAMETERIPROC) \
- X(TexImage2D,PFNGLTEXIMAGE2DPROC) X(DeleteTextures,PFNGLDELETETEXTURESPROC) X(ActiveTexture,PFNGLACTIVETEXTUREPROC) \
+ X(TexImage2D,PFNGLTEXIMAGE2DPROC) X(TexSubImage2D,PFNGLTEXSUBIMAGE2DPROC) X(GenSamplers,PFNGLGENSAMPLERSPROC) X(BindSampler,PFNGLBINDSAMPLERPROC) X(SamplerParameteri,PFNGLSAMPLERPARAMETERIPROC) X(DeleteSamplers,PFNGLDELETESAMPLERSPROC) X(DeleteTextures,PFNGLDELETETEXTURESPROC) X(ActiveTexture,PFNGLACTIVETEXTUREPROC) \
  X(Viewport,PFNGLVIEWPORTPROC) X(Enable,PFNGLENABLEPROC) X(Disable,PFNGLDISABLEPROC) X(DepthMask,PFNGLDEPTHMASKPROC) \
  X(DepthFunc,PFNGLDEPTHFUNCPROC) X(BlendFunc,PFNGLBLENDFUNCPROC) X(ClearColor,PFNGLCLEARCOLORPROC) \
  X(ClearDepthf,PFNGLCLEARDEPTHFPROC) X(Clear,PFNGLCLEARPROC) X(DrawElements,PFNGLDRAWELEMENTSPROC) \
@@ -33,6 +33,13 @@ struct LegacyGles::Impl {
 #undef DECLARE
  GLuint program=0,vao=0,vbo=0,ibo=0,white=0,fbo=0,color=0,depth=0;
  unsigned width=0,height=0;
+ LegacyGles::Statistics stats;
+ GLuint samplers[6]={},boundTexture=0;
+ DrawState previous;
+ bool stateValid=false,previousHomogeneous=false,newStream=true;
+ unsigned previousWidth=0,previousHeight=0;
+ std::size_t vertexCapacity=2*1024*1024,indexCapacity=256*1024,vertexOffset=0,indexOffset=0;
+ GLint uHomogeneous,uPerspective,uViewport,uTextureOp,uFog,uSpecular,uFogRgb,uAlpha,uAlphaRef,uImage;
  explicit Impl(Resolver resolver) {
 #define LOAD(name,type) name=reinterpret_cast<type>(resolver("gl" #name));if(!name)throw std::runtime_error("Missing GLES entry: gl" #name);
   REIGN_GL(LOAD)
@@ -42,6 +49,7 @@ struct LegacyGles::Impl {
  void target(unsigned w,unsigned h){
   if(!w||!h||w>16384||h>16384||std::uint64_t(w)*h*4>128*1024*1024)throw std::runtime_error("Invalid native render target size");
   if(w==width&&h==height&&fbo){BindFramebuffer(GL_FRAMEBUFFER,fbo);return;}
+  stateValid=false;boundTexture=0;
   GLuint next_fbo=0,next_color=0,next_depth=0;
   try{
    GenFramebuffers(1,&next_fbo);GenTextures(1,&next_color);GenRenderbuffers(1,&next_depth);
@@ -62,7 +70,7 @@ struct LegacyGles::Impl {
   if(!ok){char log[4096];GetShaderInfoLog(s,sizeof(log),nullptr,log);DeleteShader(s);throw std::runtime_error(log);}return s;
  }
  GLint uniform(const char *name){return GetUniformLocation(program,name);}
- ~Impl(){if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);if(white)DeleteTextures(1,&white);if(ibo)DeleteBuffers(1,&ibo);if(vbo)DeleteBuffers(1,&vbo);if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
+ ~Impl(){DeleteSamplers(6,samplers);if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);if(white)DeleteTextures(1,&white);if(ibo)DeleteBuffers(1,&ibo);if(vbo)DeleteBuffers(1,&vbo);if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
 };
 LegacyGles::LegacyGles(Resolver resolver):impl_(std::make_unique<Impl>(resolver)){
  auto &g=*impl_;
@@ -132,7 +140,13 @@ void main(){
  try { fs=g.shader(GL_FRAGMENT_SHADER,fragment); } catch(...) {g.DeleteShader(vs);throw;}
  g.program=g.CreateProgram();g.AttachShader(g.program,vs);g.AttachShader(g.program,fs);g.LinkProgram(g.program);g.DeleteShader(vs);g.DeleteShader(fs);
  GLint ok=0;g.GetProgramiv(g.program,GL_LINK_STATUS,&ok);if(!ok){char log[4096];g.GetProgramInfoLog(g.program,sizeof(log),nullptr,log);throw std::runtime_error(log);}
+ g.uHomogeneous=g.uniform("homogeneous_input");g.uPerspective=g.uniform("texture_perspective");g.uViewport=g.uniform("viewport_size");g.uTextureOp=g.uniform("texture_op");
+ g.uFog=g.uniform("fog_enabled");g.uSpecular=g.uniform("specular_enabled");g.uFogRgb=g.uniform("fog_rgb");g.uAlpha=g.uniform("alpha_test");g.uAlphaRef=g.uniform("alpha_reference");g.uImage=g.uniform("image");
  g.GenVertexArrays(1,&g.vao);g.GenBuffers(1,&g.vbo);g.GenBuffers(1,&g.ibo);
+ g.BindVertexArray(g.vao);for(unsigned i=0;i<4;++i)g.EnableVertexAttribArray(i);
+ g.GenSamplers(6,g.samplers);
+ const GLint modes[]={GL_CLAMP_TO_EDGE,GL_REPEAT,GL_MIRRORED_REPEAT};
+ for(unsigned i=0;i<6;++i){g.SamplerParameteri(g.samplers[i],GL_TEXTURE_MIN_FILTER,i>=3?GL_LINEAR:GL_NEAREST);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_MAG_FILTER,i>=3?GL_LINEAR:GL_NEAREST);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_WRAP_S,modes[i%3]);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_WRAP_T,modes[i%3]);}
  const std::uint8_t white[]={255,255,255,255};g.white=texture_rgba(1,1,white);g.check();
 }
 LegacyGles::~LegacyGles()=default;
@@ -141,16 +155,24 @@ unsigned LegacyGles::texture_rgba(unsigned width,unsigned height,const std::uint
  auto &g=*impl_;GLuint id=0;g.GenTextures(1,&id);g.BindTexture(GL_TEXTURE_2D,id);g.PixelStorei(GL_UNPACK_ALIGNMENT,1);
  g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
  g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
- g.TexImage2D(GL_TEXTURE_2D,0,GL_RGBA, width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,data);g.check();return id;
+ g.TexImage2D(GL_TEXTURE_2D,0,GL_RGBA, width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,data);g.boundTexture=0;
+ ++g.stats.texture_uploads;g.stats.texture_bytes+=std::uint64_t(width)*height*4;g.check();return id;
 }
-void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0; }
-void LegacyGles::delete_texture(unsigned id){if(id)impl_->DeleteTextures(1,&id);}
+LegacyGles::Statistics LegacyGles::statistics() const{return impl_->stats;}
+void LegacyGles::update_texture_rgba(unsigned id,unsigned width,unsigned height,const std::uint8_t *data){
+ if(!id||!width||!height||width>16384||height>16384||!data)throw std::invalid_argument("Invalid texture update");
+ auto &g=*impl_;g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,id);g.PixelStorei(GL_UNPACK_ALIGNMENT,1);
+ g.TexSubImage2D(GL_TEXTURE_2D,0,0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,data);g.boundTexture=0;
+ ++g.stats.texture_uploads;g.stats.texture_bytes+=std::uint64_t(width)*height*4;g.check();
+}
+void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0;for(auto &sampler:g.samplers)sampler=0;g.stateValid=false;g.boundTexture=0; }
+void LegacyGles::delete_texture(unsigned id){if(id){impl_->DeleteTextures(1,&id);if(impl_->boundTexture==id)impl_->boundTexture=0;}}
 void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
  clear_buffers(w,h,true,true,r,g,b,a,1);
 }
 void LegacyGles::clear_buffers(unsigned w,unsigned h,bool color,bool depth,float r,float g,float b,float a,float depth_value){
  if(!std::isfinite(depth_value)||depth_value<0||depth_value>1)throw std::invalid_argument("Invalid clear depth");
- auto &gl=*impl_;gl.target(w,h);gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);
+ auto &gl=*impl_;gl.stateValid=false;gl.target(w,h);gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);
  gl.ClearColor(r,g,b,a);gl.ClearDepthf(depth_value);
  gl.Clear((color?GL_COLOR_BUFFER_BIT:0)|(depth?GL_DEPTH_BUFFER_BIT:0));gl.check();
 }
@@ -168,36 +190,59 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
  if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle batch");
  if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
- auto &g=*impl_;g.target(w,h);g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);
- if(state.dither)g.Enable(GL_DITHER);else g.Disable(GL_DITHER);
- if(state.depth_test)g.Enable(GL_DEPTH_TEST);else g.Disable(GL_DEPTH_TEST);g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);g.DepthFunc(GL_LEQUAL);
- if(state.blend==Blend::opaque)g.Disable(GL_BLEND);else{g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,state.blend==Blend::alpha?GL_ONE_MINUS_SRC_ALPHA:GL_ONE);}
- if(state.blend==Blend::custom){
+ auto &g=*impl_;g.target(w,h);const bool first=!g.stateValid;const auto &old=g.previous;
+ if(first){g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);g.DepthFunc(GL_LEQUAL);g.UseProgram(g.program);g.Uniform1i(g.uImage,0);g.ActiveTexture(GL_TEXTURE0);g.BindVertexArray(g.vao);}
+ auto toggle=[&](GLenum cap,bool value){if(value)g.Enable(cap);else g.Disable(cap);};
+ if(first||old.dither!=state.dither)toggle(GL_DITHER,state.dither);
+ if(first||old.depth_test!=state.depth_test)toggle(GL_DEPTH_TEST,state.depth_test);
+ if(first||old.depth_write!=state.depth_write)g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);
+ if(first||old.blend!=state.blend)toggle(GL_BLEND,state.blend!=Blend::opaque);
+ if(state.blend!=Blend::opaque&&(first||old.blend!=state.blend||old.source_factor!=state.source_factor||old.destination_factor!=state.destination_factor)){
   const GLenum factors[]={GL_ZERO,GL_ONE,GL_SRC_COLOR,GL_ONE_MINUS_SRC_COLOR,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_DST_ALPHA,GL_ONE_MINUS_DST_ALPHA,GL_DST_COLOR,GL_ONE_MINUS_DST_COLOR,GL_SRC_ALPHA_SATURATE};
-  g.BlendFunc(factors[static_cast<unsigned>(state.source_factor)-1],factors[static_cast<unsigned>(state.destination_factor)-1]);
+  if(state.blend==Blend::custom)g.BlendFunc(factors[static_cast<unsigned>(state.source_factor)-1],factors[static_cast<unsigned>(state.destination_factor)-1]);
+  else g.BlendFunc(GL_SRC_ALPHA,state.blend==Blend::alpha?GL_ONE_MINUS_SRC_ALPHA:GL_ONE);
  }
- g.UseProgram(g.program);g.Uniform1i(g.uniform("homogeneous_input"),homogeneous);g.Uniform1i(g.uniform("texture_perspective"),state.perspective);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
- g.Uniform1i(g.uniform("fog_enabled"),state.fog);g.Uniform1i(g.uniform("specular_enabled"),state.specular);g.Uniform3fv(g.uniform("fog_rgb"),1,state.fog_rgb);g.Uniform1i(g.uniform("alpha_test"),state.alpha_test);g.Uniform1f(g.uniform("alpha_reference"),state.alpha_reference);
- g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,state.texture?state.texture:g.white);g.Uniform1i(g.uniform("image"),0);
- g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);
- const GLint addressing=state.address==TextureAddress::wrap?GL_REPEAT:state.address==TextureAddress::mirror?GL_MIRRORED_REPEAT:GL_CLAMP_TO_EDGE;
- g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,addressing);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,addressing);
- g.BindVertexArray(g.vao);g.BindBuffer(GL_ARRAY_BUFFER,g.vbo);g.BufferData(GL_ARRAY_BUFFER,count*sizeof(LegacyTL),vertices,GL_STREAM_DRAW);
- g.BindBuffer(GL_ELEMENT_ARRAY_BUFFER,g.ibo);g.BufferData(GL_ELEMENT_ARRAY_BUFFER,index_count*sizeof(std::uint16_t),indices,GL_STREAM_DRAW);
- for(unsigned i=0;i<4;++i)g.EnableVertexAttribArray(i);
- g.VertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),nullptr);
- g.VertexAttribPointer(1,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(16));
- g.VertexAttribPointer(2,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(20));
- g.VertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(24));
- g.DrawElements(GL_TRIANGLES,index_count,GL_UNSIGNED_SHORT,nullptr);g.check();
+ if(first||g.previousHomogeneous!=homogeneous)g.Uniform1i(g.uHomogeneous,homogeneous);
+ if(first||old.perspective!=state.perspective)g.Uniform1i(g.uPerspective,state.perspective);
+ if(first||g.previousWidth!=w||g.previousHeight!=h){g.Viewport(0,0,w,h);g.Uniform2f(g.uViewport,w,h);}
+ if(first||old.texture_op!=state.texture_op)g.Uniform1i(g.uTextureOp,static_cast<int>(state.texture_op));
+ if(first||old.fog!=state.fog)g.Uniform1i(g.uFog,state.fog);
+ if(first||old.specular!=state.specular)g.Uniform1i(g.uSpecular,state.specular);
+ if(first||old.fog_rgb[0]!=state.fog_rgb[0]||old.fog_rgb[1]!=state.fog_rgb[1]||old.fog_rgb[2]!=state.fog_rgb[2])g.Uniform3fv(g.uFogRgb,1,state.fog_rgb);
+ if(first||old.alpha_test!=state.alpha_test)g.Uniform1i(g.uAlpha,state.alpha_test);
+ if(first||old.alpha_reference!=state.alpha_reference)g.Uniform1f(g.uAlphaRef,state.alpha_reference);
+ const GLuint tex=state.texture?state.texture:g.white;
+ if(first||g.boundTexture!=tex){g.BindTexture(GL_TEXTURE_2D,tex);g.boundTexture=tex;}
+ if(first||old.filtered!=state.filtered||old.address!=state.address)g.BindSampler(0,g.samplers[(state.filtered?3:0)+static_cast<unsigned>(state.address)]);
+ const std::size_t vb=count*sizeof(LegacyTL),ib=index_count*sizeof(std::uint16_t);
+ g.BindBuffer(GL_ARRAY_BUFFER,g.vbo);g.BindBuffer(GL_ELEMENT_ARRAY_BUFFER,g.ibo);
+ // Orphan once per frame (or arena exhaustion), then append batches. Previously
+ // every draw reallocated both buffers, multiplying driver allocation work.
+ if(g.newStream||g.vertexOffset+vb>g.vertexCapacity||g.indexOffset+ib>g.indexCapacity){
+  g.vertexCapacity=std::max(g.vertexCapacity,vb);g.indexCapacity=std::max(g.indexCapacity,ib);
+  g.BufferData(GL_ARRAY_BUFFER,g.vertexCapacity,nullptr,GL_STREAM_DRAW);g.BufferData(GL_ELEMENT_ARRAY_BUFFER,g.indexCapacity,nullptr,GL_STREAM_DRAW);
+  g.vertexOffset=g.indexOffset=0;g.newStream=false;
+ }
+ g.BufferSubData(GL_ARRAY_BUFFER,g.vertexOffset,vb,vertices);g.BufferSubData(GL_ELEMENT_ARRAY_BUFFER,g.indexOffset,ib,indices);
+ g.VertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset));
+ g.VertexAttribPointer(1,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+16));
+ g.VertexAttribPointer(2,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+20));
+ g.VertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+24));
+ g.DrawElements(GL_TRIANGLES,index_count,GL_UNSIGNED_SHORT,reinterpret_cast<void *>(g.indexOffset));
+ g.vertexOffset+=vb;g.indexOffset+=ib;++g.stats.draws;g.stats.geometry_bytes+=vb+ib;
+ g.previous=state;g.previousHomogeneous=homogeneous;g.previousWidth=w;g.previousHeight=h;g.stateValid=true;
+ // Validate at presentation/readback boundaries; avoid a driver query per batch.
+#ifdef REIGN_GLES_VALIDATE_DRAWS
+ g.check();
+#endif
 }
 void LegacyGles::present(){
- auto &g=*impl_;if(!g.fbo)throw std::runtime_error("No native frame to present");
+ auto &g=*impl_;g.stateValid=false;g.newStream=true;++g.stats.presents;if(!g.fbo)throw std::runtime_error("No native frame to present");
  g.Disable(GL_SCISSOR_TEST);g.BindFramebuffer(GL_READ_FRAMEBUFFER,g.fbo);g.BindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
  g.BlitFramebuffer(0,0,g.width,g.height,0,g.height,g.width,0,GL_COLOR_BUFFER_BIT,GL_NEAREST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.check();
 }
 void LegacyGles::present_to(unsigned width,unsigned height){
- auto &g=*impl_;if(!g.fbo||!width||!height||width>32768||height>32768)throw std::invalid_argument("Invalid presentation surface");
+ auto &g=*impl_;g.stateValid=false;g.newStream=true;++g.stats.presents;if(!g.fbo||!width||!height||width>32768||height>32768)throw std::invalid_argument("Invalid presentation surface");
  double scale=std::min(double(width)/g.width,double(height)/g.height);int w=int(g.width*scale),h=int(g.height*scale),x=(int(width)-w)/2,y=(int(height)-h)/2;
  g.Disable(GL_SCISSOR_TEST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.ClearColor(0,0,0,1);g.Clear(GL_COLOR_BUFFER_BIT);
  g.BindFramebuffer(GL_READ_FRAMEBUFFER,g.fbo);g.BindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
