@@ -800,3 +800,24 @@ adapter compiles for ARM64. Evidence: native-phase15-tests.log.
 This initializes only the minimal graphics resources (InitResources(TRUE));
 light/mesh resources, terrain, camera, interface and full Game startup remain.
 No mission loaded and no APK produced at this checkpoint.
+
+
+## Phase 16: mesh and lighting startup with owned resources
+
+Added engine_graphics_startup_test as an integrated host runner. It mounts an
+owned base.zwp, initializes original TrackSys/VarSys/FileSys, heap/buckets,
+bitmap/material managers, Light::Init, Mesh::Manager::Init (including the null
+mesh), minimal default resources and Light::InitResources. All three light
+textures are checked for actual native surfaces, not just placeholder objects.
+The original draw/presentation path then runs and all managers tear down in
+order. The complete sequence passes across two contexts, with zero open files
+at FileSys shutdown. Software pixel readback permits one byte of rounding
+(254 or 255 red, exact zero green/blue). No owned assets are committed.
+
+Run test_engine_vid.py --test-source engine_graphics_startup_test.cpp with
+--test-arg pointing to owned base.zwp, --khronos-headers, original graphics/math/
+Vid/console/VarSys/TrackSys host objects and foundation/FFmpeg libraries. The
+harness/foundation use ASan/UBSan; reused original host objects are not all
+instrumented. This checkpoint adds a verified startup runner, not Android
+application wiring. Terrain, camera, interface and Game initialization/mission
+loading remain. Evidence: native-phase16-startup.log.
