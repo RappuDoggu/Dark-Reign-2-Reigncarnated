@@ -71,3 +71,17 @@ void Delete(){watchdog().finish();}
 void Poll(){watchdog().poll();}
 }
 }
+
+namespace Debug {namespace AtExit {
+namespace {void (*callbacks[10])()={};}
+int Register(void (*callback)()){
+ if(!callback)return 0;
+ for(auto &slot:callbacks)if(!slot){slot=callback;return 1;}
+ return 0;
+}
+void Execute(){for(int i=9;i>=0;--i)if(auto callback=callbacks[i]){callbacks[i]=nullptr;callback();}}
+}}
+namespace Log {
+// Keep sync diagnostics local; native builds have no Windows log-share server.
+void Submit(const char *message){std::fprintf(stderr,"Sync diagnostic: %s\n",message?message:"");}
+}

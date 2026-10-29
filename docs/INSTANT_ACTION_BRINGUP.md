@@ -957,3 +957,64 @@ Evidence: native-phase21-mission-open.log and native-phase21-tests.log.
 Next: run original simulation/render callbacks against this loaded mission,
 then integrate the bootstrap with Android Activity/EGL/audio/input lifetime and
 build the Instant Action candidate APK. No new APK is produced here.
+
+
+## Phase 22: original Load/SimInit/Sim executes on host
+
+The 640x360 real-GLES host runner selects the original 2crazed mission, creates
+its local player, runs the original Load -> SimInit -> Sim callbacks, and
+verifies 29 nonzero simulation cycles over 32 RC frames. It then explicitly
+clears the active RC (invoking Sim::Done), destroys the original managers,
+checks a known red quad after mission shutdown, and exits 0 with zero open
+files. The red quad is a backend/lifetime check, not proof of correct terrain.
+
+An inspected frame captured before shutdown shows the original mission HUD,
+but the world view is visibly incorrect. This is not a visually correct or
+playable mission, an Android boot, a main-menu launch, or a new APK. Handled
+console/configuration exceptions still occur during original interface setup.
+Camera/terrain/mesh rendering and native UI command bindings require further
+investigation. The local session still has one player and no AI opponents.
+
+The native device now copies possibly odd-address bucket index bytes into an
+aligned WORD buffer before validation/culling/submission. Both original TL
+clipping settings are accepted: vertices are transformed and clipped by the
+engine, with GLES rasterization clipping remaining active. Invalid settings
+still fail. A real-GLES regression renders deliberately odd-address indices,
+rejects out-of-range indices, and verifies presented pixels over two lifecycles.
+
+Native video variable startup now binds far/fog/filter, mirror-debug,
+render-post-sim and the four original 1.0 performance defaults. The runtime
+exposes the shipped release UI configuration and a read-only zero online flag.
+GameGod exposes registration/shutdown for its original menu controls. Original
+video/mesh option controls register; desktop InitDD/SetMode attempts explicitly
+return failure because EGL surface/mode lifetime belongs to the native app.
+Mesh export status logs without entering the Windows mesh-viewer loop.
+
+Original network report/player-info/local-ping controls retain local identity
+and truthful zero transport telemetry. The offline roster/sync list use the
+original list-box lifecycle/configuration with the actual local player list;
+remote team/group/lobby editing is not exposed. The host bootstrap registers
+these controls and the original chat editor for the shipped mission config.
+
+Runtime traces also fixed array ownership in minimap row buffers, order-history
+byte allocations and drop-list variable names. The runner now calls RC::Clear
+before RC::Done, matching original game shutdown, rather than deleting the RC
+registry while the simulation/client remain active. Native debug exit hooks,
+sync logging and current-local-player access from the prior in-progress local
+checkpoint are preserved with this continuation.
+
+Validation: 13 affected original units compile for both host and ARM64; the
+GLES adapter also compiles for ARM64. The session boundary test passes. The
+final simulation run uses freshly rebuilt changed objects and exits 0.
+Harness/foundation use ASan/UBSan; reused original objects are not all
+instrumented, and LeakSanitizer is disabled for Mesa integration. Evidence:
+native-phase22-simulation.log, native-phase22-session.log and
+native-phase22-validation.json. The simulation runner is selected through
+`tools/test_engine_vid.py --test-source engine_simulation_test.cpp`; provide
+owned base.zwp via --test-arg and the rebuilt original object directories via
+--objects. Optional REIGN_CAPTURE_PATH writes the presented pre-shutdown frame
+as PPM for visual inspection.
+
+Next: correct the observed world rendering and incomplete interface command
+bindings, then integrate this bootstrap with Android Activity/EGL/audio/input
+lifetime and produce the Instant Action test APK.

@@ -5,6 +5,10 @@ namespace {
   Bool nativeTrilinearOff = TRUE;
 }
 namespace Config { Bool TrilinearOff() { return nativeTrilinearOff; } }
+// Android owns the EGL surface and mode. Desktop options may inspect controls,
+// but cannot recreate DirectDraw or switch the Activity's display mode.
+Bool InitDD(Bool) { return FALSE; }
+Bool SetMode(U32, U32, U32, Bool) { return FALSE; }
 Bool RenderFlush()
 {
   // An unattached backend is a failure, never a successful invisible frame.
@@ -15,6 +19,20 @@ Bool RenderFlush()
 } // namespace Vid
 
 namespace NativeEngine {
+void InitializeVideoVariables(){
+ if(VarSys::FindVarItem("vid.faroverride"))throw std::logic_error("Video variables already exist");
+  VarSys::CreateFloat("vid.faroverride",0,VarSys::DEFAULT,&Vid::Var::farOverride)->SetFloatRange(0.0F,800.0F);
+  VarSys::CreateFloat("vid.fogdepth",Vid::renderState.fogDepth,VarSys::DEFAULT,&Vid::Var::fogDepth)->SetFloatRange(0.0F,800.0F);
+  VarSys::CreateFloat("vid.farplane",800.0F,VarSys::DEFAULT,&Vid::Var::farPlane)->SetFloatRange(0.0F,800.0F);
+  VarSys::CreateInteger("vid.filter",0,VarSys::DEFAULT,&Vid::Var::varFilter);
+  VarSys::CreateInteger("vid.mipmap",0,VarSys::DEFAULT,&Vid::Var::varMipmap);
+  VarSys::CreateInteger("vid.mipfilter",0,VarSys::DEFAULT,&Vid::Var::varMipfilter);
+  VarSys::CreateInteger("vid.fog",0,VarSys::DEFAULT,&Vid::Var::varFog);
+  VarSys::CreateInteger("vid.mirror.debug",0,VarSys::DEFAULT,&Vid::Var::mirrorDebug);
+  VarSys::CreateInteger("vid.rendpostsim",0,VarSys::DEFAULT,&Vid::Var::varRenderPostSim);
+  unsigned perfIndex=0;for(const char *name:{"vid.perf.object","vid.perf.terrain","vid.perf.particle","vid.perf.lighting"})VarSys::CreateFloat(name,1.0f,VarSys::DEFAULT,&Vid::Var::perfs[perfIndex++])->SetFloatRange(0.1f,1.0f);
+}
+
 HRESULT AttachGlesVideo(reign::LegacyGles &renderer,unsigned width,unsigned height,PresentVideo present,void *context){
  if(!present||!width||!height||width>16384||height>16384)return E_INVALIDARG;
  if(Vid::device||Vid::back)return E_FAIL;

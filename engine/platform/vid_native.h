@@ -4,6 +4,8 @@
 #include "dx7/errors.h"
 namespace reign { class LegacyGles; }
 namespace NativeEngine {
+// Bind native drawing defaults after VarSys startup and before engine loading.
+void InitializeVideoVariables();
 // Engine/render-thread boundary. Caller supplies a working device and a present
 // callback (including EGL swap). References are retained until DetachVideo.
 // This configures display data; engine managers/camera still require startup.

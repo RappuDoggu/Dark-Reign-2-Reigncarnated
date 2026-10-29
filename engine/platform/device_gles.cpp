@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <cmath>
+#include <cstring>
 namespace NativeEngine {
 namespace {
 class Device final:public UnsupportedDevice {
@@ -128,7 +129,7 @@ public:
  HRESULT SetRenderState(D3DRENDERSTATETYPE type,DWORD value)override{
   switch(type){
    // TL vertices are already lit; GLES clips and rasterizes solid interpolated triangles.
-   case D3DRENDERSTATE_CLIPPING:return value==1?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_CLIPPING:return value<=1?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_EXTENTS:case D3DRENDERSTATE_LIGHTING:return value==0?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_FILLMODE:return value==D3DFILL_SOLID?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_SHADEMODE:return value==D3DSHADE_GOURAUD?S_OK:E_NOTIMPL;
@@ -153,8 +154,13 @@ public:
   if(!scene||!vertices||!indices||!count||n<3||n>196608||count>65536)return E_INVALIDARG;
   if((kind!=D3DPT_TRIANGLELIST&&kind!=D3DPT_TRIANGLESTRIP&&kind!=D3DPT_TRIANGLEFAN)||fvf!=D3DFVF_TLVERTEX||flags)return E_NOTIMPL;
   if(kind==D3DPT_TRIANGLELIST&&n%3)return E_INVALIDARG;
-  for(DWORD i=0;i<n;++i)if(indices[i]>=count)return E_INVALIDARG;
   try{
+   // Original bucket allocations can place the index array at an odd address.
+   // Copy its bytes before accessing WORDs, including on strict-alignment ARM64.
+   std::vector<WORD> alignedIndices(n);
+   std::memcpy(alignedIndices.data(),indices,std::size_t(n)*sizeof(WORD));
+   indices=alignedIndices.data();
+   for(DWORD i=0;i<n;++i)if(indices[i]>=count)return E_INVALIDARG;
    std::vector<WORD> triangles;
    if(kind!=D3DPT_TRIANGLELIST){
     triangles.reserve(std::size_t(n-2)*3);

@@ -22,7 +22,7 @@ int main(){try{
  Main::elapCap=16;Main::triCount=250;check(S32(Main::elapCap)==16&&S32(Main::triCount)==250);
  bool duplicateVars=false;try{NativeEngine::InitializeRuntimeVariables();}catch(const std::logic_error &){duplicateVars=true;}check(duplicateVars);
  check(std::strstr(Version::GetBuildString(),"Reigncarnated native ARM64")!=nullptr);
- VarSys::DeleteItem("sys");VarSys::Done();TrackSys::Done();
+ VarSys::DeleteItem("multiplayer");VarSys::DeleteItem("sys");VarSys::Done();TrackSys::Done();
  StyxNet::Data data;
  const U8 bytes[]={1,2,3,4};U32 size=0;const U8 *view=nullptr;
  check(data.IsEmpty());check(data.Store(10,20,sizeof(bytes),bytes,TRUE));

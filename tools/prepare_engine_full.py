@@ -374,7 +374,14 @@ source.write_text('#include "native_stack.h"\n'+text)
 # Bind its original loader progress variables before invoking mission preload.
 source=out/'game/gamegod.cpp';text=source.read_text()
 text+='''
-namespace GameGod { namespace Loader {
+namespace GameGod {
+void InitNativeControls() {
+ for(const char *name:{"Game::Login","Game::MissionSelection","Game::CampaignSelection","Game::SaveLoad","Game::DifficultyList","Game::AddonList"})IFace::RegisterControlClass(name,CreateHandler);
+}
+void DoneNativeControls() {
+ for(const char *name:{"Game::AddonList","Game::DifficultyList","Game::SaveLoad","Game::CampaignSelection","Game::MissionSelection","Game::Login"})IFace::UnregisterControlClass(name);
+}
+namespace Loader {
 void InitNativeVariables() {
  if(VarSys::FindVarItem("gamegod.loader.system")||VarSys::FindVarItem("gamegod.loader.percent"))throw std::logic_error("Loader variables already initialized");
  VarSys::CreateInteger("gamegod.check.types",0,VarSys::DEFAULT,&GameGod::checkTypes);
@@ -394,3 +401,69 @@ patch('coregame/terraindata.cpp',[('delete mappingEntries;','delete[] mappingEnt
 patch('coregame/pathsearch.cpp',[('delete data.zMarks;','delete[] data.zMarks;'),('delete data.cellMap;','delete[] data.cellMap;')])
 patch('coregame_objects/gameobj.cpp',[('delete displayName;','delete[] displayName;')])
 patch('coregame_objects/unitobj.cpp',[(f'delete {name};',f'delete[] {name};') for name in ['weaponBleedMap','selfDestructBleedMap','disruptionBleedMap']])
+
+# The offline target has no socket. Keep the original report control/variables,
+# and publish its actual zero transport traffic instead of retaining StyxNet.
+source=out/'multiplayer/multiplayer_controls_report.cpp';text=source.read_text()
+text=text.replace('#include "multiplayer_private.h"','').replace('#include "multiplayer_host.h"','').replace('#include "multiplayer_network_private.h"','').replace('#include "styxnet_std.h"','')
+start=text.index('      if (Network::client)')
+end=text.index('      ICWindow::DrawSelf(pi);',start)
+import re
+names=re.findall(r'Var(?:Integer|Float) (\w+)\(',text[:start])
+text=text[:start]+''.join('      '+name+' = 0;\n' for name in names)+text[end:]
+source.write_text(text)
+
+# Report mesh export status through the native log, without a Windows viewer loop.
+patch('graphics/meshoptions.cpp', [('    MeshView::SetMessage( "Saving god file: ", *name, "...");', '    LOG_DIAG(("Saving god file: %s...", *name));')])
+# No transport or ping history exists in the local-only runtime.
+patch('multiplayer/multiplayer_controls_localpings.cpp', [('#include "multiplayer_private.h"',''),('PingDisplay::Draw(PrivData::maxLocalPings, PrivData::localPings, pi.client, pi.alphaScale);','PingDisplay::Draw(0, nullptr, pi.client, pi.alphaScale);')])
+
+# Player identity remains backed by the real local-session player list; socket
+# telemetry retains the original zero defaults in the offline target.
+source=out/'multiplayer/multiplayer_controls_playerinfo.cpp';text=source.read_text()
+for header in ['multiplayer_private.h','multiplayer_host.h','multiplayer_network_private.h','styxnet_std.h']:
+ text=text.replace('#include "'+header+'"','')
+start=text.index('        if (Network::client)');brace=text.index('{',start);depth=1;end=brace+1
+while depth:
+ depth+=(text[end]=='{')-(text[end]=='}');end+=1
+text=text[:start]+text[end:];source.write_text(text)
+
+# The offline roster shows the one real local-session player. Lobby team/group
+# editing and remote-player actions are not exposed by this target.
+source=out/'multiplayer/multiplayer_controls_playerlist.cpp';text=source.read_text()
+old=original_function(text,'    void PlayerList::DrawSelf(')
+text=text.replace(old,'''    void PlayerList::DrawSelf(PaintInfo &pi) {
+ if(dirty){
+  Rebuild *rebuild=PreRebuild();DeleteAllItems();
+  NBinTree<Network::Player,CRC>::Iterator players(&Network::GetPlayers());
+  for(Network::Player *player;(player=players++);)AddTextItem(player->GetName(),Utils::Ansi2Unicode(player->GetName()));
+  PostRebuild(&rebuild);dirty=FALSE;
+ }
+ ICListBox::DrawSelf(pi);
+}
+''')
+source.write_text(text)
+
+# Retain the original roster control lifecycle/configuration; remote lobby item
+# implementations belong to the unsupported network target and are not linked.
+source=out/'multiplayer/multiplayer_controls_playerlist.cpp';text=source.read_text()
+methods=['    PlayerList::PlayerList(', '    PlayerList::~PlayerList(', '    U32 PlayerList::HandleEvent(', '    void PlayerList::DrawSelf(', '    void PlayerList::Setup(', '    void PlayerList::Dirty(']
+source.write_text('#include "multiplayer_controls_playerlist.h"\n#include "multiplayer_network.h"\n#include "iface_util.h"\n#include "iface.h"\n#include "iface_types.h"\n#include "stdload.h"\nnamespace MultiPlayer { namespace Controls {\nNList<PlayerList> PlayerList::allControls(&PlayerList::node);\n'+''.join(original_function(text,sig) for sig in methods)+'}}\n')
+
+# Offline synchronization has one local participant and no remote readiness queue.
+source=out/'multiplayer/multiplayer_controls_synclist.cpp';text=source.read_text()
+constructor=original_function(text,'    SyncList::SyncList(');setup=original_function(text,'    void SyncList::Setup(')
+source.write_text('#include "multiplayer_controls_synclist.h"\n#include "multiplayer_network.h"\n#include "iface_util.h"\n#include "stdload.h"\nnamespace MultiPlayer { namespace Controls {\n'+constructor+setup+'''
+void SyncList::DrawSelf(PaintInfo &pi) {
+ Rebuild *rebuild=PreRebuild();DeleteAllItems();
+ NBinTree<Network::Player,CRC>::Iterator players(&Network::GetPlayers());
+ for(Network::Player *player;(player=players++);)AddTextItem(player->GetName(),Utils::Ansi2Unicode(player->GetName()));
+ PostRebuild(&rebuild);ICListBox::DrawSelf(pi);
+}
+}}''')
+
+patch('coregame_interface/common_mapwindow.cpp',[('delete seenBuf;','delete[] seenBuf;'),('delete visibleBuf;','delete[] visibleBuf;')])
+
+patch('coregame_orders/orders.cpp',[('delete saveHead;','delete[] reinterpret_cast<U8 *>(saveHead);'),('delete saveCurrent;','delete[] reinterpret_cast<U8 *>(saveCurrent);')])
+
+patch('interface/icdroplist.cpp',[('delete selectedVarName;','delete[] selectedVarName;')])

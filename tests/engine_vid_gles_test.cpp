@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <vector>
 #include <memory>
+#include <cstring>
 namespace {
 constexpr unsigned W=32,H=32;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
@@ -51,11 +52,20 @@ int main(){try{
   Vid::InitResources(TRUE);
   check(Material::Manager::GetMaterial()!=nullptr);
   check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
+  check(Vid::device->SetRenderState(D3DRENDERSTATE_CLIPPING,0)==S_OK);
+  check(Vid::device->SetRenderState(D3DRENDERSTATE_CLIPPING,1)==S_OK);
+  check(Vid::device->SetRenderState(D3DRENDERSTATE_CLIPPING,2)==E_NOTIMPL);
   check(Vid::device->BeginScene()==S_OK);
   check(!Vid::SetZWriteState(TRUE));check(Vid::SetZWriteState(FALSE));
   reign::LegacyTL vertices[]={{-.5f,-.5f,.5f,1,0xffff0000,0,0,0},{W-.5f,-.5f,.5f,1,0xffff0000,0,1,0},{W-.5f,H-.5f,.5f,1,0xffff0000,0,1,1},{-.5f,H-.5f,.5f,1,0xffff0000,0,0,1}};
   WORD indices[]={0,1,2,0,2,3};
   check(Vid::DrawIndexedPrimitive(PT_TRIANGLELIST,VERTEX_TYPE(D3DFVF_TLVERTEX),vertices,4,indices,6,RS_BLEND_DEF));
+  // Reproduce the original engine's odd-address bucket index allocation.
+  alignas(WORD) std::array<unsigned char,sizeof(indices)+1> packed{};
+  std::memcpy(packed.data()+1,indices,sizeof(indices));
+  check(Vid::device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices,4,reinterpret_cast<WORD *>(packed.data()+1),6,0)==S_OK);
+  WORD invalid[]={0,1,4};std::memcpy(packed.data()+1,invalid,sizeof(invalid));
+  check(Vid::device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices,4,reinterpret_cast<WORD *>(packed.data()+1),3,0)==E_INVALIDARG);
   check(Vid::device->EndScene()==S_OK&&Vid::RenderFlush()&&presentation.calls==1);
   std::vector<std::uint8_t> pixels(W*H*4);renderer.read_presented_rgba(W,H,pixels.data());
   const auto center=(H/2*W+W/2)*4;check(pixels[center]==255&&pixels[center+1]==0&&pixels[center+2]==0);

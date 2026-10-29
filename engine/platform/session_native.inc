@@ -58,3 +58,7 @@ void Send(CRC key,U32 size,const U8 *data,Bool){
 }
 }
 #include "session_game_native.inc"
+namespace MultiPlayer {namespace Network {
+Bool HaveCurrentPlayer(){return NativeEngine::CurrentOfflineSession()?TRUE:FALSE;}
+const Player &GetCurrentPlayer(){RequireSession();NBinTree<Player,CRC>::Iterator player(&localPlayers);if(!*player)throw std::logic_error("Local player registry is empty");return **player;}
+}}
