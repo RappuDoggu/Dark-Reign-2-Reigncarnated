@@ -32,7 +32,7 @@ compile_command += ['-fsanitize=address,undefined',str(repo/'tests'/a.test_sourc
 subprocess.run(compile_command,check=True)
 archive.unlink(missing_ok=True)
 subprocess.run(['ar','rcs',str(archive)]+[str(o) for o in objects.values()],check=True)
-command=[compile_command[0],'-fsanitize=address,undefined',str(obj),'-Wl,--gc-sections','-Wl,--start-group',str(archive)]
+command=[compile_command[0],'-no-pie','-fsanitize=address,undefined',str(obj),'-Wl,--gc-sections','-Wl,--start-group',str(archive)]
 command += [str(f) for f in sorted(a.foundation.glob('libdr2_engine_*.a'))]
 command += [str(a.ffmpeg_root/'lib'/('lib'+n+'.a')) for n in ['avformat','avcodec','swscale','avutil']]
 if a.test_source in ('engine_vid_gles_test.cpp','engine_graphics_startup_test.cpp','engine_mission_boot_test.cpp'):command += ['-l:libEGL.so.1']

@@ -896,3 +896,23 @@ OpenMission is not called. Partial-startup exception cleanup still aborts.
 Original game.cpp startup diagnostics compile for ARM64. This checkpoint is a
 failing integrated runtime attempt, not a passing mission test or new APK.
 Evidence: native-phase19-runtime-failure.log and native-phase19-video-init-link.log.
+
+
+## Phase 20: missing mission loader variables identified and bound
+
+Invalid-VarPtr diagnostics now capture caller addresses, and the host boundary
+runner links without PIE so addr2line can identify original call sites. The
+phase-19 failure was traced to GameGod::Loader::SubSystem assigning its progress
+VarString, not to Vid variables. The prior video-variable diagnosis was an
+inference and was incorrect for that failure. Added InitNativeVariables in the
+original Loader namespace to bind the exact system/percent variables normally
+created by Windows GameGod startup, with duplicate-registration rejection.
+
+The mission runner calls this before PreOpenMission and initializes original
+Sound. Preload now passes that variable assignment but stops on a separate
+initialized assertion while the loader repaints, before the first config-scope
+trace. Full interface painting requires more startup prerequisites. Calling
+GameTime::Init alone also failed early; do not add it without its dependencies.
+MissionPreLoaded/OpenMission remain unreached; exception cleanup still aborts.
+Added per-config-scope diagnostics for the next investigation. Loader and trace
+source units compile for ARM64 (3/3). Evidence: native-phase20-runtime-failure.log.

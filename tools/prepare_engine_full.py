@@ -366,3 +366,21 @@ source=out/'coregame/game.cpp';text=source.read_text()
 for call in ['Team::Init();','Environment::Init();','MoveTable::Init();','SidePlacement::Init();','UnitLimits::Init();','TerrainGroup::Init();','AI::Init();','TaskCtrl::Init();','Config::Init();','MissionVar::Init();']:
  text=text.replace('    '+call,'    LOG_DIAG(("PreOpenMission: '+call[:-3]+'"));\n    '+call)
 source.write_text(text)
+# Invalid startup variables need a usable caller trace, not just a generic error.
+source=out/'util/varptr.cpp';text=source.read_text()
+text=text.replace('  Validate();','  try { Validate(); } catch (...) { std::uintptr_t frames[12]; const auto count=NativeEngine::CaptureStack(frames,12); for(std::size_t i=0;i<count;++i) std::fprintf(stderr,"VarPtr caller: %p\\n",reinterpret_cast<void *>(frames[i])); throw; }')
+source.write_text('#include "native_stack.h"\n'+text)
+# Native bootstrap does not execute the Windows GameGod shell initializer.
+# Bind its original loader progress variables before invoking mission preload.
+source=out/'game/gamegod.cpp';text=source.read_text()
+text+='''
+namespace GameGod { namespace Loader {
+void InitNativeVariables() {
+ if(VarSys::FindVarItem("gamegod.loader.system")||VarSys::FindVarItem("gamegod.loader.percent"))throw std::logic_error("Loader variables already initialized");
+ VarSys::CreateString("gamegod.loader.system","",VarSys::DEFAULT,&system);
+ VarSys::CreateFloat("gamegod.loader.percent",0.0F,VarSys::DEFAULT,&percent)->SetFloatRange(0.0F,1.0F);
+}
+}}
+'''
+source.write_text(text)
+source=out/'coregame/game_config.cpp';text=source.read_text().replace('          GameGod::Loader::Advance();','          LOG_DIAG(("Mission config: %s",sScope->NameStr()));\n          GameGod::Loader::Advance();');source.write_text(text)

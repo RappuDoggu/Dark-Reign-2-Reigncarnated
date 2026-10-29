@@ -7,6 +7,8 @@
 #include "console.h"
 #include "game.h"
 #include "user.h"
+#include "sound.h"
+#include "gametime.h"
 #include "missions.h"
 #include "campaigns.h"
 #include "difficulty.h"
@@ -33,6 +35,7 @@
 #include <stdexcept>
 #include <vector>
 #include <memory>
+namespace GameGod {namespace Loader {void InitNativeVariables();}}
 namespace {
 constexpr unsigned W=32,H=32;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
@@ -63,8 +66,8 @@ int main(int argc,char **argv){try{
  if(argc!=2)throw std::runtime_error("Provide owned base.zwp path");
  const auto installation=std::filesystem::path(argv[1]).parent_path().parent_path();
  for(const char *name:{"missions","worlds","sides","packs"})if(std::filesystem::exists(installation/name))std::filesystem::create_directory_symlink(installation/name,profilePath/name);
- TrackSys::Init();VarSys::Init();FileSys::Init();EventSys::Init();MultiLanguage::Init();FontSys::Init();Console::Init();Input::Init(nullptr,nullptr);
- struct Foundation {~Foundation(){Input::Done();Console::Done();FontSys::Done();MultiLanguage::Done();EventSys::Done();FileSys::Done();VarSys::Done();TrackSys::Done();}} foundation;
+ TrackSys::Init();VarSys::Init();FileSys::Init();EventSys::Init();MultiLanguage::Init();FontSys::Init();Console::Init();Input::Init(nullptr,nullptr);Sound::Init();
+ struct Foundation {~Foundation(){Sound::Done();Input::Done();Console::Done();FontSys::Done();MultiLanguage::Done();EventSys::Done();FileSys::Done();VarSys::Done();TrackSys::Done();}} foundation;
  check(FileSys::AddSrcPack("base",argv[1])&&FileSys::SetActiveStream("base"));
  const auto startup=std::filesystem::path(argv[1]).parent_path().parent_path()/"library/engine/startup.cfg";
  PTree configuration;check(configuration.AddFile(startup.string().c_str()));
@@ -102,6 +105,7 @@ int main(int argc,char **argv){try{
  auto *group=Missions::FindGroup("missions\\multiplayer");check(group);
  auto *mission=group->FindMission("2crazed");check(mission);Missions::SetSelected(mission);
  NativeEngine::BeginOfflineSession("2crazed","Commander");
+ GameGod::Loader::InitNativeVariables();
  std::cerr<<"Entering Game::PreOpenMission 2crazed\n";Game::PreOpenMission(nullptr);
  std::cerr<<"Mission preloaded\n";Game::Done();
  NativeEngine::EndOfflineSession();Mods::Done();Difficulty::Done();Missions::Done();Campaigns::Done();User::Done();IFace::Done();
