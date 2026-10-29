@@ -204,7 +204,7 @@ endif()
 
 set(REIGN_KHRONOS_HEADERS "" CACHE PATH "External Khronos headers for native surface GLES validation")
 if(ANDROID OR REIGN_KHRONOS_HEADERS)
- add_library(dr2_engine_surface_gles STATIC platform/surface_gles.cpp "${REIGN_REPO}/src/legacy_gles.cpp")
+ add_library(dr2_engine_surface_gles STATIC platform/surface_gles.cpp platform/device_gles.cpp "${REIGN_REPO}/src/legacy_gles.cpp")
  set_target_properties(dr2_engine_surface_gles PROPERTIES POSITION_INDEPENDENT_CODE ON)
  target_include_directories(dr2_engine_surface_gles PUBLIC "${REIGN_REPO}/include")
  target_link_libraries(dr2_engine_surface_gles PUBLIC dr2_engine_surfaces)

@@ -1,4 +1,5 @@
 #include "surface_gles.h"
+#include "device_gles.h"
 #include "reign/legacy_gles.hpp"
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
@@ -45,6 +46,33 @@ int main(){try{
  for(int pass=0;pass<2;++pass){
   Context context;reign::LegacyGles renderer(resolve);
   struct Detach {NativeEngine::SurfaceTexture &texture;~Detach(){texture.AbandonContext();}} detach{texture};
+  // Exercise actual DX7 virtual draw dispatch, not the fixture device.
+  DDSURFACEDESC2 targetDesc=desc;targetDesc.dwWidth=W;targetDesc.dwHeight=H;
+  IDirectDrawSurface7 *target=nullptr;check(NativeEngine::CreateMemorySurface(targetDesc,&target)==S_OK);
+  IDirect3DDevice7 *device=nullptr;check(NativeEngine::CreateGlesDevice(renderer,target,&device)==S_OK);target->Release();
+  auto vertices=quad(0xffff0000);WORD triangleIndices[]={0,1,2,0,2,3};
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);
+  check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
+  check(device->Clear(0,nullptr,D3DCLEAR_TARGET,0xff000000,1,0)==E_NOTIMPL);
+  check(device->BeginScene()==S_OK&&device->BeginScene()==E_FAIL);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  std::vector<std::uint8_t> result(W*H*4);renderer.read_rgba(W,H,result.data());
+  const auto center=(H/2*W+W/2)*4;check(result[center]==255&&result[center+1]==0&&result[center+2]==0);
+  triangleIndices[5]=4;check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);triangleIndices[5]=3;
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_XYZ,vertices.data(),4,triangleIndices,6,0)==E_NOTIMPL);
+  check(device->SetTexture(1,surface)==E_NOTIMPL);check(device->SetTexture(0,surface)==S_OK);
+  check(device->SetTextureStageState(0,D3DTSS_MIPFILTER,D3DTFP_LINEAR)==E_NOTIMPL);
+  check(device->SetTextureStageState(0,D3DTSS_MINFILTER,D3DTFN_LINEAR)==S_OK);
+  check(device->SetTextureStageState(0,D3DTSS_MAGFILTER,D3DTFG_LINEAR)==S_OK);
+  check(device->SetTextureStageState(0,D3DTSS_ADDRESS,D3DTADDRESS_WRAP)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_DESTBLEND,D3DBLEND_SRCALPHASAT)==E_NOTIMPL);
+  fill(surface,0x07e0);vertices=quad(0xffffffff);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==255&&result[center+2]==0);
+  fill(surface,0x001f);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==0&&result[center+2]==255);
+  check(device->EndScene()==S_OK&&device->EndScene()==E_FAIL);check(device->Release()==0);
   fill(surface,0xf800);draw(renderer,texture,255,0,0);
   const auto first=texture.Refresh(renderer);check(texture.Refresh(renderer)==first);
   fill(surface,0x001f);draw(renderer,texture,0,0,255);
@@ -53,5 +81,5 @@ int main(){try{
   check(surface->Unlock(nullptr)==S_OK);draw(renderer,texture,0,255,0);
   texture.AbandonContext();renderer.abandon_context();
  }
- std::cout<<"Native DX7 surface -> RGB565 conversion -> GLES texture -> rendered pixels passed across two contexts; no mission executed\n";
+ std::cout<<"Native DX7 surface -> RGB565 conversion -> GLES texture -> rendered pixels and real DX7 device draw dispatch passed across two contexts; no mission executed\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -682,3 +682,31 @@ Evidence: native-frame-link-phase10.json and native-phase10-tests.log. Next:
 real DX7 draw/state submission into GLES, complete manager/app startup, then
 Instant Action on-device launch validation. Additional dependencies may appear
 as those currently unretained application entry points are integrated.
+
+
+## Phase 11: first real DX7 device-to-GLES drawing path
+
+CreateGlesDevice now supplies a reference-counted IDirect3DDevice7 adapter over
+the existing LegacyGles renderer and native CPU surfaces. This is a real draw
+adapter, not the prior fixture device. Initial support is full-target viewport,
+combined color/depth clear, scene lifecycle, indexed/nonindexed TL triangle
+lists, one texture stage with revision-aware uploads, basic depth/blend/fog/
+specular state, texture addressing, matching point/linear min/mag filtering,
+and a subset of texture modulation/selection combinations. Unknown state,
+unsupported FVF/topology, partial clears, mip filtering, and extra stages fail
+explicitly. Invalid indices are rejected before drawing. Renderer/current GL
+context must outlive the device; release the device before context loss.
+
+Software EGL tests now invoke DX7 virtual draw calls and verify solid red,
+textured green, and updated blue pixels. They exercise invalid scene/index/FVF
+and unsupported-state failures, plus destruction/recreation across two contexts.
+All 13 foundation tests pass with ASan/UBSan. The adapter also compiles into the
+ARM64 surface/GLES static library. This does not execute original engine startup
+or a mission, and the adapter is not yet attached to the Android application.
+
+Remaining renderer work includes additional original render-state and texture
+combinations, culling, partial clears, state queries, additional vertex/draw
+modes required by the engine, richer caps reporting, and coordinated app/context
+lifetime. Startup still needs manager initialization, mission mounting and RC
+integration. No new APK is claimed by this checkpoint.
+Evidence: native-phase11-tests.log.
