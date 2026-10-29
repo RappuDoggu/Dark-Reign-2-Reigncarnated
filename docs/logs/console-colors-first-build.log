@@ -1,0 +1,808 @@
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original tracking, events and variables externally: /tmp/reign-upstream-runtime-overlay
+Staged original IControl declarations and coordinate/border methods externally: /tmp/reign-upstream-control-overlay
+Staged six full original frontend translation units; runtime linkage still required
+Staged 30 original IFace event/registry methods and 12 factory/lifecycle methods
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+Staged original Bitmap::Manager naming/fallback/animation/release loops externally: /tmp/reign-upstream-bitmap-manager-overlay
+Staged original font reader/layout/draw/IFace batching externally: /tmp/reign-upstream-font-overlay
+Staged original IFace metric configuration/default/read functions externally: /tmp/reign-upstream-metrics-overlay
+Staged original FontSys alias/config/mode-change registration externally: /tmp/reign-upstream-font-registry-overlay
+-- Configuring done (2.1s)
+-- Generating done (0.2s)
+-- Build files have been written to: /workspace/scratch/2e29d93ded9e/reign-work/build-host
+[  1%] Built target dr2_primitives
+[  3%] Built target reign_platform
+[  3%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[  4%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[  4%] Built target reign_frontend_support
+[  5%] Built target reign_vid_device
+[  5%] Building CXX object CMakeFiles/reign_frontend_effects.dir/tmp/reign-upstream-effects-overlay/frontend_effects_slice.cpp.o
+[  6%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
+[  6%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+[  7%] Built target platform_smoke
+[  8%] Built target reign_checks
+[  8%] Built target archive_smoke
+[  9%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+[ 10%] Built target resources_smoke
+[ 10%] Built target tga_smoke
+[ 11%] Building CXX object CMakeFiles/reign_frontend_effects.dir/src/frontend_effects.cpp.o
+[ 12%] Built target bitmap_surface_smoke
+[ 13%] Built target frontend_support_smoke
+[ 14%] Built target frontend_text_smoke
+[ 14%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 14%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
+[ 15%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 15%] Linking CXX static library libdr2_tokenizer.a
+[ 15%] Built target dr2_tokenizer
+[ 15%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 15%] Linking CXX static library libreign_frontend_effects.a
+[ 15%] Built target reign_frontend_effects
+[ 15%] Linking CXX executable installation_probe
+[ 15%] Linking CXX executable tokenizer_smoke
+[ 16%] Built target tokenizer_smoke
+[ 16%] Built target installation_probe
+[ 17%] Built target engine_smoke
+[ 17%] Building CXX object CMakeFiles/frontend_effects_smoke.dir/tests/frontend_effects_smoke.cpp.o
+[ 17%] Linking CXX static library libdr2_bitmap_pixels.a
+[ 18%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 19%] Built target dr2_bitmap_pixels
+[ 19%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 20%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/tmp/reign-upstream-bitmap-manager-overlay/manager_slice.cpp.o
+[100%] Linking CXX static library libdr2_tracking.a
+[100%] Built target dr2_tracking
+[100%] Linking CXX executable bitmap_conversion_probe
+[100%] Linking CXX executable bitmap_pixels_smoke
+[100%] Linking CXX static library libdr2_vid_state.a
+[100%] Built target dr2_vid_state
+[100%] Linking CXX executable bitmap_loader_smoke
+[100%] Built target bitmap_conversion_probe
+[100%] Built target bitmap_pixels_smoke
+[100%] Linking CXX executable bmp_rgba_probe
+[100%] Linking CXX executable bitmap_bmp_smoke
+[100%] Built target bitmap_loader_smoke
+[100%] Built target bmp_rgba_probe
+[100%] Built target bitmap_bmp_smoke
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[100%] Building CXX object CMakeFiles/vid_state_smoke.dir/tests/vid_state_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/tracking_smoke.dir/tests/tracking_smoke.cpp.o
+[100%] Linking CXX static library libdr2_events.a
+[100%] Built target dr2_events
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[100%] Linking CXX executable frontend_effects_smoke
+[100%] Built target frontend_effects_smoke
+[100%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/primitive.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/src/bitmap_manager.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[100%] Linking CXX executable vid_state_smoke
+[100%] Built target vid_state_smoke
+[100%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucket.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/tranbucket.cpp.o
+[100%] Linking CXX executable tracking_smoke
+[100%] Building CXX object CMakeFiles/event_loop_smoke.dir/tests/event_loop_smoke.cpp.o
+[100%] Built target tracking_smoke
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[100%] Building CXX object CMakeFiles/native_event_context_smoke.dir/tests/native_event_context_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[100%] Linking CXX static library libdr2_buckets.a
+[100%] Built target dr2_buckets
+[100%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+[100%] Linking CXX executable event_loop_smoke
+[100%] Building CXX object CMakeFiles/bucket_smoke.dir/tests/bucket_smoke.cpp.o
+[100%] Linking CXX static library libdr2_bitmap_manager.a
+[100%] Built target dr2_bitmap_manager
+[100%] Linking CXX executable bitmap_manager_smoke
+[100%] Built target event_loop_smoke
+[100%] Linking CXX executable bitmap_manager_probe
+[100%] Built target bitmap_manager_smoke
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /tmp/reign-upstream-runtime-overlay/varsys.h:3,
+                 from /tmp/reign-upstream-runtime-overlay/varitem.cpp:2:
+/tmp/reign-upstream-runtime-overlay/varitem.cpp: In destructor ‘reign::vars_detail::VarSys::VarItem::~VarItem()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+[100%] Built target bitmap_manager_probe
+[100%] Linking CXX executable native_event_context_smoke
+[100%] Linking CXX static library libdr2_config.a
+[100%] Built target dr2_config
+[100%] Built target native_event_context_smoke
+[100%] Linking CXX static library libdr2_vars.a
+[100%] Building CXX object CMakeFiles/dr2_iface_metrics.dir/tmp/reign-upstream-metrics-overlay/metrics_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_fonts.dir/tmp/reign-upstream-font-overlay/font_slice.cpp.o
+[100%] Linking CXX executable configuration_probe
+[100%] Linking CXX executable config_smoke
+[100%] Building CXX object CMakeFiles/dr2_fonts.dir/src/native_font.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/runcodes.cpp.o
+[100%] Built target dr2_vars
+[100%] Building CXX object CMakeFiles/vars_smoke.dir/tests/vars_smoke.cpp.o
+[100%] Built target config_smoke
+[100%] Built target configuration_probe
+[100%] Building CXX object CMakeFiles/runtime_handoff_smoke.dir/tests/runtime_handoff_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_coordinates.cpp.o
+[100%] Linking CXX executable bucket_smoke
+[100%] Built target bucket_smoke
+[100%] Building CXX object CMakeFiles/dr2_frontend_config.dir/tmp/reign-upstream-frontend-overlay/control_stdload.cpp.o
+[100%] Linking CXX static library libdr2_iface_metrics.a
+[100%] Built target dr2_iface_metrics
+[100%] Linking CXX executable vars_smoke
+[100%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/main_exec.cpp.o
+[100%] Built target vars_smoke
+[100%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_color_magic.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_runcodes.dir/src/runcode_host.cpp.o
+[100%] Linking CXX executable runtime_handoff_smoke
+[100%] Built target runtime_handoff_smoke
+[100%] Linking CXX static library libdr2_frontend_config.a
+[100%] Built target dr2_frontend_config
+[100%] Building CXX object CMakeFiles/frontend_config_smoke.dir/tests/frontend_config_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_varfile.dir/tmp/reign-upstream-varfile-overlay/varfile_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_iface_events.dir/tmp/reign-upstream-iface-events-overlay/iface_events.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/operation.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_console.dir/tmp/reign-upstream-console-overlay/console_slice.cpp.o
+[100%] Linking CXX static library libdr2_fonts.a
+[100%] Built target dr2_fonts
+[100%] Building CXX object CMakeFiles/dr2_console.dir/src/console.cpp.o
+[100%] Linking CXX static library libdr2_control_coordinates.a
+[100%] Built target dr2_control_coordinates
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/comparison.cpp.o
+[100%] Linking CXX static library libdr2_runcodes.a
+[100%] Built target dr2_runcodes
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/switch.cpp.o
+[100%] Linking CXX static library libdr2_varfile.a
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /tmp/reign-upstream-console-overlay/console_slice.hpp:2,
+                 from /tmp/reign-upstream-console-overlay/console_slice.cpp:1:
+/tmp/reign-upstream-console-overlay/console_slice.cpp: In destructor ‘Console::CmdParse::~CmdParse()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+[100%] Built target dr2_varfile
+[100%] Building CXX object CMakeFiles/dr2_key_names.dir/tmp/reign-upstream-key-names-overlay/key_names_slice.cpp.o
+[100%] Linking CXX executable frontend_config_smoke
+[100%] Building CXX object CMakeFiles/dr2_iface_events.dir/tmp/reign-upstream-iface-events-overlay/iface_factory.cpp.o
+[100%] Built target frontend_config_smoke
+[100%] Building CXX object CMakeFiles/runcodes_smoke.dir/tests/runcodes_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_key_names.dir/src/key_names.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_iface_events.dir/src/interface_events.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/relationaloperator.cpp.o
+[100%] Linking CXX static library libdr2_console.a
+[100%] Built target dr2_console
+[100%] Building CXX object CMakeFiles/control_types_smoke.dir/tests/control_types_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_localization.dir/tmp/reign-upstream-localization-overlay/localization_slice.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_font_registry.dir/tmp/reign-upstream-font-registry-overlay/registry_slice.cpp.o
+[100%] Building CXX object CMakeFiles/console_smoke.dir/tests/console_smoke.cpp.o
+[100%] Linking CXX executable runcodes_smoke
+[100%] Built target runcodes_smoke
+[100%] Building CXX object CMakeFiles/varfile_smoke.dir/tests/varfile_smoke.cpp.o
+[100%] Linking CXX static library libdr2_interface_expressions.a
+[100%] Built target dr2_interface_expressions
+[100%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/font_registry.cpp.o
+[100%] Linking CXX static library libdr2_key_names.a
+[100%] Built target dr2_key_names
+[100%] Building CXX object CMakeFiles/language_database_probe.dir/tools/language_database_probe.cpp.o
+[100%] Linking CXX executable control_types_smoke
+[100%] Linking CXX static library libdr2_iface_events.a
+[100%] Building CXX object CMakeFiles/dr2_localization.dir/src/localization.cpp.o
+[100%] Built target control_types_smoke
+[100%] Built target dr2_iface_events
+[100%] Linking CXX executable font_probe
+[100%] Linking CXX executable font_smoke
+[100%] Linking CXX executable console_smoke
+[100%] Built target font_probe
+[100%] Built target font_smoke
+[100%] Building CXX object CMakeFiles/dr2_command_scopes.dir/tmp/reign-upstream-command-overlay/command_slice.cpp.o
+[100%] Building CXX object CMakeFiles/key_names_smoke.dir/tests/key_names_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/interface_metrics.cpp.o
+[100%] Built target console_smoke
+[100%] Building CXX object CMakeFiles/reign_frontend_input.dir/src/frontend_input.cpp.o
+[100%] Linking CXX executable varfile_smoke
+[100%] Built target varfile_smoke
+[100%] Building CXX object CMakeFiles/reign_frontend_draw.dir/src/frontend_draw.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_draw.dir/tmp/reign-upstream-frontend-draw-overlay/frontend_triangle.cpp.o
+[100%] Linking CXX executable key_names_smoke
+[100%] Built target key_names_smoke
+[100%] Linking CXX static library libdr2_localization.a
+[100%] Building CXX object CMakeFiles/interface_expressions_smoke.dir/tests/interface_expressions_smoke.cpp.o
+[100%] Built target dr2_localization
+[100%] Building CXX object CMakeFiles/dr2_command_scopes.dir/src/command_scopes.cpp.o
+[100%] Linking CXX static library libdr2_font_registry.a
+[100%] Built target dr2_font_registry
+[100%] Building CXX object CMakeFiles/dr2_babel.dir/tmp/reign-upstream-babel-overlay/babel_slice.cpp.o
+[100%] Linking CXX static library libreign_frontend_input.a
+[100%] Linking CXX executable language_database_probe
+[100%] Built target reign_frontend_input
+[100%] Building CXX object CMakeFiles/reign_frontend_fonts.dir/src/frontend_font.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_frame.dir/src/frontend_frame.cpp.o
+[100%] Built target language_database_probe
+[100%] Building CXX object CMakeFiles/frontend_input_smoke.dir/tests/frontend_input_smoke.cpp.o
+[100%] Linking CXX static library libdr2_command_scopes.a
+[100%] Built target dr2_command_scopes
+[100%] Building CXX object CMakeFiles/localization_smoke.dir/tests/localization_smoke.cpp.o
+[100%] Linking CXX static library libdr2_babel.a
+[100%] Built target dr2_babel
+[100%] Linking CXX executable font_registry_smoke
+[100%] Linking CXX static library libreign_frontend_draw.a
+[100%] Linking CXX executable interface_metrics_smoke
+[100%] Built target reign_frontend_draw
+[100%] Linking CXX executable font_registry_probe
+[100%] Built target interface_metrics_smoke
+[100%] Built target font_registry_smoke
+[100%] Building CXX object CMakeFiles/command_scopes_smoke.dir/tests/command_scopes_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_theme.dir/src/frontend_theme.cpp.o
+[100%] Built target font_registry_probe
+[100%] Building CXX object CMakeFiles/reign_frontend_theme.dir/tmp/reign-upstream-theme-overlay/theme_slice.cpp.o
+[100%] Linking CXX executable interface_expressions_smoke
+[100%] Linking CXX static library libreign_frontend_frame.a
+[100%] Built target reign_frontend_frame
+[100%] Building CXX object CMakeFiles/frontend_draw_smoke.dir/tests/frontend_draw_smoke.cpp.o
+[100%] Built target interface_expressions_smoke
+[100%] Building CXX object CMakeFiles/frontend_quad_smoke.dir/tests/frontend_quad_smoke.cpp.o
+[100%] Linking CXX static library libreign_frontend_fonts.a
+[100%] Built target reign_frontend_fonts
+[100%] Linking CXX executable localization_smoke
+[100%] Building CXX object CMakeFiles/frontend_texture_smoke.dir/tests/frontend_texture_smoke.cpp.o
+[100%] Linking CXX executable frontend_input_smoke
+[100%] Built target localization_smoke
+[100%] Building CXX object CMakeFiles/babel_smoke.dir/tests/babel_smoke.cpp.o
+[100%] Built target frontend_input_smoke
+[100%] Building CXX object CMakeFiles/frontend_font_smoke.dir/tests/frontend_font_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/frontend_frame_smoke.dir/tests/frontend_frame_smoke.cpp.o
+[100%] Linking CXX static library libreign_frontend_theme.a
+[100%] Built target reign_frontend_theme
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o
+[100%] Linking CXX executable frontend_draw_smoke
+[100%] Linking CXX executable command_scopes_smoke
+[100%] Built target frontend_draw_smoke
+[100%] Built target command_scopes_smoke
+[100%] Building CXX object CMakeFiles/frontend_theme_smoke.dir/tests/frontend_theme_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/frontend_theme_probe.dir/tools/frontend_theme_probe.cpp.o
+[100%] Linking CXX executable babel_smoke
+[100%] Built target babel_smoke
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o
+[100%] Linking CXX executable frontend_quad_smoke
+[100%] Built target frontend_quad_smoke
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp: In destructor ‘virtual IControl::~IControl()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+[100%] Linking CXX executable frontend_texture_smoke
+[100%] Built target frontend_texture_smoke
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o
+[100%] Linking CXX executable frontend_theme_smoke
+[100%] Linking CXX executable frontend_frame_smoke
+[100%] Built target frontend_theme_smoke
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o
+[100%] Linking CXX executable frontend_font_smoke
+[100%] Built target frontend_frame_smoke
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/messagebox_event.cpp.o
+[100%] Built target frontend_font_smoke
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o
+[100%] Linking CXX executable frontend_theme_probe
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o
+[100%] Built target frontend_theme_probe
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/frontend_helpers.cpp.o
+[100%] Built target dr2_frontend_controls
+[100%] Building CXX object CMakeFiles/interface_events_smoke.dir/tests/interface_events_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_cursors.dir/src/cursors.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_cursors.dir/tmp/reign-upstream-cursor-overlay/cursor_slice.cpp.o
+[100%] Building CXX object CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/interface_registry_smoke.dir/tests/interface_registry_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_configuration.dir/tmp/reign-upstream-frontend-configuration-overlay/frontend_configuration_slice.cpp.o
+[100%] Building CXX object CMakeFiles/messagebox_event_smoke.dir/tests/messagebox_event_smoke.cpp.o
+[100%] Building CXX object CMakeFiles/reign_frontend_configuration.dir/src/frontend_configuration.cpp.o
+[100%] Linking CXX executable messagebox_event_smoke
+[100%] Built target messagebox_event_smoke
+/tmp/reign-upstream-frontend-configuration-overlay/frontend_configuration_slice.cpp: In function ‘void IFace::ConfigureDefaultConsoleColor(FScope*)’:
+/tmp/reign-upstream-frontend-configuration-overlay/frontend_configuration_slice.cpp:7:5: error: ‘FScopeToColor’ was not declared in this scope
+    7 |     FScopeToColor(fScope, reign::frontend_configuration_detail::state().defaultConsoleColor);
+      |     ^~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-configuration-overlay/frontend_configuration_slice.cpp: In function ‘void IFace::ConfigureConsoleColors(FScope*)’:
+/tmp/reign-upstream-frontend-configuration-overlay/frontend_configuration_slice.cpp:19:7: error: ‘FScopeToColor’ was not declared in this scope
+   19 |       FScopeToColor(sScope, c);
+      |       ^~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/reign_frontend_configuration.dir/build.make:79: CMakeFiles/reign_frontend_configuration.dir/tmp/reign-upstream-frontend-configuration-overlay/frontend_configuration_slice.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+[100%] Linking CXX executable interface_events_smoke
+gmake[1]: *** [CMakeFiles/Makefile2:4208: CMakeFiles/reign_frontend_configuration.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[100%] Linking CXX static library libdr2_cursors.a
+[100%] Linking CXX executable interface_registry_smoke
+[100%] Built target dr2_cursors
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data784+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data797+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data800+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data805+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data814+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data831+0x18): more undefined references to `typeinfo for IControl' follow
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/interface_events_smoke.dir/build.make:149: interface_events_smoke] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:1960: CMakeFiles/interface_events_smoke.dir/all] Error 2
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data784+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data797+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data800+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data805+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data814+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data831+0x18): more undefined references to `typeinfo for IControl' follow
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/interface_registry_smoke.dir/build.make:149: interface_registry_smoke] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:2077: CMakeFiles/interface_registry_smoke.dir/all] Error 2
+[100%] Linking CXX executable frontend_live_smoke
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o: in function `main::{lambda()#1}::operator()() const::{lambda()#1}::operator()() const::{lambda()#1}::operator()() const::{lambda()#1}::operator()() const::{lambda()#1}::operator()() const':
+frontend_live_smoke.cpp:(.text+0x20c3): undefined reference to `IControl::SetName(char const*)'
+/usr/bin/ld: frontend_live_smoke.cpp:(.text+0x24ff): undefined reference to `IControl::SetPos(int, int)'
+/usr/bin/ld: frontend_live_smoke.cpp:(.text+0x2610): undefined reference to `IControl::SetSize(int, int)'
+/usr/bin/ld: frontend_live_smoke.cpp:(.text+0x42a1): undefined reference to `IControl::DeleteMarkedControls()'
+/usr/bin/ld: frontend_live_smoke.cpp:(.text+0x539f): undefined reference to `IControl::MarkForDeletion()'
+/usr/bin/ld: frontend_live_smoke.cpp:(.text+0x53a4): undefined reference to `IControl::DeleteMarkedControls()'
+/usr/bin/ld: frontend_live_smoke.cpp:(.text+0x562c): undefined reference to `IControl::Deactivate()'
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o:(.data.rel+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o:(.data.rel+0x78): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o:(.data.rel+0x198): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o:(.data.rel+0x1f8): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o:(.data.rel+0x258): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o:(.data.rel+0x318): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/frontend_live_smoke.dir/tests/frontend_live_smoke.cpp.o: in function `ICRoot::~ICRoot()':
+frontend_live_smoke.cpp:(.text._ZN6ICRootD2Ev[_ZN6ICRootD5Ev]+0x1b9): undefined reference to `IControl::~IControl()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data784+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o: in function `ICRoot::ICRoot()':
+icroot.cpp:(.text._ZN6ICRootC2Ev+0xbe): undefined reference to `IControl::IControl(IControl*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data797+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data800+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data805+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o: in function `ICRoot::Activate()':
+icroot.cpp:(.text._ZN6ICRoot8ActivateEv+0x130): undefined reference to `IControl::Activate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data814+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data831+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data835+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data841+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data849+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data854+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o: in function `ICRoot::PurgeNonSystem()':
+icroot.cpp:(.text._ZN6ICRoot14PurgeNonSystemEv+0x395): undefined reference to `IControl::MarkForDeletion()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data864+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data871+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o: in function `ICRoot::FindByName(char const*, IControl*)':
+icroot.cpp:(.text._ZN6ICRoot10FindByNameEPKcP8IControl+0x192): undefined reference to `IControl::previous'
+/usr/bin/ld: icroot.cpp:(.text._ZN6ICRoot10FindByNameEPKcP8IControl+0x1b2): undefined reference to `IControl::previous'
+/usr/bin/ld: icroot.cpp:(.text._ZN6ICRoot10FindByNameEPKcP8IControl+0x1d9): undefined reference to `IControl::previous'
+/usr/bin/ld: icroot.cpp:(.text._ZN6ICRoot10FindByNameEPKcP8IControl+0x1f9): undefined reference to `IControl::previous'
+/usr/bin/ld: icroot.cpp:(.text._ZN6ICRoot10FindByNameEPKcP8IControl+0x693): undefined reference to `IControl::Find(unsigned int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data879+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data886+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data901+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o: in function `ICRoot::HandleEvent(reign::event_detail::Event&)':
+icroot.cpp:(.text._ZN6ICRoot11HandleEventERN5reign12event_detail5EventE+0x973): undefined reference to `IControl::HandleEvent(reign::event_detail::Event&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data916+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data921+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data929+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data934+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x18): undefined reference to `IControl::DrawSelf(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x20): undefined reference to `IControl::DrawChildren(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x28): undefined reference to `IControl::DrawCtrlText(PaintInfo const&, unsigned short const*, Color*, Point<int> const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x30): undefined reference to `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x38): undefined reference to `IControl::DrawCtrlFrame(PaintInfo const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x40): undefined reference to `IControl::Poll()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x48): undefined reference to `IControl::Notify(IFaceVar*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x50): undefined reference to `IControl::AutoSize()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x68): undefined reference to `IControl::Setup(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x70): undefined reference to `IControl::PostConfigure()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x78): undefined reference to `IControl::SetStyleItem(char const*, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x80): undefined reference to `IControl::AdjustGeometry()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x88): undefined reference to `IControl::GetAdjustmentRect()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x90): undefined reference to `IControl::SetTextString(unsigned short const*, int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0x98): undefined reference to `IControl::CanActivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0xa8): undefined reference to `IControl::Deactivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTV6ICRoot[_ZTV6ICRoot]+0xb0): undefined reference to `IControl::ExecItem(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel..Lubsan_data991+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o:(.data.rel.ro._ZTI6ICRoot[_ZTI6ICRoot]+0x10): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data798+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data802+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data810+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data839+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::ICButton(IControl*)':
+icbutton.cpp:(.text._ZN8ICButtonC2EP8IControl+0xc9): undefined reference to `IControl::IControl(IControl*)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButtonC2EP8IControl+0xe26): undefined reference to `IControl::~IControl()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data887+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::~ICButton()':
+icbutton.cpp:(.text._ZN8ICButtonD2Ev+0x7c0): undefined reference to `IControl::~IControl()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data902+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data907+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data912+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data917+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data929+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data954+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::DrawSelf(PaintInfo&)':
+icbutton.cpp:(.text._ZN8ICButton8DrawSelfER9PaintInfo+0x8cb): undefined reference to `IControl::GetTexture()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1094+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1097+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::AdjustGeometry()':
+icbutton.cpp:(.text._ZN8ICButton14AdjustGeometryEv+0x1ce): undefined reference to `IControl::AdjustGeometry()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1138+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1146+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::Activate()':
+icbutton.cpp:(.text._ZN8ICButton8ActivateEv+0x130): undefined reference to `IControl::Activate()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton8ActivateEv+0x511): undefined reference to `IControl::ActivateVar(IFaceVar*, reign::vars_detail::VarSys::VarItemType)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1154+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::Deactivate()':
+icbutton.cpp:(.text._ZN8ICButton10DeactivateEv+0x130): undefined reference to `IControl::Deactivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1169+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::SetStyleItem(char const*, int)':
+icbutton.cpp:(.text._ZN8ICButton12SetStyleItemEPKci+0x194): undefined reference to `IControl::SetStyleItem(char const*, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1186+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1207+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::Setup(FScope*)':
+icbutton.cpp:(.text._ZN8ICButton5SetupEP6FScope+0x2b1): undefined reference to `IControl::ConfigureVar(IFaceVar*&, FScope*)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton5SetupEP6FScope+0xa02): undefined reference to `IControl::Setup(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1231+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1237+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1246+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1259+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1263+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel..Lubsan_data1267+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o: in function `ICButton::HandleEvent(reign::event_detail::Event&)':
+icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x59e): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x8ba): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0xce6): undefined reference to `IControl::GetMouseCapture()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0xe13): undefined reference to `IControl::GetKeyFocus()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0xf94): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x15e9): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x171a): undefined reference to `IControl::HasKeyFocus()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x1854): undefined reference to `IControl::ReleaseKeyFocus()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x1981): undefined reference to `IControl::HasMouseCapture()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x1abb): undefined reference to `IControl::ReleaseMouseCapture()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x1dc1): undefined reference to `IControl::HasMouseCapture()'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x2071): undefined reference to `IControl::InWindow(Point<int> const&) const'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x282f): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x29b9): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x2d82): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x3840): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icbutton.cpp:(.text._ZN8ICButton11HandleEventERN5reign12event_detail5EventE+0x4333): undefined reference to `IControl::HandleEvent(reign::event_detail::Event&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x20): undefined reference to `IControl::DrawChildren(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x28): undefined reference to `IControl::DrawCtrlText(PaintInfo const&, unsigned short const*, Color*, Point<int> const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x30): undefined reference to `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x38): undefined reference to `IControl::DrawCtrlFrame(PaintInfo const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x40): undefined reference to `IControl::Poll()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x50): undefined reference to `IControl::AutoSize()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x70): undefined reference to `IControl::PostConfigure()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x88): undefined reference to `IControl::GetAdjustmentRect()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x90): undefined reference to `IControl::SetTextString(unsigned short const*, int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0x98): undefined reference to `IControl::CanActivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTV8ICButton[_ZTV8ICButton]+0xb0): undefined reference to `IControl::ExecItem(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o:(.data.rel.ro._ZTI8ICButton[_ZTI8ICButton]+0x10): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data788+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data803+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data811+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data836+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data841+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::ICWindow(IControl*)':
+icwindow.cpp:(.text._ZN8ICWindowC2EP8IControl+0xc7): undefined reference to `IControl::IControl(IControl*)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindowC2EP8IControl+0x9e1): undefined reference to `IControl::~IControl()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data853+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::~ICWindow()':
+icwindow.cpp:(.text._ZN8ICWindowD2Ev+0x1bb): undefined reference to `IControl::~IControl()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data867+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data871+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data876+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data880+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data885+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data889+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::PostConfigure()':
+icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x1026): undefined reference to `IControl::PostConfigure()'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x1f96): undefined reference to `IControl::SetName(char const*)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x2134): undefined reference to `IControl::SetSize(int, int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x22f0): undefined reference to `IControl::SetPos(int, int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x2495): undefined reference to `IControl::SetGeometry(char const*, ...)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x2644): undefined reference to `IControl::SetStyle(char const*, ...)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x29de): undefined reference to `IControl::SetColorGroup(ColorGroup*)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x2b74): undefined reference to `IControl::SetTextJustify(unsigned int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x2fc2): undefined reference to `IControl::SetName(char const*)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x3115): undefined reference to `IControl::SetSize(int, int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x325d): undefined reference to `IControl::SetPos(int, int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow13PostConfigureEv+0x336c): undefined reference to `IControl::SetGeometry(char const*, ...)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1052+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1066+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::GetAdjustmentRect()':
+icwindow.cpp:(.text._ZN8ICWindow17GetAdjustmentRectEv+0x705): undefined reference to `IControl::GetAdjustmentRect()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1082+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::Setup(FScope*)':
+icwindow.cpp:(.text._ZN8ICWindow5SetupEP6FScope+0x4d6): undefined reference to `IControl::Setup(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1086+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1095+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1100+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::DrawSelf(PaintInfo&)':
+icwindow.cpp:(.text._ZN8ICWindow8DrawSelfER9PaintInfo+0x35f): undefined reference to `IControl::GetTexture()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1115+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1124+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1131+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1134+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1144+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1154+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::HandleEvent(reign::event_detail::Event&)':
+icwindow.cpp:(.text._ZN8ICWindow11HandleEventERN5reign12event_detail5EventE+0x531): undefined reference to `IControl::InWindow(Point<int> const&) const'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow11HandleEventERN5reign12event_detail5EventE+0x6d1): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow11HandleEventERN5reign12event_detail5EventE+0x8d5): undefined reference to `IControl::SetTabStop(IControl*, int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow11HandleEventERN5reign12event_detail5EventE+0xd83): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow11HandleEventERN5reign12event_detail5EventE+0x10eb): undefined reference to `IControl::SetZPos(unsigned int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow11HandleEventERN5reign12event_detail5EventE+0x1484): undefined reference to `IControl::MarkForDeletion()'
+/usr/bin/ld: icwindow.cpp:(.text._ZN8ICWindow11HandleEventERN5reign12event_detail5EventE+0x15cf): undefined reference to `IControl::HandleEvent(reign::event_detail::Event&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1179+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1187+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::SetTextString(unsigned short const*, int, int)':
+icwindow.cpp:(.text._ZN8ICWindow13SetTextStringEPKtii+0x404): undefined reference to `IControl::SetTextString(unsigned short const*, int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1197+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindow::SetStyleItem(char const*, int)':
+icwindow.cpp:(.text._ZN8ICWindow12SetStyleItemEPKci+0x258): undefined reference to `IControl::SetStyleItem(char const*, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindowTitle::ICWindowTitle(IControl*)':
+icwindow.cpp:(.text._ZN13ICWindowTitleC2EP8IControl+0xc4): undefined reference to `IControl::IControl(IControl*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1221+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1230+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1235+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1245+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindowTitle::DrawSelf(PaintInfo&)':
+icwindow.cpp:(.text._ZN13ICWindowTitle8DrawSelfER9PaintInfo+0x41d): undefined reference to `IControl::GetTexture()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1260+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1269+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1273+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1276+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1294+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1298+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindowTitle::HandleEvent(reign::event_detail::Event&)':
+icwindow.cpp:(.text._ZN13ICWindowTitle11HandleEventERN5reign12event_detail5EventE+0x6a8): undefined reference to `IControl::GetMouseCapture()'
+/usr/bin/ld: icwindow.cpp:(.text._ZN13ICWindowTitle11HandleEventERN5reign12event_detail5EventE+0x96a): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN13ICWindowTitle11HandleEventERN5reign12event_detail5EventE+0xee6): undefined reference to `IControl::HasMouseCapture()'
+/usr/bin/ld: icwindow.cpp:(.text._ZN13ICWindowTitle11HandleEventERN5reign12event_detail5EventE+0x101f): undefined reference to `IControl::ReleaseMouseCapture()'
+/usr/bin/ld: icwindow.cpp:(.text._ZN13ICWindowTitle11HandleEventERN5reign12event_detail5EventE+0x1155): undefined reference to `IControl::HasMouseCapture()'
+/usr/bin/ld: icwindow.cpp:(.text._ZN13ICWindowTitle11HandleEventERN5reign12event_detail5EventE+0x1ab2): undefined reference to `IControl::MoveTo(Point<int> const&)'
+/usr/bin/ld: icwindow.cpp:(.text._ZN13ICWindowTitle11HandleEventERN5reign12event_detail5EventE+0x1d98): undefined reference to `IControl::HandleEvent(reign::event_detail::Event&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1378+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1386+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x20): undefined reference to `IControl::DrawChildren(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x28): undefined reference to `IControl::DrawCtrlText(PaintInfo const&, unsigned short const*, Color*, Point<int> const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x30): undefined reference to `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x38): undefined reference to `IControl::DrawCtrlFrame(PaintInfo const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x40): undefined reference to `IControl::Poll()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x48): undefined reference to `IControl::Notify(IFaceVar*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x50): undefined reference to `IControl::AutoSize()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x68): undefined reference to `IControl::Setup(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x70): undefined reference to `IControl::PostConfigure()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x78): undefined reference to `IControl::SetStyleItem(char const*, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x80): undefined reference to `IControl::AdjustGeometry()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x88): undefined reference to `IControl::GetAdjustmentRect()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x90): undefined reference to `IControl::SetTextString(unsigned short const*, int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0x98): undefined reference to `IControl::CanActivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0xa0): undefined reference to `IControl::Activate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0xa8): undefined reference to `IControl::Deactivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV13ICWindowTitle[_ZTV13ICWindowTitle]+0xb0): undefined reference to `IControl::ExecItem(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel..Lubsan_data1449+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o: in function `ICWindowTitle::~ICWindowTitle()':
+icwindow.cpp:(.text._ZN13ICWindowTitleD2Ev[_ZN13ICWindowTitleD5Ev]+0x1bb): undefined reference to `IControl::~IControl()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x20): undefined reference to `IControl::DrawChildren(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x28): undefined reference to `IControl::DrawCtrlText(PaintInfo const&, unsigned short const*, Color*, Point<int> const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x30): undefined reference to `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x38): undefined reference to `IControl::DrawCtrlFrame(PaintInfo const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x40): undefined reference to `IControl::Poll()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x48): undefined reference to `IControl::Notify(IFaceVar*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x50): undefined reference to `IControl::AutoSize()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x80): undefined reference to `IControl::AdjustGeometry()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0x98): undefined reference to `IControl::CanActivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0xa0): undefined reference to `IControl::Activate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0xa8): undefined reference to `IControl::Deactivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTV8ICWindow[_ZTV8ICWindow]+0xb0): undefined reference to `IControl::ExecItem(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTI13ICWindowTitle[_ZTI13ICWindowTitle]+0x10): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o:(.data.rel.ro._ZTI8ICWindow[_ZTI8ICWindow]+0x10): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o:(.data.rel..Lubsan_data1038+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o:(.data.rel..Lubsan_data1049+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o:(.data.rel..Lubsan_data1096+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o: in function `IFaceVar::Activate()':
+ifvar.cpp:(.text._ZN8IFaceVar8ActivateEv+0xf87): undefined reference to `IControl::FindVarName(char const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o:(.data.rel..Lubsan_data1156+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o:(.data.rel..Lubsan_data1228+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data775+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data781+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data801+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data806+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o: in function `ICSystemButton::ICSystemButton(ICSystemButton::Function, IControl*)':
+icsystembutton.cpp:(.text._ZN14ICSystemButtonC2ENS_8FunctionEP8IControl+0xcb3): undefined reference to `IControl::AddEventTranslation(unsigned int, unsigned int, IControl*, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icsystembutton.cpp:(.text._ZN14ICSystemButtonC2ENS_8FunctionEP8IControl+0xe02): undefined reference to `IControl::AddEventTranslation(unsigned int, unsigned int, IControl*, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icsystembutton.cpp:(.text._ZN14ICSystemButtonC2ENS_8FunctionEP8IControl+0xf51): undefined reference to `IControl::AddEventTranslation(unsigned int, unsigned int, IControl*, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icsystembutton.cpp:(.text._ZN14ICSystemButtonC2ENS_8FunctionEP8IControl+0x10a0): undefined reference to `IControl::AddEventTranslation(unsigned int, unsigned int, IControl*, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: icsystembutton.cpp:(.text._ZN14ICSystemButtonC2ENS_8FunctionEP8IControl+0x11ef): undefined reference to `IControl::AddEventTranslation(unsigned int, unsigned int, IControl*, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:icsystembutton.cpp:(.text._ZN14ICSystemButtonC2ENS_8FunctionEP8IControl+0x133e): more undefined references to `IControl::AddEventTranslation(unsigned int, unsigned int, IControl*, unsigned int, unsigned int, unsigned int)' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data860+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data875+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o: in function `ICSystemButton::Poll()':
+icsystembutton.cpp:(.text._ZN14ICSystemButton4PollEv+0x76e): undefined reference to `IControl::SendNotify(IControl*, unsigned int, int, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data906+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data916+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data923+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data926+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o: in function `ICSystemButton::HandleEvent(reign::event_detail::Event&)':
+icsystembutton.cpp:(.text._ZN14ICSystemButton11HandleEventERN5reign12event_detail5EventE+0x5c8): undefined reference to `IControl::AddToPollList()'
+/usr/bin/ld: icsystembutton.cpp:(.text._ZN14ICSystemButton11HandleEventERN5reign12event_detail5EventE+0x785): undefined reference to `IControl::RemoveFromPollList()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel..Lubsan_data946+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x20): undefined reference to `IControl::DrawChildren(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x28): undefined reference to `IControl::DrawCtrlText(PaintInfo const&, unsigned short const*, Color*, Point<int> const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x30): undefined reference to `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x38): undefined reference to `IControl::DrawCtrlFrame(PaintInfo const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x50): undefined reference to `IControl::AutoSize()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x70): undefined reference to `IControl::PostConfigure()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x88): undefined reference to `IControl::GetAdjustmentRect()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x90): undefined reference to `IControl::SetTextString(unsigned short const*, int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0x98): undefined reference to `IControl::CanActivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o:(.data.rel.ro._ZTV14ICSystemButton[_ZTV14ICSystemButton]+0xb0): undefined reference to `IControl::ExecItem(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data779+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data833+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data842+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o: in function `MsgBoxWindow::HandleEvent(reign::event_detail::Event&)':
+iface_messagebox.cpp:(.text._ZN12MsgBoxWindow11HandleEventERN5reign12event_detail5EventE+0x752): undefined reference to `IControl::MarkForDeletion()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data873+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data877+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data881+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data885+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data898+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel..Lubsan_data901+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o: in function `IFace::MsgBox(unsigned short const*, unsigned short const*, unsigned int, MBEvent*, MBEvent*, MBEvent*)':
+iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0xd75): undefined reference to `IControl::ReadTemplate(char const*, int)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0xede): undefined reference to `IControl::SetStyle(char const*, ...)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x1028): undefined reference to `IControl::SetGeometry(char const*, ...)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x1161): undefined reference to `IControl::SetName(char const*)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x15f9): undefined reference to `IControl::ReadTemplate(char const*, int)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x170e): undefined reference to `IControl::SetTextFont(char const*)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x182a): undefined reference to `IControl::SetGeometry(char const*, ...)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x193c): undefined reference to `IControl::SetStyle(char const*, ...)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x1d0d): undefined reference to `IControl::SetPos(int, int)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x2b42): undefined reference to `IControl::ReadTemplate(char const*, int)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x2d40): undefined reference to `IControl::SetTextFont(char const*)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x2f35): undefined reference to `IControl::SetSize(int, int)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x387c): undefined reference to `IControl::SetPos(int, int)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x3a81): undefined reference to `IControl::SetGeometry(char const*, ...)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x3ec7): undefined reference to `IControl::AddEventTranslation(unsigned int, unsigned int, IControl*, unsigned int, unsigned int, unsigned int)'
+/usr/bin/ld: iface_messagebox.cpp:(.text._ZN5IFace6MsgBoxEPKtS1_jP7MBEventS3_S3_+0x419f): undefined reference to `IControl::SetSize(int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x20): undefined reference to `IControl::DrawChildren(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x28): undefined reference to `IControl::DrawCtrlText(PaintInfo const&, unsigned short const*, Color*, Point<int> const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x30): undefined reference to `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x38): undefined reference to `IControl::DrawCtrlFrame(PaintInfo const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x40): undefined reference to `IControl::Poll()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x48): undefined reference to `IControl::Notify(IFaceVar*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x50): undefined reference to `IControl::AutoSize()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x80): undefined reference to `IControl::AdjustGeometry()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0x98): undefined reference to `IControl::CanActivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0xa0): undefined reference to `IControl::Activate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0xa8): undefined reference to `IControl::Deactivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o:(.data.rel.ro._ZTV12MsgBoxWindow[_ZTV12MsgBoxWindow]+0xb0): undefined reference to `IControl::ExecItem(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data794+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data802+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data842+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data847+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::ICStatic(IControl*)':
+icstatic.cpp:(.text._ZN8ICStaticC2EP8IControl+0xef): undefined reference to `IControl::IControl(IControl*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data891+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::~ICStatic()':
+icstatic.cpp:(.text._ZN8ICStaticD2Ev+0xc85): undefined reference to `IControl::~IControl()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data896+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data904+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data916+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::Activate()':
+icstatic.cpp:(.text._ZN8ICStatic8ActivateEv+0x130): undefined reference to `IControl::Activate()'
+/usr/bin/ld: icstatic.cpp:(.text._ZN8ICStatic8ActivateEv+0x4db): undefined reference to `IControl::ActivateVar(IFaceVar*, reign::vars_detail::VarSys::VarItemType)'
+/usr/bin/ld: icstatic.cpp:(.text._ZN8ICStatic8ActivateEv+0x879): undefined reference to `IControl::ActivateVar(IFaceVar*, reign::vars_detail::VarSys::VarItemType)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data931+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::Deactivate()':
+icstatic.cpp:(.text._ZN8ICStatic10DeactivateEv+0x130): undefined reference to `IControl::Deactivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data958+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data966+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data994+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::Setup(FScope*)':
+icstatic.cpp:(.text._ZN8ICStatic5SetupEP6FScope+0x2e2): undefined reference to `IControl::ConfigureVar(IFaceVar*&, FScope*)'
+/usr/bin/ld: icstatic.cpp:(.text._ZN8ICStatic5SetupEP6FScope+0x4f7): undefined reference to `IControl::ConfigureVar(IFaceVar*&, FScope*)'
+/usr/bin/ld: icstatic.cpp:(.text._ZN8ICStatic5SetupEP6FScope+0xc38): undefined reference to `IControl::Setup(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data998+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::SetStyleItem(char const*, int)':
+icstatic.cpp:(.text._ZN8ICStatic12SetStyleItemEPKci+0x170): undefined reference to `IControl::SetStyleItem(char const*, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1014+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1021+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1029+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1045+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1055+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1095+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::DrawSelf(PaintInfo&)':
+icstatic.cpp:(.text._ZN8ICStatic8DrawSelfER9PaintInfo+0x1da): undefined reference to `IControl::GetTexture()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1132+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::Notify(IFaceVar*)':
+icstatic.cpp:(.text._ZN8ICStatic6NotifyEP8IFaceVar+0x6bf): undefined reference to `IControl::Notify(IFaceVar*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1136+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::SetNamedImage(unsigned int)':
+icstatic.cpp:(.text._ZN8ICStatic13SetNamedImageEj+0x1c3): undefined reference to `IControl::SetImage(TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel..Lubsan_data1143+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o: in function `ICStatic::SetDisplayVar(char const*)':
+icstatic.cpp:(.text._ZN8ICStatic13SetDisplayVarEPKc+0x1bb): undefined reference to `IControl::ConfigureVar(IFaceVar*&, char const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x20): undefined reference to `IControl::DrawChildren(PaintInfo&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x28): undefined reference to `IControl::DrawCtrlText(PaintInfo const&, unsigned short const*, Color*, Point<int> const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x30): undefined reference to `IControl::DrawCtrlBackground(PaintInfo const&, TextureInfo const*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x38): undefined reference to `IControl::DrawCtrlFrame(PaintInfo const&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x40): undefined reference to `IControl::Poll()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x50): undefined reference to `IControl::AutoSize()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x70): undefined reference to `IControl::PostConfigure()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x80): undefined reference to `IControl::AdjustGeometry()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x88): undefined reference to `IControl::GetAdjustmentRect()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x90): undefined reference to `IControl::SetTextString(unsigned short const*, int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0x98): undefined reference to `IControl::CanActivate()'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0xb0): undefined reference to `IControl::ExecItem(FScope*)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTV8ICStatic[_ZTV8ICStatic]+0xb8): undefined reference to `IControl::HandleEvent(reign::event_detail::Event&)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o:(.data.rel.ro._ZTI8ICStatic[_ZTI8ICStatic]+0x10): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/frontend_helpers.cpp.o:(.data.rel..Lubsan_data838+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/frontend_helpers.cpp.o: in function `IFace::ExpandDerefVar(char const*, int, IControl*, char const*&)':
+frontend_helpers.cpp:(.text._ZN5IFace14ExpandDerefVarEPKciP8IControlRS1_+0x252): undefined reference to `IControl::FindVarName(char const*)'
+/usr/bin/ld: libdr2_iface_events.a(iface_events.cpp.o):(.data.rel..Lubsan_data812+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_events.cpp.o):(.data.rel..Lubsan_data845+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_events.cpp.o):(.data.rel..Lubsan_data877+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_events.cpp.o):(.data.rel..Lubsan_data972+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_events.cpp.o):(.data.rel..Lubsan_data993+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_events.cpp.o):(.data.rel..Lubsan_data1008+0x18): more undefined references to `typeinfo for IControl' follow
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o): in function `IFace::CreateControl(char const*, unsigned int, IControl*, void (*)(IControl*))':
+iface_factory.cpp:(.text._ZN5IFace13CreateControlEPKcjP8IControlPFvS3_E+0x721): undefined reference to `IControl::SetName(char const*)'
+/usr/bin/ld: iface_factory.cpp:(.text._ZN5IFace13CreateControlEPKcjP8IControlPFvS3_E+0x9cb): undefined reference to `IControl::Configure(FScope*)'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o):(.data.rel..Lubsan_data807+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o): in function `IFace::CreateControl(FScope*, IControl*)':
+iface_factory.cpp:(.text._ZN5IFace13CreateControlEP6FScopeP8IControl+0x1a5): undefined reference to `IControl::Configure(FScope*)'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o):(.data.rel..Lubsan_data811+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o): in function `IFace::CreateControl(char const*, FScope*, IControl*)':
+iface_factory.cpp:(.text._ZN5IFace13CreateControlEPKcP6FScopeP8IControl+0x17b): undefined reference to `IControl::Configure(FScope*)'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o):(.data.rel..Lubsan_data817+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o):(.data.rel..Lubsan_data824+0x18): undefined reference to `typeinfo for IControl'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o): in function `IFace::Activate(IControl*)':
+iface_factory.cpp:(.text._ZN5IFace8ActivateEP8IControl+0x3b9): undefined reference to `IControl::SetZPos(unsigned int)'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o):(.data.rel..Lubsan_data831+0x18): undefined reference to `typeinfo for IControl'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/frontend_live_smoke.dir/build.make:148: frontend_live_smoke] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:3016: CMakeFiles/frontend_live_smoke.dir/all] Error 2
+gmake: *** [Makefile:101: all] Error 2

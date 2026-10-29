@@ -1,0 +1,28 @@
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+-- Configuring done (0.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /tmp/reign-render-host
+[  8%] Built target reign_vid_device
+[ 13%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 17%] Linking CXX static library libdr2_vid_state.a
+[ 17%] Built target dr2_vid_state
+[ 21%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/primitive.cpp.o
+[ 26%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o
+[ 30%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucket.cpp.o
+[ 34%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/tranbucket.cpp.o
+[ 39%] Linking CXX static library libdr2_buckets.a
+[ 39%] Built target dr2_buckets
+[ 52%] Built target reign_gles
+[ 65%] Built target dr2_primitives
+[ 69%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 73%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 78%] Linking CXX static library libdr2_bitmap_pixels.a
+[ 78%] Built target dr2_bitmap_pixels
+[ 82%] Building CXX object CMakeFiles/gles_smoke.dir/tests/bitmap_gles_checks.cpp.o
+[ 86%] Building CXX object CMakeFiles/gles_smoke.dir/tests/bucket_gles_checks.cpp.o
+[ 91%] Building CXX object CMakeFiles/gles_smoke.dir/tests/vid_gles_checks.cpp.o
+[ 95%] Linking CXX executable gles_smoke
+[100%] Built target gles_smoke

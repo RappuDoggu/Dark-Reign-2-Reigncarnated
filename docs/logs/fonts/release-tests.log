@@ -1,0 +1,33 @@
+UpdateCTestConfiguration  from :/tmp/reign-font-release/DartConfiguration.tcl
+Parse Config file:/tmp/reign-font-release/DartConfiguration.tcl
+Test project /tmp/reign-font-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 4
+    Start  4: original_font_atlas_and_draw
+
+4: Test command: /tmp/reign-font-release/font_smoke
+4: Working Directory: /tmp/reign-font-release
+4: Test timeout computed to be: 1500
+4: Original FFF v1/v2 validation, glyph atlas/metrics/draw/shadow/clipping/capacity/texture flush/replay/recovery PASS
+1/2 Test  #4: original_font_atlas_and_draw .....   Passed    0.02 sec
+test 16
+    Start 16: native_bitmap_storage
+
+16: Test command: /tmp/reign-font-release/bitmap_surface_smoke
+16: Working Directory: /tmp/reign-font-release
+16: Test timeout computed to be: 1500
+16: Native RGBA bitmap storage/lifecycle/bounds/publication replay PASS
+2/2 Test #16: native_bitmap_storage ............   Passed    0.01 sec
+
+The following tests passed:
+	original_font_atlas_and_draw
+	native_bitmap_storage
+
+100% tests passed out of 2
+
+Total Test time (real) =   0.03 sec

@@ -1,0 +1,13 @@
+{
+  "util/mathtypes.cpp": "e6ec58048c1a37e911ec67c407b781dc0ecab9d8a78383a8de84ec48ac764204",
+  "util/mathtypes.h": "98840b74597794ae5c23987e302b186e45685a80d16a047dab2f92c328405301",
+  "graphics/anim.cpp": "0dfad66750cbf3f80d99c2a83028adf87261a80674d1b2c0dbfc9422983c94ce",
+  "graphics/anim.h": "52ccb20b8f277cfdb2f54d0059bccd7edeee152bba3eaa981ab74fee2f58f17c",
+  "graphics/mesh.h": "313e75daa93b8624b785f6a23ac7c29f1f06a44e2730bb8af4ccd6ad45b59cfc",
+  "graphics/mesh.cpp": "9c7b19741153874020c19ee2bf9adbd56dc3d7f33a15b6d21d5798ff3aaa93ed",
+  "graphics/meshload.cpp": "6e0c8480540884403da3e1730f6ef4d416ea1dec200c649f2bce4c4eae199c28",
+  "graphics/meshent.cpp": "ed99b5df339375776ef595ca19b612fa8c4f77e718385698e881bb3b0a4dc068",
+  "graphics/mesh_render_vertextl.cpp": "6b1ddd55143bfba60ded657c27508dbedb391fb252c897e36b52f002432cacf9",
+  "graphics/family.h": "80f3a5d52e77e747828b3f880a4ae8851be822cbdf5eef5dd09677c558c3046a",
+  "graphics/family.cpp": "c59ce6d4be41dd335d8b67dca9b070c2ae5b94d2bc2052cd6ed6892542295337"
+}

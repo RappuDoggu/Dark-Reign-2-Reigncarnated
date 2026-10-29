@@ -1,0 +1,129 @@
+Change Dir: '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+
+Run Build Command(s): /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -S/workspace/scratch/2e29d93ded9e/reigncarnated -B/workspace/scratch/2e29d93ded9e/reigncarnated/build-host --check-build-system CMakeFiles/Makefile.cmake 0
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_progress_start /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles /workspace/scratch/2e29d93ded9e/reigncarnated/build-host//CMakeFiles/progress.marks
+/usr/bin/gmake  -f CMakeFiles/Makefile2 all
+gmake[1]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_platform.dir/build.make CMakeFiles/reign_platform.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/reign_platform.dir/DependInfo.cmake "--color=" reign_platform
+Dependencies file "CMakeFiles/reign_platform.dir/src/archive.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/reign_platform.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/reign_platform.dir/src/platform.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/reign_platform.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target reign_platform
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_platform.dir/build.make CMakeFiles/reign_platform.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+gmake[2]: Nothing to be done for 'CMakeFiles/reign_platform.dir/build'.
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 14%] Built target reign_platform
+/usr/bin/gmake  -f CMakeFiles/dr2_primitives.dir/build.make CMakeFiles/dr2_primitives.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/dr2_primitives.dir/DependInfo.cmake "--color=" dr2_primitives
+Dependencies file "CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/crc.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/dr2_primitives.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/random.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/dr2_primitives.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target dr2_primitives
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/dr2_primitives.dir/build.make CMakeFiles/dr2_primitives.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+gmake[2]: Nothing to be done for 'CMakeFiles/dr2_primitives.dir/build'.
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 28%] Built target dr2_primitives
+/usr/bin/gmake  -f CMakeFiles/dr2_tokenizer.dir/build.make CMakeFiles/dr2_tokenizer.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/dr2_tokenizer.dir/DependInfo.cmake "--color=" dr2_tokenizer
+Dependencies file "CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/dr2_tokenizer.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream/system/tbuf.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/dr2_tokenizer.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target dr2_tokenizer
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/dr2_tokenizer.dir/build.make CMakeFiles/dr2_tokenizer.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 33%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream/system/tbuf.cpp.o
+/usr/bin/c++  -I/tmp/reign-upstream/system -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fPIC -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -include /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp -funsigned-char -MD -MT CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream/system/tbuf.cpp.o -MF CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream/system/tbuf.cpp.o.d -o CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream/system/tbuf.cpp.o -c /tmp/reign-upstream/system/tbuf.cpp
+[ 38%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+/usr/bin/c++  -I/tmp/reign-upstream/system -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fPIC -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -include /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp -MD -MT CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o -MF CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o.d -o CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o -c /workspace/scratch/2e29d93ded9e/reigncarnated/src/tokenizer.cpp
+[ 42%] Linking CXX static library libdr2_tokenizer.a
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/dr2_tokenizer.dir/cmake_clean_target.cmake
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/dr2_tokenizer.dir/link.txt --verbose=1
+/usr/bin/ar qc libdr2_tokenizer.a "CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream/system/tbuf.cpp.o" CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+/usr/bin/ranlib libdr2_tokenizer.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 42%] Built target dr2_tokenizer
+/usr/bin/gmake  -f CMakeFiles/installation_probe.dir/build.make CMakeFiles/installation_probe.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/installation_probe.dir/DependInfo.cmake "--color=" installation_probe
+Dependencies file "CMakeFiles/installation_probe.dir/tools/installation_probe.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/installation_probe.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/installation_probe.dir/link.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/installation_probe.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target installation_probe
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/installation_probe.dir/build.make CMakeFiles/installation_probe.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 47%] Linking CXX executable installation_probe
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/installation_probe.dir/link.txt --verbose=1
+/usr/bin/c++ -fsanitize=address,undefined -Wl,--dependency-file=CMakeFiles/installation_probe.dir/link.d CMakeFiles/installation_probe.dir/tools/installation_probe.cpp.o -o installation_probe  libdr2_tokenizer.a libdr2_primitives.a libreign_platform.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 52%] Built target installation_probe
+/usr/bin/gmake  -f CMakeFiles/tokenizer_smoke.dir/build.make CMakeFiles/tokenizer_smoke.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/tokenizer_smoke.dir/DependInfo.cmake "--color=" tokenizer_smoke
+Dependencies file "CMakeFiles/tokenizer_smoke.dir/tests/tokenizer_smoke.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/tokenizer_smoke.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/tokenizer_smoke.dir/link.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/tokenizer_smoke.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target tokenizer_smoke
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/tokenizer_smoke.dir/build.make CMakeFiles/tokenizer_smoke.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 57%] Linking CXX executable tokenizer_smoke
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/tokenizer_smoke.dir/link.txt --verbose=1
+/usr/bin/c++ -fsanitize=address,undefined -Wl,--dependency-file=CMakeFiles/tokenizer_smoke.dir/link.d CMakeFiles/tokenizer_smoke.dir/tests/tokenizer_smoke.cpp.o -o tokenizer_smoke  libdr2_tokenizer.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 61%] Built target tokenizer_smoke
+/usr/bin/gmake  -f CMakeFiles/reign_checks.dir/build.make CMakeFiles/reign_checks.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/reign_checks.dir/DependInfo.cmake "--color=" reign_checks
+Dependencies file "CMakeFiles/reign_checks.dir/tests/engine_checks.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/reign_checks.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target reign_checks
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_checks.dir/build.make CMakeFiles/reign_checks.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+gmake[2]: Nothing to be done for 'CMakeFiles/reign_checks.dir/build'.
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 71%] Built target reign_checks
+/usr/bin/gmake  -f CMakeFiles/engine_smoke.dir/build.make CMakeFiles/engine_smoke.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/engine_smoke.dir/DependInfo.cmake "--color=" engine_smoke
+Dependencies file "CMakeFiles/engine_smoke.dir/tests/engine_main.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/engine_smoke.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/engine_smoke.dir/link.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/engine_smoke.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target engine_smoke
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/engine_smoke.dir/build.make CMakeFiles/engine_smoke.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+gmake[2]: Nothing to be done for 'CMakeFiles/engine_smoke.dir/build'.
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 80%] Built target engine_smoke
+/usr/bin/gmake  -f CMakeFiles/platform_smoke.dir/build.make CMakeFiles/platform_smoke.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/platform_smoke.dir/DependInfo.cmake "--color=" platform_smoke
+Dependencies file "CMakeFiles/platform_smoke.dir/tests/platform_smoke.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/platform_smoke.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/platform_smoke.dir/link.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/platform_smoke.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target platform_smoke
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/platform_smoke.dir/build.make CMakeFiles/platform_smoke.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+gmake[2]: Nothing to be done for 'CMakeFiles/platform_smoke.dir/build'.
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 90%] Built target platform_smoke
+/usr/bin/gmake  -f CMakeFiles/archive_smoke.dir/build.make CMakeFiles/archive_smoke.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/archive_smoke.dir/DependInfo.cmake "--color=" archive_smoke
+Dependencies file "CMakeFiles/archive_smoke.dir/tests/archive_smoke.cpp.o.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/archive_smoke.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/archive_smoke.dir/link.d" is newer than depends file "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/archive_smoke.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target archive_smoke
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/archive_smoke.dir/build.make CMakeFiles/archive_smoke.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+gmake[2]: Nothing to be done for 'CMakeFiles/archive_smoke.dir/build'.
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[100%] Built target archive_smoke
+gmake[1]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_progress_start /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles 0
+

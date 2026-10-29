@@ -1,0 +1,11 @@
+[ 18%] Built target dr2_primitives
+[ 31%] Built target dr2_tracking
+[ 43%] Built target dr2_events
+[ 75%] Built target dr2_vars
+[ 75%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_coordinates.cpp.o
+[ 81%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_color_magic.cpp.o
+[ 87%] Linking CXX static library libdr2_control_coordinates.a
+[ 87%] Built target dr2_control_coordinates
+[ 93%] Building CXX object CMakeFiles/control_types_smoke.dir/tests/control_types_smoke.cpp.o
+[100%] Linking CXX executable control_types_smoke
+[100%] Built target control_types_smoke

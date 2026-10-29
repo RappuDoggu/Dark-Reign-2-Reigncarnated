@@ -1,0 +1,105 @@
+Sound::Init()
+ - Completed
+PerfStats Initialised
+Entering IFace::Init
+Entering Game::Init
+Found 60 missions in 9 groups
+Original RC frame 0
+[Game] Entering run code [Load]
+PreOpenMission: [missions\multiplayer][2crazed]
+PreOpenMission: Team::Init
+PreOpenMission: Environment::Init
+PreOpenMission: MoveTable::Init
+PreOpenMission: SidePlacement::Init
+PreOpenMission: UnitLimits::Init
+PreOpenMission: TerrainGroup::Init
+PreOpenMission: AI::Init
+PreOpenMission: TaskCtrl::Init
+PreOpenMission: Config::Init
+PreOpenMission: MissionVar::Init
+Mission config: DefaultRule
+Mission config: FixedRule
+Mission config: RequiredAddons
+Mission config: WorldInfo
+Mission config: Environment
+Mission config: DefineTeams
+Mission config: TerrainGroup
+Mission config: Physics
+Type Stream Crc: 47BC54B1
+Type Stream Crc: 607DD41F
+Purging team team2 [1]
+Original RC frame 1
+[Game] Entering run code [SimInit]
+Switching to NORMAL
+Exception caller: 0x420b6b
+Exception caller: 0x421027
+Exception caller: 0x654782
+Exception caller: 0x5165b2
+Exception caller: 0x6537cf
+Exception caller: 0x654812
+Exception caller: 0x65533e
+Exception caller: 0x63a9e7
+Exception caller: 0x63abb4
+Exception caller: 0x63a75d
+Exception caller: 0x63abb4
+Exception caller: 0x63accb
+Exception caller: 0x63c230
+Exception caller: 0x43a4b6
+Exception caller: 0x429bb9
+Exception caller: 0x7f465772d1ca
+Exception caller: 0x420b6b
+Exception caller: 0x421027
+Exception caller: 0x654782
+Exception caller: 0x5165b2
+Exception caller: 0x6537cf
+Exception caller: 0x654812
+Exception caller: 0x65533e
+Exception caller: 0x63a9e7
+Exception caller: 0x63abb4
+Exception caller: 0x63a75d
+Exception caller: 0x63abb4
+Exception caller: 0x63accb
+Exception caller: 0x63c230
+Exception caller: 0x43a4b6
+Exception caller: 0x429bb9
+Exception caller: 0x7f465772d1ca
+Original RC frame 2
+[Game] Entering run code [Sim]
+Original RC frame 3
+Original RC frame 4
+Original RC frame 5
+Original RC frame 6
+Original RC frame 7
+Original RC frame 8
+Original RC frame 9
+Original RC frame 10
+Original RC frame 11
+Original RC frame 12
+Original RC frame 13
+Original RC frame 14
+Original RC frame 15
+Original RC frame 16
+Original RC frame 17
+Original RC frame 18
+Original RC frame 19
+Original RC frame 20
+Original RC frame 21
+Original RC frame 22
+Original RC frame 23
+Original RC frame 24
+Original RC frame 25
+Original RC frame 26
+Original RC frame 27
+Original RC frame 28
+Original RC frame 29
+Original RC frame 30
+Original RC frame 31
+Simulation callbacks completed; cycles 29
+[Game] Clearing runcode [Sim]
+Shutting down simulation
+Logout [TestOne]
+Final pixel 255,0,0
+Sound::Done()
+ - Completed
+DataFile: open files [0]
+Original 2crazed Load/SimInit/Sim callbacks, nonzero simulation cycles, shutdown and GLES presentation passed on host; Android not executed

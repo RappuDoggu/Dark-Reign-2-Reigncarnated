@@ -1,0 +1,48 @@
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+Staged original font reader/layout/draw/IFace batching externally: /tmp/reign-upstream-font-overlay
+-- Configuring done (0.6s)
+-- Generating done (0.1s)
+-- Build files have been written to: /tmp/reign-render-host
+[  6%] Built target dr2_primitives
+[ 11%] Built target reign_vid_device
+[ 13%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 27%] Built target reign_platform
+[ 34%] Built target reign_gles
+[ 36%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 38%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 40%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 43%] Linking CXX static library libdr2_bitmap_pixels.a
+[ 43%] Built target dr2_bitmap_pixels
+[ 45%] Linking CXX static library libdr2_tokenizer.a
+[ 47%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 47%] Built target dr2_tokenizer
+[ 50%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 52%] Linking CXX static library libdr2_vid_state.a
+[ 52%] Built target dr2_vid_state
+[ 54%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 56%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 59%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 61%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 63%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 65%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 68%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/primitive.cpp.o
+[ 70%] Linking CXX static library libdr2_config.a
+[ 70%] Built target dr2_config
+[ 72%] Building CXX object CMakeFiles/dr2_fonts.dir/tmp/reign-upstream-font-overlay/font_slice.cpp.o
+[ 75%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o
+[ 77%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucket.cpp.o
+[ 79%] Building CXX object CMakeFiles/dr2_fonts.dir/src/native_font.cpp.o
+[ 81%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/tranbucket.cpp.o
+[ 84%] Linking CXX static library libdr2_fonts.a
+[ 84%] Built target dr2_fonts
+[ 86%] Linking CXX static library libdr2_buckets.a
+[ 86%] Built target dr2_buckets
+[ 88%] Building CXX object CMakeFiles/gles_smoke.dir/tests/bucket_gles_checks.cpp.o
+[ 90%] Building CXX object CMakeFiles/gles_smoke.dir/tests/bitmap_gles_checks.cpp.o
+[ 93%] Building CXX object CMakeFiles/gles_smoke.dir/tests/font_gles_checks.cpp.o
+[ 95%] Building CXX object CMakeFiles/gles_smoke.dir/tests/vid_gles_checks.cpp.o
+[ 97%] Linking CXX executable gles_smoke
+[100%] Built target gles_smoke

@@ -1,0 +1,31 @@
+Owner-supplied report, received 2026-10-24 America/Chicago; not an assistant-operated device test.
+Reigncarnated renderer bring-up v0.4
+Device: samsung SM-F946U
+Android API: 36
+PASS — native ARM64 archive access
+Archive entries: 2074
+Payload bytes read: 99631656
+Configuration files: 465
+GOD meshes: 334
+Textures: 567
+Elapsed milliseconds: 1073
+Engine startup/gameplay: not tested
+This APK contains original porting tools only; no game code or assets.
+Cursor atlas decoded: YES
+GL: OpenGL ES 3.2 V@0676.77.1 (GIT@3df4c357f0, I515341007c, 1769513954) (Date:01/27/26)
+GPU: Adreno (TM) 740
+Context generation: 2
+Surface: 1692 x 666
+ARGB byte order and half-pixel coverage: PASS
+D3D top-left texture orientation: PASS
+Source-alpha blending: PASS
+Alpha reference discard: PASS
+Zero-to-one depth mapping and occlusion: PASS
+Specular-alpha vertex fog: PASS
+Specular RGB addition: PASS
+Reciprocal homogeneous W path: PASS
+Invalid index rejection: PASS
+Integer-coordinate glyph coverage: PASS
+Offscreen presentation orientation: PASS
+Render-target resize and presentation: PASS
+GLES3 legacy-TL pixel checks: PASS

@@ -1,0 +1,763 @@
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "allocated block exception ownership", "owned block buffer read", "transfer successful block allocation", "correct array cleanup on block read failure", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+Staged original tracking, events and variables externally: /tmp/reign-upstream-runtime-overlay
+Staged original IControl declarations and coordinate/border methods externally: /tmp/reign-upstream-control-overlay
+Staged six full original frontend translation units; runtime linkage still required
+Staged 30 original IFace event/registry methods and 12 factory/lifecycle methods
+Staged original Vid state setters; stage 0 only; external overlay: /tmp/reign-upstream-vid-overlay
+Staged original PrimitiveDesc/Bucket/BucketMan externally: /tmp/reign-upstream-bucket-overlay
+Staged original Pix/CopyLine pixel conversion externally: /tmp/reign-upstream-pixel-overlay
+Staged original Bitmap::Manager naming/fallback/animation/release loops externally: /tmp/reign-upstream-bitmap-manager-overlay
+Staged original font reader/layout/draw/IFace batching externally: /tmp/reign-upstream-font-overlay
+Staged original IFace metric configuration/default/read functions externally: /tmp/reign-upstream-metrics-overlay
+Staged original FontSys alias/config/mode-change registration externally: /tmp/reign-upstream-font-registry-overlay
+-- Configuring done (1.7s)
+-- Generating done (0.3s)
+-- Build files have been written to: /workspace/scratch/2e29d93ded9e/reign-work/build-host
+[  2%] Built target dr2_primitives
+[  4%] Built target reign_frontend_support
+[  4%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[  4%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[  4%] Building CXX object CMakeFiles/reign_frontend_effects.dir/src/frontend_effects.cpp.o
+[  6%] Building CXX object CMakeFiles/reign_frontend_effects.dir/tmp/reign-upstream-effects-overlay/frontend_effects_slice.cpp.o
+[ 13%] Built target reign_platform
+[ 16%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+[ 16%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 18%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+[ 18%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 20%] Linking CXX static library libdr2_tokenizer.a
+[ 20%] Built target dr2_tokenizer
+[ 23%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 23%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 23%] Linking CXX static library libdr2_bitmap_pixels.a
+[ 27%] Built target dr2_bitmap_pixels
+[ 27%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 30%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/tmp/reign-upstream-bitmap-manager-overlay/manager_slice.cpp.o
+[ 30%] Linking CXX static library libdr2_tracking.a
+[ 30%] Built target dr2_tracking
+[ 30%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/src/bitmap_manager.cpp.o
+[ 30%] Linking CXX static library libreign_frontend_effects.a
+[ 30%] Built target reign_frontend_effects
+[ 32%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 32%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 32%] Linking CXX static library libdr2_events.a
+[ 32%] Built target dr2_events
+[ 32%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[ 34%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 37%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[ 37%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 37%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+[ 37%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+[ 39%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+[ 41%] Linking CXX static library libdr2_bitmap_manager.a
+[ 41%] Built target dr2_bitmap_manager
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /tmp/reign-upstream-runtime-overlay/varsys.h:3,
+                 from /tmp/reign-upstream-runtime-overlay/varitem.cpp:2:
+/tmp/reign-upstream-runtime-overlay/varitem.cpp: In destructor ‘reign::vars_detail::VarSys::VarItem::~VarItem()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+[ 41%] Linking CXX static library libdr2_config.a
+[ 41%] Built target dr2_config
+[ 41%] Building CXX object CMakeFiles/dr2_fonts.dir/tmp/reign-upstream-font-overlay/font_slice.cpp.o
+[ 41%] Building CXX object CMakeFiles/dr2_iface_metrics.dir/tmp/reign-upstream-metrics-overlay/metrics_slice.cpp.o
+[ 44%] Building CXX object CMakeFiles/dr2_fonts.dir/src/native_font.cpp.o
+[ 44%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/runcodes.cpp.o
+[ 46%] Building CXX object CMakeFiles/dr2_runcodes.dir/src/runcode_host.cpp.o
+[ 46%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/main_exec.cpp.o
+[ 46%] Linking CXX static library libdr2_vars.a
+[ 46%] Built target dr2_vars
+[ 46%] Building CXX object CMakeFiles/dr2_frontend_config.dir/tmp/reign-upstream-frontend-overlay/control_stdload.cpp.o
+[ 46%] Linking CXX static library libdr2_iface_metrics.a
+[ 46%] Built target dr2_iface_metrics
+[ 48%] Linking CXX static library libdr2_runcodes.a
+[ 48%] Built target dr2_runcodes
+[ 51%] Linking CXX static library libdr2_frontend_config.a
+[ 51%] Built target dr2_frontend_config
+[ 51%] Building CXX object CMakeFiles/dr2_varfile.dir/tmp/reign-upstream-varfile-overlay/varfile_slice.cpp.o
+[ 53%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/operation.cpp.o
+[ 53%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/relationaloperator.cpp.o
+[ 53%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/comparison.cpp.o
+[ 55%] Building CXX object CMakeFiles/dr2_console.dir/tmp/reign-upstream-console-overlay/console_slice.cpp.o
+[ 58%] Building CXX object CMakeFiles/dr2_interface_expressions.dir/tmp/reign-upstream-expressions-overlay/switch.cpp.o
+[ 58%] Building CXX object CMakeFiles/dr2_iface_events.dir/tmp/reign-upstream-iface-events-overlay/iface_events.cpp.o
+[ 58%] Linking CXX static library libdr2_fonts.a
+[ 58%] Built target dr2_fonts
+[ 58%] Building CXX object CMakeFiles/dr2_console.dir/src/console.cpp.o
+[ 60%] Linking CXX static library libdr2_varfile.a
+[ 60%] Built target dr2_varfile
+[ 62%] Building CXX object CMakeFiles/dr2_font_registry.dir/tmp/reign-upstream-font-registry-overlay/registry_slice.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /tmp/reign-upstream-console-overlay/console_slice.hpp:2,
+                 from /tmp/reign-upstream-console-overlay/console_slice.cpp:1:
+/tmp/reign-upstream-console-overlay/console_slice.cpp: In destructor ‘Console::CmdParse::~CmdParse()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+[ 65%] Building CXX object CMakeFiles/dr2_iface_events.dir/tmp/reign-upstream-iface-events-overlay/iface_factory.cpp.o
+[ 65%] Building CXX object CMakeFiles/dr2_iface_events.dir/src/interface_events.cpp.o
+[ 65%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/font_registry.cpp.o
+[ 65%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/interface_metrics.cpp.o
+[ 67%] Linking CXX static library libdr2_console.a
+[ 67%] Built target dr2_console
+[ 67%] Building CXX object CMakeFiles/dr2_localization.dir/tmp/reign-upstream-localization-overlay/localization_slice.cpp.o
+[ 67%] Linking CXX static library libdr2_interface_expressions.a
+[ 67%] Built target dr2_interface_expressions
+[ 67%] Building CXX object CMakeFiles/dr2_localization.dir/src/localization.cpp.o
+[ 69%] Linking CXX static library libdr2_font_registry.a
+[ 69%] Built target dr2_font_registry
+[ 72%] Building CXX object CMakeFiles/reign_frontend_fonts.dir/src/frontend_font.cpp.o
+[ 74%] Linking CXX static library libdr2_iface_events.a
+[ 74%] Built target dr2_iface_events
+[ 74%] Building CXX object CMakeFiles/reign_frontend_input.dir/src/frontend_input.cpp.o
+[ 74%] Building CXX object CMakeFiles/reign_frontend_draw.dir/src/frontend_draw.cpp.o
+[ 76%] Building CXX object CMakeFiles/reign_frontend_frame.dir/src/frontend_frame.cpp.o
+[ 79%] Building CXX object CMakeFiles/reign_frontend_draw.dir/tmp/reign-upstream-frontend-draw-overlay/frontend_triangle.cpp.o
+[ 81%] Linking CXX static library libdr2_localization.a
+[ 81%] Built target dr2_localization
+[ 83%] Building CXX object CMakeFiles/dr2_babel.dir/tmp/reign-upstream-babel-overlay/babel_slice.cpp.o
+[ 83%] Linking CXX static library libreign_frontend_frame.a
+[ 83%] Built target reign_frontend_frame
+[ 86%] Linking CXX static library libreign_frontend_input.a
+[ 86%] Built target reign_frontend_input
+[ 86%] Linking CXX static library libreign_frontend_fonts.a
+[ 86%] Built target reign_frontend_fonts
+[ 86%] Linking CXX static library libdr2_babel.a
+[ 86%] Built target dr2_babel
+[ 86%] Linking CXX static library libreign_frontend_draw.a
+[ 86%] Built target reign_frontend_draw
+[ 86%] Building CXX object CMakeFiles/reign_frontend_theme.dir/src/frontend_theme.cpp.o
+[ 86%] Building CXX object CMakeFiles/reign_frontend_theme.dir/tmp/reign-upstream-theme-overlay/theme_slice.cpp.o
+[ 88%] Linking CXX static library libreign_frontend_theme.a
+[ 88%] Built target reign_frontend_theme
+[ 88%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o
+[ 90%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o
+[ 90%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o
+[ 90%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o
+[ 93%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o
+[ 93%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o
+[ 93%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iface_messagebox.cpp.o
+[ 95%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/messagebox_event.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp: In destructor ‘virtual IControl::~IControl()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+[ 95%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icstatic.cpp.o
+[ 97%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/frontend_helpers.cpp.o
+[ 97%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistbox.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistslider.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icslider.cpp.o
+In file included from /tmp/reign-upstream/system/reaperlist.h:13,
+                 from /tmp/reign-upstream/interface/iclistbox.h:20,
+                 from /tmp/reign-upstream/interface/iclistslider.h:16,
+                 from /tmp/reign-upstream-frontend-overlay/iclistslider.cpp:11:
+/tmp/reign-upstream/system/dtrack.h:182:3: error: reference to ‘DTrack’ is ambiguous
+  182 |   DTrack::Info dTrack;
+      |   ^~~~~~
+In file included from /tmp/reign-upstream-runtime-overlay/tracksys.h:4,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:4,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-runtime-overlay/dtrack.h:23:7: note: candidates are: ‘class reign::tracking_detail::DTrack’
+   23 | class DTrack
+      |       ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:29:7: note:                 ‘class DTrack’
+   29 | class DTrack
+      |       ^~~~~~
+/tmp/reign-upstream/system/dtrack.h: In member function ‘void Reaper<DATA>::Clear()’:
+/tmp/reign-upstream/system/dtrack.h:192:5: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  192 |     dTrack.Clear();
+      |     ^~~~~~
+      |     DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘void Reaper<DATA>::Setup(DATA*)’:
+/tmp/reign-upstream/system/dtrack.h:221:7: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  221 |       dTrack = target->dTrack;
+      |       ^~~~~~
+      |       DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘Bool Reaper<DATA>::Alive()’:
+/tmp/reign-upstream/system/dtrack.h:236:9: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  236 |     if (dTrack.IsSetup())
+      |         ^~~~~~
+      |         DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘Bool Reaper<DATA>::Alive() const’:
+/tmp/reign-upstream/system/dtrack.h:257:9: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  257 |     if (dTrack.IsSetup())
+      |         ^~~~~~
+      |         DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘U32 Reaper<DATA>::Id()’:
+/tmp/reign-upstream/system/dtrack.h:340:13: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  340 |     return (dTrack.id);
+      |             ^~~~~~
+      |             DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘U32 Reaper<DATA>::DirectId() const’:
+/tmp/reign-upstream/system/dtrack.h:346:13: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  346 |     return (dTrack.id);
+      |             ^~~~~~
+      |             DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘void Reaper<DATA>::SetResolveId(U32)’:
+/tmp/reign-upstream/system/dtrack.h:355:5: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  355 |     dTrack.id = id;
+      |     ^~~~~~
+      |     DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘Bool Reaper<DATA>::HasResolveId()’:
+/tmp/reign-upstream/system/dtrack.h:362:25: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  362 |     return (!Alive() && dTrack.id != DTRACK_EMPTY);
+      |                         ^~~~~~
+      |                         DTrack
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2:
+/tmp/reign-upstream/system/dtrack.h: In member function ‘U32 Reaper<DATA>::GetResolveId()’:
+/tmp/reign-upstream/system/dtrack.h:369:12: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  369 |     ASSERT(dTrack.id != DTRACK_EMPTY);
+      |            ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:25: note: in definition of macro ‘ASSERT’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                         ^
+/tmp/reign-upstream/system/dtrack.h:371:13: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  371 |     return (dTrack.id);
+      |             ^~~~~~
+      |             DTrack
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘NODE* ReaperList<DATA, NODE>::Find(U32) const’:
+/tmp/reign-upstream/system/reaperlist.h:34:10: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+   34 |     for (Iterator i(this); *i; i++)
+      |          ^~~~~~~~
+      |          operator=
+/tmp/reign-upstream/system/reaperlist.h:34:29: error: ‘i’ was not declared in this scope; did you mean ‘id’?
+   34 |     for (Iterator i(this); *i; i++)
+      |                             ^
+      |                             id
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::GetFirst() const’:
+/tmp/reign-upstream/system/reaperlist.h:61:9: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   61 |     if (GetHeadNode())
+      |         ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:61:9: note: (if you use ‘-fpermissive’, G++ will accept your code, but allowing the use of an undeclared name is deprecated)
+/tmp/reign-upstream/system/reaperlist.h:63:20: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   63 |       NODE *node = GetHeadNode()->GetData();
+      |                    ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::GetLast() const’:
+/tmp/reign-upstream/system/reaperlist.h:77:9: error: there are no arguments to ‘GetTailNode’ that depend on a template parameter, so a declaration of ‘GetTailNode’ must be available [-fpermissive]
+   77 |     if (GetTailNode())
+      |         ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:79:20: error: there are no arguments to ‘GetTailNode’ that depend on a template parameter, so a declaration of ‘GetTailNode’ must be available [-fpermissive]
+   79 |       NODE *node = GetTailNode()->GetData();
+      |                    ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘NODE* ReaperList<DATA, NODE>::operator[](int) const’:
+/tmp/reign-upstream/system/reaperlist.h:93:9: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   93 |     if (GetHeadNode())
+      |         ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:95:26: error: ‘node’ was not declared in this scope
+   95 |       NList<NODE>::Node *node = GetHeadNode();
+      |                          ^~~~
+/tmp/reign-upstream/system/reaperlist.h:95:33: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   95 |       NList<NODE>::Node *node = GetHeadNode();
+      |                                 ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::RotateForward()’:
+/tmp/reign-upstream/system/reaperlist.h:114:24: error: ‘node’ was not declared in this scope
+  114 |     NList<NODE>::Node *node = GetHeadNode();
+      |                        ^~~~
+/tmp/reign-upstream/system/reaperlist.h:114:31: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+  114 |     NList<NODE>::Node *node = GetHeadNode();
+      |                               ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:118:7: error: there are no arguments to ‘Unlink’ that depend on a template parameter, so a declaration of ‘Unlink’ must be available [-fpermissive]
+  118 |       Unlink(node);
+      |       ^~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::RotateBackward()’:
+/tmp/reign-upstream/system/reaperlist.h:129:24: error: ‘node’ was not declared in this scope
+  129 |     NList<NODE>::Node *node = GetTailNode();
+      |                        ^~~~
+/tmp/reign-upstream/system/reaperlist.h:129:31: error: there are no arguments to ‘GetTailNode’ that depend on a template parameter, so a declaration of ‘GetTailNode’ must be available [-fpermissive]
+  129 |     NList<NODE>::Node *node = GetTailNode();
+      |                               ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:133:7: error: there are no arguments to ‘Unlink’ that depend on a template parameter, so a declaration of ‘Unlink’ must be available [-fpermissive]
+  133 |       Unlink(node);
+      |       ^~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::Pop()’:
+/tmp/reign-upstream/system/reaperlist.h:143:20: error: there are no arguments to ‘GetHead’ that depend on a template parameter, so a declaration of ‘GetHead’ must be available [-fpermissive]
+  143 |     NODE *reaper = GetHead();
+      |                    ^~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::Remove(DATA*, Bool)’:
+/tmp/reign-upstream/system/reaperlist.h:214:5: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  214 |     Iterator i(this);
+      |     ^~~~~~~~
+      |     operator=
+/tmp/reign-upstream/system/reaperlist.h:217:20: error: ‘i’ was not declared in this scope
+  217 |     while ((node = i++) != NULL)
+      |                    ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::PurgeDead()’:
+/tmp/reign-upstream/system/reaperlist.h:272:5: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  272 |     Iterator i(this);
+      |     ^~~~~~~~
+      |     operator=
+/tmp/reign-upstream/system/reaperlist.h:275:20: error: ‘i’ was not declared in this scope
+  275 |     while ((node = i++) != NULL)
+      |                    ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘void ReaperList<DATA, NODE>::AppendList(const ReaperList<DATA, NODE>&)’:
+/tmp/reign-upstream/system/reaperlist.h:291:10: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  291 |     for (Iterator i(&target); *i; i++)
+      |          ^~~~~~~~
+      |          operator=
+/tmp/reign-upstream/system/reaperlist.h:291:32: error: ‘i’ was not declared in this scope
+  291 |     for (Iterator i(&target); *i; i++)
+      |                                ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘void ReaperList<DATA, NODE>::AppendListNoDup(const ReaperList<DATA, NODE>&)’:
+/tmp/reign-upstream/system/reaperlist.h:304:10: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  304 |     for (Iterator i(&target); *i; i++)
+      |          ^~~~~~~~
+      |          operator=
+/tmp/reign-upstream/system/reaperlist.h:304:32: error: ‘i’ was not declared in this scope
+  304 |     for (Iterator i(&target); *i; i++)
+      |                                ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::Identical(const ReaperList<DATA, NODE>&) const’:
+/tmp/reign-upstream/system/reaperlist.h:325:9: error: there are no arguments to ‘GetCount’ that depend on a template parameter, so a declaration of ‘GetCount’ must be available [-fpermissive]
+  325 |     if (GetCount() == target.GetCount())
+      |         ^~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:328:12: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  328 |       for (Iterator i(this), j(&target); *i && *j; i++, j++)
+      |            ^~~~~~~~
+      |            operator=
+/tmp/reign-upstream/system/reaperlist.h:328:43: error: ‘i’ was not declared in this scope
+  328 |       for (Iterator i(this), j(&target); *i && *j; i++, j++)
+      |                                           ^
+/tmp/reign-upstream/system/reaperlist.h:328:49: error: ‘j’ was not declared in this scope; did you mean ‘jn’?
+  328 |       for (Iterator i(this), j(&target); *i && *j; i++, j++)
+      |                                                 ^
+      |                                                 jn
+/tmp/reign-upstream/interface/iclistbox.h: At global scope:
+/tmp/reign-upstream/interface/iclistbox.h:331:9: error: reference to ‘Reaper’ is ambiguous
+  331 | typedef Reaper<ICListBox> ICListBoxPtr;
+      |         ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:18:24: note: candidates are: ‘template<class T> using reign::vars_detail::Reaper = reign::tracking_detail::Reaper<T>’
+   18 | template<class T>using Reaper=tracking_detail::Reaper<T>;
+      |                        ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:177:29: note:                 ‘template<class DATA> class Reaper’
+  177 | template <class DATA> class Reaper
+      |                             ^~~~~~
+/tmp/reign-upstream/interface/iclistslider.h:37:5: error: ‘ICListBoxPtr’ does not name a type; did you mean ‘ICListBox’?
+   37 |     ICListBoxPtr    ctrl;
+      |     ^~~~~~~~~~~~
+      |     ICListBox
+/tmp/reign-upstream/interface/iclistslider.h:90:9: error: reference to ‘Reaper’ is ambiguous
+   90 | typedef Reaper<ICListSlider> ICListSliderPtr;
+      |         ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:18:24: note: candidates are: ‘template<class T> using reign::vars_detail::Reaper = reign::tracking_detail::Reaper<T>’
+   18 | template<class T>using Reaper=tracking_detail::Reaper<T>;
+      |                        ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:177:29: note:                 ‘template<class DATA> class Reaper’
+  177 | template <class DATA> class Reaper
+      |                             ^~~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp: In member function ‘virtual void ICListSlider::GetSliderValue()’:
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:67:48: error: no matching function for call to ‘Max(S32, long int)’
+   67 |     sliderVar->GetItem().SetIntegerRange(0, Max(watch->count->GetIntegerValue() - watch->vis->GetIntegerValue(), 0L));
+      |                                             ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:15:28: note: candidate: ‘template<class T> T Max(T, T)’
+   15 | template<class T> inline T Max(T a,T b){return std::max(a,b);}
+      |                            ^~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:15:28: note:   template argument deduction/substitution failed:
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:67:48: note:   deduced conflicting types for parameter ‘T’ (‘int’ and ‘long int’)
+   67 |     sliderVar->GetItem().SetIntegerRange(0, Max(watch->count->GetIntegerValue() - watch->vis->GetIntegerValue(), 0L));
+      |                                             ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp: In member function ‘void ICListSlider::AddListBox(ICListBox*)’:
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:117:10: error: ‘struct ICListSlider::ListBoxWatcher’ has no member named ‘ctrl’
+  117 |   watch->ctrl.Setup(ctrl);
+      |          ^~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp: In member function ‘virtual U32 ICListSlider::HandleEvent(Event&)’:
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:298:17: error: ‘Input’ has not been declared
+  298 |   if (e.type == Input::EventID())
+      |                 ^~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:302:12: error: ‘Input’ has not been declared
+  302 |       case Input::MOUSEBUTTONDOWN:
+      |            ^~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:303:12: error: ‘Input’ has not been declared
+  303 |       case Input::MOUSEBUTTONDBLCLK:
+      |            ^~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:306:29: error: ‘Input’ has not been declared
+  306 |         if (e.input.code == Input::LeftButtonCode())
+      |                             ^~~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:327:25: error: ‘struct ICListSlider::ListBoxWatcher’ has no member named ‘ctrl’
+  327 |               if ((*i)->ctrl.Alive())
+      |                         ^~~~
+/tmp/reign-upstream-frontend-overlay/iclistslider.cpp:329:34: error: ‘struct ICListSlider::ListBoxWatcher’ has no member named ‘ctrl’
+  329 |                 SendNotify((*i)->ctrl, ICListBoxMsg::ScrollPage, FALSE, U32(n));
+      |                                  ^~~~
+gmake[3]: *** [CMakeFiles/dr2_frontend_controls.dir/build.make:233: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistslider.cpp.o] Error 1
+gmake[3]: *** Waiting for unfinished jobs....
+In file included from /tmp/reign-upstream/system/reaperlist.h:13,
+                 from /tmp/reign-upstream/interface/iclistbox.h:20,
+                 from /tmp/reign-upstream-frontend-overlay/iclistbox.cpp:15:
+/tmp/reign-upstream/system/dtrack.h:182:3: error: reference to ‘DTrack’ is ambiguous
+  182 |   DTrack::Info dTrack;
+      |   ^~~~~~
+In file included from /tmp/reign-upstream-runtime-overlay/tracksys.h:4,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:4,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-runtime-overlay/dtrack.h:23:7: note: candidates are: ‘class reign::tracking_detail::DTrack’
+   23 | class DTrack
+      |       ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:29:7: note:                 ‘class DTrack’
+   29 | class DTrack
+      |       ^~~~~~
+/tmp/reign-upstream/system/dtrack.h: In member function ‘void Reaper<DATA>::Clear()’:
+/tmp/reign-upstream/system/dtrack.h:192:5: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  192 |     dTrack.Clear();
+      |     ^~~~~~
+      |     DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘void Reaper<DATA>::Setup(DATA*)’:
+/tmp/reign-upstream/system/dtrack.h:221:7: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  221 |       dTrack = target->dTrack;
+      |       ^~~~~~
+      |       DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘Bool Reaper<DATA>::Alive()’:
+/tmp/reign-upstream/system/dtrack.h:236:9: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  236 |     if (dTrack.IsSetup())
+      |         ^~~~~~
+      |         DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘Bool Reaper<DATA>::Alive() const’:
+/tmp/reign-upstream/system/dtrack.h:257:9: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  257 |     if (dTrack.IsSetup())
+      |         ^~~~~~
+      |         DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘U32 Reaper<DATA>::Id()’:
+/tmp/reign-upstream/system/dtrack.h:340:13: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  340 |     return (dTrack.id);
+      |             ^~~~~~
+      |             DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘U32 Reaper<DATA>::DirectId() const’:
+/tmp/reign-upstream/system/dtrack.h:346:13: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  346 |     return (dTrack.id);
+      |             ^~~~~~
+      |             DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘void Reaper<DATA>::SetResolveId(U32)’:
+/tmp/reign-upstream/system/dtrack.h:355:5: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  355 |     dTrack.id = id;
+      |     ^~~~~~
+      |     DTrack
+/tmp/reign-upstream/system/dtrack.h: In member function ‘Bool Reaper<DATA>::HasResolveId()’:
+/tmp/reign-upstream/system/dtrack.h:362:25: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  362 |     return (!Alive() && dTrack.id != DTRACK_EMPTY);
+      |                         ^~~~~~
+      |                         DTrack
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2:
+/tmp/reign-upstream/system/dtrack.h: In member function ‘U32 Reaper<DATA>::GetResolveId()’:
+/tmp/reign-upstream/system/dtrack.h:369:12: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  369 |     ASSERT(dTrack.id != DTRACK_EMPTY);
+      |            ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:25: note: in definition of macro ‘ASSERT’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                         ^
+/tmp/reign-upstream/system/dtrack.h:371:13: error: ‘dTrack’ was not declared in this scope; did you mean ‘DTrack’?
+  371 |     return (dTrack.id);
+      |             ^~~~~~
+      |             DTrack
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘NODE* ReaperList<DATA, NODE>::Find(U32) const’:
+/tmp/reign-upstream/system/reaperlist.h:34:10: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+   34 |     for (Iterator i(this); *i; i++)
+      |          ^~~~~~~~
+      |          operator=
+/tmp/reign-upstream/system/reaperlist.h:34:29: error: ‘i’ was not declared in this scope; did you mean ‘id’?
+   34 |     for (Iterator i(this); *i; i++)
+      |                             ^
+      |                             id
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::GetFirst() const’:
+/tmp/reign-upstream/system/reaperlist.h:61:9: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   61 |     if (GetHeadNode())
+      |         ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:61:9: note: (if you use ‘-fpermissive’, G++ will accept your code, but allowing the use of an undeclared name is deprecated)
+/tmp/reign-upstream/system/reaperlist.h:63:20: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   63 |       NODE *node = GetHeadNode()->GetData();
+      |                    ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::GetLast() const’:
+/tmp/reign-upstream/system/reaperlist.h:77:9: error: there are no arguments to ‘GetTailNode’ that depend on a template parameter, so a declaration of ‘GetTailNode’ must be available [-fpermissive]
+   77 |     if (GetTailNode())
+      |         ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:79:20: error: there are no arguments to ‘GetTailNode’ that depend on a template parameter, so a declaration of ‘GetTailNode’ must be available [-fpermissive]
+   79 |       NODE *node = GetTailNode()->GetData();
+      |                    ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘NODE* ReaperList<DATA, NODE>::operator[](int) const’:
+/tmp/reign-upstream/system/reaperlist.h:93:9: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   93 |     if (GetHeadNode())
+      |         ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:95:26: error: ‘node’ was not declared in this scope
+   95 |       NList<NODE>::Node *node = GetHeadNode();
+      |                          ^~~~
+/tmp/reign-upstream/system/reaperlist.h:95:33: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+   95 |       NList<NODE>::Node *node = GetHeadNode();
+      |                                 ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::RotateForward()’:
+/tmp/reign-upstream/system/reaperlist.h:114:24: error: ‘node’ was not declared in this scope
+  114 |     NList<NODE>::Node *node = GetHeadNode();
+      |                        ^~~~
+/tmp/reign-upstream/system/reaperlist.h:114:31: error: there are no arguments to ‘GetHeadNode’ that depend on a template parameter, so a declaration of ‘GetHeadNode’ must be available [-fpermissive]
+  114 |     NList<NODE>::Node *node = GetHeadNode();
+      |                               ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:118:7: error: there are no arguments to ‘Unlink’ that depend on a template parameter, so a declaration of ‘Unlink’ must be available [-fpermissive]
+  118 |       Unlink(node);
+      |       ^~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::RotateBackward()’:
+/tmp/reign-upstream/system/reaperlist.h:129:24: error: ‘node’ was not declared in this scope
+  129 |     NList<NODE>::Node *node = GetTailNode();
+      |                        ^~~~
+/tmp/reign-upstream/system/reaperlist.h:129:31: error: there are no arguments to ‘GetTailNode’ that depend on a template parameter, so a declaration of ‘GetTailNode’ must be available [-fpermissive]
+  129 |     NList<NODE>::Node *node = GetTailNode();
+      |                               ^~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:133:7: error: there are no arguments to ‘Unlink’ that depend on a template parameter, so a declaration of ‘Unlink’ must be available [-fpermissive]
+  133 |       Unlink(node);
+      |       ^~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘DATA* ReaperList<DATA, NODE>::Pop()’:
+/tmp/reign-upstream/system/reaperlist.h:143:20: error: there are no arguments to ‘GetHead’ that depend on a template parameter, so a declaration of ‘GetHead’ must be available [-fpermissive]
+  143 |     NODE *reaper = GetHead();
+      |                    ^~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::Remove(DATA*, Bool)’:
+/tmp/reign-upstream/system/reaperlist.h:214:5: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  214 |     Iterator i(this);
+      |     ^~~~~~~~
+      |     operator=
+/tmp/reign-upstream/system/reaperlist.h:217:20: error: ‘i’ was not declared in this scope
+  217 |     while ((node = i++) != NULL)
+      |                    ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::PurgeDead()’:
+/tmp/reign-upstream/system/reaperlist.h:272:5: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  272 |     Iterator i(this);
+      |     ^~~~~~~~
+      |     operator=
+/tmp/reign-upstream/system/reaperlist.h:275:20: error: ‘i’ was not declared in this scope
+  275 |     while ((node = i++) != NULL)
+      |                    ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘void ReaperList<DATA, NODE>::AppendList(const ReaperList<DATA, NODE>&)’:
+/tmp/reign-upstream/system/reaperlist.h:291:10: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  291 |     for (Iterator i(&target); *i; i++)
+      |          ^~~~~~~~
+      |          operator=
+/tmp/reign-upstream/system/reaperlist.h:291:32: error: ‘i’ was not declared in this scope
+  291 |     for (Iterator i(&target); *i; i++)
+      |                                ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘void ReaperList<DATA, NODE>::AppendListNoDup(const ReaperList<DATA, NODE>&)’:
+/tmp/reign-upstream/system/reaperlist.h:304:10: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  304 |     for (Iterator i(&target); *i; i++)
+      |          ^~~~~~~~
+      |          operator=
+/tmp/reign-upstream/system/reaperlist.h:304:32: error: ‘i’ was not declared in this scope
+  304 |     for (Iterator i(&target); *i; i++)
+      |                                ^
+/tmp/reign-upstream/system/reaperlist.h: In member function ‘Bool ReaperList<DATA, NODE>::Identical(const ReaperList<DATA, NODE>&) const’:
+/tmp/reign-upstream/system/reaperlist.h:325:9: error: there are no arguments to ‘GetCount’ that depend on a template parameter, so a declaration of ‘GetCount’ must be available [-fpermissive]
+  325 |     if (GetCount() == target.GetCount())
+      |         ^~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:328:12: error: ‘Iterator’ was not declared in this scope; did you mean ‘operator=’?
+  328 |       for (Iterator i(this), j(&target); *i && *j; i++, j++)
+      |            ^~~~~~~~
+      |            operator=
+/tmp/reign-upstream/system/reaperlist.h:328:43: error: ‘i’ was not declared in this scope
+  328 |       for (Iterator i(this), j(&target); *i && *j; i++, j++)
+      |                                           ^
+/tmp/reign-upstream/system/reaperlist.h:328:49: error: ‘j’ was not declared in this scope; did you mean ‘jn’?
+  328 |       for (Iterator i(this), j(&target); *i && *j; i++, j++)
+      |                                                 ^
+      |                                                 jn
+/tmp/reign-upstream/interface/iclistbox.h: At global scope:
+/tmp/reign-upstream/interface/iclistbox.h:331:9: error: reference to ‘Reaper’ is ambiguous
+  331 | typedef Reaper<ICListBox> ICListBoxPtr;
+      |         ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:18:24: note: candidates are: ‘template<class T> using reign::vars_detail::Reaper = reign::tracking_detail::Reaper<T>’
+   18 | template<class T>using Reaper=tracking_detail::Reaper<T>;
+      |                        ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:177:29: note:                 ‘template<class DATA> class Reaper’
+  177 | template <class DATA> class Reaper
+      |                             ^~~~~~
+In file included from /tmp/reign-upstream-frontend-overlay/iclistbox.cpp:16:
+/tmp/reign-upstream/interface/icstatic.h:103:9: error: reference to ‘Reaper’ is ambiguous
+  103 | typedef Reaper<ICStatic> ICStaticPtr;
+      |         ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:18:24: note: candidates are: ‘template<class T> using reign::vars_detail::Reaper = reign::tracking_detail::Reaper<T>’
+   18 | template<class T>using Reaper=tracking_detail::Reaper<T>;
+      |                        ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:177:29: note:                 ‘template<class DATA> class Reaper’
+  177 | template <class DATA> class Reaper
+      |                             ^~~~~~
+In file included from /tmp/reign-upstream/interface/iclistslider.h:15,
+                 from /tmp/reign-upstream-frontend-overlay/iclistbox.cpp:17:
+/tmp/reign-upstream/interface/icslider.h:198:9: error: reference to ‘Reaper’ is ambiguous
+  198 | typedef Reaper<ICSlider> ICSliderPtr;
+      |         ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:18:24: note: candidates are: ‘template<class T> using reign::vars_detail::Reaper = reign::tracking_detail::Reaper<T>’
+   18 | template<class T>using Reaper=tracking_detail::Reaper<T>;
+      |                        ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:177:29: note:                 ‘template<class DATA> class Reaper’
+  177 | template <class DATA> class Reaper
+      |                             ^~~~~~
+/tmp/reign-upstream/interface/icslider.h:199:9: error: reference to ‘Reaper’ is ambiguous
+  199 | typedef Reaper<ICSliderThumb> ICSliderThumbPtr;
+      |         ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:18:24: note: candidates are: ‘template<class T> using reign::vars_detail::Reaper = reign::tracking_detail::Reaper<T>’
+   18 | template<class T>using Reaper=tracking_detail::Reaper<T>;
+      |                        ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:177:29: note:                 ‘template<class DATA> class Reaper’
+  177 | template <class DATA> class Reaper
+      |                             ^~~~~~
+/tmp/reign-upstream/interface/iclistslider.h:37:5: error: ‘ICListBoxPtr’ does not name a type; did you mean ‘ICListBox’?
+   37 |     ICListBoxPtr    ctrl;
+      |     ^~~~~~~~~~~~
+      |     ICListBox
+/tmp/reign-upstream/interface/iclistslider.h:90:9: error: reference to ‘Reaper’ is ambiguous
+   90 | typedef Reaper<ICListSlider> ICListSliderPtr;
+      |         ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:18:24: note: candidates are: ‘template<class T> using reign::vars_detail::Reaper = reign::tracking_detail::Reaper<T>’
+   18 | template<class T>using Reaper=tracking_detail::Reaper<T>;
+      |                        ^~~~~~
+/tmp/reign-upstream/system/dtrack.h:177:29: note:                 ‘template<class DATA> class Reaper’
+  177 | template <class DATA> class Reaper
+      |                             ^~~~~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp: In function ‘int CompareControlsDescription(const void*, const void*)’:
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:248:46: error: cannot convert ‘const CH*’ {aka ‘const short unsigned int*’} to ‘const char*’
+  248 |   int sort = Utils::Stricmp(c1->GetTextString(), c2->GetTextString());
+      |                             ~~~~~~~~~~~~~~~~~^~
+      |                                              |
+      |                                              const CH* {aka const short unsigned int*}
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:35:32: note:   initializing argument 1 of ‘int Utils::Stricmp(const char*, const char*)’
+   35 | inline int Stricmp(const char *a,const char *b) { for(;;++a,++b) { auto x=std::tolower(static_cast<unsigned char>(*a)),y=std::tolower(static_cast<unsigned char>(*b));if(x!=y||!x||!y)return x-y; } }
+      |                    ~~~~~~~~~~~~^
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp: In member function ‘void ICListBox::AddTextItem(const char*, const CH*, const Color*, const Point<int>&)’:
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1000:34: error: ‘Strndup’ is not a member of ‘Utils’; did you mean ‘Strdup’?
+ 1000 |       ctrl->SetTextString(Utils::Strndup(ptr, length), FALSE, TRUE);
+      |                                  ^~~~~~~
+      |                                  Strdup
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp: In member function ‘virtual void ICListBox::Setup(FScope*)’:
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1324:18: error: ‘TypeColor’ is not a member of ‘StdLoad’
+ 1324 |         StdLoad::TypeColor(sScope, c);
+      |                  ^~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp: In member function ‘U32 ICListBox::FillFromPath(const char*, const char*, Bool, Bool)’:
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1808:3: error: ‘Dir’ has not been declared
+ 1808 |   Dir::Find find;
+      |   ^~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1819:7: error: ‘Dir’ has not been declared
+ 1819 |   if (Dir::FindFirst(find, path, filter))
+      |       ^~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1819:22: error: ‘find’ was not declared in this scope; did you mean ‘std::find’?
+ 1819 |   if (Dir::FindFirst(find, path, filter))
+      |                      ^~~~
+      |                      std::find
+In file included from /usr/include/c++/13/algorithm:73,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:5:
+/usr/include/c++/13/pstl/glue_algorithm_defs.h:60:1: note: ‘std::find’ declared here
+   60 | find(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, const _Tp& __value);
+      | ^~~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1829:12: error: ‘Dir’ has not been declared
+ 1829 |     while (Dir::FindNext(find));
+      |            ^~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1833:3: error: ‘Dir’ has not been declared
+ 1833 |   Dir::FindClose(find);
+      |   ^~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1833:18: error: ‘find’ was not declared in this scope; did you mean ‘std::find’?
+ 1833 |   Dir::FindClose(find);
+      |                  ^~~~
+      |                  std::find
+/usr/include/c++/13/pstl/glue_algorithm_defs.h:60:1: note: ‘std::find’ declared here
+   60 | find(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, const _Tp& __value);
+      | ^~~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1835:20: error: ‘Dir’ has not been declared
+ 1835 |   if (doSubDirs && Dir::FindFirst(find, path, "*."))
+      |                    ^~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1842:21: error: ‘MAX_BUFFLEN’ was not declared in this scope
+ 1842 |         char buffer[MAX_BUFFLEN + 1];
+      |                     ^~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1843:16: error: ‘MakePath’ is not a member of ‘Utils’
+ 1843 |         Utils::MakePath( buffer, MAX_BUFFLEN, path, "\\", find.finddata.name);
+      |                ^~~~~~~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1843:26: error: ‘buffer’ was not declared in this scope; did you mean ‘setbuffer’?
+ 1843 |         Utils::MakePath( buffer, MAX_BUFFLEN, path, "\\", find.finddata.name);
+      |                          ^~~~~~
+      |                          setbuffer
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1848:12: error: ‘Dir’ has not been declared
+ 1848 |     while (Dir::FindNext(find));
+      |            ^~~
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:1851:5: error: ‘Dir’ has not been declared
+ 1851 |     Dir::FindClose(find);
+      |     ^~~
+/tmp/reign-upstream-frontend-overlay/icslider.cpp: In member function ‘virtual U32 ICSlider::HandleEvent(Event&)’:
+/tmp/reign-upstream-frontend-overlay/icslider.cpp:638:16: error: ‘DIK_UP’ was not declared in this scope
+  638 |           case DIK_UP:
+      |                ^~~~~~
+/tmp/reign-upstream-frontend-overlay/icslider.cpp:639:16: error: ‘DIK_LEFT’ was not declared in this scope
+  639 |           case DIK_LEFT:
+      |                ^~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icslider.cpp:648:16: error: ‘DIK_DOWN’ was not declared in this scope
+  648 |           case DIK_DOWN:
+      |                ^~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icslider.cpp:649:16: error: ‘DIK_RIGHT’ was not declared in this scope
+  649 |           case DIK_RIGHT:
+      |                ^~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h: In instantiation of ‘ReaperList<DATA, NODE>::ReaperList() [with DATA = IControl; NODE = ICListBox::SelectNode]’:
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:141:18:   required from here
+/tmp/reign-upstream/system/reaperlist.h:28:18: error: ‘SetNodeMember’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation
+   28 |     SetNodeMember(&NODE::node);
+      |     ~~~~~~~~~~~~~^~~~~~~~~~~~~
+/tmp/reign-upstream/system/reaperlist.h:28:18: note: declarations in dependent base ‘NList<ICListBox::SelectNode>’ are not found by unqualified lookup
+/tmp/reign-upstream/system/reaperlist.h:28:18: note: use ‘this->SetNodeMember’ instead
+/tmp/reign-upstream/system/reaperlist.h: In instantiation of ‘Bool ReaperList<DATA, NODE>::PurgeDead() [with DATA = IControl; NODE = ICListBox::SelectNode; Bool = int]’:
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:522:27:   required from here
+/tmp/reign-upstream/system/reaperlist.h:280:16: error: ‘Dispose’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation
+  280 |         Dispose(node);
+      |         ~~~~~~~^~~~~~
+/tmp/reign-upstream/system/reaperlist.h:280:16: note: declarations in dependent base ‘NList<ICListBox::SelectNode>’ are not found by unqualified lookup
+/tmp/reign-upstream/system/reaperlist.h:280:16: note: use ‘this->Dispose’ instead
+/tmp/reign-upstream/system/reaperlist.h: In instantiation of ‘Bool ReaperList<DATA, NODE>::Remove(DATA*, Bool) [with DATA = IControl; NODE = ICListBox::SelectNode; Bool = int]’:
+/tmp/reign-upstream-frontend-overlay/iclistbox.cpp:530:26:   required from here
+/tmp/reign-upstream/system/reaperlist.h:222:16: error: ‘Dispose’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation
+  222 |         Dispose(node);
+      |         ~~~~~~~^~~~~~
+/tmp/reign-upstream/system/reaperlist.h:222:16: note: declarations in dependent base ‘NList<ICListBox::SelectNode>’ are not found by unqualified lookup
+/tmp/reign-upstream/system/reaperlist.h:222:16: note: use ‘this->Dispose’ instead
+gmake[3]: *** [CMakeFiles/dr2_frontend_controls.dir/build.make:219: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/iclistbox.cpp.o] Error 1
+gmake[3]: *** [CMakeFiles/dr2_frontend_controls.dir/build.make:247: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icslider.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/Makefile2:2018: CMakeFiles/dr2_frontend_controls.dir/all] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:2025: CMakeFiles/dr2_frontend_controls.dir/rule] Error 2
+gmake: *** [Makefile:758: dr2_frontend_controls] Error 2

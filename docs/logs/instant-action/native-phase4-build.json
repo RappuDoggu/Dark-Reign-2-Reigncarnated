@@ -1,0 +1,92 @@
+{
+  "input_fingerprint": "651f02763824fce9a52f4ba081f4a3db3c19eea42b6969f8f74e8da5469a2823",
+  "compiled": 84,
+  "total": 93,
+  "linked": false,
+  "mission_booted": false,
+  "failures": [
+    {
+      "source": "graphics/bitmap.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/bitmap.cpp:148:5: error: use of undeclared identifier 'BinkClose'; did you mean 'Dir::FindClose'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/bitmap.cpp:148:16: error: non-const lvalue reference to type 'Find' cannot bind to a value of unrelated type 'HBINK' (aka 'BINK *')",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/bitmap.cpp:750:24: error: use of undeclared identifier 'min'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/bitmap.cpp:751:22: error: use of undeclared identifier 'min'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/bitmap.cpp:765:5: error: use of undeclared identifier 'SetRect'"
+      ]
+    },
+    {
+      "source": "graphics/meshview.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/meshview.cpp:19:10: fatal error: 'direct.h' file not found"
+      ]
+    },
+    {
+      "source": "graphics/IMESHUtil.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:43:2: error: use of undeclared identifier 'ZeroMemory'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:116:60: error: use of undeclared identifier 'MB_OK'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:116:66: error: use of undeclared identifier 'MB_SYSTEMMODAL'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:419:3: error: use of undeclared identifier '__try'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:441:61: error: use of undeclared identifier 'MB_OK'"
+      ]
+    },
+    {
+      "source": "graphics/MRMUpdate.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/MRMUpdate.cpp:63:60: error: use of undeclared identifier 'MB_OK'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/MRMUpdate.cpp:414:3: error: call to 'MRMIncrVertices' is ambiguous",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/MRMUpdate.cpp:418:4: error: call to 'MRMDecrVertices' is ambiguous"
+      ]
+    },
+    {
+      "source": "graphics/vid.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:63:3: error: unknown type name 'HFONT'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:64:3: error: unknown type name 'HMENU'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:180:26: error: use of undeclared identifier 'WS_CAPTION'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:180:39: error: use of undeclared identifier 'WS_BORDER'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:180:51: error: use of undeclared identifier 'WS_VISIBLE'"
+      ]
+    },
+    {
+      "source": "graphics/vid_config.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:9: error: use of undeclared identifier 'WS_CAPTION'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:22: error: use of undeclared identifier 'WS_VISIBLE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:35: error: use of undeclared identifier 'DS_SETFONT'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:48: error: use of undeclared identifier 'DS_CENTER'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:204:9: error: use of undeclared identifier 'BS_PUSHBUTTON'"
+      ]
+    },
+    {
+      "source": "graphics/vid_enumdx.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:74:9: error: use of undeclared identifier 'HIWORD'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:75:9: error: use of undeclared identifier 'LOWORD'; did you mean 'LPWORD'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:76:9: error: use of undeclared identifier 'HIWORD'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:77:9: error: use of undeclared identifier 'LOWORD'; did you mean 'LPWORD'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:691:4: error: use of undeclared identifier 'wsprintf'"
+      ]
+    },
+    {
+      "source": "main/maininit.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:218:7: error: unknown type name 'STARTUPINFO'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:219:23: error: use of undeclared identifier 'STARTUPINFO'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:224:24: error: use of undeclared identifier 'SW_SHOWNORMAL'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:242:9: error: unknown type name 'PROCESS_INFORMATION'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:261:9: error: unknown type name 'PROCESS_INFORMATION'"
+      ]
+    },
+    {
+      "source": "main/setup.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:178:9: error: unknown type name 'HMODULE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:178:24: error: use of undeclared identifier 'LoadLibrary'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:193:7: error: use of undeclared identifier 'ERR_MESSAGE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:193:68: error: expected ';' after expression"
+      ]
+    }
+  ]
+}

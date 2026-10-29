@@ -1,0 +1,107 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-ui-integration
+      Start  1: native_frontend_support
+ 1/51 Test  #1: native_frontend_support ....................   Passed    0.01 sec
+      Start  2: native_frontend_text
+ 2/51 Test  #2: native_frontend_text .......................   Passed    0.01 sec
+      Start  3: original_object_tracking
+ 3/51 Test  #3: original_object_tracking ...................   Passed    0.02 sec
+      Start  4: original_event_dispatch
+ 4/51 Test  #4: original_event_dispatch ....................   Passed    0.01 sec
+      Start  5: original_native_event_context
+ 5/51 Test  #5: original_native_event_context ..............   Passed    0.01 sec
+      Start  6: original_variable_runtime
+ 6/51 Test  #6: original_variable_runtime ..................   Passed    0.01 sec
+      Start  7: original_runtime_handoff
+ 7/51 Test  #7: original_runtime_handoff ...................   Passed    0.01 sec
+      Start  8: original_control_types
+ 8/51 Test  #8: original_control_types .....................   Passed    0.01 sec
+      Start  9: original_frontend_config
+ 9/51 Test  #9: original_frontend_config ...................   Passed    0.01 sec
+      Start 10: original_interface_events
+10/51 Test #10: original_interface_events ..................   Passed    0.02 sec
+      Start 11: original_interface_registry
+11/51 Test #11: original_interface_registry ................   Passed    0.02 sec
+      Start 12: original_messagebox_events
+12/51 Test #12: original_messagebox_events .................   Passed    0.02 sec
+      Start 13: frontend_font_bridge
+13/51 Test #13: frontend_font_bridge .......................   Passed    0.02 sec
+      Start 14: frontend_frame_bridge
+14/51 Test #14: frontend_frame_bridge ......................   Passed    0.01 sec
+      Start 15: native_frontend_input
+15/51 Test #15: native_frontend_input ......................   Passed    0.01 sec
+      Start 16: original_frontend_theme
+16/51 Test #16: original_frontend_theme ....................   Passed    0.01 sec
+      Start 17: original_frontend_triangle
+17/51 Test #17: original_frontend_triangle .................   Passed    0.01 sec
+      Start 18: original_frontend_quads
+18/51 Test #18: original_frontend_quads ....................   Passed    0.02 sec
+      Start 19: original_frontend_texture_config
+19/51 Test #19: original_frontend_texture_config ...........   Passed    0.01 sec
+      Start 20: original_interface_expressions
+20/51 Test #20: original_interface_expressions .............   Passed    0.01 sec
+      Start 21: original_live_frontend_controls
+21/51 Test #21: original_live_frontend_controls ............   Passed    0.03 sec
+      Start 22: original_frontend_effect_routing
+22/51 Test #22: original_frontend_effect_routing ...........   Passed    0.01 sec
+      Start 23: original_console_dispatch
+23/51 Test #23: original_console_dispatch ..................   Passed    0.02 sec
+      Start 24: original_babel_formatting
+24/51 Test #24: original_babel_formatting ..................   Passed    0.01 sec
+      Start 25: original_language_lookup
+25/51 Test #25: original_language_lookup ...................   Passed    0.01 sec
+      Start 26: original_variable_database
+26/51 Test #26: original_variable_database .................   Passed    0.01 sec
+      Start 27: original_render_buckets
+27/51 Test #27: original_render_buckets ....................   Passed    0.03 sec
+      Start 28: original_bitmap_manager
+28/51 Test #28: original_bitmap_manager ....................   Passed    0.02 sec
+      Start 29: original_bitmap_pixels
+29/51 Test #29: original_bitmap_pixels .....................   Passed    0.02 sec
+      Start 30: bitmap_tga_loading
+30/51 Test #30: bitmap_tga_loading .........................   Passed    0.02 sec
+      Start 31: bitmap_bmp_loading
+31/51 Test #31: bitmap_bmp_loading .........................   Passed    0.02 sec
+      Start 32: original_vid_states
+32/51 Test #32: original_vid_states ........................   Passed    0.01 sec
+      Start 33: original_font_registration
+33/51 Test #33: original_font_registration .................   Passed    0.02 sec
+      Start 34: original_interface_metrics
+34/51 Test #34: original_interface_metrics .................   Passed    0.02 sec
+      Start 35: original_font_atlas_and_draw
+35/51 Test #35: original_font_atlas_and_draw ...............   Passed    0.04 sec
+      Start 36: original_key_name_configuration
+36/51 Test #36: original_key_name_configuration ............   Passed    0.01 sec
+      Start 37: original_cursor_registry
+37/51 Test #37: original_cursor_registry ...................   Passed    0.01 sec
+      Start 38: original_frontend_configuration_dispatch
+38/51 Test #38: original_frontend_configuration_dispatch ...   Passed    0.03 sec
+      Start 39: original_command_scope_dispatch
+39/51 Test #39: original_command_scope_dispatch ............   Passed    0.02 sec
+      Start 40: original_runcodes
+40/51 Test #40: original_runcodes ..........................   Passed    0.01 sec
+      Start 41: original_config_parser
+41/51 Test #41: original_config_parser .....................   Passed    0.01 sec
+      Start 42: original_tokenizer
+42/51 Test #42: original_tokenizer .........................   Passed    0.01 sec
+      Start 43: original_engine_primitives
+43/51 Test #43: original_engine_primitives .................   Passed    0.01 sec
+      Start 44: platform_services
+44/51 Test #44: platform_services ..........................   Passed    0.01 sec
+      Start 45: pack_metadata_inspector
+45/51 Test #45: pack_metadata_inspector ....................   Passed    0.11 sec
+      Start 46: native_archive_reader
+46/51 Test #46: native_archive_reader ......................   Passed    0.04 sec
+      Start 47: make_installation_fixture
+47/51 Test #47: make_installation_fixture ..................   Passed    0.04 sec
+      Start 48: installation_integration
+48/51 Test #48: installation_integration ...................   Passed    0.03 sec
+      Start 49: resource_streams
+49/51 Test #49: resource_streams ...........................   Passed    0.01 sec
+      Start 50: tga_pixels
+50/51 Test #50: tga_pixels .................................   Passed    0.02 sec
+      Start 51: native_bitmap_storage
+51/51 Test #51: native_bitmap_storage ......................   Passed    0.02 sec
+
+100% tests passed out of 51
+
+Total Test time (real) =   0.91 sec

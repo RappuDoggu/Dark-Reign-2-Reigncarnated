@@ -1,0 +1,15 @@
+[engine] Logout [Native Probe Pilot]
+[engine] Login [Native Probe Pilot]
+[engine] (col 12) Unknown command: 'sys.runcode'
+[engine] VarItem 'console' (scope) not being deleted
+Original PTree/Main/IFace configuration attempt: BLOCKED
+Interface statements attempted: 120
+Registered classes: 58
+Font aliases: 9
+Bitmaps: 8
+Cursors: 46 cursor batches: 1
+Configured key names: 128 modifiers: 12
+Blocking dependency: Unknown command: 'sys.runcode'
+Login active: 1 backdrop active: 1 geometry batches: 73 glyph batches: 5
+Scripted Login Create event: PASS
+Full Login/Shell lifecycle, GPU screen rendering, Android APK: NOT demonstrated

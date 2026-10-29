@@ -1,0 +1,20 @@
+In file included from /workspace/scratch/71fe0796f7e3/upstream-native/interface/fontsys.h:19,
+                 from /workspace/scratch/71fe0796f7e3/repo/tests/engine_mission_boot_test.cpp:5:
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+Entering IFace::Init
+Entering Game::Init
+Logout [TestOne]
+Entering IFace::Init
+Login [TestOne]
+Logout [TestOne]
+Entering Game::Init
+Logout [TestTwo]
+DataFile: open files [0]
+Original heap/buckets, mesh/light managers, owned light textures, GLES draw and cleanup passed twice; no mission executed
+1/1 complete source units compiled; not linked or executed.
+1/1 complete source units compiled; not linked or executed.

@@ -1,0 +1,23 @@
+[engine] Logout [Pointer Pilot]
+[engine] Login [Pointer Pilot]
+[engine] Logout [Pointer Pilot]
+[engine] Login [Pointer Pilot]
+[engine] Logout [Pointer Pilot]
+[engine] Login [Pointer Pilot]
+[engine] Logout [Pointer Pilot]
+[engine] Login [Pointer Pilot]
+[engine] Logout [Pointer Pilot]
+[engine] Login [Pointer Pilot]
+[engine] Logout [Pointer Pilot]
+Session 1 frame 1: 72 geometry, 4 font batches
+Session 1 frame 2: 72 geometry, 4 font batches
+Session 1 frame 3: 72 geometry, 4 font batches
+Original pointer/modal/edit/Enter creation: PASS; sound requests recorded (not played): 2
+Release main menu: 24 geometry, 9 font batches
+Validated original WAV cache/events: 10
+Session 2 frame 1: 73 geometry, 5 font batches
+Session 2 frame 2: 73 geometry, 5 font batches
+Session 2 frame 3: 73 geometry, 5 font batches
+Release main menu: 24 geometry, 9 font batches
+Validated original WAV cache/events: 8
+Persistent original Login frame, profile, teardown and reopen: PASS

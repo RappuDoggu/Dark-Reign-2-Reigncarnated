@@ -1,0 +1,17 @@
+{
+  "code_commit": "707eea2f49b8b98f3446d58259ef8f603e095283",
+  "run_id": 40161670719,
+  "conclusion": "success",
+  "host_job": 121074355361,
+  "android_job": 121074355513,
+  "host_tests": 21,
+  "bmp_checks": 213,
+  "gpu_checks_per_context": 51,
+  "contexts": 2,
+  "host_logs_artifact": 12586458917,
+  "android_logs_artifact": 12586668717,
+  "original_only_v04_artifact": 12586648836,
+  "local_real_bmp_oracle_images": 63,
+  "local_real_bmp_oracle_pixels": 1118208,
+  "new_original_path_android_runtime_tested": false
+}

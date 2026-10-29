@@ -1,0 +1,23 @@
+{
+  "game/missions.cpp": "67c35c0e20d70bfbc65e765a467253027f1bc9910baa9b581dc213b3f0171298",
+  "game/missions.h": "19fc3fc4727b6de29bf6a2b8ad04c1fa35066d772c110e47405a0bdef15e05ec",
+  "game/campaigns.cpp": "57e2945e313fe29d8034f4418e41da9f18671b2f8851c6393c4aa9b7ba3e4737",
+  "game/campaigns.h": "ec4e5fa648461f211664b033cc9b49543d244f4450aae58b6166a86336d08f06",
+  "game/difficulty.cpp": "7e09baa975d9f4911ae5af4f42f5ecc3842edb97b01175e966d5d7cfce956160",
+  "game/difficulty.h": "1ca23dcf4a84dda95d63f8c275e33683bdc5309339e5dc777fc132bfd3d7309e",
+  "game/savegame.h": "96c667424de93be4a2e6b69dc44ed732044c7c3cb6ba86f5864427521701565a",
+  "coregame/gameconstants.h": "ff0f2d0d6098256804002e0cc6655338ebcdea006da14201c6784a71ec7e0d42",
+  "util/stdload.cpp": "bc61b8baba06939c0f55f233840a05aa6da4ac08ba6e4afb4b5a90daf5782b68",
+  "util/stdload.h": "8739642280604f65b6bbc11bf45067e3a4d922ddda3446a6de76d729718fa815",
+  "util/utiltypes.h": "d99680d5b7adfd680e1de0e0591ff4cf2226e8ceeed3ca730859edc882efa887",
+  "util/mathtypes.h": "98840b74597794ae5c23987e302b186e45685a80d16a047dab2f92c328405301",
+  "util/area.h": "09a09deba868aad41c846e421a78641110ecca94263e7a9675c1808c43132a75",
+  "util/color.h": "dcd704f9ae02e2245fbf34443e0bd0043c8a359b34f595d218bc310e41f264d7",
+  "util/stats.h": "2be288f712bd3beab580ec5abd1cf8a184ba05ba4781db63181e4074635d1591",
+  "util/stats.cpp": "ac4b3b963fb96db2755aa85708ba533b816254c89bddc17b8a9970ddea64e3c7",
+  "system/array.h": "f4a50c02bf9189e6cdb9a9c512813e418ba3a099f5615cb86b7dbac57c7501ce",
+  "system/reaperlist.h": "c42e84a39e05a805d1b482227150ac0ac0b731a28b1da15c3d529eaca74e3bf7",
+  "main/runcodes.cpp": "c6b80d8b98b15d2b8e6e5dea0eacf7f80c5584c11dc8cd903994beb47dbaa979",
+  "main/runcodes.h": "5a2f95d48ab9b2f95bd1a3ecdbb542733adbae4ed74eeeead7a5c289047256b3",
+  "util/utiltypes.cpp": "4da07b6f869ae7d7a10069197c4b073fb2007ce5c458fca6f770c3720ddc1b9a"
+}

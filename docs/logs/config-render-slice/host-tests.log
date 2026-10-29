@@ -1,0 +1,110 @@
+UpdateCTestConfiguration  from :/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/DartConfiguration.tcl
+Parse Config file:/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/DartConfiguration.tcl
+Test project /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: original_runcodes
+
+1: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/runcodes_smoke
+1: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+1: Test timeout computed to be: 1500
+1: [engine] [main] Run code [missing] does not exist
+1: [engine] [main] Entering run code [A]
+1: [engine] [main] Entering run code [B]
+1: [engine] [main] Entering run code [Quit]
+1: [engine] [main] Clearing runcode [Quit]
+1: Original run-code lifecycle/config dispatch: PASS (0 failures)
+ 1/11 Test  #1: original_runcodes ................   Passed    0.01 sec
+test 2
+      Start  2: original_config_parser
+
+2: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/config_smoke
+2: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+2: Test timeout computed to be: 1500
+2: Original config parser/roundtrip: PASS (0 failures)
+ 2/11 Test  #2: original_config_parser ...........   Passed    0.01 sec
+test 3
+      Start  3: original_tokenizer
+
+3: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/tokenizer_smoke
+3: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+3: Test timeout computed to be: 1500
+3: Original TBuf checks: PASS (0 failures)
+ 3/11 Test  #3: original_tokenizer ...............   Passed    0.01 sec
+test 4
+      Start  4: original_engine_primitives
+
+4: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/engine_smoke
+4: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+4: Test timeout computed to be: 1500
+4: Original CRC/RNG/PACK checks: PASS (0 failures)
+ 4/11 Test  #4: original_engine_primitives .......   Passed    0.01 sec
+test 5
+      Start  5: platform_services
+
+5: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/platform_smoke
+5: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+5: Test timeout computed to be: 1500
+5: Platform services: PASS (0 failures)
+ 5/11 Test  #5: platform_services ................   Passed    0.01 sec
+test 6
+      Start  6: pack_metadata_inspector
+
+6: Test command: /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 "/workspace/scratch/2e29d93ded9e/reigncarnated/tests/test_pack.py"
+6: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+6: Test timeout computed to be: 1500
+6: ...
+6: ----------------------------------------------------------------------
+6: Ran 3 tests in 0.002s
+6: 
+6: OK
+ 6/11 Test  #6: pack_metadata_inspector ..........   Passed    0.07 sec
+test 7
+      Start  7: native_archive_reader
+
+7: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/archive_smoke
+7: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+7: Test timeout computed to be: 1500
+7: Native PACK checks: PASS (0 failures)
+ 7/11 Test  #7: native_archive_reader ............   Passed    0.04 sec
+test 8
+      Start  8: make_installation_fixture
+
+8: Test command: /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 "/workspace/scratch/2e29d93ded9e/reigncarnated/tests/make_installation_fixture.py" "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/fixture-install"
+8: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+8: Test timeout computed to be: 1500
+ 8/11 Test  #8: make_installation_fixture ........   Passed    0.03 sec
+test 9
+      Start  9: installation_integration
+
+9: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/installation_probe "/workspace/scratch/2e29d93ded9e/reigncarnated/build-host/fixture-install"
+9: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+9: Test timeout computed to be: 1500
+9: PACK packs/base.zwp entries=1
+9: SUMMARY packs=1 entries=1 payload_bytes=53 text_cfg=1 binary_cfg=0 cfg_tokens=15 loose_cfg=1 loose_tokens=10 startup_tokens=10 failures=0
+ 9/11 Test  #9: installation_integration .........   Passed    0.01 sec
+test 10
+      Start 10: resource_streams
+
+10: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/resources_smoke
+10: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+10: Test timeout computed to be: 1500
+10: Resource precedence/path checks: PASS (0 failures)
+10/11 Test #10: resource_streams .................   Passed    0.02 sec
+test 11
+      Start 11: tga_pixels
+
+11: Test command: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/tga_smoke
+11: Working Directory: /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+11: Test timeout computed to be: 1500
+11: TGA format/origin/RLE/bounds: PASS (0 failures)
+11/11 Test #11: tga_pixels .......................   Passed    0.01 sec
+
+100% tests passed out of 11
+
+Total Test time (real) =   0.24 sec

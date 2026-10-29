@@ -1,0 +1,25 @@
+Main::Enter duration=6 loop=0 focus=1
+t=0 camera=341.759,70.2356,318.127 direction=-0.756366,-0.373858,-0.536787
+t=0.5 camera=338.518,67.0446,303.17 direction=-0.838338,-0.386572,-0.384384
+t=1.5 camera=291.34,48.6963,279.386 direction=-0.930139,-0.339492,-0.13995
+t=3 camera=230.048,27.1571,288.156 direction=-0.969632,-0.200216,-0.140457
+t=4 camera=226.057,23.0084,328.327 direction=-0.875447,-0.136731,-0.46357
+t=5.5 camera=213.438,12.3402,395.719 direction=-0.110876,0.0273864,-0.993457
+Campaign::Enter duration=5 loop=0 focus=1
+Campaign::Exit duration=5 loop=0 focus=1
+Multi::Enter duration=5 loop=0 focus=1
+Multi::Exit duration=4 loop=0 focus=1
+Options::Enter duration=2 loop=0 focus=1
+Options::Exit duration=2 loop=0 focus=1
+Credits::Enter duration=4.5 loop=0 focus=1
+Credits::Exit duration=4.5 loop=0 focus=1
+Main::Init duration=3 loop=1 focus=1
+Multi::Return duration=3 loop=0 focus=1
+Main::Exit duration=2 loop=0 focus=0
+Campaign::JDA::Enter duration=2 loop=0 focus=1
+campaign::JDA::Exit duration=2 loop=0 focus=1
+Campaign::Sprawler::Enter duration=2 loop=0 focus=1
+Campaign::Sprawler::Exit duration=2 loop=0 focus=1
+Load::Enter duration=2 loop=0 focus=1
+Load::Exit duration=2 loop=0 focus=1
+Original BookmarkObj Curve runtime: 18 bookmarks, 2160 active samples. World rendering and cinematic scheduler are not yet connected.

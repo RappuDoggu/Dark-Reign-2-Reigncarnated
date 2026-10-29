@@ -1,0 +1,77 @@
+[  7%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[  7%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 21%] Built target dr2_primitives
+[ 28%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+[ 28%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+[ 28%] Linking CXX static library libdr2_tokenizer.a
+[ 28%] Built target dr2_tokenizer
+[ 35%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 35%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 42%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 42%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 50%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 57%] Linking CXX static library libdr2_tracking.a
+[ 57%] Built target dr2_tracking
+[ 64%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[ 64%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 71%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 78%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+[ 78%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[ 78%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+[ 85%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /tmp/reign-upstream-runtime-overlay/varsys.h:3,
+                 from /tmp/reign-upstream-runtime-overlay/varitem.cpp:2:
+/tmp/reign-upstream-runtime-overlay/varitem.cpp: In destructor ‘reign::vars_detail::VarSys::VarItem::~VarItem()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+[ 85%] Linking CXX static library libdr2_config.a
+[ 85%] Built target dr2_config
+[ 85%] Linking CXX static library libdr2_vars.a
+[ 85%] Built target dr2_vars
+[ 92%] Building CXX object CMakeFiles/dr2_frontend_config.dir/tmp/reign-upstream-frontend-overlay/control_stdload.cpp.o
+[ 92%] Linking CXX static library libdr2_frontend_config.a
+[ 92%] Built target dr2_frontend_config
+[100%] Building CXX object CMakeFiles/dr2_console.dir/src/console.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_console.dir/tmp/reign-upstream-console-overlay/console_slice.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /tmp/reign-upstream-console-overlay/console_slice.hpp:2,
+                 from /tmp/reign-upstream-console-overlay/console_slice.cpp:1:
+/tmp/reign-upstream-console-overlay/console_slice.cpp: In destructor ‘Console::CmdParse::~CmdParse()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp:39:7: note: in expansion of macro ‘ASSERT’
+   39 |       ASSERT(stackLevel >= 1);
+      |       ^~~~~~
+/tmp/reign-upstream-console-overlay/console_slice.cpp: In function ‘U32 Console::StackLevel()’:
+/tmp/reign-upstream-console-overlay/console_slice.cpp:792:14: error: ‘stackLevel’ was not declared in this scope; did you mean ‘StackLevel’?
+  792 |       return stackLevel;
+      |              ^~~~~~~~~~
+      |              StackLevel
+gmake[3]: *** [CMakeFiles/dr2_console.dir/build.make:79: CMakeFiles/dr2_console.dir/tmp/reign-upstream-console-overlay/console_slice.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/Makefile2:2881: CMakeFiles/dr2_console.dir/all] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:2926: CMakeFiles/console_smoke.dir/rule] Error 2
+gmake: *** [Makefile:1044: console_smoke] Error 2

@@ -1,0 +1,197 @@
+Test project /workspace/scratch/71fe0796f7e3/build-engine-host
+    Start 1: original_global_engine_abi
+1/9 Test #1: original_global_engine_abi ..........   Passed    0.01 sec
+    Start 2: original_engine_native_io
+2/9 Test #2: original_engine_native_io ...........   Passed    0.01 sec
+    Start 3: original_engine_mission_resources
+3/9 Test #3: original_engine_mission_resources ...   Passed    0.04 sec
+    Start 4: original_engine_mission_start
+4/9 Test #4: original_engine_mission_start .......   Passed    0.04 sec
+    Start 5: original_engine_native_runtime
+5/9 Test #5: original_engine_native_runtime ......   Passed    0.04 sec
+    Start 6: original_engine_native_input
+6/9 Test #6: original_engine_native_input ........   Passed    0.01 sec
+    Start 7: original_engine_frame_clock
+7/9 Test #7: original_engine_frame_clock .........   Passed    0.01 sec
+    Start 8: original_engine_bitmap_io
+8/9 Test #8: original_engine_bitmap_io ...........   Passed    0.01 sec
+    Start 9: original_engine_movie_adapter
+9/9 Test #9: original_engine_movie_adapter .......   Passed    5.24 sec
+
+100% tests passed out of 9
+
+Total Test time (real) =   5.39 sec
+
+[swscaler @ 0x52f000000400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f00000e400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f00001c400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f00002a400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f000038400] No accelerated colorspace conversion found from yuv420p to rgba.
+Native movie adapter: 294 frames matched decoder pixels and 0 PCM samples; packing, bounds, pause, seek and loop passed
+
+Start testing: Oct 29 08:09 +07
+----------------------------------------------------------
+1/9 Testing: original_global_engine_abi
+1/9 Test: original_global_engine_abi
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_abi_smoke"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_global_engine_abi" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+Original global definitions: packed data, intrusive pointers and 32-bit RNG: PASS
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"original_global_engine_abi" end time: Oct 29 08:09 +07
+"original_global_engine_abi" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/9 Testing: original_engine_native_io
+2/9 Test: original_engine_native_io
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_io_test"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_native_io" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+PASS native File/Dir: I/O, mappings, paths, enumeration, CRC, failure paths
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_native_io" end time: Oct 29 08:09 +07
+"original_engine_native_io" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/9 Testing: original_engine_mission_resources
+3/9 Test: original_engine_mission_resources
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_resources_test" "/workspace/scratch/71fe0796f7e3/owned-installation/Dark Reign 2"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_mission_resources" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+DataFile: open files [0]
+PASS original FileSys + PTree: 2crazed, 100x100, 125 object definitions
+PASS original resource unload; gameplay simulation is not linked by this test
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_mission_resources" end time: Oct 29 08:09 +07
+"original_engine_mission_resources" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/9 Testing: original_engine_mission_start
+4/9 Test: original_engine_mission_start
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_mission_start_test" "/workspace/scratch/71fe0796f7e3/owned-installation/Dark Reign 2"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_mission_start" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+Found 60 missions in 9 groups
+DataFile: open files [0]
+PASS original Missions: discover -> select 2crazed -> activate -> open game.cfg -> queue Mission -> unload
+NOT EXECUTED: Game::PreOpenMission, player/team creation, simulation, renderer, touch controls
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_mission_start" end time: Oct 29 08:09 +07
+"original_engine_mission_start" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/9 Testing: original_engine_native_runtime
+5/9 Test: original_engine_native_runtime
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_runtime_test"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_native_runtime" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+mission.cfg:42 [1] Missing type test.unit
+  #0 0x5614453d0586
+  #1 0x561445409dc9
+  #2 0x561445409b49
+  #3 0x5614453c8bfd
+  #4 0x7f82d81d11ca
+  #5 0x7f82d81d128b
+  #6 0x5614453c5d65
+Type identifiers, native queues, timing/calendar, string comparison and unwinding passed
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_native_runtime" end time: Oct 29 08:09 +07
+"original_engine_native_runtime" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/9 Testing: original_engine_native_input
+6/9 Test: original_engine_native_input
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_input_test"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_native_input" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+Event queue overrun
+Native pointer/key events, pause releases, queue backpressure and selective flush passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_native_input" end time: Oct 29 08:09 +07
+"original_engine_native_input" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/9 Testing: original_engine_frame_clock
+7/9 Test: original_engine_frame_clock
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_frame_test"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_frame_clock" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+Original frame state: timing, pause/resume, rollback rejection and U32 rollover passed; no game frame executed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_frame_clock" end time: Oct 29 08:09 +07
+"original_engine_frame_clock" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/9 Testing: original_engine_bitmap_io
+8/9 Test: original_engine_bitmap_io
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_bitmap_io_test"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_bitmap_io" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+BMP ABI and bounded RIFF palette decoding passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_bitmap_io" end time: Oct 29 08:09 +07
+"original_engine_bitmap_io" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/9 Testing: original_engine_movie_adapter
+9/9 Test: original_engine_movie_adapter
+Command: "/workspace/scratch/71fe0796f7e3/build-engine-host/engine_movie_test" "/workspace/scratch/71fe0796f7e3/test-data/intro-movie-0.bik"
+Directory: /workspace/scratch/71fe0796f7e3/build-engine-host
+"original_engine_movie_adapter" start time: Oct 29 08:09 +07
+Output:
+----------------------------------------------------------
+[swscaler @ 0x52f000000400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f00000e400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0000c4400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0000d2400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0000e0400] No accelerated colorspace conversion found from yuv420p to rgba.
+Native movie adapter: 154 frames matched decoder pixels and 1359360 PCM samples; packing, bounds, pause, seek and loop passed
+<end of output>
+Test time =   5.24 sec
+----------------------------------------------------------
+Test Passed.
+"original_engine_movie_adapter" end time: Oct 29 08:09 +07
+"original_engine_movie_adapter" time elapsed: 00:00:05
+----------------------------------------------------------
+
+End testing: Oct 29 08:09 +07

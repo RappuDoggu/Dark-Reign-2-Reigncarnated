@@ -1,0 +1,134 @@
+name: Native engine slices and Android checks
+on:
+  push:
+    branches: [main, 'dev/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Test transactional data-folder import
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence build-java
+          javac --release 8 -d build-java android/menu/org/reigncarnated/menu/DataFolderImporter.java android/menu/org/reigncarnated/menu/ZipGameSource.java tests/DataFolderImporterTest.java tests/ZipGameSourceTest.java
+          java -cp build-java org.reigncarnated.menu.DataFolderImporterTest | tee evidence/data-folder-import.log
+          java -cp build-java org.reigncarnated.menu.ZipGameSourceTest | tee evidence/zip-import.log
+      - name: Fetch reviewed upstream separately
+        run: bash tools/fetch_upstream.sh "$RUNNER_TEMP/dr2-upstream"
+      - name: Compile and test original primitives and platform services
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cmake -S . -B build-host -DREIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream" -DREIGN_SANITIZE=ON 2>&1 | tee evidence/configure.log
+          cmake --build build-host --verbose 2>&1 | tee evidence/build.log
+          ctest --test-dir build-host -V 2>&1 | tee evidence/tests.log
+      - name: Record complete original frontend link boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/probe_frontend_link.py build-host "$RUNNER_TEMP/frontend-full-link" --sanitize > evidence/frontend-link-boundary.log
+          cp "$RUNNER_TEMP/frontend-full-link/link.log" evidence/frontend-full-link.log
+      - name: Record original frontend compilation boundary
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess, sys
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])
+          upstream=root/"dr2-upstream"
+          summaries=[]
+          for name,opaque,native in [("vendor",False,False),("opaque",True,False),("native-types",True,True)]:
+              out=root/("frontend-probe-"+name)
+              command=[sys.executable,"tools/probe_original_frontend.py",str(upstream),str(upstream)+"-runtime-overlay",str(upstream)+"-config-overlay",str(out)]
+              if opaque: command.append("--opaque-video-declarations")
+              if native: command.extend(["--native-control-types",str(upstream)+"-control-overlay"])
+              result=subprocess.run(command,text=True,capture_output=True)
+              pathlib.Path("evidence/frontend-"+name+".log").write_text(result.stdout+result.stderr)
+              report=out/"result.json"
+              if not report.exists(): raise RuntimeError("Frontend probe failed before producing compiler metadata")
+              meta=json.loads(report.read_text())
+              if meta["compiler_exit_code"]!=result.returncode: raise RuntimeError("Probe exit status disagrees with compiler metadata")
+              summaries.append(meta)
+          pathlib.Path("evidence/frontend-boundary.log").write_text(json.dumps({"kind":"compile-only diagnostic; no frontend link or engine/menu runtime validation","attempts":summaries},indent=2)+"\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: host-compilation-and-test-logs
+          path: evidence/*.log
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Fetch reviewed upstream separately
+        run: bash tools/fetch_upstream.sh "$RUNNER_TEMP/dr2-upstream"
+      - name: Install pinned NDK and SDK tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          bash tools/install_android_sdk.sh "$RUNNER_TEMP/reign-sdk" 2>&1 | tee evidence/android-toolchain-install.log
+      - name: Compile ARM64 and verify local diagnostic package
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ANDROID_SDK_ROOT="$RUNNER_TEMP/reign-sdk"
+          export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk/27.2.12479018"
+          export REIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream"
+          mkdir -p evidence
+          bash tools/package_android.sh 2>&1 | tee evidence/android-build-package.log
+          "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" -h -l build-android/libreign_diagnostic.so > evidence/android-elf.log
+      - name: Install software EGL runtime for pixel tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libegl-mesa0 libgl1-mesa-dri
+      - name: Test initial GLES translation on software EGL
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/stage_khronos_headers.py "$RUNNER_TEMP/reign-sdk/ndk/27.2.12479018" "$RUNNER_TEMP/reign-khronos"
+          cmake -S . -B build-render-host -DREIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream" -DREIGN_GLES_BACKEND=ON -DREIGN_KHRONOS_HEADERS="$RUNNER_TEMP/reign-khronos"
+          cmake --build build-render-host --target gles_smoke
+          LIBGL_ALWAYS_SOFTWARE=1 ctest --test-dir build-render-host -R gles_legacy_pixels -V 2>&1 | tee evidence/gles-pixel-tests.log
+      - name: Build original-only renderer test APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ANDROID_SDK_ROOT="$RUNNER_TEMP/reign-sdk"
+          export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk/27.2.12479018"
+          bash tools/package_asset_probe.sh 2>&1 | tee evidence/asset-probe-package.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Reigncarnated-Renderer-Test-v04-arm64
+          path: build-asset-probe/Reigncarnated-Renderer-Test-v04.apk
+      - name: Compile native launch with original Bink decoding
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ANDROID_NDK_HOME="$RUNNER_TEMP/reign-sdk/ndk/27.2.12479018"
+          bash tools/build_bink_decoder.sh "$RUNNER_TEMP/reign-bink" android > evidence/bink-build.log 2>&1
+          cmake -S . -B build-menu -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake" -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DREIGN_UPSTREAM="$RUNNER_TEMP/dr2-upstream" -DREIGN_ANDROID_MENU=ON -DREIGN_FFMPEG_ROOT="$RUNNER_TEMP/reign-bink/android/install"
+          cmake --build build-menu --target reign_menu --parallel 2 2>&1 | tee evidence/native-launch-arm64.log
+          mkdir -p build-java-launch
+          javac --release 8 -classpath "$RUNNER_TEMP/reign-sdk/platforms/android-35/android.jar" -d build-java-launch android/menu/org/reigncarnated/menu/*.java
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-compilation-and-package-logs
+          path: evidence/*.log
+

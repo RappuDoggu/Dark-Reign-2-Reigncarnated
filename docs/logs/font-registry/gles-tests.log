@@ -1,0 +1,111 @@
+UpdateCTestConfiguration  from :/tmp/reign-render-host/DartConfiguration.tcl
+Parse Config file:/tmp/reign-render-host/DartConfiguration.tcl
+Test project /tmp/reign-render-host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 17
+    Start 17: gles_legacy_pixels
+
+17: Test command: /tmp/reign-render-host/gles_smoke
+17: Working Directory: /tmp/reign-render-host
+17: Environment variables: 
+17:  LIBGL_ALWAYS_SOFTWARE=1
+17: Test timeout computed to be: 1500
+17: Context 1
+17: ARGB byte order and half-pixel coverage: PASS
+17: D3D top-left texture orientation: PASS
+17: Source-alpha blending: PASS
+17: Alpha reference discard: PASS
+17: Zero-to-one depth mapping and occlusion: PASS
+17: Specular-alpha vertex fog: PASS
+17: Specular RGB addition: PASS
+17: Reciprocal homogeneous W path: PASS
+17: Invalid index rejection: PASS
+17: Integer-coordinate glyph coverage: PASS
+17: Offscreen presentation orientation: PASS
+17: Render-target resize and presentation: PASS
+17: GLES3 legacy-TL pixel checks: PASS
+17: Original Vid texture mode 1: PASS
+17: Original Vid texture mode 2: PASS
+17: Original Vid texture mode 3: PASS
+17: Original Vid texture mode 4: PASS
+17: Original Vid texture mode 5: PASS
+17: Original Vid texture mode 6: PASS
+17: Original Vid texture mode 7: PASS
+17: Original Vid destination-color blend: PASS
+17: Original Vid additive blend: PASS
+17: Original Vid Z test/write: PASS
+17: Original Vid texture address 0: PASS
+17: Original Vid texture address 1: PASS
+17: Original Vid texture address 2: PASS
+17: Original bucket merge/rebase to GLES: PASS
+17: Original translucent triangle sort/blend: PASS
+17: Original translucent bucket tag sort/blend: PASS
+17: Original additive fog suppression: PASS
+17: Original additive fog color restoration: PASS
+17: 8-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: 16-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: 24-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: 32-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: PIC alpha -> original CopyLine -> bucket -> GLES: PASS
+17: Original font atlas alpha/half-texel pixels and context replay: PASS
+17: Original font tint and alpha scale: PASS
+17: Original font shadow order/opacity: PASS
+17: Original font right-clip early return: PASS
+17: Original font multi-atlas texture switch: PASS
+17: Original font configuration/alias/reload to GLES: PASS
+17: Context 2
+17: ARGB byte order and half-pixel coverage: PASS
+17: D3D top-left texture orientation: PASS
+17: Source-alpha blending: PASS
+17: Alpha reference discard: PASS
+17: Zero-to-one depth mapping and occlusion: PASS
+17: Specular-alpha vertex fog: PASS
+17: Specular RGB addition: PASS
+17: Reciprocal homogeneous W path: PASS
+17: Invalid index rejection: PASS
+17: Integer-coordinate glyph coverage: PASS
+17: Offscreen presentation orientation: PASS
+17: Render-target resize and presentation: PASS
+17: GLES3 legacy-TL pixel checks: PASS
+17: Original Vid texture mode 1: PASS
+17: Original Vid texture mode 2: PASS
+17: Original Vid texture mode 3: PASS
+17: Original Vid texture mode 4: PASS
+17: Original Vid texture mode 5: PASS
+17: Original Vid texture mode 6: PASS
+17: Original Vid texture mode 7: PASS
+17: Original Vid destination-color blend: PASS
+17: Original Vid additive blend: PASS
+17: Original Vid Z test/write: PASS
+17: Original Vid texture address 0: PASS
+17: Original Vid texture address 1: PASS
+17: Original Vid texture address 2: PASS
+17: Original bucket merge/rebase to GLES: PASS
+17: Original translucent triangle sort/blend: PASS
+17: Original translucent bucket tag sort/blend: PASS
+17: Original additive fog suppression: PASS
+17: Original additive fog color restoration: PASS
+17: 8-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: 16-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: 24-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: 32-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+17: PIC alpha -> original CopyLine -> bucket -> GLES: PASS
+17: Original font atlas alpha/half-texel pixels and context replay: PASS
+17: Original font tint and alpha scale: PASS
+17: Original font shadow order/opacity: PASS
+17: Original font right-clip early return: PASS
+17: Original font multi-atlas texture switch: PASS
+17: Original font configuration/alias/reload to GLES: PASS
+1/1 Test #17: gles_legacy_pixels ...............   Passed    0.27 sec
+
+The following tests passed:
+	gles_legacy_pixels
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.27 sec

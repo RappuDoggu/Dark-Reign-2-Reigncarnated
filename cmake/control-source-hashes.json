@@ -1,0 +1,11 @@
+{
+  "util/area.h": "09a09deba868aad41c846e421a78641110ecca94263e7a9675c1808c43132a75",
+  "util/color.h": "dcd704f9ae02e2245fbf34443e0bd0043c8a359b34f595d218bc310e41f264d7",
+  "system/utils.h": "a614dd502cceb284e89d0004abd4e7bfabe45af58866d1da65653cdb60c4d942",
+  "system/utils.cpp": "421b53e990f3e0415d2bf14cfc4ef44179dd338fb3070c65f090e2d54362eea5",
+  "interface/iftypes.h": "6bdb512f96c9919300cf79badce93abbf965dff3992389c07876ea88f240db1f",
+  "interface/iface_types.h": "994bd0aeaf6159f9d84d6edf930985b1f8e1cf5c92634ecbf129282accfedc6b",
+  "interface/icontrol.h": "d7bfc595591452624d75ea39433df50f22416d426a86edfe5f50577873798bd8",
+  "interface/icontrol.cpp": "ef4bdeffa86dbe28812cad2860299039feab9dc8ccf90815860ab885f9f3a473",
+  "util/promotelink.h": "b6e19e2e12b293cd614b5db9ec279123563db21ac9ad4bfe13e6f68fa293bd17"
+}

@@ -1,0 +1,19 @@
+In file included from /workspace/scratch/71fe0796f7e3/upstream-native/interface/fontsys.h:19,
+                 from /workspace/scratch/71fe0796f7e3/repo/tests/engine_mission_boot_test.cpp:5:
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+DataFile: open files [0]
+VarItem 'iface' (scope) not being deleted
+Engine assertion: currentLanguage
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  NTree was NOT empty when destroyed - MUST call UnlinkAll or DisposeAll!
+Traceback (most recent call last):
+  File "/workspace/scratch/71fe0796f7e3/repo/tools/test_engine_vid.py", line 41, in <module>
+    subprocess.run([str(binary.resolve())]+a.test_arg,check=True)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/workspace/scratch/71fe0796f7e3/build-mission-runtime-test/engine_mission_boot_test', '/workspace/scratch/71fe0796f7e3/owned-installation/Dark Reign 2/packs/base.zwp']' died with <Signals.SIGABRT: 6>.

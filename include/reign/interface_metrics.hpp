@@ -1,0 +1,27 @@
+#pragma once
+#include <cstdint>
+#include <memory>
+#include <string>
+class FScope;
+namespace reign {
+class FontRegistry;class NativeFont;
+struct InterfaceViewport {std::int32_t width,height,depth;};
+// Original IFace metric defaults, CRC lookup, FScope configuration and reads.
+// Does not initialize controls, input/events or the full interface.
+class InterfaceMetrics {
+ struct Impl;std::unique_ptr<Impl> impl_;
+ void configure_native(void *scope);friend class FontRegistry;
+public:
+ InterfaceMetrics(unsigned width,unsigned height);
+ ~InterfaceMetrics();
+ InterfaceMetrics(const InterfaceMetrics &)=delete;InterfaceMetrics &operator=(const InterfaceMetrics &)=delete;
+ std::int32_t get(const std::string &name)const;
+ // Original MetricType index; bounds are checked by original GetMetric.
+ std::int32_t get_id(std::uint32_t type)const;
+ InterfaceViewport viewport()const;
+ void resize(unsigned width,unsigned height);
+ void configure_scope(FScope *);
+ std::shared_ptr<const NativeFont> font(const std::string &metric,const FontRegistry &)const;
+};
+}
+

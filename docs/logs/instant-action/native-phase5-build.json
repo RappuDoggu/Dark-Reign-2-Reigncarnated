@@ -1,0 +1,776 @@
+{
+  "input_fingerprint": "d864fd342a1265ccf24897be758aad8c7bf5b7db422c22a109c81f8c5d8d3830",
+  "compiled": 601,
+  "total": 705,
+  "linked": false,
+  "mission_booted": false,
+  "failures": [
+    {
+      "source": "appdr2/winmain.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/appdr2/winmain.cpp:104:3: error: no member named 'Exception' in namespace 'Debug'; did you mean 'std::exception'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/appdr2/winmain.cpp:104:21: error: no type named 'Handler' in 'std::exception'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/appdr2/winmain.cpp:104:38: error: definition or redeclaration of 'Start' not allowed inside a function"
+      ]
+    },
+    {
+      "source": "coregame_interface/client_debug.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/coregame_interface/client_debug.cpp:418:23: error: no type named 'SetupMono' in 'Weapon::Object'"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_client.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_client_session.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_client_user.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_explorer.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_data.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_eventqueue.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_packet.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/network_http.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/network_ping.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/network_url.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_server.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_server_item.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_server_migration.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_server_session.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_server_user.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/styxnet_transfer.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/logging.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'"
+      ]
+    },
+    {
+      "source": "styxnet/logging_destconsole.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'"
+      ]
+    },
+    {
+      "source": "styxnet/logging_destdr2.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/logging_destdr2.cpp:65:69: error: expected ';' after expression",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/logging_destdr2.cpp:65:53: error: no member named 'WARN' in namespace 'Log'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/logging_destdr2.cpp:69:69: error: expected ';' after expression",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/logging_destdr2.cpp:69:53: error: no member named 'DIAG' in namespace 'Log'"
+      ]
+    },
+    {
+      "source": "styxnet/win32_critsec.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_critsec.h:37:5: error: unknown type name 'CRITICAL_SECTION'"
+      ]
+    },
+    {
+      "source": "styxnet/win32_dns.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/win32_event.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_event.h:57:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_event.h:164:63: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_event.h:169:14: error: use of undeclared identifier 'WAIT_TIMEOUT'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_event.h:174:14: error: use of undeclared identifier 'WAIT_FAILED'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_event.h:181:41: error: use of undeclared identifier 'WAIT_OBJECT_0'"
+      ]
+    },
+    {
+      "source": "styxnet/win32_file.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_file.cpp:37:12: error: use of undeclared identifier 'INVALID_HANDLE_VALUE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_file.cpp:86:34: error: use of undeclared identifier 'GENERIC_READ'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_file.cpp:87:35: error: use of undeclared identifier 'GENERIC_WRITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_file.cpp:89:39: error: use of undeclared identifier 'FILE_SHARE_READ'; did you mean 'MODE_SHARE_READ'?"
+      ]
+    },
+    {
+      "source": "styxnet/win32_mutex.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.cpp:37:13: error: use of undeclared identifier 'CreateMutex'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.cpp:38:24: error: use of undeclared identifier 'GetLastError'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.cpp:38:42: error: use of undeclared identifier 'ERROR_ALREADY_EXISTS'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.cpp:49:5: error: use of undeclared identifier 'CloseHandle'"
+      ]
+    },
+    {
+      "source": "styxnet/win32_socket.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "styxnet/win32_thread.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_thread.h:47:23: error: use of undeclared identifier 'THREAD_PRIORITY_TIME_CRITICAL'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_thread.h:49:17: error: use of undeclared identifier 'THREAD_PRIORITY_HIGHEST'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_thread.h:51:22: error: use of undeclared identifier 'THREAD_PRIORITY_ABOVE_NORMAL'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_thread.h:53:16: error: use of undeclared identifier 'THREAD_PRIORITY_NORMAL'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_thread.h:55:22: error: use of undeclared identifier 'THREAD_PRIORITY_BELOW_NORMAL'"
+      ]
+    },
+    {
+      "source": "system/configfile.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/configfile.cpp:39:13: error: use of undeclared identifier 'GetPrivateProfileSectionNames'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/configfile.cpp:58:11: error: use of undeclared identifier 'WritePrivateProfileSection'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/configfile.cpp:67:13: error: use of undeclared identifier 'GetPrivateProfileSection'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/configfile.cpp:88:11: error: use of undeclared identifier 'WritePrivateProfileString'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/configfile.cpp:99:11: error: use of undeclared identifier 'WritePrivateProfileString'"
+      ]
+    },
+    {
+      "source": "system/dlgtemplate.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/dlgtemplate.cpp:41:12: error: use of undeclared identifier 'LOWORD'; did you mean 'LPWORD'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/dlgtemplate.cpp:42:12: error: use of undeclared identifier 'HIWORD'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/dlgtemplate.cpp:43:12: error: use of undeclared identifier 'LOWORD'; did you mean 'LPWORD'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/dlgtemplate.cpp:44:12: error: use of undeclared identifier 'HIWORD'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/dlgtemplate.cpp:77:21: error: cast from pointer to smaller type 'U32' (aka 'unsigned int') loses information"
+      ]
+    },
+    {
+      "source": "system/fixme.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/fixme.cpp:37:28: error: no member named 'UnderDebugger' in namespace 'Debug'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/fixme.cpp:68:41: error: no member named 'Error' in namespace 'Debug'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/fixme.cpp:74:112: error: expected ';' after expression",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/fixme.cpp:74:39: error: no member named 'WARN' in namespace 'Log'"
+      ]
+    },
+    {
+      "source": "system/utils.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/utils.cpp:97:5: error: expected 'volatile', 'inline', 'goto', or '('",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/utils.cpp:109:5: error: expected 'volatile', 'inline', 'goto', or '('",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/utils.cpp:121:5: error: expected 'volatile', 'inline', 'goto', or '('",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/utils.cpp:133:5: error: expected 'volatile', 'inline', 'goto', or '('",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/utils.cpp:179:13: error: use of undeclared identifier 'stricmp'"
+      ]
+    },
+    {
+      "source": "system/version.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/system.h:19:10: fatal error: 'process.h' file not found"
+      ]
+    },
+    {
+      "source": "system/debug.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/debug_win32.h:35:24: error: unknown type name 'LPEXCEPTION_POINTERS'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/system.h:19:10: fatal error: 'process.h' file not found"
+      ]
+    },
+    {
+      "source": "system/debug_memory.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/system.h:19:10: fatal error: 'process.h' file not found"
+      ]
+    },
+    {
+      "source": "system/debug_symbol.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/debug_symbol.cpp:134:27: error: use of undeclared identifier 'LoadLibrary'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/debug_symbol.cpp:137:26: error: use of undeclared identifier 'GetCurrentProcessId'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/debug_symbol.cpp:141:45: error: use of undeclared identifier 'GetProcAddress'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/debug_symbol.cpp:142:39: error: use of undeclared identifier 'GetProcAddress'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/debug_symbol.cpp:143:45: error: use of undeclared identifier 'GetProcAddress'"
+      ]
+    },
+    {
+      "source": "system/file.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/file.cpp:26:10: fatal error: 'io.h' file not found"
+      ]
+    },
+    {
+      "source": "system/filemap.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/filemap.cpp:34:10: error: use of undeclared identifier 'GENERIC_READ'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/filemap.cpp:38:10: error: use of undeclared identifier 'GENERIC_WRITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/filemap.cpp:42:45: error: use of undeclared identifier 'OPEN_EXISTING'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/filemap.cpp:50:10: error: use of undeclared identifier 'GetFileSize'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/filemap.cpp:56:9: error: use of undeclared identifier 'PAGE_READWRITE'"
+      ]
+    },
+    {
+      "source": "system/hardware.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/registry.h:47:23: error: use of undeclared identifier 'KEY_ALL_ACCESS'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/registry.h:48:23: error: use of undeclared identifier 'KEY_CREATE_LINK'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/registry.h:49:23: error: use of undeclared identifier 'KEY_CREATE_SUB_KEY'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/registry.h:50:23: error: use of undeclared identifier 'KEY_ENUMERATE_SUB_KEYS'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/registry.h:51:23: error: use of undeclared identifier 'KEY_EXECUTE'"
+      ]
+    },
+    {
+      "source": "system/log.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/system.h:19:10: fatal error: 'process.h' file not found"
+      ]
+    },
+    {
+      "source": "system/profile.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/profile.cpp:51:26: error: variable has incomplete type 'System::Event'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/profile.cpp:52:26: error: variable has incomplete type 'System::Event'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/profile.cpp:466:10: error: use of undeclared identifier 'WM_INITDIALOG'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/profile.cpp:474:10: error: use of undeclared identifier 'WM_CLOSE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/profile.cpp:476:7: error: use of undeclared identifier 'EndDialog'"
+      ]
+    },
+    {
+      "source": "graphics/meshview.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/meshview.cpp:19:10: fatal error: 'direct.h' file not found"
+      ]
+    },
+    {
+      "source": "graphics/IMESHUtil.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:43:2: error: use of undeclared identifier 'ZeroMemory'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:116:60: error: use of undeclared identifier 'MB_OK'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:116:66: error: use of undeclared identifier 'MB_SYSTEMMODAL'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:419:3: error: use of undeclared identifier '__try'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/IMESHUtil.cpp:441:61: error: use of undeclared identifier 'MB_OK'"
+      ]
+    },
+    {
+      "source": "graphics/MRMUpdate.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/MRMUpdate.cpp:63:60: error: use of undeclared identifier 'MB_OK'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/MRMUpdate.cpp:414:3: error: call to 'MRMIncrVertices' is ambiguous",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/MRMUpdate.cpp:418:4: error: call to 'MRMDecrVertices' is ambiguous"
+      ]
+    },
+    {
+      "source": "graphics/vid.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:63:3: error: unknown type name 'HFONT'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:64:3: error: unknown type name 'HMENU'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:180:26: error: use of undeclared identifier 'WS_CAPTION'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:180:39: error: use of undeclared identifier 'WS_BORDER'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid.cpp:180:51: error: use of undeclared identifier 'WS_VISIBLE'"
+      ]
+    },
+    {
+      "source": "graphics/vid_config.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:9: error: use of undeclared identifier 'WS_CAPTION'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:22: error: use of undeclared identifier 'WS_VISIBLE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:35: error: use of undeclared identifier 'DS_SETFONT'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:197:48: error: use of undeclared identifier 'DS_CENTER'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_config.cpp:204:9: error: use of undeclared identifier 'BS_PUSHBUTTON'"
+      ]
+    },
+    {
+      "source": "graphics/vid_enumdx.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:74:9: error: use of undeclared identifier 'HIWORD'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:75:9: error: use of undeclared identifier 'LOWORD'; did you mean 'LPWORD'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:76:9: error: use of undeclared identifier 'HIWORD'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:77:9: error: use of undeclared identifier 'LOWORD'; did you mean 'LPWORD'?",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/graphics/vid_enumdx.cpp:691:4: error: use of undeclared identifier 'wsprintf'"
+      ]
+    },
+    {
+      "source": "interface/icedit.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/icedit.cpp:232:18: error: no matching function for call to 'Max'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/icedit.cpp:237:15: error: no matching function for call to 'Max'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/icedit.cpp:318:16: error: no matching function for call to 'Min'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/icedit.cpp:526:32: error: use of undeclared identifier 'GMEM_DDESHARE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/icedit.cpp:529:23: error: use of undeclared identifier 'GlobalLock'"
+      ]
+    },
+    {
+      "source": "interface/input.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/input.cpp:64:10: error: unknown type name 'LPDIRECTINPUT8'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/input.cpp:65:10: error: unknown type name 'LPDIRECTINPUTDEVICE8'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/input.cpp:66:10: error: unknown type name 'LPDIRECTINPUTDEVICE8'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/input.cpp:76:10: error: unknown type name 'DIMOUSESTATE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/interface/input.cpp:138:28: error: use of undeclared identifier 'SPI_GETKEYBOARDDELAY'"
+      ]
+    },
+    {
+      "source": "main/maininit.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:218:7: error: unknown type name 'STARTUPINFO'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:219:23: error: use of undeclared identifier 'STARTUPINFO'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:224:24: error: use of undeclared identifier 'SW_SHOWNORMAL'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:242:9: error: unknown type name 'PROCESS_INFORMATION'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/maininit.cpp:261:9: error: unknown type name 'PROCESS_INFORMATION'"
+      ]
+    },
+    {
+      "source": "main/setup.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:178:9: error: unknown type name 'HMODULE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:178:24: error: use of undeclared identifier 'LoadLibrary'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:193:7: error: use of undeclared identifier 'ERR_MESSAGE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/main/setup.cpp:193:68: error: expected ';' after expression"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_cmd.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_context.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_playerlist.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_propertylist.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_transferlist.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_playerinfo.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_report.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_addressbook.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_sessions.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_earth.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/multiplayer/multiplayer_controls_earth.cpp:181:13: error: call to constructor of 'Color' is ambiguous"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_controls_options.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/multiplayer/multiplayer_controls_options.cpp:16:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_data.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_network.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_transfer.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_addressbook.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_download.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_host.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/multiplayer_settings.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_mutex.h:54:29: error: use of undeclared identifier 'INFINITE'",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/won_controls.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/won_controls_gameinfo.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/won_controls_gamelist.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/won_controls_playerlist.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/won.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "multiplayer/won_cmd.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/styxnet/win32_socket.h:18:10: fatal error: 'winsock2.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_digital.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_digital_cache.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_digital_effect.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_digital_output.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_digital_record.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_digital_reserved.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_digital_stream.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "sound/sound_redbook.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:130:4: error: MSS.H did not detect your platform.  Define __DOS__, _WINDOWS, or WIN32.",
+        "/workspace/scratch/71fe0796f7e3/upstream-native/3rdparty/../3rdparty/mss/mss.h:186:10: fatal error: 'mmsystem.h' file not found"
+      ]
+    },
+    {
+      "source": "won/callbacks.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/callbacks.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/compress.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/compress.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/enetpp.cxx",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/enetpp.cxx'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/host.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/host.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/list.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/list.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/networking/Messages.cxx",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/networking/Messages.cxx'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/networking/messages/ChatMessage.cxx",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/networking/messages/ChatMessage.cxx'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/networking/messages/EventConnect.cxx",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/networking/messages/EventConnect.cxx'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/networking/messages/EventDisconnect.cxx",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/networking/messages/EventDisconnect.cxx'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/networking/Networking.cxx",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/networking/Networking.cxx'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/networking/SendableEventMessage.cxx",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/networking/SendableEventMessage.cxx'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/packet.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/packet.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/peer.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/peer.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/protocol.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/protocol.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/unix.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/unix.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/win32.c",
+      "errors": [
+        "clang++: error: no such file or directory: '/workspace/scratch/71fe0796f7e3/upstream-native/won/win32.c'",
+        "clang++: error: no input files"
+      ]
+    },
+    {
+      "source": "won/woniface.cpp",
+      "errors": [
+        "/workspace/scratch/71fe0796f7e3/upstream-native/system/system.h:19:10: fatal error: 'process.h' file not found"
+      ]
+    }
+  ]
+}

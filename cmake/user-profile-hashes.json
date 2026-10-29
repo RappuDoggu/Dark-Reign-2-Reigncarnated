@@ -1,0 +1,9 @@
+{
+  "game/user.cpp": "0d97ba583bce6ab6e2710b9807014099670aabf7853d6c161768937c0869a3c3",
+  "game/user.h": "385540ece09bb30f2e0c5c12d4466c2ac768ad84676b07ca077a2385c4130541",
+  "game/game_login.cpp": "402ef72db60ee6159a32549ae477b30fcfd723b4ea82647ba30af08026ec1308",
+  "game/game_login.h": "d5940bce5f57b4a1ba0461233a4a2fc1ee76bbfff6f4f087374d469e2c78d5eb",
+  "util/stats.cpp": "ac4b3b963fb96db2755aa85708ba533b816254c89bddc17b8a9970ddea64e3c7",
+  "util/stats.h": "2be288f712bd3beab580ec5abd1cf8a184ba05ba4781db63181e4074635d1591",
+  "util/stdload.h": "8739642280604f65b6bbc11bf45067e3a4d922ddda3446a6de76d729718fa815"
+}

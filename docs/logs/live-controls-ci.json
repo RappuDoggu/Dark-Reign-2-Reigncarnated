@@ -1,0 +1,38 @@
+{
+  "commit": "d468c50ffe29531c0d3e9bfac0cd22ee35fa4a60",
+  "run": 40267250825,
+  "host": {
+    "job": 121392224195,
+    "conclusion": "success",
+    "provider_output": [
+      "2026-10-26T04:07:00.0768867Z 21: Live original root/button factory/activation/draw/modal-message/deactivation: PASS (20 checks, 21 batches); real menu not loaded",
+      "2026-10-26T04:07:00.0800117Z 22: Original IFace effect selection/volume/context/failure routing: PASS (11 checks); audio device not tested",
+      "2026-10-26T04:07:00.5742761Z 100% tests passed, 0 tests failed out of 47"
+    ]
+  },
+  "android": {
+    "job": 121392224339,
+    "conclusion": "success",
+    "provider_output": [
+      "2026-10-26T04:09:41.0074581Z [ 96%] Built target dr2_frontend_controls",
+      "2026-10-26T04:09:44.6319808Z [100%] Built target frontend_live_smoke",
+      "2026-10-26T04:10:52.5054759Z 46: GLES3 legacy-TL pixel checks: PASS",
+      "2026-10-26T04:10:52.5087865Z 46: GLES3 legacy-TL pixel checks: PASS",
+      "2026-10-26T04:10:52.6459714Z 100% tests passed, 0 tests failed out of 1"
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 12627615483,
+      "name": "Reigncarnated-Renderer-Test-v04-arm64"
+    },
+    {
+      "id": 12626574350,
+      "name": "host-compilation-and-test-logs"
+    },
+    {
+      "id": 12626549988,
+      "name": "android-compilation-and-package-logs"
+    }
+  ]
+}

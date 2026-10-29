@@ -1,0 +1,22 @@
+[  9%] Built target reign_platform
+[ 11%] Building CXX object CMakeFiles/reign_vid_device.dir/src/vid_device.cpp.o
+[ 17%] Built target dr2_primitives
+[ 23%] Built target dr2_tokenizer
+[ 27%] Built target reign_checks
+[ 31%] Built target platform_smoke
+[ 35%] Built target archive_smoke
+[ 39%] Built target resources_smoke
+[ 43%] Built target tga_smoke
+[ 58%] Built target dr2_config
+[ 62%] Built target installation_probe
+[ 66%] Built target tokenizer_smoke
+[ 70%] Built target engine_smoke
+[ 74%] Built target configuration_probe
+[ 82%] Built target dr2_runcodes
+[ 86%] Built target config_smoke
+[ 90%] Built target runcodes_smoke
+[ 92%] Linking CXX static library libreign_vid_device.a
+[ 92%] Built target reign_vid_device
+[ 96%] Built target dr2_vid_state
+[ 98%] Linking CXX executable vid_state_smoke
+[100%] Built target vid_state_smoke

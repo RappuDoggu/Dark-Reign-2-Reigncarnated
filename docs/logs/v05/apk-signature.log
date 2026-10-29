@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=Reigncarnated Private Original Menu
+Signer #1 certificate SHA-256 digest: 47599d2ce39a77f1e9acfa628e9ac392a0cc8fa2bb6306b7bac0788328c69486
+Signer #1 certificate SHA-1 digest: 08862fc1b6f6f60937e2d7f5f1fc12aa95adc48c
+Signer #1 certificate MD5 digest: d4537a919451dc7341a0f45ebae68b64
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 2048
+Signer #1 public key SHA-256 digest: 7838775229bae5d818be2f366ffd0bd95f641cf23988384dac79f0592810f67c
+Signer #1 public key SHA-1 digest: 735b6d8cdf725dfa35a6e3922542207b9992169c
+Signer #1 public key MD5 digest: 05d1480a184fb4bfa09ca114dfed4070

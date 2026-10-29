@@ -1,0 +1,43 @@
+{
+  "commit": "c098b4758549bdbfea23b0d554509b904f14575d",
+  "branch": "dev/native-arm64-primitives",
+  "run_id": 40203206699,
+  "jobs": [
+    {
+      "id": 121198574882,
+      "name": "host",
+      "conclusion": "success"
+    },
+    {
+      "id": 121198574931,
+      "name": "android",
+      "conclusion": "success"
+    }
+  ],
+  "host_evidence": [
+    "2026-10-25T14:39:37.9233888Z [ 32%] Built target dr2_frontend_controls",
+    "2026-10-25T14:40:08.5478531Z 100% tests passed, 0 tests failed out of 26"
+  ],
+  "android_evidence": [
+    "2026-10-25T14:39:44.4795723Z [ 16%] Built target dr2_frontend_controls"
+  ],
+  "artifacts": [
+    {
+      "id": 12602523401,
+      "name": "Reigncarnated-Renderer-Test-v04-arm64",
+      "digest": "sha256:e01b9550ea648ea8c6f1162370bf3b20c6fc5e08ff131ad062af6d101a37eaa6"
+    },
+    {
+      "id": 12602133836,
+      "name": "host-compilation-and-test-logs",
+      "digest": "sha256:813f3d9124f204efe25aa89655c07f40df389b9562f1aaaf6a5d5885c5664d20"
+    },
+    {
+      "id": 12602104283,
+      "name": "android-compilation-and-package-logs",
+      "digest": "sha256:cb4c05cab67ad88ead0e0be6924821af71eee7e6e8215e9971cf942ffc02e245"
+    }
+  ],
+  "menu_apk_available": false,
+  "notes": "Renderer v0.4 artifact is unchanged diagnostic tooling, not the original menu. New controls compiled as objects only."
+}

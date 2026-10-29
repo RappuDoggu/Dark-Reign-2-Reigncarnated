@@ -1,0 +1,116 @@
+CMake Warning (deprecated) at /tmp/reign-tools/android-ndk-r27c/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  build-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-tools/android-ndk-r27c/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /tmp/reign-tools/android-ndk-r27c/build/cmake/android.toolchain.cmake:55 (include)
+  build-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-tools/android-ndk-r27c/build/cmake/flags.cmake:18 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang.cmake:23 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeCXXInformation.cmake:48 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+["binary read diagnostic argument", "bounded binary symbol names", "natural PTree object alignment", "remove paired PTree object pack pragma", "fscope.cpp bounded diagnostics", "const diagnostic string definition", "const diagnostic string declaration", "numeric parse exception ownership", "defined 32-bit integer accumulation", "unsigned binary shift", "bounded binary shifts", "bounded hexadecimal shifts", "defined two-complement signed integer result", "safe preformatted block error", "exception-safe block cleanup at native error boundary", "alignment-safe little-endian DOCB identifier", "tree debug allocator header boundary", "tbuf.cpp bounded diagnostics"]
+-- Configuring done (0.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/scratch/2e29d93ded9e/reigncarnated/build-android
+[  6%] Built target dr2_primitives
+[  8%] Building CXX object CMakeFiles/reign_platform.dir/src/tga.cpp.o
+[ 10%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 12%] Linking CXX static library libreign_platform.a
+[ 14%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 20%] Built target reign_platform
+[ 24%] Built target reign_checks
+[ 26%] Linking CXX executable platform_smoke
+[ 28%] Built target platform_smoke
+[ 30%] Linking CXX shared library libreign_diagnostic.so
+[ 32%] Built target reign_diagnostic
+[ 34%] Linking CXX executable archive_smoke
+[ 36%] Built target archive_smoke
+[ 38%] Linking CXX executable resources_smoke
+[ 40%] Built target resources_smoke
+[ 42%] Building CXX object CMakeFiles/reign_gles.dir/src/legacy_gles.cpp.o
+[ 44%] Linking CXX static library libdr2_tokenizer.a
+[ 44%] Built target dr2_tokenizer
+[ 46%] Building CXX object CMakeFiles/tga_smoke.dir/tests/tga_smoke.cpp.o
+[ 48%] Building CXX object CMakeFiles/reign_gles.dir/src/renderer_checks.cpp.o
+[ 50%] Linking CXX executable tga_smoke
+[ 50%] Built target tga_smoke
+[ 52%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 54%] Linking CXX static library libreign_gles.a
+[ 54%] Built target reign_gles
+[ 56%] Linking CXX executable installation_probe
+[ 58%] Built target installation_probe
+[ 60%] Linking CXX executable tokenizer_smoke
+[ 62%] Built target tokenizer_smoke
+[ 66%] Built target engine_smoke
+[ 68%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 70%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 72%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 74%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 76%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 78%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+/tmp/reign-upstream-config-overlay/blockfile.cpp:702:5: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you mean 'delete[]'? [-Wmismatched-new-delete]
+  702 |     delete dest;
+      |     ^
+      |           []
+/tmp/reign-upstream-config-overlay/blockfile.cpp:686:18: note: allocated with 'new[]' here
+  686 |     char *dest = new char [entry->info.size];
+      |                  ^
+1 warning generated.
+[ 80%] Linking CXX static library libdr2_config.a
+[ 80%] Built target dr2_config
+[ 82%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/runcodes.cpp.o
+[ 84%] Building CXX object CMakeFiles/configuration_probe.dir/tools/configuration_probe.cpp.o
+[ 86%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/main_exec.cpp.o
+[ 88%] Linking CXX executable configuration_probe
+[ 88%] Built target configuration_probe
+[ 90%] Building CXX object CMakeFiles/config_smoke.dir/tests/config_smoke.cpp.o
+[ 92%] Building CXX object CMakeFiles/dr2_runcodes.dir/src/runcode_host.cpp.o
+[ 94%] Linking CXX static library libdr2_runcodes.a
+[ 94%] Built target dr2_runcodes
+[ 96%] Building CXX object CMakeFiles/runcodes_smoke.dir/tests/runcodes_smoke.cpp.o
+[ 98%] Linking CXX executable config_smoke
+[ 98%] Built target config_smoke
+[100%] Linking CXX executable runcodes_smoke
+[100%] Built target runcodes_smoke
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+LOCAL DIAGNOSTIC ONLY: /workspace/scratch/2e29d93ded9e/reigncarnated/build-android/reigncarnated-diagnostic.apk
+Contains original upstream primitives. Do not redistribute until rights are resolved.

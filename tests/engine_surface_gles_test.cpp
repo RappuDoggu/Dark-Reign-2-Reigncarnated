@@ -1,0 +1,186 @@
+#include "surface_gles.h"
+#include "device_gles.h"
+#include "reign/legacy_gles.hpp"
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#include <array>
+#include <iostream>
+#include <stdexcept>
+#include <vector>
+#include <memory>
+namespace {
+constexpr unsigned W=32,H=32;
+void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
+struct Context {
+ EGLDisplay display=EGL_NO_DISPLAY;EGLSurface surface=EGL_NO_SURFACE;EGLContext context=EGL_NO_CONTEXT;
+ Context(){
+  auto platform=reinterpret_cast<PFNEGLGETPLATFORMDISPLAYEXTPROC>(eglGetProcAddress("eglGetPlatformDisplayEXT"));
+  if(!platform)throw std::runtime_error("No EGL platform entry point");
+  display=platform(EGL_PLATFORM_SURFACELESS_MESA,nullptr,nullptr);
+  if(display==EGL_NO_DISPLAY||!eglInitialize(display,nullptr,nullptr)||!eglBindAPI(EGL_OPENGL_ES_API))throw std::runtime_error("Cannot initialize software EGL");
+  EGLint attrs[]={EGL_SURFACE_TYPE,EGL_PBUFFER_BIT,EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT_KHR,EGL_RED_SIZE,8,EGL_GREEN_SIZE,8,EGL_BLUE_SIZE,8,EGL_ALPHA_SIZE,8,EGL_DEPTH_SIZE,16,EGL_NONE};
+  EGLConfig config;EGLint count=0;if(!eglChooseConfig(display,attrs,&config,1,&count)||count!=1)throw std::runtime_error("No GLES3 config");
+  EGLint pbuffer[]={EGL_WIDTH,W,EGL_HEIGHT,H,EGL_NONE};surface=eglCreatePbufferSurface(display,config,pbuffer);
+  EGLint ca[]={EGL_CONTEXT_CLIENT_VERSION,3,EGL_NONE};context=eglCreateContext(display,config,EGL_NO_CONTEXT,ca);
+  if(surface==EGL_NO_SURFACE||context==EGL_NO_CONTEXT||!eglMakeCurrent(display,surface,surface,context))throw std::runtime_error("Cannot create GLES3 context");
+ }
+ ~Context(){eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);if(context!=EGL_NO_CONTEXT)eglDestroyContext(display,context);if(surface!=EGL_NO_SURFACE)eglDestroySurface(display,surface);if(display!=EGL_NO_DISPLAY)eglTerminate(display);}
+};
+std::array<reign::LegacyTL,4> quad(std::uint32_t color,float z=.5f,std::uint32_t spec=0xff000000u){return {{{-.5f,-.5f,z,1,color,spec,0,0},{W-.5f,-.5f,z,1,color,spec,1,0},{W-.5f,H-.5f,z,1,color,spec,1,1},{-.5f,H-.5f,z,1,color,spec,0,1}}};}
+const std::uint16_t indices[]={0,1,2,0,2,3};
+}
+
+void check(bool ok){if(!ok)throw std::runtime_error("Native surface GLES invariant");}
+void fill(IDirectDrawSurface7 *s,DWORD color){DDBLTFX fx{};fx.dwSize=sizeof(fx);fx.dwFillColor=color;check(s->Blt(nullptr,nullptr,nullptr,DDBLT_COLORFILL,&fx)==S_OK);}
+void draw(reign::LegacyGles &renderer,NativeEngine::SurfaceTexture &texture,unsigned r,unsigned g,unsigned b){
+ renderer.clear(W,H,0,0,0);reign::DrawState state;state.texture_op=reign::TextureOp::texture;state.texture=texture.Refresh(renderer);
+ auto vertices=quad(0xffffffff);renderer.draw(W,H,vertices.data(),vertices.size(),indices,6,state);
+ std::vector<std::uint8_t> pixels(W*H*4);renderer.read_rgba(W,H,pixels.data());
+ auto at=(H/2*W+W/2)*4;check(pixels[at]==r&&pixels[at+1]==g&&pixels[at+2]==b);
+}
+int main(){try{
+ DDSURFACEDESC2 desc{};desc.dwSize=sizeof(desc);desc.dwFlags=DDSD_WIDTH|DDSD_HEIGHT|DDSD_PIXELFORMAT|DDSD_CAPS;desc.dwWidth=2;desc.dwHeight=2;desc.ddsCaps.dwCaps=DDSCAPS_SYSTEMMEMORY|DDSCAPS_TEXTURE;
+ auto &format=desc.ddpfPixelFormat;format.dwSize=sizeof(format);format.dwFlags=DDPF_RGB;format.dwRGBBitCount=16;format.dwRBitMask=0xf800;format.dwGBitMask=0x7e0;format.dwBBitMask=0x1f;
+ IDirectDrawSurface7 *surface=nullptr;check(NativeEngine::CreateMemorySurface(desc,&surface)==S_OK);
+ NativeEngine::SurfaceTexture texture(surface);surface->Release(); // texture retains it
+ for(int pass=0;pass<2;++pass){
+  Context context;reign::LegacyGles renderer(resolve);
+  struct Detach {NativeEngine::SurfaceTexture &texture;~Detach(){texture.AbandonContext();}} detach{texture};
+  // Exercise actual DX7 virtual draw dispatch, not the fixture device.
+  DDSURFACEDESC2 targetDesc=desc;targetDesc.dwWidth=W;targetDesc.dwHeight=H;
+  IDirectDrawSurface7 *target=nullptr;check(NativeEngine::CreateMemorySurface(targetDesc,&target)==S_OK);
+  IDirect3DDevice7 *device=nullptr;check(NativeEngine::CreateGlesDevice(renderer,target,&device)==S_OK);target->Release();
+  DWORD queried=99;
+  check(device->GetRenderState(D3DRENDERSTATE_ZWRITEENABLE,&queried)==S_OK&&queried==0);
+  check(device->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE,1)==S_OK);
+  check(device->GetRenderState(D3DRENDERSTATE_ZWRITEENABLE,&queried)==S_OK&&queried==1);
+  check(device->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE,0)==S_OK);
+  check(device->GetRenderState(D3DRENDERSTATE_ZWRITEENABLE,nullptr)==E_INVALIDARG);
+  check(device->SetRenderState(D3DRENDERSTATE_LIGHTING,0)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_LIGHTING,1)==E_NOTIMPL);
+  check(device->GetRenderState(D3DRENDERSTATE_LIGHTING,&queried)==S_OK&&queried==0);
+  check(device->SetTextureStageState(0,D3DTSS_ADDRESS,D3DTADDRESS_MIRROR)==S_OK);
+  check(device->GetTextureStageState(0,D3DTSS_ADDRESS,&queried)==S_OK&&queried==D3DTADDRESS_MIRROR);
+  check(device->SetTextureStageState(0,D3DTSS_ADDRESS,D3DTADDRESS_BORDER)==E_NOTIMPL);
+  check(device->GetTextureStageState(0,D3DTSS_ADDRESS,&queried)==S_OK&&queried==D3DTADDRESS_MIRROR);
+  check(device->GetTextureStageState(1,D3DTSS_COLOROP,&queried)==S_OK&&queried==D3DTOP_DISABLE);
+  auto vertices=quad(0xffff0000);WORD triangleIndices[]={0,1,2,0,2,3};
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);
+  check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
+  check(device->Clear(0,nullptr,D3DCLEAR_TARGET,0xff000000,1,0)==S_OK);
+  D3DRECT full{0,0,W,H};check(device->Clear(1,&full,D3DCLEAR_TARGET,0xff000000,1,0)==S_OK);
+  full.x2=W-1;check(device->Clear(1,&full,D3DCLEAR_TARGET,0xff000000,1,0)==E_NOTIMPL);
+  check(device->BeginScene()==S_OK&&device->BeginScene()==E_FAIL);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  std::vector<std::uint8_t> result(W*H*4);renderer.read_rgba(W,H,result.data());
+  const auto center=(H/2*W+W/2)*4;check(result[center]==255&&result[center+1]==0&&result[center+2]==0);
+  check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_CW)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0);
+  check(device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==255);
+  // Both fan triangles and alternating strip triangles must retain winding.
+  for(auto topology:{D3DPT_TRIANGLEFAN,D3DPT_TRIANGLESTRIP}){
+   WORD ordered[]={0,1,2,3};if(topology==D3DPT_TRIANGLESTRIP){ordered[2]=3;ordered[3]=2;}
+   check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
+   check(device->DrawIndexedPrimitive(topology,D3DFVF_TLVERTEX,vertices.data(),4,ordered,4,0)==S_OK);
+   renderer.read_rgba(W,H,result.data());
+   check(result[(H/4*W+3*W/4)*4]==255&&result[(3*H/4*W+W/4)*4]==255);
+  }
+  check(device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE)==S_OK);
+  check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_ALPHAFUNC,D3DCMP_GREATER)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_ALPHATESTENABLE,1)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_ALPHAREF,128)==S_OK);
+  vertices=quad(0x80ff0000);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0);
+  vertices=quad(0x81ff0000);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==255);
+  check(device->SetRenderState(D3DRENDERSTATE_ALPHATESTENABLE,0)==S_OK);
+  check(device->Clear(0,nullptr,D3DCLEAR_ZBUFFER,0xff00ff00,.25f,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==255&&result[center+1]==0);
+  check(device->SetRenderState(D3DRENDERSTATE_ZENABLE,1)==S_OK);
+  vertices=quad(0xff00ff00,.5f);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==255&&result[center+1]==0);
+  check(device->Clear(0,nullptr,D3DCLEAR_TARGET,0xff0000ff,1,0)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==0&&result[center+2]==255);
+  check(device->Clear(0,nullptr,D3DCLEAR_ZBUFFER,0,1,0)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==255);
+  check(device->SetRenderState(D3DRENDERSTATE_ZENABLE,0)==S_OK);
+  triangleIndices[5]=4;check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);triangleIndices[5]=3;
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_XYZ,vertices.data(),4,triangleIndices,6,0)==E_NOTIMPL);
+  DWORD stored=0;
+  for(auto type:{D3DRENDERSTATE_TEXTUREPERSPECTIVE,D3DRENDERSTATE_DITHERENABLE,D3DRENDERSTATE_CLIPPING}){
+   for(DWORD value:{0u,1u}){check(device->SetRenderState(type,value)==S_OK);check(device->GetRenderState(type,&stored)==S_OK&&stored==value);}
+   check(device->SetRenderState(type,2)!=S_OK);
+  }
+  check(device->SetRenderState(D3DRENDERSTATE_ANTIALIAS,1)==E_NOTIMPL);
+  check(device->SetTexture(1,surface)==E_NOTIMPL);check(device->SetTexture(0,surface)==S_OK);
+  check(device->SetTextureStageState(0,D3DTSS_MIPFILTER,D3DTFP_LINEAR)==E_NOTIMPL);
+  check(device->SetTextureStageState(0,D3DTSS_MINFILTER,D3DTFN_LINEAR)==S_OK);
+  check(device->SetTextureStageState(0,D3DTSS_MAGFILTER,D3DTFG_LINEAR)==S_OK);
+  check(device->SetTextureStageState(0,D3DTSS_ADDRESS,D3DTADDRESS_WRAP)==S_OK);
+  check(device->SetRenderState(D3DRENDERSTATE_DESTBLEND,D3DBLEND_SRCALPHASAT)==E_NOTIMPL);
+  fill(surface,0x07e0);vertices=quad(0xffffffff);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==255&&result[center+2]==0);
+  // A/B/A switching must retain each GPU upload, including after caller Release.
+  IDirectDrawSurface7 *other=nullptr;check(NativeEngine::CreateMemorySurface(desc,&other)==S_OK);fill(other,0xf800);
+  auto uploads=renderer.statistics().texture_uploads;
+  for(unsigned repeat=0;repeat<100;++repeat){
+   check(device->SetTexture(0,other)==S_OK);
+   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+   check(device->SetTexture(0,surface)==S_OK);
+   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  }
+  check(renderer.statistics().texture_uploads==uploads+1);
+  renderer.read_rgba(W,H,result.data());check(result[center+1]==255);
+  // Mutations while unbound must be visible when selected again.
+  check(device->SetTexture(0,other)==S_OK);fill(surface,0x07e0);other->Release();
+  check(device->SetTexture(0,surface)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  check(renderer.statistics().texture_uploads==uploads+2);
+  fill(surface,0x001f);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center]==0&&result[center+1]==0&&result[center+2]==255);
+  for(auto op:{D3DTOP_MODULATE2X,D3DTOP_MODULATE4X}){
+   check(device->SetTextureStageState(0,D3DTSS_COLOROP,op)==S_OK);
+   vertices=quad(0xff404040);
+   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+   renderer.read_rgba(W,H,result.data());check(result[center+2]==(op==D3DTOP_MODULATE2X?128:255));
+  }
+  check(device->SetTextureStageState(0,D3DTSS_COLOROP,D3DTOP_SELECTARG1)==S_OK);
+  vertices=quad(0x80404040);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
+  renderer.read_rgba(W,H,result.data());check(result[center+2]==255&&result[center+3]==128);
+  check(device->EndScene()==S_OK&&device->EndScene()==E_FAIL);check(device->Release()==0);
+  // Unequal reciprocal W distinguishes perspective-correct from affine UVs.
+  const std::uint8_t stripes[]={255,0,0,255,0,0,255,255};
+  auto stripeTexture=renderer.texture_rgba(2,1,stripes);
+  auto perspectiveVertices=quad(0xffffffff);perspectiveVertices[1].rhw=perspectiveVertices[2].rhw=.25f;
+  reign::DrawState perspectiveState;perspectiveState.texture=stripeTexture;perspectiveState.texture_op=reign::TextureOp::texture;
+  const auto sample=(H/2*W+20)*4;
+  for(bool perspective:{true,false}){
+   perspectiveState.perspective=perspective;renderer.clear(W,H,0,0,0);
+   renderer.draw(W,H,perspectiveVertices.data(),4,indices,6,perspectiveState);
+   renderer.read_rgba(W,H,result.data());
+   check(result[sample]==(perspective?255:0)&&result[sample+2]==(perspective?0:255));
+  }
+  renderer.delete_texture(stripeTexture);
+  fill(surface,0xf800);draw(renderer,texture,255,0,0);
+  const auto first=texture.Refresh(renderer);check(texture.Refresh(renderer)==first);
+  fill(surface,0x001f);draw(renderer,texture,0,0,255);check(texture.Refresh(renderer)==first);
+  DDSURFACEDESC2 mapped{};mapped.dwSize=sizeof(mapped);check(surface->Lock(nullptr,&mapped,0,nullptr)==S_OK);
+  auto *p=static_cast<std::uint16_t *>(mapped.lpSurface);for(unsigned i=0;i<4;++i)p[i]=0x07e0;
+  check(surface->Unlock(nullptr)==S_OK);draw(renderer,texture,0,255,0);
+  texture.AbandonContext();renderer.abandon_context();
+ }
+ std::cout<<"Native DX7 surface -> RGB565 conversion -> GLES texture -> rendered pixels and real DX7 device draw dispatch passed across two contexts; no mission executed\n";
+}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

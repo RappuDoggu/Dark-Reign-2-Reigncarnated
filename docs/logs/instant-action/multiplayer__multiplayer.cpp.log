@@ -1,0 +1,6 @@
+In file included from <built-in>:1:
+In file included from <upstream>/system/std.h:37:
+<upstream>/system/win32.h:34:10: fatal error: 'windows.h' file not found
+   34 | #include <windows.h>
+      |          ^~~~~~~~~~~
+1 error generated.

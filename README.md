@@ -1,29 +1,69 @@
 # Reigncarnated
 
-**Dark Reign 2 preservation and native Android source-port research.**
+Native ARM64 Android source-port work for Dark Reign 2.
 
-## Objective
-Produce a **native ARM64 Android** build of Dark Reign 2 from recoverable C++ source, preserving original gameplay while adapting rendering, platform services and controls. Target AYN Thor dual-screen tactical UI **after** a stable single-display port.
+## Current checkpoint: native launch APK v0.5
 
-## Status
-**Phase 0 — source and licensing audit.** No Android gameplay, successful engine compilation or APK has been demonstrated yet.
+The owner confirmed v0.4 Android execution. v0.5 adds original intros and audio,
+water, sun/moon sprites, smoke/flame/glow/water-drop emitters, rain impacts and
+thunder/lightning to the native shell. ZIP import, host rendering, decoder resume,
+ARM64 compilation and signed APK structure are validated. Device execution of
+v0.5 is pending; desktop 1:1 equivalence is not yet established.
 
-## Existing reference
-- Source repository: https://github.com/grasmanek94/darkreign2 (master)
-- Original game is confirmed by project owner to run under Winlator on Android. That establishes a behavioral reference, **not** native Android compatibility.
-- Public source availability does not necessarily grant permission to redistribute source, third-party libraries or game assets. Do not copy upstream source or bundled binaries here until provenance and license rights are clarified.
+See [v0.5 download and test receipt](docs/NATIVE_LAUNCH_V05.md) and
+[launch implementation and limitations](docs/LAUNCH_PROGRESS.md).
 
-## Planned milestones
-1. Inventory C++ source, project files, third-party dependencies and provenance.
-2. Reproduce an original Windows build or isolate a small, independently buildable subsystem.
-3. Identify/untangle Win32, Direct3D and legacy compiler dependencies.
-4. Add a portable platform abstraction and ARM64 Android toolchain; validate with automated CI.
-5. Bring up engine initialization and rendering on one Android display.
-6. Load user-provided game data and play one mission with gamepad/touch support.
-7. Investigate AYN Thor secondary-display APIs; implement tactical controls on the lower screen.
+## Previous checkpoint: native main-menu proof-of-concept APK v0.4
 
-## Architecture notes
-See [docs/PORTING_AUDIT.md](docs/PORTING_AUDIT.md). Avoid reimplementing gameplay unless a source component is genuinely unavailable.
+The ARM64 Android proof of concept imports one or more game-data ZIPs and opens
+the original main-menu layout directly over the native 3D shell scene. No login
+is required. The original entrance camera runs, then holds its final view.
+Menu music and effects use the existing Android audio path. Options, logout and
+mission destinations are disabled for this milestone; Quit remains available.
 
-## Assets
-The repository should not contain proprietary game data. The eventual app should load files obtained from the user's legally owned copy, subject to rights and compatibility review.
+Import requires base.zwp, shell.zwp and sprawl.zwp. The previous compact v0.3 ZIP
+may lack the world pack. Full installation ZIPs, enclosing folders and compact
+ZIPs are supported. Music is detected automatically. Files are copied once;
+later launches reuse app storage. Folder import remains available.
+
+The scene is an unlit proof of concept: original lighting/material policy,
+sky/water, ambient effects and complete cinematic/object simulation remain.
+This is real scene geometry and original camera math, not video playback.
+
+The signed APK, ZIP import with actual data, combined scene/UI GLES rendering,
+and 63 host tests are verified. The owner confirmed successful Android execution.
+See [v0.4 installation and validation](docs/NATIVE_MENU_POC_V04.md).
+
+[Previous model-pose checkpoint](docs/GOD_POSE_PROGRESS.md) •
+[Released v0.3 folder setup](docs/FOLDER_SETUP_V03.md)
+
+[Source and installation recovery](docs/RECOVERY_ARCHIVES.md): neither requires
+the original desktop. Active implementation lives on `dev/native-arm64-primitives`.
+Older documents in `docs/` describe historical checkpoints, not current status.
+
+## Build
+
+Use the pinned upstream snapshot `9ce9da5f21604310a997f0c41e9cd383f5e292c3`
+from https://github.com/grasmanek94/darkreign2 outside this repository.
+
+```sh
+cmake -S . -B build -DREIGN_UPSTREAM=/path/to/upstream -DREIGN_SANITIZE=ON
+cmake --build build --parallel 4
+ASAN_OPTIONS=detect_leaks=0 ctest --test-dir build --output-on-failure
+```
+
+Set ANDROID_SDK_ROOT, ANDROID_NDK_HOME and REIGN_UPSTREAM, then run
+`bash tools/package_menu.sh` for the private menu APK. Keep the private debug
+keystore for subsequent compatible v0.2 updates.
+
+## Scope and provenance
+
+Preserve original engine behavior while adapting rendering, platform services
+and input. Full mission simulation/rendering, gameplay audio and AYN Thor
+secondary-display integration remain. The working Winlator version is a
+behavioral reference, not native-port completion.
+
+Upstream source, proprietary game assets, signing keys and engine-derived
+binaries stay outside Git. Reviewed stagers generate source overlays from the
+pinned source. Public source availability is not a redistribution license.
+See [porting audit](docs/PORTING_AUDIT.md) and [dependencies](docs/DEPENDENCIES.md).
