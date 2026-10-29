@@ -30,4 +30,8 @@ void SetVolume(float);
 float Volume();
 void Poll();
 int Claimed();
+int Claim();
+int Release();
+int GetEnabled();
+void SetEnabled(int);
 } }

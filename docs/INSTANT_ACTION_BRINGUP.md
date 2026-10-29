@@ -821,3 +821,30 @@ harness/foundation use ASan/UBSan; reused original host objects are not all
 instrumented. This checkpoint adds a verified startup runner, not Android
 application wiring. Terrain, camera, interface and Game initialization/mission
 loading remain. Evidence: native-phase16-startup.log.
+
+
+## Phase 17: terrain/camera execute; interface startup reached
+
+The passing graphics runner now initializes original Terrain and a real Camera,
+then draws and tears down both across two contexts. A broader host inventory
+compiled 613/705 entries. Added engine_mission_boot_test as a development startup
+runner: it links the original IFace::Init and Game::Init paths with the real
+GLES backend. It currently fails during interface startup: after adding missing
+MultiLanguage::Init, the next assertion is currentLanguage. The language
+configuration/database must be loaded before interface control construction.
+Game initialization and mission loading have not executed. Exception cleanup
+also reports remaining interface state and aborts from a nonempty tree; partial
+startup recovery needs work. This runner is not a passing test or mission boot.
+
+Resolved dependencies exposed by this broader retention: original ICEdit now
+compiles with fixed-width Min/Max arguments and an application-local text
+clipboard (Android system clipboard remains unwired); MeshEffectSystem namespace
+qualification is corrected. Native 3D-provider queries report no provider and
+refuse provider changes. Music settings now have enabled/claim/release state;
+playback still requires a real installed player. Desktop window-mode toggling
+returns false on the Android target. Duplicate ownership of Stream methods was
+removed from the old Miles stream unit; native sound_digital owns them.
+
+Evidence: native-phase17-tests.log, native-phase17-startup-failure.log. The
+foundation tests pass; fixed original source units compile on host and ARM64.
+The language configuration blocker and full application integration remain.

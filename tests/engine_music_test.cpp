@@ -21,6 +21,8 @@ int main(){
  check(!Claimed()&&!Play(2)&&!TrackCount());
  auto p=std::make_shared<Player>();NativeEngine::InstallMusicPlayer(p,{{4,b},{2,a}});
  check(Claimed()&&TrackCount()==4&&Volume()==1);
+ Release();check(!Claimed()&&!Play(2));check(Claim());
+ SetEnabled(0);check(!GetEnabled()&&!Play(2));SetEnabled(1);check(GetEnabled());
  check(Play(2)==2&&p->path==a);Poll();check(p->starts==1);
  p->active=false;Poll();check(CurrentTrack()==4&&p->path==b);
  p->active=false;Poll();check(CurrentTrack()==2);

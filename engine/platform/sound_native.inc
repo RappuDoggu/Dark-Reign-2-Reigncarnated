@@ -90,3 +90,10 @@ void Init(){Stop();SetMinTrack(2);}
 void Done(){Stop();}
 void CriticalShutdown(){Stop();}
 } }
+namespace Sound {namespace Digital {
+Bool Next3DProvider(const char *&name,Bool &first){name=nullptr;first=FALSE;return FALSE;}
+Bool SetProviderPreference(U32){return FALSE;}
+Bool Change3DProvider(Bool){return FALSE;}
+U32 GetServiceIndex3D(){return U32(-1);}
+const char *GetServiceName3D(){return "3D positional audio unavailable";}
+}}

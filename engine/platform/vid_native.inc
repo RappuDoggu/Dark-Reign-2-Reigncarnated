@@ -143,3 +143,5 @@ HRESULT AttachVideo(IDirect3DDevice7 *next, IDirectDrawSurface7 *target,
 }
 } // namespace NativeEngine
 namespace Vid {
+// Android surface mode belongs to the Activity; desktop window toggling fails.
+Bool ToggleWindowedMode(){return FALSE;}

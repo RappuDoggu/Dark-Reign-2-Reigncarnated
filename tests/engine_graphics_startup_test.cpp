@@ -1,6 +1,8 @@
 #include "vid_private.h"
 #include "light_priv.h"
 #include "mesh.h"
+#include "camera.h"
+#include "terrain_priv.h"
 #include "filesys.h"
 #include "tracksys.h"
 #include "varsys.h"
@@ -65,6 +67,10 @@ int main(int argc,char **argv){try{
    auto *bitmap=Bitmap::Manager::Find(name);check(bitmap&&bitmap->GetSurface());
   }
   check(Material::Manager::GetMaterial()!=nullptr);
+  Camera camera("main");camera.Setup(Vid::viewRect);Vid::curCamera=&camera;
+  struct CameraGuard {~CameraGuard(){Vid::curCamera=nullptr;}} cameraGuard;
+  check(Terrain::Init());
+  struct TerrainGuard {bool active=true;~TerrainGuard(){if(active)Terrain::Done();}} terrain;
   check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
   check(Vid::device->BeginScene()==S_OK);
   check(!Vid::SetZWriteState(TRUE));check(Vid::SetZWriteState(FALSE));
@@ -74,6 +80,7 @@ int main(int argc,char **argv){try{
   check(Vid::device->EndScene()==S_OK&&Vid::RenderFlush()&&presentation.calls==1);
   std::vector<std::uint8_t> pixels(W*H*4);renderer.read_presented_rgba(W,H,pixels.data());
   const auto center=(H/2*W+W/2)*4;check(pixels[center]>=254&&pixels[center+1]==0&&pixels[center+2]==0);
+  Terrain::Done();terrain.active=false;
   Mesh::Manager::Done();Vid::Light::Done();Material::Manager::Done();Bitmap::Manager::Done();resources.active=false;
   NativeEngine::DetachVideo();check(!Vid::RenderFlush()&&!Vid::device&&!Vid::backBmp.GetSurface());
  }

@@ -7,6 +7,7 @@ std::shared_ptr<NativeEngine::MusicPlayer> player;
 std::vector<NativeEngine::MusicTrack> tracks;
 std::uint32_t current=0,minimum=2;
 float volume=1;
+bool enabled=true,claimed=true;
 }
 namespace NativeEngine {
 void InstallMusicPlayer(std::shared_ptr<MusicPlayer> next,std::vector<MusicTrack> list){
@@ -19,7 +20,7 @@ void InstallMusicPlayer(std::shared_ptr<MusicPlayer> next,std::vector<MusicTrack
   previous=track.number;
  }
  if(player)player->Stop();
- tracks=std::move(list);player=std::move(next);current=0;minimum=2;volume=1;
+ tracks=std::move(list);player=std::move(next);current=0;minimum=2;volume=1;claimed=enabled=true;
  player->SetVolume(volume);
 }
 void RemoveMusicPlayer()noexcept{if(player)player->Stop();current=0;tracks.clear();player.reset();}
@@ -27,7 +28,7 @@ void RemoveMusicPlayer()noexcept{if(player)player->Stop();current=0;tracks.clear
 namespace Sound { namespace Redbook {
 void Stop(){current=0;if(player)player->Stop();}
 std::uint32_t Play(std::uint32_t requested){
- if(!player)return 0;
+ if(!player||!enabled||!claimed)return 0;
  const auto first=std::lower_bound(tracks.begin(),tracks.end(),minimum,[](const auto &t,auto n){return t.number<n;});
  if(first==tracks.end()){Stop();return 0;}
  auto selected=std::lower_bound(first,tracks.end(),requested,[](const auto &t,auto n){return t.number<n;});
@@ -46,5 +47,9 @@ void Poll(){if(player&&current&&!player->Playing()){
  auto next=std::upper_bound(tracks.begin(),tracks.end(),current,[](auto n,const auto &t){return n<t.number;});
  Play(next==tracks.end()?minimum:next->number);
 }}
-int Claimed(){return player?1:0;}
+int GetEnabled(){return enabled?1:0;}
+void SetEnabled(int value){enabled=value!=0;if(!enabled)Stop();}
+int Claim(){claimed=bool(player)&&enabled;return claimed?1:0;}
+int Release(){const bool previous=player&&claimed;Stop();claimed=false;return previous?1:0;}
+int Claimed(){return player&&claimed?1:0;}
 } }

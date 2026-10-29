@@ -331,3 +331,28 @@ patch('coregame_interface/client_debug.cpp', [('      Weapon::Object::SetupMono(
 
 # Native process metadata and original frame variables, with explicit VarSys setup.
 (out/'main/maininit.cpp').write_text('#include "runtime_setup_native.inc"\n')
+
+# Preserve original edit control; use an application-local clipboard until the
+# Android clipboard bridge is connected. No desktop clipboard API is emulated.
+source=out/'interface/icedit.cpp';text=source.read_text()
+text=text.replace('Max(pos, 0L)','Max(pos, S32(0))').replace('Max(caretPos-1, (long)0)','Max(caretPos-1, S32(0))').replace('editMax - editLen - 1L','editMax - editLen - S32(1)')
+copy=original_function(text,'void ICEdit::ClipboardCopy(')
+paste=original_function(text,'void ICEdit::ClipboardPaste()')
+text=text.replace(copy,'''void ICEdit::ClipboardCopy(Bool cut) {
+ if (!selected) return;
+ const S32 first=Min(selectX0,selectX1),last=Max(selectX0,selectX1);
+ if(first<0||last>editLen||first>=last)throw std::logic_error("Invalid edit selection");
+ nativeEditClipboard.assign(displayBuf+first,std::size_t(last-first));
+ if(cut)ReplaceSelectedText(NULL);
+}
+''').replace(paste,'''void ICEdit::ClipboardPaste() {
+ if(nativeEditClipboard.empty())return;
+ ReplaceSelectedText(NULL);
+ const S32 inserted=InsertText(caretPos,nativeEditClipboard.c_str(),U32(nativeEditClipboard.size()));
+ SetCaretPos(caretPos+inserted);
+}
+''')
+source.write_text('#include <string>\nnamespace {std::string nativeEditClipboard;}\n'+text)
+patch('graphics/mesheffect_system.cpp',[('U32 MeshEffectSystem::Report','U32 Report')])
+# Stream API is implemented by sound_native.inc; exclude the old Miles owner.
+(out/'sound/sound_digital_stream.cpp').write_text('// Native stream ownership lives in sound_digital.cpp.\n')
