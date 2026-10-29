@@ -51,8 +51,12 @@ public:
   return !v->dwX&&!v->dwY&&v->dwWidth==width&&v->dwHeight==height&&v->dvMinZ==0&&v->dvMaxZ==1?S_OK:E_NOTIMPL;
  }
  HRESULT GetViewport(D3DVIEWPORT7 *v)override{if(!v)return E_INVALIDARG;*v={0,0,width,height,0,1};return S_OK;}
- HRESULT Clear(DWORD count,D3DRECT *,DWORD flags,D3DCOLOR color,D3DVALUE depth,DWORD)override{
-  if(count||(flags&~DWORD(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER)))return E_NOTIMPL;
+ HRESULT Clear(DWORD count,D3DRECT *rectangles,DWORD flags,D3DCOLOR color,D3DVALUE depth,DWORD)override{
+  if(count){
+   if(!rectangles)return E_INVALIDARG;
+   if(count!=1||rectangles[0].x1!=0||rectangles[0].y1!=0||rectangles[0].x2!=LONG(width)||rectangles[0].y2!=LONG(height))return E_NOTIMPL;
+  }
+  if(flags&~DWORD(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER))return E_NOTIMPL;
   if((flags&D3DCLEAR_ZBUFFER)&&(!std::isfinite(depth)||depth<0||depth>1))return E_INVALIDARG;
   try{renderer.clear_buffers(width,height,(flags&D3DCLEAR_TARGET)!=0,(flags&D3DCLEAR_ZBUFFER)!=0,float((color>>16)&255)/255,float((color>>8)&255)/255,float(color&255)/255,float(color>>24)/255,(flags&D3DCLEAR_ZBUFFER)?depth:1);return S_OK;}catch(...){return E_FAIL;}
  }

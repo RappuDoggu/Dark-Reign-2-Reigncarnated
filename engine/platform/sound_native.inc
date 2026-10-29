@@ -97,3 +97,6 @@ Bool Change3DProvider(Bool){return FALSE;}
 U32 GetServiceIndex3D(){return U32(-1);}
 const char *GetServiceName3D(){return "3D positional audio unavailable";}
 }}
+namespace Sound {namespace Digital {
+U32 CPUPercent(){throw std::runtime_error("Native mixer CPU telemetry is not available");}
+}}

@@ -916,3 +916,44 @@ GameTime::Init alone also failed early; do not add it without its dependencies.
 MissionPreLoaded/OpenMission remain unreached; exception cleanup still aborts.
 Added per-config-scope diagnostics for the next investigation. Loader and trace
 source units compile for ARM64 (3/3). Evidence: native-phase20-runtime-failure.log.
+
+
+## Phase 21: original 2crazed mission opens on the host
+
+Verified a complete host lifecycle with the owned base/mission data and real
+software GLES: original startup, English database, interface, profile, Game,
+mission discovery/selection, PreOpenMission, native local player/team assignment,
+OpenMission, MissionLoaded assertion, PostMission checks, full Game shutdown,
+resource shutdown and final presented-pixel check. The unused second playable
+team is purged. Exit code is 0; no sanitizer failure; FileSys reports zero open
+files. This does not run simulation ticks, render the loaded mission scene,
+select units, build structures, or execute Android app startup. The last pixel
+check is a known red quad after mission shutdown, not a mission screenshot.
+
+Runtime traces resolved successive missing prerequisites: Clock::Time::Init,
+PerfStats::Init, Sides, GameTime, SaveGame and GameSound; mesh command defaults;
+far-plane/fog variables; GameGod type/object-check variables. The obsolete
+x86 CPU-speed mesh budget heuristic is replaced with explicit 10000/11000
+rendering-budget defaults, with automatic MRM still off. Original configuration
+and type loading now complete, including GOD animation/resource loading.
+
+Fixed overlap-safe Strmcpy (original mesh animation name self-assignment hit
+strncpy overlap), and array ownership in Tactical settings/modifiers, terrain
+mapping, pathfinding maps, GameObjType display names and UnitObjType AI bleed
+maps. Retained original decimal/float formatting for performance diagnostics,
+with widened decimal magnitude for INT_MIN. Mixer CPU telemetry is explicitly
+unsupported and throws if requested. Native attachment now creates its GLES
+frame buffer before a loading-screen repaint; the device also accepts the
+original full-target rectangle clear form. Post-mission test drawing explicitly
+unbinds textures and sets its own render state.
+
+All 13 foundation tests pass, including added overlapping-string, numeric
+format and full-rectangle-clear checks. The foundation/renderer and 9 affected
+original source units compile for ARM64. Harness/foundation are ASan/UBSan
+enabled; not all reused original host objects are instrumented. Exception
+wrapping is test-only and records caller addresses for reproducible failures.
+Evidence: native-phase21-mission-open.log and native-phase21-tests.log.
+
+Next: run original simulation/render callbacks against this loaded mission,
+then integrate the bootstrap with Android Activity/EGL/audio/input lifetime and
+build the Instant Action candidate APK. No new APK is produced here.

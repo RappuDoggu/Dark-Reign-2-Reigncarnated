@@ -16,6 +16,12 @@ static void check(bool value) { if(!value) throw std::runtime_error("Native runt
 int main() {
  try {
   using namespace NativeEngine;
+  char overlap[16]="abcdef";Utils::Strmcpy(overlap,overlap,16);check(std::strcmp(overlap,"abcdef")==0);
+  Utils::Strmcpy(overlap,overlap+2,14);check(std::strcmp(overlap,"cdef")==0);
+  char shifted[16]="abcdef";Utils::Strmcpy(shifted+1,shifted,15);check(std::strcmp(shifted+1,"abcdef")==0);
+  char formatted[32];Utils::StrFmtDec(formatted,12,INT_MIN,0);check(std::strtoll(formatted,nullptr,10)==INT_MIN);
+  Utils::StrFmtFloat(formatted,10,2,12.25f,0);check(std::strtof(formatted,nullptr)==12.25f);
+
   check(Utils::Div(U32(1),U32(0),U32(2))==0x80000000u);
   bool zero=false,overflow=false;
   try { Utils::Div(U32(0),U32(1),U32(0)); } catch(const std::domain_error &) {zero=true;}

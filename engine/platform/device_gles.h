@@ -1,5 +1,6 @@
 #pragma once
 #include "surface_native.h"
+#include "../../include/reign/legacy_gles.hpp"
 #include "d3d.h"
 namespace reign {class LegacyGles;}
 namespace NativeEngine {

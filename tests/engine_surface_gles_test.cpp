@@ -68,6 +68,8 @@ int main(){try{
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);
   check(device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
   check(device->Clear(0,nullptr,D3DCLEAR_TARGET,0xff000000,1,0)==S_OK);
+  D3DRECT full{0,0,W,H};check(device->Clear(1,&full,D3DCLEAR_TARGET,0xff000000,1,0)==S_OK);
+  full.x2=W-1;check(device->Clear(1,&full,D3DCLEAR_TARGET,0xff000000,1,0)==E_NOTIMPL);
   check(device->BeginScene()==S_OK&&device->BeginScene()==E_FAIL);
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
   std::vector<std::uint8_t> result(W*H*4);renderer.read_rgba(W,H,result.data());

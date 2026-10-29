@@ -377,6 +377,8 @@ text+='''
 namespace GameGod { namespace Loader {
 void InitNativeVariables() {
  if(VarSys::FindVarItem("gamegod.loader.system")||VarSys::FindVarItem("gamegod.loader.percent"))throw std::logic_error("Loader variables already initialized");
+ VarSys::CreateInteger("gamegod.check.types",0,VarSys::DEFAULT,&GameGod::checkTypes);
+ VarSys::CreateInteger("gamegod.check.objects",0,VarSys::DEFAULT,&GameGod::checkObjects);
  VarSys::CreateString("gamegod.loader.system","",VarSys::DEFAULT,&system);
  VarSys::CreateFloat("gamegod.loader.percent",0.0F,VarSys::DEFAULT,&percent)->SetFloatRange(0.0F,1.0F);
 }
@@ -384,3 +386,11 @@ void InitNativeVariables() {
 '''
 source.write_text(text)
 source=out/'coregame/game_config.cpp';text=source.read_text().replace('          GameGod::Loader::Advance();','          LOG_DIAG(("Mission config: %s",sScope->NameStr()));\n          GameGod::Loader::Advance();');source.write_text(text)
+# Auto MRM is off by default. Use explicit graphics budgets rather than the
+# obsolete x86 MHz heuristic; these variables remain user/config adjustable.
+patch('graphics/vid_cmd_mesh.cpp',[('U32 low  = Hardware::CPU::GetSpeed() * 10;','U32 low = 10000; // Native default graphics triangle budget'),('U32 high = low + Hardware::CPU::GetSpeed();','U32 high = 11000;')])
+patch('coregame_ai/tactical.cpp',[('delete settings;','delete[] settings;'),('delete modifiers;','delete[] modifiers;')])
+patch('coregame/terraindata.cpp',[('delete mappingEntries;','delete[] mappingEntries;')])
+patch('coregame/pathsearch.cpp',[('delete data.zMarks;','delete[] data.zMarks;'),('delete data.cellMap;','delete[] data.cellMap;')])
+patch('coregame_objects/gameobj.cpp',[('delete displayName;','delete[] displayName;')])
+patch('coregame_objects/unitobj.cpp',[(f'delete {name};',f'delete[] {name};') for name in ['weaponBleedMap','selfDestructBleedMap','disruptionBleedMap']])

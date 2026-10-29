@@ -27,7 +27,7 @@ HRESULT AttachGlesVideo(reign::LegacyGles &renderer,unsigned width,unsigned heig
  IDirect3DDevice7 *device=nullptr;
  result=CreateGlesDevice(renderer,target,&device);
  if(SUCCEEDED(result)){
-  try{result=AttachVideo(device,target,present,context);}catch(...){DetachVideo();result=E_FAIL;}
+  try{renderer.clear(width,height,0,0,0,1);result=AttachVideo(device,target,present,context);}catch(...){DetachVideo();result=E_FAIL;}
   device->Release();
  }
  target->Release();return result;

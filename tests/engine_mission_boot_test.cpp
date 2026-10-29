@@ -1,4 +1,11 @@
 #include "vid_private.h"
+#include "native_stack.h"
+extern "C" [[noreturn]] void __real___cxa_throw(void *,void *,void (*)(void *));
+extern "C" [[noreturn]] void __wrap___cxa_throw(void *exception,void *type,void (*destroy)(void *)){
+ std::uintptr_t frames[16];const auto count=NativeEngine::CaptureStack(frames,16);
+ for(std::size_t i=0;i<count;++i)std::fprintf(stderr,"Exception caller: %p\n",reinterpret_cast<void *>(frames[i]));
+ __real___cxa_throw(exception,type,destroy);
+}
 #include "iface.h"
 #include "event.h"
 #include "input.h"
@@ -8,12 +15,18 @@
 #include "game.h"
 #include "user.h"
 #include "sound.h"
+#include "gamesound.h"
+#include "clock.h"
+#include "perfstats.h"
 #include "gametime.h"
 #include "missions.h"
 #include "campaigns.h"
 #include "difficulty.h"
 #include "mods.h"
+#include "sides.h"
+#include "savegame.h"
 #include "session_native.h"
+#include "multiplayer.h"
 #include "ptree.h"
 #include <filesystem>
 #include <chrono>
@@ -35,7 +48,8 @@
 #include <stdexcept>
 #include <vector>
 #include <memory>
-namespace GameGod {namespace Loader {void InitNativeVariables();}}
+namespace Vid {namespace Command {void InitMesh();void DoneMesh();}}
+#include "runtime_setup_native.h"
 namespace {
 constexpr unsigned W=32,H=32;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
@@ -66,14 +80,20 @@ int main(int argc,char **argv){try{
  if(argc!=2)throw std::runtime_error("Provide owned base.zwp path");
  const auto installation=std::filesystem::path(argv[1]).parent_path().parent_path();
  for(const char *name:{"missions","worlds","sides","packs"})if(std::filesystem::exists(installation/name))std::filesystem::create_directory_symlink(installation/name,profilePath/name);
- TrackSys::Init();VarSys::Init();FileSys::Init();EventSys::Init();MultiLanguage::Init();FontSys::Init();Console::Init();Input::Init(nullptr,nullptr);Sound::Init();
- struct Foundation {~Foundation(){Sound::Done();Input::Done();Console::Done();FontSys::Done();MultiLanguage::Done();EventSys::Done();FileSys::Done();VarSys::Done();TrackSys::Done();}} foundation;
+ Clock::Time::Init();
+ TrackSys::Init();VarSys::Init();FileSys::Init();EventSys::Init();MultiLanguage::Init();FontSys::Init();Console::Init();Input::Init(nullptr,nullptr);Sound::Init();GameSound::Init();PerfStats::Init();
+ struct Foundation {~Foundation(){VarSys::DeleteItem("vid");VarSys::DeleteItem("gamegod");PerfStats::Done();GameSound::Done();Sound::Done();Input::Done();Console::Done();FontSys::Done();MultiLanguage::Done();EventSys::Done();FileSys::Done();VarSys::Done();TrackSys::Done();}} foundation;
  check(FileSys::AddSrcPack("base",argv[1])&&FileSys::SetActiveStream("base"));
  const auto startup=std::filesystem::path(argv[1]).parent_path().parent_path()/"library/engine/startup.cfg";
  PTree configuration;check(configuration.AddFile(startup.string().c_str()));
  FileSys::ProcessConfigScope(configuration.GetGlobalScope()->GetFunction("GameConfig")->GetFunction("ConfigureFileSystem"));
  MultiLanguage::Configure(configuration.GetGlobalScope()->GetFunction("GameConfig")->GetFunction("ConfigureMultiLanguage"));
  for(unsigned pass=0;pass<1;++pass){
+  VarSys::CreateFloat("vid.faroverride",0,VarSys::DEFAULT,&Vid::Var::farOverride)->SetFloatRange(0.0F,800.0F);
+  VarSys::CreateFloat("vid.fogdepth",Vid::renderState.fogDepth,VarSys::DEFAULT,&Vid::Var::fogDepth)->SetFloatRange(0.0F,800.0F);
+  VarSys::CreateFloat("vid.farplane",800.0F,VarSys::DEFAULT,&Vid::Var::farPlane)->SetFloatRange(0.0F,800.0F);
+  Vid::Command::InitMesh();
+  struct MeshCommands {~MeshCommands(){Vid::Command::DoneMesh();}} meshCommands;
   Vid::Heap::Init(2048,6144);
   struct DrawingBuffers {~DrawingBuffers(){Vid::DoneBuckets();Vid::Heap::Done();}} buffers;
   Vid::InitBuckets();
@@ -101,26 +121,33 @@ int main(int argc,char **argv){try{
   check(Terrain::Init());
   struct TerrainGuard {bool active=true;~TerrainGuard(){if(active)Terrain::Done();}} terrain;
   std::cerr<<"Entering IFace::Init\n";IFace::Init();User::Init();check(User::Create(FileIdent(pass?"TestTwo":"TestOne")));std::cerr<<"Entering Game::Init\n";Game::Init();
- Campaigns::Init();Missions::Init();Difficulty::Init();Mods::Init();
+ Campaigns::Init();Missions::Init();Difficulty::Init();Mods::Init();Sides::Init();SaveGame::Init();GameTime::Init();
  auto *group=Missions::FindGroup("missions\\multiplayer");check(group);
  auto *mission=group->FindMission("2crazed");check(mission);Missions::SetSelected(mission);
  NativeEngine::BeginOfflineSession("2crazed","Commander");
  GameGod::Loader::InitNativeVariables();
  std::cerr<<"Entering Game::PreOpenMission 2crazed\n";Game::PreOpenMission(nullptr);
- std::cerr<<"Mission preloaded\n";Game::Done();
- NativeEngine::EndOfflineSession();Mods::Done();Difficulty::Done();Missions::Done();Campaigns::Done();User::Done();IFace::Done();
+ std::cerr<<"Mission preloaded\n";check(Game::MissionPreLoaded());
+ MultiPlayer::SetupMission();std::cerr<<"Entering Game::OpenMission\n";Game::OpenMission();
+ MultiPlayer::SetupPostMission();check(Game::MissionLoaded());std::cerr<<"Mission opened\n";Game::Done();
+ NativeEngine::EndOfflineSession();GameTime::Done();SaveGame::Done();Sides::Done();Mods::Done();Difficulty::Done();Missions::Done();Campaigns::Done();User::Done();IFace::Done();
+  presentation.calls=0;
+  check(Vid::device->SetTexture(0,nullptr)==S_OK);
+  for(auto state:{D3DRENDERSTATE_ZENABLE,D3DRENDERSTATE_FOGENABLE,D3DRENDERSTATE_SPECULARENABLE,D3DRENDERSTATE_ALPHABLENDENABLE,D3DRENDERSTATE_ALPHATESTENABLE})check(Vid::device->SetRenderState(state,0)==S_OK);
+  check(Vid::device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE)==S_OK);
+
   check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
   check(Vid::device->BeginScene()==S_OK);
-  check(!Vid::SetZWriteState(TRUE));check(Vid::SetZWriteState(FALSE));
+  Vid::SetZWriteState(TRUE);check(Vid::SetZWriteState(FALSE));
   reign::LegacyTL vertices[]={{-.5f,-.5f,.5f,1,0xffff0000,0,0,0},{W-.5f,-.5f,.5f,1,0xffff0000,0,1,0},{W-.5f,H-.5f,.5f,1,0xffff0000,0,1,1},{-.5f,H-.5f,.5f,1,0xffff0000,0,0,1}};
   WORD indices[]={0,1,2,0,2,3};
   check(Vid::DrawIndexedPrimitive(PT_TRIANGLELIST,VERTEX_TYPE(D3DFVF_TLVERTEX),vertices,4,indices,6,RS_BLEND_DEF));
   check(Vid::device->EndScene()==S_OK&&Vid::RenderFlush()&&presentation.calls==1);
   std::vector<std::uint8_t> pixels(W*H*4);renderer.read_presented_rgba(W,H,pixels.data());
-  const auto center=(H/2*W+W/2)*4;check(pixels[center]>=254&&pixels[center+1]==0&&pixels[center+2]==0);
+  const auto center=(H/2*W+W/2)*4; std::cerr<<"Final pixel "<<int(pixels[center])<<","<<int(pixels[center+1])<<","<<int(pixels[center+2])<<"\n";check(pixels[center]>=254&&pixels[center+1]==0&&pixels[center+2]==0);
   Terrain::Done();terrain.active=false;
   Mesh::Manager::Done();Vid::Light::Done();Material::Manager::Done();Bitmap::Manager::Done();resources.active=false;
   NativeEngine::DetachVideo();check(!Vid::RenderFlush()&&!Vid::device&&!Vid::backBmp.GetSurface());
  }
- std::cout<<"Original heap/buckets, mesh/light managers, owned light textures, GLES draw and cleanup passed twice; no mission executed\n";
+ std::cout<<"Original 2crazed preload, local player, mission open, shutdown and GLES presentation passed; simulation not executed\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

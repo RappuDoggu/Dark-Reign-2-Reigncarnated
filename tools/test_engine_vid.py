@@ -36,6 +36,7 @@ command=[compile_command[0],'-no-pie','-fsanitize=address,undefined',str(obj),'-
 command += [str(f) for f in sorted(a.foundation.glob('libdr2_engine_*.a'))]
 command += [str(a.ffmpeg_root/'lib'/('lib'+n+'.a')) for n in ['avformat','avcodec','swscale','avutil']]
 if a.test_source in ('engine_vid_gles_test.cpp','engine_graphics_startup_test.cpp','engine_mission_boot_test.cpp'):command += ['-l:libEGL.so.1']
+if a.test_source=='engine_mission_boot_test.cpp':command += ['-Wl,--wrap=__cxa_throw']
 command += ['-Wl,--end-group','-pthread','-ldl','-lm','-o',str(binary)]
 subprocess.run(command,check=True)
 subprocess.run([str(binary.resolve())]+a.test_arg,check=True)

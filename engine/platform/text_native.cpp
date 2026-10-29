@@ -118,3 +118,146 @@ CH *ItoA(int value, CH *buffer, int radix) {
  while(count)*out++=digits[--count]; *out=0; return buffer;
 }
 }
+
+#include <cmath>
+namespace {thread_local char fmtBuf[256];}
+namespace Utils {
+  char *StrFmtDec(char *s, U32 width, S32 value, U32 flags)
+  {
+    std::int64_t number=value;
+    Bool end    = FALSE;
+    Bool neg    = FALSE;
+    S32  comma  = 3;
+	char *start = s;
+	char* p = nullptr;
+  
+    if (number < 0)
+    {
+      neg = TRUE;
+      number = -number;
+    }
+
+    // Use default buffer if none specified
+    if (s == NULL)
+    {
+      ASSERT(width < sizeof(fmtBuf));
+      start = fmtBuf;
+    }
+
+    p = start + width - 1;
+    *(p + 1) = '\0';
+
+    // Format the number
+    while (p >= start)
+    {
+      if (!end)
+      {
+        *p-- = char((number % 10) + '0');
+        number /= 10;
+        end = number == 0;
+
+        if (end)
+        {
+          // Prepend the negative sign
+          if (neg && (p > start))
+          {
+            *p-- = '-';
+          }
+        }
+        else
+        {
+          // Insert a comma
+          if ((flags & STRFMT_COMMA) && (p > start) && (--comma == 0))
+          {
+            *p-- = ',';
+            comma = 3;
+          }
+        }
+      }
+      else
+      {
+        *p-- = ' ';
+      }
+    }
+
+    return start;
+  }
+  char *StrFmtFloat(char *s, U32 width, U32 decpt, F32 value, U32)
+  {
+    ASSERT(width > decpt);
+
+    Bool end    = FALSE;
+    Bool neg = FALSE;
+    char *start = s, *p;
+
+    // Use default buffer if not specified
+    if (s == NULL)
+    {
+      ASSERT(width < sizeof(fmtBuf));
+      start = fmtBuf;
+    }
+
+    p = start + width - 1;
+    *(p + 1) = '\0';
+
+    F64 fFrac, fInt;
+    S32 iFrac, iInt;
+
+    fFrac = modf(value, &fInt);
+
+    // Format fractional part
+    if (decpt)
+    {
+      U32 n = decpt;
+
+      while (n--)
+      {
+        fFrac *= 10.0;
+      }
+
+      iFrac = Utils::FtoL(F32(fFrac));
+
+      if (iFrac < 0)
+      {
+        iFrac = -iFrac;
+      }
+
+      while (decpt--)
+      {
+        *p-- = char((iFrac % 10) + '0');
+        iFrac /= 10;
+      }
+      *p-- = '.';
+    }
+
+    // Format integer part
+    iInt = Utils::FtoL(F32(fInt));
+
+    if (iInt < 0)
+    { 
+      neg = TRUE;
+      iInt = -iInt;
+    }
+
+    while (p >= start)
+    {
+      if (!end)
+      {
+        *p-- = char((iInt % 10) + '0');
+        iInt /= 10;
+        end = iInt == 0;
+
+        if (end && neg && p > start)
+        {
+          *p-- = '-';
+        }
+      }
+      else
+      {
+        *p-- = ' ';
+      }
+    }
+
+    return start;
+  }
+}

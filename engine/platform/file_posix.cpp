@@ -98,7 +98,8 @@ struct NativeFindState {
 namespace Utils {
 char *Strmcpy(char *dest, const char *src, U32 count) {
   if (!dest || !src || !count) throw std::invalid_argument("Strmcpy arguments");
-  std::strncpy(dest, src, count); dest[count - 1] = 0; return dest;
+  std::size_t length=0;while(length+1<count&&src[length])++length;
+  std::memmove(dest,src,length);std::memset(dest+length,0,count-length);return dest;
 }
 }
 
