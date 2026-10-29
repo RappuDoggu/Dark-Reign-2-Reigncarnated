@@ -312,7 +312,8 @@ text=text.replace('U8 *data = new U8[length];','auto data = std::make_unique<U8[
 source.write_text('#include <memory>\n#include <stdexcept>\n'+text)
 source=out/'multiplayer/multiplayer_data.cpp';text=source.read_text()
 functions=['    void Save(','    void Load(','    Bool HaveData()','    Bool Get(','    void LocalClear(','    void LocalFlush()']
-source.write_text('#include "multiplayer_data.h"\n#include "styxnet_data.h"\nnamespace MultiPlayer { namespace Data {\nstatic StyxNet::Data data;\n'+''.join(original_function(text,s) for s in functions)+'}}\n')
+text=text.replace('return (data.IsEmpty() ? FALSE : TRUE);','return (NativeEngine::CurrentOfflineSession() || !data.IsEmpty()) ? TRUE : FALSE;')
+source.write_text('#include "session_native.h"\n#include "multiplayer_data.h"\n#include "styxnet_data.h"\nnamespace MultiPlayer { namespace Data {\nstatic StyxNet::Data data;\n'+''.join(original_function(text,s) for s in functions)+'}}\n')
 
 
 # Preserve original Effect/Record/Reserved policy with bounded native PCM handles.
@@ -327,3 +328,6 @@ source=out/'multiplayer/multiplayer.cpp';source.write_text(source.read_text()+'\
 
 # The monochrome developer display is not part of native Android builds.
 patch('coregame_interface/client_debug.cpp', [('      Weapon::Object::SetupMono(monoClientInfo2);', '#ifndef MONO_DISABLED\n      Weapon::Object::SetupMono(monoClientInfo2);\n#endif')])
+
+# Native process metadata and original frame variables, with explicit VarSys setup.
+(out/'main/maininit.cpp').write_text('#include "runtime_setup_native.inc"\n')

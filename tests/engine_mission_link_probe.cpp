@@ -6,6 +6,8 @@
 #include "game.h"
 #include "vid_native.h"
 #include "audio_android.h"
+#include "runtime_setup_native.h"
+#include "session_native.h"
 namespace Sound { void Init(); void Done(); void Poll(); namespace Digital { void Claim(unsigned,unsigned); } }
 extern "C" void RequireMissionEntryPoints() {
  Game::Init();
@@ -28,7 +30,10 @@ extern "C" void RequireNativeAudioBoundary() {
 #ifdef REIGN_LINK_FRAME_LOOP
 namespace Game { namespace RC { void Init(); void Set(const char *); void Process(); void Done(); } }
 extern "C" void RequireFrameLoop() {
+ NativeEngine::InitializeRuntimeVariables();
+ NativeEngine::BeginOfflineSession("2crazed","Commander");
  Game::RC::Init(); Game::RC::Set("Load"); Game::RC::Process(); Game::RC::Done();
+ NativeEngine::EndOfflineSession();
 }
 #endif
 int main() {

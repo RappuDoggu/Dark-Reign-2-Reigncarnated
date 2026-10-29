@@ -635,3 +635,50 @@ and associated local player enumeration. Define these with coherent lifecycle
 and offline mission behavior, not unconditional success returns. Real DX7 draw
 submission into GLES, engine/app startup and a device mission boot remain.
 Evidence: native-frame-link-phase9.json and native-phase9-tests.log.
+
+
+## Phase 10: frame-loop link complete for the offline target
+
+The broadened ARM64 link probe now succeeds: zero unresolved symbols and zero
+other link errors, retaining 598 compiled source objects in the archive. It
+retains Game::RC Load/SimInit/Sim callbacks, native video/audio boundaries, and
+explicit local-session begin/end plus runtime-variable initialization. This is
+not an APK or executable mission boot; main deliberately refuses to run it.
+
+The local-only session owns one original Network::Player entry, resettable
+readiness, and synchronous local data-handler dispatch. It has no network
+packet queue, so lag is zero and ProcessSyncData returns false without changing
+outputs. Process validates the active session; there is no asynchronous
+transport to pump. Registration rejects duplicate handlers; missing handlers
+and inactive sends fail explicitly. Names obey the original 15-byte limit and
+embedded NULs are rejected. Data::HaveData includes an active native session so
+original Load::Post actually calls the offline mission setup hooks.
+
+SetupPreMission seeds the original deterministic RNG with 1 and initializes
+its data CRC. SetupMission requires a preloaded mission, selects its first
+available playable Team, creates an original Player, assigns the current and
+display team, then invokes original Team::Purge to remove unoccupied playable
+teams. It creates no AI opponents and preserves mission side/resources/objects;
+lobby options and mod rule sets are not implemented. SetupPostMission checks
+that loading and player/team setup completed. These game-setup paths compile
+and link but have not yet executed with a loaded mission. The application must
+select/mount the requested mission and initialize engine managers first.
+
+Main's elapCap/triCount retain their original VarInteger types and defaults
+(8/0); InitializeRuntimeVariables must run after TrackSys/VarSys startup.
+The native build string reports Reigncarnated and the pinned upstream revision,
+without requiring Windows executable version resources. Full local session
+save/restore remains unsupported; Save throws before writing a partial save.
+
+Validation: three changed original source units compile for ARM64. Expanded
+host session tests pass for runtime variable creation/update/duplicate refusal,
+identity/length validation, player enumeration, readiness consumption/reset,
+local message dispatch and duplicate/unknown-handler failure, offline sync
+output preservation, explicit save rejection and end-session cleanup. Harness
+and foundation use ASan/UBSan; reused original host objects are not all
+instrumented. Original mission/team creation is not claimed as runtime tested.
+
+Evidence: native-frame-link-phase10.json and native-phase10-tests.log. Next:
+real DX7 draw/state submission into GLES, complete manager/app startup, then
+Instant Action on-device launch validation. Additional dependencies may appear
+as those currently unretained application entry points are integrated.
