@@ -28,6 +28,11 @@ void InitializeVideoVariables(){
   VarSys::CreateInteger("vid.mipmap",0,VarSys::DEFAULT,&Vid::Var::varMipmap);
   VarSys::CreateInteger("vid.mipfilter",0,VarSys::DEFAULT,&Vid::Var::varMipfilter);
   VarSys::CreateInteger("vid.fog",0,VarSys::DEFAULT,&Vid::Var::varFog);
+  VarSys::CreateInteger("vid.wireframe",0,VarSys::DEFAULT,&Vid::Var::varWire);
+  VarSys::CreateInteger("vid.flat",0,VarSys::DEFAULT,&Vid::Var::varFlat);
+  VarSys::CreateInteger("vid.specular",Vid::renderState.status.specular,VarSys::DEFAULT,&Vid::Var::varSpecular);
+  VarSys::CreateInteger("vid.dither",Vid::renderState.status.dither,VarSys::DEFAULT,&Vid::Var::varDither);
+  VarSys::CreateInteger("vid.texture",1,VarSys::DEFAULT,&Vid::Var::varTexture);
   VarSys::CreateInteger("vid.mirror.debug",0,VarSys::DEFAULT,&Vid::Var::mirrorDebug);
   VarSys::CreateInteger("vid.rendpostsim",0,VarSys::DEFAULT,&Vid::Var::varRenderPostSim);
   unsigned perfIndex=0;for(const char *name:{"vid.perf.object","vid.perf.terrain","vid.perf.particle","vid.perf.lighting"})VarSys::CreateFloat(name,1.0f,VarSys::DEFAULT,&Vid::Var::perfs[perfIndex++])->SetFloatRange(0.1f,1.0f);
@@ -68,6 +73,7 @@ void DetachVideo()
   viewRect.Set(0, 0, 0, 0);
   clipRect.Set(0, 0, 0, 0);
   isStatus.active = FALSE;
+  isStatus.initialized = FALSE;
   caps.ClearData();
 }
 HRESULT AttachVideo(IDirect3DDevice7 *next, IDirectDrawSurface7 *target,
@@ -145,6 +151,8 @@ HRESULT AttachVideo(IDirect3DDevice7 *next, IDirectDrawSurface7 *target,
   for (const auto &format : formats.values) if (format.dwRGBBitCount == 32) driver.tex32 = TRUE;
   driver.drivers[0].SetDesc(&deviceCaps.deviceGUID, "Native backend", deviceCaps);
   caps.ClearData(); driver.drivers[0].SetCaps();
+  // The GLES surface adapter uploads one mip level and advertises no mip filtering.
+  renderState.status.filter &= filterFILTER;
   auto &mode = driver.vidModes[0]; mode.desc = desc;
   mode.bpp = desc.ddpfPixelFormat.dwRGBBitCount;
   mode.rect.Set(0, 0, desc.dwWidth, desc.dwHeight);
@@ -156,6 +164,7 @@ HRESULT AttachVideo(IDirect3DDevice7 *next, IDirectDrawSurface7 *target,
   const DWORD requiredFilters = D3DPTFILTERCAPS_MINFLINEAR | D3DPTFILTERCAPS_MIPFLINEAR;
   nativeTrilinearOff = (deviceCaps.dpcTriCaps.dwTextureFilterCaps & requiredFilters) != requiredFilters;
   nativePresent = present; nativePresentContext = context;
+  isStatus.initialized = TRUE;
   isStatus.active = TRUE;
   return S_OK;
 }

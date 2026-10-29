@@ -82,7 +82,7 @@ final class DataFolderImporter {
    if(name.isEmpty()||name.equals(".")||name.equals("..")||name.indexOf('/')>=0||name.indexOf('\\')>=0||name.indexOf(0)>=0||name.indexOf(':')>=0||!names.add(name))throw new IOException("Invalid/duplicate runtime path");
    String path=relative.isEmpty()?name:relative+"/"+name;
    if(path.equals("packs/base.zwp")||path.equals("missions/system/shell.zwp")||path.equals("worlds/sprawl.zwp")||path.equals("sides/client/jda.zwp")||path.equals("sides/client/sprawler.zwp")||path.equals("music"))continue;
-   if(relative.isEmpty()&&node.directory&&!Arrays.asList("packs","missions","worlds","sides","mods","movies","data").contains(name))continue;
+   if(relative.isEmpty()&&node.directory&&!Arrays.asList("packs","missions","worlds","sides","mods","movies","data","library").contains(name))continue;
    if(node.directory){File next=new File(target,name);if(!next.isDirectory()&&!next.mkdirs())throw new IOException("Cannot create runtime directory");copyRuntimeTree(node,next,path,depth+1);}
    else if(name.matches(".*\\.(zwp|cfg|bik|ogg|mp3|wav|tga|bmp|pic|god|blk|fff|xsi|txt)")){File out=new File(target,name);copy(node,out);if(name.endsWith(".zwp"))validatePack(out);}
   }
@@ -119,3 +119,4 @@ final class DataFolderImporter {
  static void remove(File file){if(file.isDirectory()){File[] children=file.listFiles();if(children!=null)for(File child:children)remove(child);}file.delete();}
  static List<String> playlist(File directory){List<String> tracks=new ArrayList<>();File[] files=new File(directory,"music").listFiles();if(files!=null){Arrays.sort(files,Comparator.comparing(File::getName));for(File file:files)if(file.isFile())tracks.add(file.getAbsolutePath());}return tracks;}
 }
+

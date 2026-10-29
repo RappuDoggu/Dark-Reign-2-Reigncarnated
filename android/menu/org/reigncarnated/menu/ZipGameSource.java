@@ -33,7 +33,7 @@ final class ZipGameSource implements DataFolderImporter.Source, AutoCloseable {
      if(dest==null){
       // Preserve the runtime tree for worlds, missions, side data, movies and mods.
       String[] parts=lower.split("/");
-      for(int j=0;j<parts.length-1;j++)if(Arrays.asList("packs","missions","worlds","sides","mods","movies","data").contains(parts[j])){dest=String.join("/",Arrays.copyOfRange(parts,j,parts.length));break;}
+      for(int j=0;j<parts.length-1;j++)if(Arrays.asList("packs","missions","worlds","sides","mods","movies","data","library").contains(parts[j])){dest=String.join("/",Arrays.copyOfRange(parts,j,parts.length));break;}
       if(dest==null&&name.endsWith(".cfg"))dest=name;
       if(dest!=null&&!name.matches(".*\\.(zwp|cfg|bik|ogg|mp3|wav|tga|bmp|pic|god|blk|fff|xsi|txt)"))dest=null;
      }
@@ -61,3 +61,4 @@ final class ZipGameSource implements DataFolderImporter.Source, AutoCloseable {
  }
  public void close(){for(ZipFile zip:archives)try{zip.close();}catch(IOException ignored){}archives.clear();}
 }
+

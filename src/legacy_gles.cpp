@@ -75,6 +75,7 @@ layout(location=3) in vec2 uv;
 uniform vec2 viewport_size;
 uniform int homogeneous_input;
 out vec2 texcoord;
+out vec2 screen_texcoord;
 out vec4 screen_diffuse;
 out vec4 screen_specular;
 out float screen_w;
@@ -89,6 +90,7 @@ void main(){
   gl_Position=vec4(ndc*w,(position.z*2.0-1.0)*w,w);
  }
  texcoord=uv;
+ screen_texcoord=uv*w;
  screen_diffuse=diffuse_bgra.bgra*w;
  screen_specular=specular_bgra.bgra*w;
  screen_w=w;
@@ -96,10 +98,12 @@ void main(){
  const char *fragment=R"(#version 300 es
 precision highp float;
 in vec2 texcoord;
+in vec2 screen_texcoord;
 in vec4 screen_diffuse;
 in vec4 screen_specular;
 in float screen_w;
 uniform sampler2D image;
+uniform int texture_perspective;
 uniform int texture_op;
 uniform int fog_enabled;
 uniform int specular_enabled;
@@ -110,7 +114,7 @@ out vec4 output_color;
 void main(){
  vec4 d=screen_diffuse/screen_w;
  vec4 s=screen_specular/screen_w;
- vec4 t=texture(image,texcoord);
+ vec4 t=texture(image,texture_perspective!=0?texcoord:screen_texcoord/screen_w);
  vec4 c=d;
  if(texture_op==1)c=d*t;
  if(texture_op==2)c=vec4(d.rgb*t.rgb,t.a);
@@ -165,13 +169,14 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
  if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
  auto &g=*impl_;g.target(w,h);g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);
+ if(state.dither)g.Enable(GL_DITHER);else g.Disable(GL_DITHER);
  if(state.depth_test)g.Enable(GL_DEPTH_TEST);else g.Disable(GL_DEPTH_TEST);g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);g.DepthFunc(GL_LEQUAL);
  if(state.blend==Blend::opaque)g.Disable(GL_BLEND);else{g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,state.blend==Blend::alpha?GL_ONE_MINUS_SRC_ALPHA:GL_ONE);}
  if(state.blend==Blend::custom){
   const GLenum factors[]={GL_ZERO,GL_ONE,GL_SRC_COLOR,GL_ONE_MINUS_SRC_COLOR,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_DST_ALPHA,GL_ONE_MINUS_DST_ALPHA,GL_DST_COLOR,GL_ONE_MINUS_DST_COLOR,GL_SRC_ALPHA_SATURATE};
   g.BlendFunc(factors[static_cast<unsigned>(state.source_factor)-1],factors[static_cast<unsigned>(state.destination_factor)-1]);
  }
- g.UseProgram(g.program);g.Uniform1i(g.uniform("homogeneous_input"),homogeneous);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
+ g.UseProgram(g.program);g.Uniform1i(g.uniform("homogeneous_input"),homogeneous);g.Uniform1i(g.uniform("texture_perspective"),state.perspective);g.Uniform2f(g.uniform("viewport_size"),w,h);g.Uniform1i(g.uniform("texture_op"),static_cast<int>(state.texture_op));
  g.Uniform1i(g.uniform("fog_enabled"),state.fog);g.Uniform1i(g.uniform("specular_enabled"),state.specular);g.Uniform3fv(g.uniform("fog_rgb"),1,state.fog_rgb);g.Uniform1i(g.uniform("alpha_test"),state.alpha_test);g.Uniform1f(g.uniform("alpha_reference"),state.alpha_reference);
  g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,state.texture?state.texture:g.white);g.Uniform1i(g.uniform("image"),0);
  g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,state.filtered?GL_LINEAR:GL_NEAREST);

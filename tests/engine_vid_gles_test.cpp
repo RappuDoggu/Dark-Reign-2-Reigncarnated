@@ -47,6 +47,7 @@ int main(){try{
   struct Detach {~Detach(){NativeEngine::DetachVideo();}} detach;
   check(Bitmap::Manager::Init()&&Material::Manager::Init());
   struct Resources {bool active=true;~Resources(){if(active){Material::Manager::Done();Bitmap::Manager::Done();}}} resources;
+  check(Vid::isStatus.initialized);
   check(Vid::device&&Vid::backBmp.GetSurface()&&Vid::viewRect.Width()==W);
   check(Vid::Config::TrilinearOff());
   Vid::InitResources(TRUE);
@@ -70,7 +71,7 @@ int main(){try{
   std::vector<std::uint8_t> pixels(W*H*4);renderer.read_presented_rgba(W,H,pixels.data());
   const auto center=(H/2*W+W/2)*4;check(pixels[center]==255&&pixels[center+1]==0&&pixels[center+2]==0);
   Material::Manager::Done();Bitmap::Manager::Done();resources.active=false;
-  NativeEngine::DetachVideo();check(!Vid::RenderFlush()&&!Vid::device&&!Vid::backBmp.GetSurface());
+  NativeEngine::DetachVideo();check(!Vid::RenderFlush()&&!Vid::device&&!Vid::backBmp.GetSurface()&&!Vid::isStatus.initialized);
  }
  std::cout<<"Original Vid attachment -> real DX7 device -> GLES -> presented pixels -> detach passed twice; no mission executed\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

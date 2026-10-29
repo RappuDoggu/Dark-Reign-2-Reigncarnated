@@ -49,6 +49,12 @@ extern "C" [[noreturn]] void __wrap___cxa_throw(void *exception,void *type,void 
 #include "mesh.h"
 #include "camera.h"
 #include "terrain_priv.h"
+#include "worldctrl.h"
+#include "team.h"
+namespace Sight {class Map;}
+#include "sight.h"
+#include "unitobj.h"
+#include "game_config.h"
 #include "filesys.h"
 #include "tracksys.h"
 #include "varsys.h"
@@ -64,10 +70,16 @@ extern "C" [[noreturn]] void __wrap___cxa_throw(void *exception,void *type,void 
 #include <vector>
 #include <memory>
 #include <fstream>
+extern "C" void __real__ZN7Terrain3Sky6RenderEv();
+extern "C" void __wrap__ZN7Terrain3Sky6RenderEv(){if(!std::getenv("REIGN_HIDE_SKY"))__real__ZN7Terrain3Sky6RenderEv();}
+extern "C" void __real__ZN10MapObjCtrl6RenderEv();
+extern "C" void __wrap__ZN10MapObjCtrl6RenderEv(){if(!std::getenv("REIGN_HIDE_OBJECTS"))__real__ZN10MapObjCtrl6RenderEv();}
+extern "C" void __real__ZN6Client7Display6RenderEv();
+extern "C" void __wrap__ZN6Client7Display6RenderEv(){if(!std::getenv("REIGN_HIDE_HUD"))__real__ZN6Client7Display6RenderEv();}
 namespace Vid {namespace Command {void InitMesh();void DoneMesh();}}
 #include "runtime_setup_native.h"
 namespace {
-constexpr unsigned W=640,H=360;
+constexpr unsigned W=640,H=480;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
 struct Context {
  EGLDisplay display=EGL_NO_DISPLAY;EGLSurface surface=EGL_NO_SURFACE;EGLContext context=EGL_NO_CONTEXT;
@@ -152,13 +164,17 @@ int main(int argc,char **argv){try{
  Orders::Init();Sync::Init();Demo::Init();NativeEngine::InitializeRuntimeVariables();
  NativeEngine::InitializeFrameClock(Clock::Time::Ms());
  Game::RC::Init();Game::RC::Set("Load");
- for(unsigned step=0;step<32;++step){
+ for(unsigned step=0;step<128;++step){
   std::cerr<<"Original RC frame "<<step<<"\n";
   NativeEngine::BeginNativeFrame(Clock::Time::Ms());Game::RC::Process();
+  if(step==3&&std::getenv("REIGN_REVEAL_MAP")){Vid::Var::Terrain::shroud=FALSE;Vid::SetFogState(FALSE);}
+  if(step==1||step==3||step==31){auto &m=Vid::CurCamera().WorldMatrix();std::cerr<<"Camera "<<m.posit.x<<","<<m.posit.y<<","<<m.posit.z<<" front "<<m.front.x<<","<<m.front.y<<","<<m.front.z<<" up "<<m.up.x<<","<<m.up.y<<","<<m.up.z<<" floor "<<Terrain::FindFloor(m.posit.x,m.posit.z)<<" elapsed "<<Main::elapSecs<<"\n";Vector target=m.posit+m.front*100;F32 rhw;Vid::ProjectFromWorld(target,rhw);std::cerr<<"Projected ahead "<<target.x<<","<<target.y<<","<<target.z<<" rhw "<<rhw<<" map "<<WorldCtrl::CellMapX()<<"x"<<WorldCtrl::CellMapZ()<<" metres "<<WorldCtrl::MetreMapX()<<"\n";}
   std::this_thread::sleep_for(std::chrono::milliseconds(16));
  }
  check(Game::MissionLoaded());check(GameTime::SimCycle()>0);std::cerr<<"Simulation callbacks completed; cycles "<<GameTime::SimCycle()<<"\n";
  check(Game::RC::In("Sim"));
+ for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id)){std::cerr<<"Team "<<id<<" "<<team->GetName()<<" units "<<team->GetUnitObjects().GetCount()<<" display "<<(team==Team::GetDisplayTeam())<<"\n";for(NList<UnitObj>::Iterator i(&team->GetUnitObjects());*i;++i){auto *unit=*i;std::cerr<<" Unit "<<unit->UnitType()->GetName()<<" at "<<unit->Position().x<<","<<unit->Position().y<<","<<unit->Position().z<<" range "<<unit->GetSeeingRange()<<" onmap "<<unit->OnMap()<<" visible "<<Sight::Visible(unit->GetCellX(),unit->GetCellZ(),team)<<" fog "<<Terrain::GetCell(unit->GetCellX(),unit->GetCellZ())->GetFog()<<"\n";}}
+ std::cerr<<"Default rule "<<Game::Config::GetDefaultRule().str<<" presents "<<presentation.calls<<" displaycount "<<GameTime::DisplayCount()<<" shroudrate "<<S32(Vid::Var::Terrain::shroudRate)<<" gameCycle "<<GameTime::GameCycle()<<" paused "<<GameTime::Paused()<<"\n";
  if(const char *capture=std::getenv("REIGN_CAPTURE_PATH")){
   std::vector<std::uint8_t> image(W*H*4);renderer.read_presented_rgba(W,H,image.data());
   std::ofstream file(capture,std::ios::binary);file<<"P6\n"<<W<<" "<<H<<"\n255\n";

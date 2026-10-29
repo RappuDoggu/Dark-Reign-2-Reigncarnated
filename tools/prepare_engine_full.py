@@ -467,3 +467,14 @@ patch('coregame_interface/common_mapwindow.cpp',[('delete seenBuf;','delete[] se
 patch('coregame_orders/orders.cpp',[('delete saveHead;','delete[] reinterpret_cast<U8 *>(saveHead);'),('delete saveCurrent;','delete[] reinterpret_cast<U8 *>(saveCurrent);')])
 
 patch('interface/icdroplist.cpp',[('delete selectedVarName;','delete[] selectedVarName;')])
+
+# The original sampler setter unconditionally updates two texture stages, even
+# on a one-stage device. Visit only the stages the native caps actually expose.
+source=out/'graphics/vid_cmd_dialog.cpp';text=source.read_text()
+start=text.index('      stage = 1;    // set both stages')
+end=text.index('      for ( ; stage >= 0; stage--)',start)
+text=text[:start]+'      stage = caps.texMulti ? 1 : 0;\n\n'+text[end:]
+source.write_text(text)
+
+# Native Activities can re-enter the engine within the same process.
+patch('util/perfstats.cpp',[('    VarSys::DeleteItem("perfstats");','    VarSys::DeleteItem("perfstats");\n    sysInit = FALSE;')])

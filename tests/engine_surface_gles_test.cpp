@@ -116,6 +116,12 @@ int main(){try{
   check(device->SetRenderState(D3DRENDERSTATE_ZENABLE,0)==S_OK);
   triangleIndices[5]=4;check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);triangleIndices[5]=3;
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_XYZ,vertices.data(),4,triangleIndices,6,0)==E_NOTIMPL);
+  DWORD stored=0;
+  for(auto type:{D3DRENDERSTATE_TEXTUREPERSPECTIVE,D3DRENDERSTATE_DITHERENABLE,D3DRENDERSTATE_CLIPPING}){
+   for(DWORD value:{0u,1u}){check(device->SetRenderState(type,value)==S_OK);check(device->GetRenderState(type,&stored)==S_OK&&stored==value);}
+   check(device->SetRenderState(type,2)!=S_OK);
+  }
+  check(device->SetRenderState(D3DRENDERSTATE_ANTIALIAS,1)==E_NOTIMPL);
   check(device->SetTexture(1,surface)==E_NOTIMPL);check(device->SetTexture(0,surface)==S_OK);
   check(device->SetTextureStageState(0,D3DTSS_MIPFILTER,D3DTFP_LINEAR)==E_NOTIMPL);
   check(device->SetTextureStageState(0,D3DTSS_MINFILTER,D3DTFN_LINEAR)==S_OK);
@@ -139,6 +145,19 @@ int main(){try{
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
   renderer.read_rgba(W,H,result.data());check(result[center+2]==255&&result[center+3]==128);
   check(device->EndScene()==S_OK&&device->EndScene()==E_FAIL);check(device->Release()==0);
+  // Unequal reciprocal W distinguishes perspective-correct from affine UVs.
+  const std::uint8_t stripes[]={255,0,0,255,0,0,255,255};
+  auto stripeTexture=renderer.texture_rgba(2,1,stripes);
+  auto perspectiveVertices=quad(0xffffffff);perspectiveVertices[1].rhw=perspectiveVertices[2].rhw=.25f;
+  reign::DrawState perspectiveState;perspectiveState.texture=stripeTexture;perspectiveState.texture_op=reign::TextureOp::texture;
+  const auto sample=(H/2*W+20)*4;
+  for(bool perspective:{true,false}){
+   perspectiveState.perspective=perspective;renderer.clear(W,H,0,0,0);
+   renderer.draw(W,H,perspectiveVertices.data(),4,indices,6,perspectiveState);
+   renderer.read_rgba(W,H,result.data());
+   check(result[sample]==(perspective?255:0)&&result[sample+2]==(perspective?0:255));
+  }
+  renderer.delete_texture(stripeTexture);
   fill(surface,0xf800);draw(renderer,texture,255,0,0);
   const auto first=texture.Refresh(renderer);check(texture.Refresh(renderer)==first);
   fill(surface,0x001f);draw(renderer,texture,0,0,255);

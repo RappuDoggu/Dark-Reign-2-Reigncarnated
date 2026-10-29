@@ -54,11 +54,16 @@ public final class MenuActivity extends Activity {
  @Override public void onCreate(Bundle saved){
   super.onCreate(saved);dataRoot=getPreferences(0).getString("dataRoot",null);
   FrameLayout screen=new FrameLayout(this);view=new MenuView();screen.addView(view,new FrameLayout.LayoutParams(-1,-1));
-  Button reportButton=new Button(this);reportButton.setText("Report / data");reportButton.setOnClickListener(v->new android.app.AlertDialog.Builder(this).setTitle("Native menu proof of concept").setMessage("Original intros, native 3D menu and atmospheric effects. Menu navigation is deferred.").setPositiveButton("Share report",(d,w)->{Intent i=new Intent(Intent.ACTION_SEND);i.setType("text/plain");i.putExtra(Intent.EXTRA_TEXT,"Reigncarnated 0.5 Native Launch\n"+history.toString());startActivity(Intent.createChooser(i,"Share report"));}).setNeutralButton("Import ZIP",(d,w)->pickZip()).setNegativeButton("Close",null).show());
+  Button reportButton=new Button(this);reportButton.setText("Report / data");reportButton.setOnClickListener(v->new android.app.AlertDialog.Builder(this).setTitle("Native menu proof of concept").setMessage("Original intros, native 3D menu and atmospheric effects. Menu navigation is deferred.").setPositiveButton("Share report",(d,w)->{Intent i=new Intent(Intent.ACTION_SEND);i.setType("text/plain");i.putExtra(Intent.EXTRA_TEXT,"Reigncarnated 0.6 Instant Action candidate\n"+history.toString());startActivity(Intent.createChooser(i,"Share report"));}).setNeutralButton("Import ZIP",(d,w)->pickZip()).setNegativeButton("Close",null).show());
   FrameLayout.LayoutParams tools=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.END);screen.addView(reportButton,tools);
+  Button instant=new Button(this);instant.setText("Instant Action (test)");instant.setOnClickListener(v->{
+   if(!hasData()){message("Import your complete game data first.");return;}
+   if(!new File(dataRoot,"library/engine/startup.cfg").isFile()){message("Reimport a complete installation ZIP including the library folder for Instant Action.");return;}
+   Intent launch=new Intent(this,MissionActivity.class);launch.putExtra("installation",dataRoot);startActivity(launch);
+  });screen.addView(instant,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
   setup=new LinearLayout(this);setup.setOrientation(LinearLayout.VERTICAL);setup.setGravity(Gravity.CENTER);setup.setPadding(dp(28),dp(24),dp(28),dp(24));setup.setBackgroundColor(0xff101710);
   TextView title=new TextView(this);title.setText("REIGNCARNATED");title.setTextColor(0xffaadd99);title.setTextSize(28);title.setGravity(Gravity.CENTER);setup.addView(title);
-  TextView description=new TextView(this);description.setText("Select ZIP files from your legally owned Dark Reign 2 installation.\n\nRequired: base.zwp, shell.zwp and sprawl.zwp. Music is imported automatically. Select multiple ZIPs together if needed. Data is copied once; later launches play the original introduction and open the native menu.");description.setTextColor(0xffeeeeee);description.setGravity(Gravity.CENTER);description.setPadding(0,dp(20),0,dp(20));setup.addView(description);
+  TextView description=new TextView(this);description.setText("Select ZIP files from your legally owned Dark Reign 2 installation.\n\nFor Instant Action, include the complete packs, missions, worlds, sides, mods and library folders. Music is imported automatically. Select multiple ZIPs together if needed. Data is copied once; later launches play the original introduction and open the native menu.");description.setTextColor(0xffeeeeee);description.setGravity(Gravity.CENTER);description.setPadding(0,dp(20),0,dp(20));setup.addView(description);
   chooseZip=new Button(this);chooseZip.setText("Select game data ZIP(s)");chooseZip.setOnClickListener(v->pickZip());setup.addView(chooseZip);
   choose=new Button(this);choose.setText("Select game data folder");choose.setOnClickListener(v->pickFolder());setup.addView(choose);
   cancelImport=new Button(this);cancelImport.setText("Cancel import");cancelImport.setVisibility(View.GONE);cancelImport.setOnClickListener(v->{cancelled=true;status.setText("Cancelling import…");});setup.addView(cancelImport);
@@ -132,3 +137,4 @@ public final class MenuActivity extends Activity {
   message(imported.tracks==0?"Game data ready. No music tracks found; menu sound effects remain available.":"Game data ready. "+imported.tracks+" music tracks imported.");
  }
 }
+

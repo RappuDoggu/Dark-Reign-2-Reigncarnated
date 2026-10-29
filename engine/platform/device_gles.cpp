@@ -20,7 +20,8 @@ class Device final:public UnsupportedDevice {
  reign::DrawState state;
  DWORD colorOp=D3DTOP_MODULATE,alphaOp=D3DTOP_MODULATE;
  DWORD color1=D3DTA_TEXTURE,color2=D3DTA_DIFFUSE,alpha1=D3DTA_TEXTURE,alpha2=D3DTA_DIFFUSE;
- DWORD fogColor=0;
+ DWORD fogColor=0,ambientColor=0,textureFactor=0xffffffff,fogStart=0,fogEnd=0;
+ bool clipping=true;
  DWORD cullMode=D3DCULL_NONE;
  DWORD minFilter=D3DTFN_POINT,magFilter=D3DTFG_POINT;
 
@@ -86,7 +87,15 @@ public:
  HRESULT GetRenderState(D3DRENDERSTATETYPE type,DWORD *out)override{
   if(!out)return E_INVALIDARG;*out=0;
   switch(type){
-   case D3DRENDERSTATE_CLIPPING:*out=1;break;
+   case D3DRENDERSTATE_CLIPPING:*out=clipping;break;
+   case D3DRENDERSTATE_DITHERENABLE:*out=state.dither;break;
+   case D3DRENDERSTATE_AMBIENT:*out=ambientColor;break;
+   case D3DRENDERSTATE_TEXTUREFACTOR:*out=textureFactor;break;
+   case D3DRENDERSTATE_FOGSTART:*out=fogStart;break;
+   case D3DRENDERSTATE_FOGEND:*out=fogEnd;break;
+   case D3DRENDERSTATE_TEXTUREPERSPECTIVE:*out=state.perspective;break;
+   case D3DRENDERSTATE_ANTIALIAS:case D3DRENDERSTATE_EDGEANTIALIAS:
+   case D3DRENDERSTATE_COLORKEYENABLE:case D3DRENDERSTATE_ZBIAS:*out=0;break;
    case D3DRENDERSTATE_EXTENTS:case D3DRENDERSTATE_LIGHTING:*out=0;break;
    case D3DRENDERSTATE_FILLMODE:*out=D3DFILL_SOLID;break;
    case D3DRENDERSTATE_SHADEMODE:*out=D3DSHADE_GOURAUD;break;
@@ -129,7 +138,18 @@ public:
  HRESULT SetRenderState(D3DRENDERSTATETYPE type,DWORD value)override{
   switch(type){
    // TL vertices are already lit; GLES clips and rasterizes solid interpolated triangles.
-   case D3DRENDERSTATE_CLIPPING:return value<=1?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_CLIPPING:if(value>1)return E_NOTIMPL;clipping=value!=0;return S_OK;
+   case D3DRENDERSTATE_DITHERENABLE:if(value>1)return E_INVALIDARG;state.dither=value!=0;return S_OK;
+   // TL vertices already contain lighting and the CPU-computed fog factor.
+   case D3DRENDERSTATE_AMBIENT:ambientColor=value;return S_OK;
+   case D3DRENDERSTATE_TEXTUREFACTOR:textureFactor=value;return S_OK;
+   case D3DRENDERSTATE_FOGSTART:case D3DRENDERSTATE_FOGEND:{
+    float distance;std::memcpy(&distance,&value,sizeof(distance));if(!std::isfinite(distance))return E_INVALIDARG;
+    (type==D3DRENDERSTATE_FOGSTART?fogStart:fogEnd)=value;return S_OK;
+   }
+   case D3DRENDERSTATE_TEXTUREPERSPECTIVE:if(value>1)return E_INVALIDARG;state.perspective=value!=0;return S_OK;
+   case D3DRENDERSTATE_ANTIALIAS:case D3DRENDERSTATE_EDGEANTIALIAS:
+   case D3DRENDERSTATE_COLORKEYENABLE:case D3DRENDERSTATE_ZBIAS:return value==0?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_EXTENTS:case D3DRENDERSTATE_LIGHTING:return value==0?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_FILLMODE:return value==D3DFILL_SOLID?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_SHADEMODE:return value==D3DSHADE_GOURAUD?S_OK:E_NOTIMPL;

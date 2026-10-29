@@ -1018,3 +1018,85 @@ as PPM for visual inspection.
 Next: correct the observed world rendering and incomplete interface command
 bindings, then integrate this bootstrap with Android Activity/EGL/audio/input
 lifetime and produce the Instant Action test APK.
+
+
+## Phase 23: ARM64 Instant Action APK candidate packaged
+
+Produced Reigncarnated-Instant-Action-v06-Candidate.apk. This is a separate test
+application (org.reigncarnated.missioncandidate), target SDK 35, min API 26,
+ARM64 only, signed and verified, with ZIP checksums and 16 KiB library/APK
+alignment verified. It has not been launched on an Android device or emulator.
+It retains the exact v05 native menu binary and rebuilt Java menu Activity;
+its explicit Instant Action (test) button opens a separate GLES mission Activity
+and the original 2crazed engine through libreign_mission.so. This is not the
+original menu's complete Instant Action configuration/lobby implementation.
+
+A reusable NativeEngine::MissionApp now owns original startup, data mounting,
+profile login/creation, Load/SimInit/Sim, frame clock, input viewport and ordered
+shutdown. The JNI boundary supplies an EGL-current renderer and AAudio output.
+The Activity translates one-finger taps/drag selection into the original primary
+mouse action, supplies arrow buttons for camera keys, and has a Deselect button
+for the original secondary action. Pause releases held native keys, stops audio,
+freezes frame/simulation processing and readjusts timing on resume. Context loss
+restarts this test mission; save/restore is still unsupported. Returning from a
+mission closes it on its GL thread before pausing the finishing Activity.
+
+The phase-22 image diagnosis is refined: the camera is 40 metres above the local
+floor, and its forward ray projects to screen centre. Its starting team owns
+three rigs, each with seven-cell sight and valid visible cells. The short initial
+capture contained the normal gradual shroud reveal (fog 90 after 29 cycles),
+not evidence that the terrain projection was generally broken. With a longer
+run the ordinary shroud reaches 255 in the rigs' visible area, without reveal
+cheats. A second concrete issue was native video attachment never publishing
+isStatus.initialized; original render-state initialization was therefore skipped.
+Attach/detach now publish/reset it. This enables correct depth/clear and sampler
+setup and requires binding the original wire/flat/specular/dither/texture vars.
+
+The original sampler setter visited two stages regardless of capabilities;
+it now visits only the stage(s) the device exposes. The native adapter advertises
+one mip level and disables unsupported mip filtering in its published defaults.
+Added real GLES dither control and affine UV interpolation alongside perspective
+UVs, plus queryable legacy ambient/texture-factor/fog-distance state for the TL
+pipeline. Unsupported nonzero legacy antialias/color-key/depth-bias requests
+still fail. A two-colour texture under unequal reciprocal W distinguishes the
+affine and perspective modes in a real-pixel regression; two GLES lifecycles pass.
+
+The compact data ZIP contains the owned base/shell/world/side assets, original
+library configuration, mods and the original 2crazed map. Both ZIP indexing and
+folder import now retain library paths. A Java-only test executes the actual
+ZIP/importer implementation and verifies the resulting runtime dependencies.
+The shared C++ application test then boots that imported directory (including
+its flat imported base.zwp), selects a rig through queued pointer events, issues
+an original primary-click contextual move, and observes displacement
+(15.9999,15.9999). It also verifies pause/resume, held-key release, duplicate
+instance refusal, shutdown and existing-profile login on a second full startup.
+The imported-data run completed both lifecycles (249 and 82 simulation cycles).
+
+Repeated startup exposed PerfStats::Done leaving sysInit true; the staged
+original now clears it. A prior debug run terminated with SIGABRT during type
+loading without a useful diagnostic; subsequent direct and imported-data
+lifecycle runs completed. Device behavior remains to be established.
+Harness/new runtime/foundation use ASan/UBSan; original reused objects are not
+all instrumented and LeakSanitizer is disabled for Mesa integration.
+
+The ARM64 library links 603 compiled original units plus the new application,
+JNI and current renderer/diagnostic sources with --no-undefined, hidden internal
+symbols and -Bsymbolic. Only seven JNI entry points are exported, avoiding C++
+symbol/DrawState ABI interposition with the retained v05 menu library. The
+runtime links libc++ statically. The final package contains both native libraries.
+
+Rebuild entry points: tools/link_mission_android.py (prepared original objects,
+foundation archives, FFmpeg and NDK), tools/package_mission_candidate.py (exact
+v05 menu APK, new mission library and SDK), and tools/test_engine_vid.py
+--test-source engine_app_test.cpp for the shared host lifecycle. The matching
+source/relink ZIP includes the original menu decoder recovery material, current
+link objects/archives, source snapshot, link commands, test signing key and
+unstripped mission symbols. No game assets are included in that relink ZIP.
+
+Current limits: one human team and no AI opponents; some original configuration
+commands/options remain unbound and emit handled console errors; construction,
+combat, mission victory and device audio/input/context behavior are not claimed
+validated. Next validation is on the Samsung Fold 5: import the matching data
+ZIP, let the existing native menu start, then tap Instant Action (test).
+Evidence: native-phase23-application.log, native-phase23-package.log and
+native-phase23-validation.json.
