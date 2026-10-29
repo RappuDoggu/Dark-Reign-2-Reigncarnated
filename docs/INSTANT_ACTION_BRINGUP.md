@@ -552,3 +552,52 @@ Evidence: logs/instant-action/native-phase7-build.json,
 native-phase7-tests.log and native-mission-link-phase7.json.
 No new APK or Instant Action boot is claimed. Link completion will still need
 application startup integration and runtime validation before a test APK.
+
+
+## Native PCM audio and local-session checkpoint (phase 8)
+
+The mission-entry probe now links for ARM64 with zero unresolved symbols and
+zero other linker errors. It retains native display attachment and real AAudio
+startup/shutdown as well as the six original mission lifecycle entry points.
+This executable is a link check: main deliberately returns failure without
+executing a mission. No APK or mission boot is claimed.
+
+A broader optional --frame-loop probe retains Game::RC initialization and its
+Load/SimInit/Sim callbacks. That probe exposes 27 additional unresolved symbols,
+recorded separately in native-frame-link-phase8.json. They cover client debug,
+GUI activation hooks, frame variables/utilities, session orchestration, version
+metadata and renderer resource lifecycle. Resolving the narrow probe is not
+completion of application startup or the simulation/display loop.
+
+A bounded PCM WAV decoder and software stereo mixer replace the Miles 2D audio
+backend while retaining original Effect, Record and Reserved source logic.
+The mixer uses integer resampling phase, panning, looping, priority replacement,
+owner/effect stops and a callback-safe fixed voice pool. AndroidAudioOutput owns
+a real AAudio float/stereo/48 kHz stream and reports startup/disconnection state.
+Application lifecycle wiring and audible device validation are still pending.
+The current driver has a shared 64-voice pool; Claim records availability but
+requested voice-count subdivision and dedicated reserved capacity need follow-up.
+3D positional services remain unavailable. Compressed MP3/OGG digital streams
+are not supported by this PCM decoder; existing imported music uses its separate
+player adapter. Unsupported decoding returns a playback failure and diagnostic.
+
+All 519 WAV effects in the owned base archive decoded successfully: 14,683,947
+source frames. Host tests exercise original effect playback, pan, completion,
+Reaper invalidation, reserved playback/reset and named PCM stream stop. Thirteen
+foundation CTest cases pass with ASan/UBSan; additional sound and session boundary
+tests pass with sanitizer-linked harness/foundation and reused original host
+objects (not all original objects are instrumented). No owned assets enter Git.
+A FastFind base-pointer deletion failure caught by ASan was corrected with a
+virtual destructor in the resource staging adapter; the Android inventory was
+rebuilt against that interface. 612/705 adapted inventory entries compile.
+
+The local-only session backend has explicit begin/end identity, host status and
+CRC/data reset. Online returns false because this target has no transport.
+Load accepts an empty local session scope and explicitly rejects multiplayer
+save restoration before changing stored session data. It does not reconstruct
+network hosts or players. Tests cover identity/reset and rejection preserving
+existing data. Mission selection and the game-loop bootstrap still need to call
+this lifecycle from the Android application.
+
+Evidence: native-mission-link-phase8.json, native-frame-link-phase8.json,
+native-phase8-build.json and native-phase8-tests.log in logs/instant-action.

@@ -45,6 +45,8 @@ def prepare(upstream, output):
         "    const char *forward = Utils::Strrchr(path, '/');\n"
         "    if (forward && (!slash || forward > slash)) slash = forward;\n"
         "    if (slash)")
+    # FastFind is deleted through its base pointer by original sound records.
+    sources['filesys.h'] = sources['filesys.h'].replace('    virtual DataFile* Open() = 0;', '    virtual DataFile* Open() = 0;\n    virtual ~FastFind() = default;')
     output.mkdir(parents=True, exist_ok=True)
     for name, text in sources.items():
         dest = output/name

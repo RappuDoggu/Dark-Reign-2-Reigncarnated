@@ -311,3 +311,14 @@ source.write_text('#include <memory>\n#include <stdexcept>\n'+text)
 source=out/'multiplayer/multiplayer_data.cpp';text=source.read_text()
 functions=['    void Save(','    void Load(','    Bool HaveData()','    Bool Get(','    void LocalClear(','    void LocalFlush()']
 source.write_text('#include "multiplayer_data.h"\n#include "styxnet_data.h"\nnamespace MultiPlayer { namespace Data {\nstatic StyxNet::Data data;\n'+''.join(original_function(text,s) for s in functions)+'}}\n')
+
+
+# Preserve original Effect/Record/Reserved policy with bounded native PCM handles.
+(out/'3rdparty/mss.h').write_text('#pragma once\n#include "miles_native.h"\n')
+patch('sound/sound.cpp', [(r'      AIL_set_redist_directory("library\\mss");','      // Native audio has no external redistributable directory.'),('      AIL_startup();','      // Android output is opened explicitly by the application.'),('      AIL_shutdown();','      // Output lifetime belongs to the native application.'),('return (AIL_last_error());','return (NativeEngine::DigitalLastError());')])
+patch('sound/sound_digital_reserved.cpp', [('AIL_set_sample_file(handle, d->GetMemoryPtr(), 0)','NativeSetSampleFile(handle, d->GetMemoryPtr(), d->Size())')])
+patch('sound/sound_digital_effect.cpp', [('    Effect::~Effect()\n    {','    Effect::~Effect()\n    {\n      if (Sound::Initialized()) Output::StopByEffect(this);')])
+(out/'sound/sound_digital.cpp').write_text('#include "sound_native.inc"\n')
+# Explicit local-only session target. Multiplayer saves fail before changing
+# state; transport, lobby and remote players are not represented as working.
+source=out/'multiplayer/multiplayer.cpp';source.write_text(source.read_text()+'\n#include "session_native.inc"\n')

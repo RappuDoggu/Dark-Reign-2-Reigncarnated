@@ -1,4 +1,5 @@
 #include "styxnet_data.h"
+#include "session_native.h"
 #include "multiplayer.h"
 #include "multiplayer_data.h"
 #include "stdload.h"
@@ -24,6 +25,16 @@ int main(){try{
  check(restored.Clear(10,20,TRUE)&&restored.IsEmpty());
  MultiPlayer::SetDataCrc(0xfeed1234);check(MultiPlayer::GetDataCrc()==0xfeed1234);
  MultiPlayer::SetDataCrc(0);check(!MultiPlayer::GetDataCrc());
+ check(!MultiPlayer::IsHost()&&!MultiPlayer::Data::Online());
+ NativeEngine::BeginOfflineSession("2crazed","Local Commander");
+ check(MultiPlayer::IsHost()&&!MultiPlayer::Data::Online());
+ check(NativeEngine::CurrentOfflineSession()->mission=="2crazed");
+ FScope empty(nullptr,"Local");MultiPlayer::Load(&empty);
+ saved.InitIterators();MultiPlayer::Data::Load(&saved);check(MultiPlayer::Data::HaveData());
+ saved.InitIterators();bool rejected=false;
+ try{MultiPlayer::Load(&saved);}catch(const std::runtime_error &){rejected=true;}
+ check(rejected&&MultiPlayer::Data::HaveData());
+ NativeEngine::EndOfflineSession();check(!MultiPlayer::IsHost()&&!MultiPlayer::Data::HaveData());
  // data intentionally remains populated: destructor must own its cleanup.
  std::cout<<"Original session data: host protection, aliased updates, serialization, local store and CRC round-trip pass; no network/session bootstrap.\n";
  return 0;
