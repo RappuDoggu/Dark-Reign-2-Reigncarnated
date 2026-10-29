@@ -263,3 +263,8 @@ text=text[:start]+'''  auto file = std::unique_ptr<FileSys::DataFile, void (*)(F
   Utils::Memcpy(pal, colors.data(), sizeof(pal));
 '''+text[end:]
 source.write_text('#include "palette_native.h"\n'+text)
+
+# Original Bitmap operations retain the DX7 surface interface, now backed by
+# native pixel storage. Window/device creation remains a separate renderer task.
+patch('graphics/bitmap.cpp', [('Vid::ddx->CreateSurface( &desc, &surface, NULL)', 'NativeEngine::CreateMemorySurface(desc, &surface)')])
+source=out/'graphics/bitmap.cpp';source.write_text('#include "surface_native.h"\n'+source.read_text())

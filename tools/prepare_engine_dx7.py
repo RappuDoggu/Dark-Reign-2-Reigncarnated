@@ -15,3 +15,18 @@ for name,digest in json.loads((repo/'cmake/engine-dx7-source-hashes.json').read_
  text='#pragma pack(push)\n'+text+'\n#pragma pack(pop)\n'
  dest=out/name
  if not dest.exists() or dest.read_text()!=text: dest.write_text(text)
+
+# Default implementations reject unsupported interfaces explicitly. Supported
+# memory-surface operations override these in surface_native.cpp.
+text=(out/'ddraw.h').read_text()
+block=text.split('DECLARE_INTERFACE_( IDirectDrawSurface7, IUnknown )',1)[1].split('};',1)[0]
+methods=[]
+for line in block.splitlines():
+ match=re.search(r'STDMETHOD\((\w+)\)\s*\((.*?)\)\s*PURE;',line)
+ if match:
+  name,args=match.groups();args=args.replace('THIS_','').replace('THIS','').replace('FAR','').strip()
+  methods.append(f' HRESULT {name}({args}) override {{ return E_NOTIMPL; }}')
+# AddRef/Release are kept abstract so a default object can never leak silently.
+header='#pragma once\n#include "ddraw.h"\nnamespace NativeEngine {\nstruct UnsupportedSurface : IDirectDrawSurface7 {\n'+'\n'.join(methods)+'\n};\n}\n'
+dest=out/'surface_unsupported.h'
+if not dest.exists() or dest.read_text()!=header:dest.write_text(header)

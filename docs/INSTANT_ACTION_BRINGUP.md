@@ -465,3 +465,30 @@ Evidence: `logs/instant-action/native-phase5-build.json`,
 The temporary workspace was rebuilt from the pinned upstream commit, this
 repository, the pinned NDK/FFmpeg downloads and the owner's stored installation.
 No APK or successful Instant Action boot is claimed by this checkpoint.
+
+
+## Native surfaces and GLES texture checkpoint (phase 6)
+
+Original Bitmap now allocates real CPU-backed DirectDraw-compatible surfaces,
+removing its dependency on Vid::ddx. The surface implementation owns pixels,
+validates formats and rectangles, supports locks, color fills, overlapping and
+scaled copies, source color keys, reference counting, and attached mip levels.
+Unsupported window/GDI/overlay operations explicitly return E_NOTIMPL.
+
+SurfaceTexture uploads those pixels through the existing LegacyGles renderer,
+refreshes dirty textures, and retains CPU data across context loss. Eleven host
+ASan/UBSan tests pass, including rendered pixel readback in two software EGL
+contexts. This verifies texture upload and recreation, not mission rendering.
+The surface implementation, GLES adapter, and original Bitmap compile for ARM64.
+
+The mission probe now reports 51 unresolved symbols and zero other linker
+errors. Remaining dependencies include original Vid device/state initialization,
+presentation, audio services, offline session data, and mono configuration.
+The original D3D7 draw/state calls still need connection to the GLES renderer.
+No new APK, device execution, or Instant Action boot is claimed.
+
+Evidence: logs/instant-action/native-mission-link-phase6.json,
+native-phase6-build.json, and native-phase6-tests.log. Host GLES tests require
+REIGN_KHRONOS_HEADERS pointing to externally staged EGL/GLES headers; Android
+uses NDK headers. Owned game data and external SDK/decoder sources stay outside
+this repository.
