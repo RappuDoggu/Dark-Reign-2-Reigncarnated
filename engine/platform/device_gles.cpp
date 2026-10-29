@@ -4,6 +4,7 @@
 #include "reign/legacy_gles.hpp"
 #include <memory>
 #include <vector>
+#include <cmath>
 namespace NativeEngine {
 namespace {
 class Device final:public UnsupportedDevice {
@@ -17,6 +18,7 @@ class Device final:public UnsupportedDevice {
  reign::DrawState state;
  DWORD colorOp=D3DTOP_MODULATE,alphaOp=D3DTOP_MODULATE;
  DWORD color1=D3DTA_TEXTURE,color2=D3DTA_DIFFUSE,alpha1=D3DTA_TEXTURE,alpha2=D3DTA_DIFFUSE;
+ DWORD cullMode=D3DCULL_NONE;
  DWORD minFilter=D3DTFN_POINT,magFilter=D3DTFG_POINT;
 
 public:
@@ -45,9 +47,9 @@ public:
  }
  HRESULT GetViewport(D3DVIEWPORT7 *v)override{if(!v)return E_INVALIDARG;*v={0,0,width,height,0,1};return S_OK;}
  HRESULT Clear(DWORD count,D3DRECT *,DWORD flags,D3DCOLOR color,D3DVALUE depth,DWORD)override{
-  // LegacyGles currently clears both color and depth; reject partial clears.
-  if(count||flags!=(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER)||depth!=1)return E_NOTIMPL;
-  try{renderer.clear(width,height,float((color>>16)&255)/255,float((color>>8)&255)/255,float(color&255)/255,float(color>>24)/255);return S_OK;}catch(...){return E_FAIL;}
+  if(count||(flags&~DWORD(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER)))return E_NOTIMPL;
+  if((flags&D3DCLEAR_ZBUFFER)&&(!std::isfinite(depth)||depth<0||depth>1))return E_INVALIDARG;
+  try{renderer.clear_buffers(width,height,(flags&D3DCLEAR_TARGET)!=0,(flags&D3DCLEAR_ZBUFFER)!=0,float((color>>16)&255)/255,float((color>>8)&255)/255,float(color&255)/255,float(color>>24)/255,(flags&D3DCLEAR_ZBUFFER)?depth:1);return S_OK;}catch(...){return E_FAIL;}
  }
  HRESULT SetTexture(DWORD stage,IDirectDrawSurface7 *surface)override{
   if(stage)return E_NOTIMPL;
@@ -62,7 +64,7 @@ public:
   if(stage)return (stage==1&&type==D3DTSS_COLOROP&&value==D3DTOP_DISABLE)?S_OK:E_NOTIMPL;
   switch(type){
    case D3DTSS_COLOROP:case D3DTSS_ALPHAOP:
-    if(value!=D3DTOP_MODULATE&&value!=D3DTOP_SELECTARG1)return E_NOTIMPL;
+    if(value!=D3DTOP_MODULATE&&value!=D3DTOP_SELECTARG1&&!(type==D3DTSS_COLOROP&&(value==D3DTOP_MODULATE2X||value==D3DTOP_MODULATE4X)))return E_NOTIMPL;
     (type==D3DTSS_COLOROP?colorOp:alphaOp)=value;return S_OK;
    case D3DTSS_COLORARG1:case D3DTSS_COLORARG2:case D3DTSS_ALPHAARG1:case D3DTSS_ALPHAARG2:
     if(value!=D3DTA_TEXTURE&&value!=D3DTA_DIFFUSE&&value!=D3DTA_CURRENT)return E_NOTIMPL;
@@ -89,7 +91,11 @@ public:
    case D3DRENDERSTATE_FOGENABLE:state.fog=value!=0;return S_OK;
    case D3DRENDERSTATE_FOGCOLOR:for(unsigned i=0;i<3;++i)state.fog_rgb[i]=float((value>>(16-i*8))&255)/255;return S_OK;
    case D3DRENDERSTATE_SPECULARENABLE:state.specular=value!=0;return S_OK;
-   case D3DRENDERSTATE_CULLMODE:return value==D3DCULL_NONE?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_CULLMODE:if(value<D3DCULL_NONE||value>D3DCULL_CCW)return E_INVALIDARG;cullMode=value;return S_OK;
+   case D3DRENDERSTATE_ZFUNC:return value==D3DCMP_LESSEQUAL?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_ALPHAFUNC:return value==D3DCMP_GREATER?S_OK:E_NOTIMPL;
+   case D3DRENDERSTATE_ALPHATESTENABLE:state.alpha_test=value!=0;return S_OK;
+   case D3DRENDERSTATE_ALPHAREF:if(value>255)return E_INVALIDARG;state.alpha_reference=float(value)/255;return S_OK;
    default:return E_NOTIMPL;
   }
  }
@@ -100,16 +106,29 @@ public:
   try{auto draw=state;draw.texture_op=texture?reign::TextureOp::modulate_rgba:reign::TextureOp::diffuse;
    if(texture){
     if(color1!=D3DTA_TEXTURE||alpha1!=D3DTA_TEXTURE||
-       (colorOp==D3DTOP_MODULATE&&color2!=D3DTA_DIFFUSE&&color2!=D3DTA_CURRENT)||
+       (colorOp!=D3DTOP_SELECTARG1&&color2!=D3DTA_DIFFUSE&&color2!=D3DTA_CURRENT)||
        (alphaOp==D3DTOP_MODULATE&&alpha2!=D3DTA_DIFFUSE&&alpha2!=D3DTA_CURRENT))return E_NOTIMPL;
     if(colorOp==D3DTOP_MODULATE)draw.texture_op=alphaOp==D3DTOP_MODULATE?reign::TextureOp::modulate_rgba:reign::TextureOp::modulate_rgb_texture_alpha;
-    else if(alphaOp==D3DTOP_SELECTARG1)draw.texture_op=reign::TextureOp::texture;
+    else if(colorOp==D3DTOP_SELECTARG1)draw.texture_op=alphaOp==D3DTOP_SELECTARG1?reign::TextureOp::texture:reign::TextureOp::decal;
+    else if(alphaOp==D3DTOP_MODULATE)draw.texture_op=colorOp==D3DTOP_MODULATE2X?reign::TextureOp::modulate2x:reign::TextureOp::modulate4x;
     else return E_NOTIMPL;
    }
    if((minFilter==D3DTFN_LINEAR)!=(magFilter==D3DTFG_LINEAR))return E_NOTIMPL;
    draw.filtered=minFilter==D3DTFN_LINEAR;
    draw.texture=upload?upload->Refresh(renderer):0;
-   renderer.draw(width,height,static_cast<const reign::LegacyTL *>(vertices),count,indices,n,draw);return S_OK;
+   const auto *tl=static_cast<const reign::LegacyTL *>(vertices);
+   std::vector<WORD> visible;
+   if(cullMode!=D3DCULL_NONE){
+    visible.reserve(n);
+    for(DWORD i=0;i<n;i+=3){const auto &a=tl[indices[i]],&b=tl[indices[i+1]],&c=tl[indices[i+2]];
+     // TL coordinates have y down: positive signed area is clockwise.
+     const double area=(double(b.x)-a.x)*(double(c.y)-a.y)-(double(b.y)-a.y)*(double(c.x)-a.x);
+     if((cullMode==D3DCULL_CW&&area>0)||(cullMode==D3DCULL_CCW&&area<0))continue;
+     visible.insert(visible.end(),indices+i,indices+i+3);
+    }
+    if(visible.empty())return S_OK;indices=visible.data();n=DWORD(visible.size());
+   }
+   renderer.draw(width,height,tl,count,indices,n,draw);return S_OK;
   }catch(...){return E_FAIL;}
  }
  HRESULT DrawPrimitive(D3DPRIMITIVETYPE kind,DWORD fvf,void *vertices,DWORD count,DWORD flags)override{

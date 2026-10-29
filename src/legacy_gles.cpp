@@ -142,7 +142,13 @@ unsigned LegacyGles::texture_rgba(unsigned width,unsigned height,const std::uint
 void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0; }
 void LegacyGles::delete_texture(unsigned id){if(id)impl_->DeleteTextures(1,&id);}
 void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
- auto &gl=*impl_;gl.target(w,h);gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);gl.ClearColor(r,g,b,a);gl.ClearDepthf(1);gl.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);gl.check();
+ clear_buffers(w,h,true,true,r,g,b,a,1);
+}
+void LegacyGles::clear_buffers(unsigned w,unsigned h,bool color,bool depth,float r,float g,float b,float a,float depth_value){
+ if(!std::isfinite(depth_value)||depth_value<0||depth_value>1)throw std::invalid_argument("Invalid clear depth");
+ auto &gl=*impl_;gl.target(w,h);gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);
+ gl.ClearColor(r,g,b,a);gl.ClearDepthf(depth_value);
+ gl.Clear((color?GL_COLOR_BUFFER_BIT:0)|(depth?GL_DEPTH_BUFFER_BIT:0));gl.check();
 }
 void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
  if(!vertices||count>65536)throw std::runtime_error("Invalid TL batch");

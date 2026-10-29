@@ -710,3 +710,23 @@ modes required by the engine, richer caps reporting, and coordinated app/context
 lifetime. Startup still needs manager initialization, mission mounting and RC
 integration. No new APK is claimed by this checkpoint.
 Evidence: native-phase11-tests.log.
+
+
+## Phase 12: additional original rendering states
+
+The DX7/GLES adapter now supports clockwise/counterclockwise TL triangle
+culling, greater-than alpha testing with byte reference, texture modulate2x /
+modulate4x and decal RGB with modulated alpha. Culling uses signed screen-space
+area before submission (TL y increases downward); it currently allocates a
+filtered index vector per culled draw, so optimize after correctness bring-up.
+Depth comparison explicitly accepts the renderer's LEQUAL mode; other compare
+functions still fail. Alpha comparison explicitly accepts GREATER only.
+
+LegacyGles now supports independent whole-target color and depth clears, with
+validated custom depth values. Rectangle and stencil clears remain unsupported.
+Pixel tests verify both cull directions, alpha boundary rejection/acceptance,
+2x/4x saturation, decal alpha, depth-only clear preserving color, and color-only
+clear preserving depth. All 13 foundation tests pass under ASan/UBSan, and the
+updated renderer/adapter compiles for ARM64. Evidence: native-phase12-tests.log.
+These are software EGL rendering tests; no original mission or APK execution.
+Startup integration and remaining renderer API coverage are still pending.

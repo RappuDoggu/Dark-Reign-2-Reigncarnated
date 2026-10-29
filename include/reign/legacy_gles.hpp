@@ -47,6 +47,7 @@ public:
  void delete_texture(unsigned);
  void abandon_context() noexcept;
  void clear(unsigned width,unsigned height,float r,float g,float b,float a=1);
+ void clear_buffers(unsigned width,unsigned height,bool color,bool depth,float r,float g,float b,float a,float depth_value);
  // Initial supported Vid boundary: indexed triangle lists of pre-transformed/lit vertices.
  // Other FVF layouts/stages are deliberately not silently accepted.
  void draw(unsigned width,unsigned height,const LegacyTL *,std::size_t vertices,
