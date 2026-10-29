@@ -34,14 +34,22 @@ struct Presentation {reign::LegacyGles *renderer;unsigned calls=0;};
 bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.renderer->present();++p.calls;return true;}
 int main(){try{
  for(unsigned pass=0;pass<2;++pass){
+  Vid::Heap::Init(2048,6144);
+  struct DrawingBuffers {~DrawingBuffers(){Vid::DoneBuckets();Vid::Heap::Done();}} buffers;
+  Vid::InitBuckets();
+  check(Vid::Heap::Size()>0&&Vid::Heap::Check());
   Context context;reign::LegacyGles renderer(resolve);Presentation presentation{&renderer};
   check(NativeEngine::AttachGlesVideo(renderer,0,H,present,&presentation)==E_INVALIDARG);
   check(!Vid::device);
   check(NativeEngine::AttachGlesVideo(renderer,W,H,present,&presentation)==S_OK);
   check(NativeEngine::AttachGlesVideo(renderer,W,H,present,&presentation)==E_FAIL);
   struct Detach {~Detach(){NativeEngine::DetachVideo();}} detach;
+  check(Bitmap::Manager::Init()&&Material::Manager::Init());
+  struct Resources {bool active=true;~Resources(){if(active){Material::Manager::Done();Bitmap::Manager::Done();}}} resources;
   check(Vid::device&&Vid::backBmp.GetSurface()&&Vid::viewRect.Width()==W);
   check(Vid::Config::TrilinearOff());
+  Vid::InitResources(TRUE);
+  check(Material::Manager::GetMaterial()!=nullptr);
   check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
   check(Vid::device->BeginScene()==S_OK);
   check(!Vid::SetZWriteState(TRUE));check(Vid::SetZWriteState(FALSE));
@@ -51,6 +59,7 @@ int main(){try{
   check(Vid::device->EndScene()==S_OK&&Vid::RenderFlush()&&presentation.calls==1);
   std::vector<std::uint8_t> pixels(W*H*4);renderer.read_presented_rgba(W,H,pixels.data());
   const auto center=(H/2*W+W/2)*4;check(pixels[center]==255&&pixels[center+1]==0&&pixels[center+2]==0);
+  Material::Manager::Done();Bitmap::Manager::Done();resources.active=false;
   NativeEngine::DetachVideo();check(!Vid::RenderFlush()&&!Vid::device&&!Vid::backBmp.GetSurface());
  }
  std::cout<<"Original Vid attachment -> real DX7 device -> GLES -> presented pixels -> detach passed twice; no mission executed\n";

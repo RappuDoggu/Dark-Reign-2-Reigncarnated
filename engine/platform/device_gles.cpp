@@ -15,6 +15,7 @@ class Device final:public UnsupportedDevice {
  std::unique_ptr<SurfaceTexture> upload;
  DWORD width,height;
  bool scene=false;
+ D3DMATERIAL7 material{};
  reign::DrawState state;
  DWORD colorOp=D3DTOP_MODULATE,alphaOp=D3DTOP_MODULATE;
  DWORD color1=D3DTA_TEXTURE,color2=D3DTA_DIFFUSE,alpha1=D3DTA_TEXTURE,alpha2=D3DTA_DIFFUSE;
@@ -29,6 +30,9 @@ public:
  ULONG Release()override{auto remaining=--refs;if(!remaining)delete this;return remaining;}
  HRESULT BeginScene()override{if(scene)return E_FAIL;scene=true;return S_OK;}
  HRESULT EndScene()override{if(!scene)return E_FAIL;scene=false;return S_OK;}
+ // Prelit TL vertices carry final lighting; material remains queryable DX7 state.
+ HRESULT SetMaterial(D3DMATERIAL7 *value)override{if(!value)return E_INVALIDARG;material=*value;return S_OK;}
+ HRESULT GetMaterial(D3DMATERIAL7 *out)override{if(!out)return E_INVALIDARG;*out=material;return S_OK;}
  HRESULT GetRenderTarget(IDirectDrawSurface7 **out)override{if(!out)return E_INVALIDARG;target->AddRef();*out=target;return S_OK;}
  HRESULT GetCaps(D3DDEVICEDESC7 *out)override{
   if(!out)return E_INVALIDARG;*out={};out->dwMaxTextureWidth=out->dwMaxTextureHeight=2048;
@@ -63,7 +67,7 @@ public:
  }
  HRESULT GetTextureStageState(DWORD stage,D3DTEXTURESTAGESTATETYPE type,DWORD *out)override{
   if(!out)return E_INVALIDARG;*out=0;
-  if(stage){if(stage==1&&type==D3DTSS_COLOROP){*out=D3DTOP_DISABLE;return S_OK;}return E_NOTIMPL;}
+  if(stage){if(stage==1&&(type==D3DTSS_COLOROP||type==D3DTSS_ALPHAOP)){*out=D3DTOP_DISABLE;return S_OK;}return E_NOTIMPL;}
   switch(type){
    case D3DTSS_COLOROP:*out=colorOp;break;case D3DTSS_ALPHAOP:*out=alphaOp;break;
    case D3DTSS_COLORARG1:*out=color1;break;case D3DTSS_COLORARG2:*out=color2;break;
@@ -98,10 +102,10 @@ public:
   }return S_OK;
  }
  HRESULT SetTextureStageState(DWORD stage,D3DTEXTURESTAGESTATETYPE type,DWORD value)override{
-  if(stage)return (stage==1&&type==D3DTSS_COLOROP&&value==D3DTOP_DISABLE)?S_OK:E_NOTIMPL;
+  if(stage)return (stage==1&&(type==D3DTSS_COLOROP||type==D3DTSS_ALPHAOP)&&value==D3DTOP_DISABLE)?S_OK:E_NOTIMPL;
   switch(type){
    case D3DTSS_COLOROP:case D3DTSS_ALPHAOP:
-    if(value!=D3DTOP_MODULATE&&value!=D3DTOP_SELECTARG1&&!(type==D3DTSS_COLOROP&&(value==D3DTOP_MODULATE2X||value==D3DTOP_MODULATE4X)))return E_NOTIMPL;
+    if(value!=D3DTOP_MODULATE&&value!=D3DTOP_SELECTARG1&&!(type==D3DTSS_COLOROP&&value==D3DTOP_DISABLE)&&!(type==D3DTSS_COLOROP&&(value==D3DTOP_MODULATE2X||value==D3DTOP_MODULATE4X)))return E_NOTIMPL;
     (type==D3DTSS_COLOROP?colorOp:alphaOp)=value;return S_OK;
    case D3DTSS_COLORARG1:case D3DTSS_COLORARG2:case D3DTSS_ALPHAARG1:case D3DTSS_ALPHAARG2:
     if(value!=D3DTA_TEXTURE&&value!=D3DTA_DIFFUSE&&value!=D3DTA_CURRENT)return E_NOTIMPL;
@@ -157,8 +161,8 @@ public:
     }
     indices=triangles.data();n=DWORD(triangles.size());
    }
-   auto draw=state;draw.texture_op=texture?reign::TextureOp::modulate_rgba:reign::TextureOp::diffuse;
-   if(texture){
+   auto draw=state;draw.texture_op=texture&&colorOp!=D3DTOP_DISABLE?reign::TextureOp::modulate_rgba:reign::TextureOp::diffuse;
+   if(texture&&colorOp!=D3DTOP_DISABLE){
     if(color1!=D3DTA_TEXTURE||alpha1!=D3DTA_TEXTURE||
        (colorOp!=D3DTOP_SELECTARG1&&color2!=D3DTA_DIFFUSE&&color2!=D3DTA_CURRENT)||
        (alphaOp==D3DTOP_MODULATE&&alpha2!=D3DTA_DIFFUSE&&alpha2!=D3DTA_CURRENT))return E_NOTIMPL;

@@ -779,3 +779,24 @@ Run real host integration with tools/test_engine_vid.py --test-source
 engine_vid_gles_test.cpp --khronos-headers <headers>, supplying compiled original
 graphics/math/adapted Vid objects, foundation libraries and FFmpeg root. Use
 LIBGL_ALWAYS_SOFTWARE=1 and ASAN_OPTIONS=detect_leaks=0 in this environment.
+
+
+## Phase 15: initial graphics resource startup executes
+
+The real EGL/Vid test now runs original Heap::Init, InitBuckets, bitmap/material
+manager initialization and InitResources(TRUE), followed by original drawing
+and presentation. Resource managers shut down before device detach, buckets
+and heap last. An initial wrong test cleanup order caused an ASan null-device
+crash in Bitmap::Manager::DisposeAll; corrected ordering removes it.
+
+Device material storage/readback now supports original default material setup.
+TL lighting is already supplied by vertices; GPU lighting remains unsupported.
+Disabled texture stages support the original cleanup path, including disabling
+stage-one alpha. The integrated startup/draw/shutdown test now passes cleanly
+across two contexts. It needs original console and VarSys/TrackSys host objects
+in addition to the phase-14 dependencies. All 13 foundation tests pass and the
+adapter compiles for ARM64. Evidence: native-phase15-tests.log.
+
+This initializes only the minimal graphics resources (InitResources(TRUE));
+light/mesh resources, terrain, camera, interface and full Game startup remain.
+No mission loaded and no APK produced at this checkpoint.
