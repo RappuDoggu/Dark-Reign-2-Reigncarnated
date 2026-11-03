@@ -4,8 +4,8 @@ This is a functional reconstruction from checkpoint
 `75e34b99c312238ca9367cb4abdcf579665f40f6` and the supplied conversation handoff,
 not the lost v0.12 C++ working tree. Source is preserved on
 `recovery/native-arm64-v012`. Each delivered APK includes its exact Git revision
-and native-library hashes in `assets/build/source.json`, and this document in
-`assets/build/BUILD.md`. Commit all source changes before packaging.
+and native-library hashes in `assets/build/source.json`, this document in
+`assets/build/BUILD.md` and the progress record in `assets/build/PROGRESS.md`. Commit all source changes before packaging.
 
 ## Linux x86_64 prerequisites
 

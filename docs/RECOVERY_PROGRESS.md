@@ -394,13 +394,7 @@ campaign launch/save remain device acceptance gates. Keep the same recovery
 signer and application ID; never include signing keys or owned game assets in
 source backups or APKs.
 
-Version 17 artifact: `Reigncarnated-MatchMenus-v17.apk`, source
-`b7020a4fab62e54cbd226dbde4da835bed26c97a`, SHA-256
-`65c0dcefd907fc6feaf2a55dbf59cabbdb78086a99dbc7f60342f3371c2d7014`.
-ZIP/signature/alignment checks pass, both ELF libraries are ARM64 with 16 KiB
-load alignment, and embedded source/instructions/native hashes match the build.
-The recovery signer matches v16, allowing an update with imported data retained.
-The final campaign setup also sets the original apply-enemy-difficulty flag
-when an explicit difficulty is selected. Source and a build receipt are retained;
-device execution of v17 is pending. Test practice controls, one AI, then the
-first unlocked campaign mission, and collect fresh menu/mission diagnostic ZIPs.
+Version 17 bundles this progress record alongside source/native hash receipts
+and build instructions. Device execution is pending. Test practice controls,
+one AI, then the first unlocked campaign mission, and collect fresh menu/mission
+diagnostic ZIPs.

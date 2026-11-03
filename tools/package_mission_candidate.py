@@ -33,12 +33,13 @@ manifest.write_text(manifest_text)
 unsigned=out/'mission-unsigned.apk';run([tools/'aapt2','link','-o',unsigned,'-I',platform,'--manifest',manifest])
 with zipfile.ZipFile(a.base_apk) as old,zipfile.ZipFile(unsigned,'a') as apk:
  for item in old.infolist():
-  if (item.filename.startswith('assets/') and item.filename not in {'assets/notices/performance-candidate.txt','assets/build/source.json','assets/build/BUILD.md'}) or (item.filename=='lib/arm64-v8a/libreign_menu.so' and not a.menu_library):apk.writestr(item.filename,old.read(item),compress_type=zipfile.ZIP_STORED if item.filename.endswith('.so') else zipfile.ZIP_DEFLATED)
+  if (item.filename.startswith('assets/') and item.filename not in {'assets/notices/performance-candidate.txt','assets/build/source.json','assets/build/BUILD.md','assets/build/PROGRESS.md'}) or (item.filename=='lib/arm64-v8a/libreign_menu.so' and not a.menu_library):apk.writestr(item.filename,old.read(item),compress_type=zipfile.ZIP_STORED if item.filename.endswith('.so') else zipfile.ZIP_DEFLATED)
  if a.menu_library:apk.write(a.menu_library,'lib/arm64-v8a/libreign_menu.so',compress_type=zipfile.ZIP_STORED)
  apk.write(a.native_library,'lib/arm64-v8a/libreign_mission.so',compress_type=zipfile.ZIP_STORED)
  for file in dex.glob('classes*.dex'):apk.write(file,file.name,compress_type=zipfile.ZIP_DEFLATED)
  apk.writestr('assets/build/source.json',json.dumps(receipt,indent=2)+'\n')
  apk.writestr('assets/build/BUILD.md',(repo/'docs/RECOVERY_BUILD.md').read_text())
+ apk.writestr('assets/build/PROGRESS.md',(repo/'docs/RECOVERY_PROGRESS.md').read_text())
  apk.writestr('assets/notices/performance-candidate.txt','Private original ARM64 performance candidate. Menu and mission libraries are rebuilt together with optimized compilation; original game data is imported separately. See the matching source checkpoint and accompanying source/relink archive. FFmpeg n6.1.1, LGPL 2.1 or later. No proprietary game data is included in this APK.')
 aligned=out/'mission-aligned.apk';run([tools/'zipalign','-f','-P','16','4',unsigned,aligned])
 key=a.signing_key or out/'recovery-debug.keystore'

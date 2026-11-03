@@ -2,9 +2,9 @@
 
 ## Current native recovery source (version 17)
 
-The current build source is `b7020a4fab62e54cbd226dbde4da835bed26c97a` on
+The current build source is recorded in `docs/builds/match-menus-v17.json` on
 `recovery/native-arm64-v012`. The downloadable
-`Reigncarnated-Complete-Source-v17-b7020a4.zip` contains a Git bundle of that
+`Reigncarnated-Complete-Source-v17.zip` contains a Git bundle of that
 branch (including subsequent build-record documentation), the verified pinned
 upstream archive and FFmpeg n6.1.1 source. Its README and SHA256 manifest describe
 restoration; the adjacent `.sha256` verifies the complete ZIP. Signing keys,
