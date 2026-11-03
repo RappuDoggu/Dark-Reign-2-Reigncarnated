@@ -398,3 +398,11 @@ Version 17 bundles this progress record alongside source/native hash receipts
 and build instructions. Device execution is pending. Test practice controls,
 one AI, then the first unlocked campaign mission, and collect fresh menu/mission
 diagnostic ZIPs.
+
+Version 17 artifact: `Reigncarnated-MatchMenus-v17.apk`, source
+`982a929511d7ab7608c7217fabd2d0b888c7b86e`, SHA-256
+`33b34a7e77e86d7dd4e6e7308c256ff92aaec00016acf9683b56841842122ffb`.
+ZIP/signature/alignment checks pass, including ARM64/16 KiB ELF load alignment,
+matching v16 signer and embedded source, instructions, progress and native hashes.
+The APK retains imported data on update. Remote recovery source and a complete
+source ZIP are preserved separately from private keys and owned game assets.
