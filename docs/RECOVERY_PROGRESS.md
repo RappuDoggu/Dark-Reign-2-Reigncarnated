@@ -454,3 +454,12 @@ check and ABI/simulation settings are unchanged. The 66 host frontend tests were
 not repeated for this touch/mission-only change. Device behavior and performance
 of v18 still need validation. The all-in-one diagnostic ZIP remains available;
 mission reports now identify active camera and placement state.
+
+Version 18 artifact: `Reigncarnated-TouchRotation-v18.apk`, source
+`a65a0c82a03f9cefaae552d0db6efcb3fd59c1ee`, SHA-256
+`dd24b64fa9f668a4e60ebabc4fd69627dcecdb1c597b062839a0c7b6ea5906d8`.
+APK ZIP, signing, alignment, ARM64/16 KiB ELF loads, new Java/native placement
+entry point and embedded source/build/progress receipts pass verification. The
+signer matches v17 for compatible updates. A fresh download copy is provided
+separately from private signing keys and owned game data. Device checks remain
+pending; no new on-device FPS result is claimed.
