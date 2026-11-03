@@ -55,6 +55,7 @@ struct State {
 #endif
  }
  void reset(bool lost){
+ previousStats={};sampleTime=std::chrono::steady_clock::now();
 #ifdef REIGN_BINK
  if(movieTexture&&renderer&&!lost)renderer->delete_texture(movieTexture);movieTexture=0;movieFrame=-1;
 #endif
