@@ -32,7 +32,7 @@ endif()
 # Separate build tree: do not mix original global classes with namespaced slices.
 # No engine executable or playable mission is claimed by this foundation target.
 add_library(dr2_engine_abi INTERFACE)
-target_include_directories(dr2_engine_abi INTERFACE "${REIGN_ENGINE_ABI}")
+target_include_directories(dr2_engine_abi INTERFACE "${REIGN_ENGINE_ABI}" "${REIGN_REPO}/include")
 target_compile_definitions(dr2_engine_abi INTERFACE DEVELOPMENT=1)
 add_executable(engine_abi_smoke "${REIGN_REPO}/tests/engine_abi_smoke.cpp" "${REIGN_ENGINE_ABI}/random.cpp")
 target_compile_options(engine_abi_smoke PRIVATE -include "${REIGN_ENGINE_ABI}/defines.h")

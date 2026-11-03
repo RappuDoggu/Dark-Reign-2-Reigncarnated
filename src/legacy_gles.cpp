@@ -188,12 +188,16 @@ void LegacyGles::clear_buffers(unsigned w,unsigned h,bool color,bool depth,float
 }
 void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
  if(!vertices||count>65536)throw std::runtime_error("Invalid TL batch");
- for(std::size_t i=0;i<count;++i)if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid TL coordinates/rhw");
+ if(!indices||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle indices");
+ for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
+ for(std::size_t n=0;n<index_count;++n){auto i=indices[n];if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid referenced TL coordinates/rhw at vertex "+std::to_string(i));}
  draw_batch(w,h,vertices,count,indices,index_count,state,false);
 }
 void LegacyGles::draw_clip(unsigned w,unsigned h,const LegacyClip *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
  if(!vertices||count>65536)throw std::runtime_error("Invalid homogeneous batch");
- for(std::size_t i=0;i<count;++i){const auto &v=vertices[i];if(!std::isfinite(v.x)||!std::isfinite(v.y)||!std::isfinite(v.z)||!std::isfinite(v.w)||!std::isfinite(v.u)||!std::isfinite(v.v))throw std::runtime_error("Invalid homogeneous coordinates");}
+ if(!indices||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported homogeneous triangle indices");
+ for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("Homogeneous index out of bounds");
+ for(std::size_t n=0;n<index_count;++n){auto i=indices[n];const auto &v=vertices[i];if(!std::isfinite(v.x)||!std::isfinite(v.y)||!std::isfinite(v.z)||!std::isfinite(v.w)||!std::isfinite(v.u)||!std::isfinite(v.v))throw std::runtime_error("Invalid homogeneous coordinates");}
  draw_batch(w,h,vertices,count,indices,index_count,state,true);
 }
 void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state,bool homogeneous){

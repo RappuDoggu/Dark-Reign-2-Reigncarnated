@@ -4,6 +4,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+#include <limits>
 namespace reign {
 namespace {
 constexpr unsigned W=32,H=32;
@@ -28,6 +29,13 @@ std::string renderer_checks(LegacyGles &renderer){
   state={};state.specular=true;auto spec=quad(0xff800000,.5f,0xff000040);renderer.clear(W,H,0,0,0);draw(spec,state);check(pixel(16,16,128,0,64),"Specular RGB addition");
   state={};auto rhs=quad(0xffff0000);rhs[1].rhw=.25f;rhs[2].rhw=.5f;renderer.clear(W,H,0,0,0);draw(rhs,state);check(pixel(16,16,255,0,0),"Reciprocal homogeneous W path");
   bool rejected=false;const std::uint16_t bad[]={0,1,99};try{renderer.draw(W,H,red.data(),red.size(),bad,3,state);}catch(const std::exception &){rejected=true;}check(rejected,"Invalid index rejection");
+  // Indexed draws may have an unused capacity tail. Poisoned unused data
+  // must not reject valid referenced geometry; invalid referenced data still fails.
+  std::vector<LegacyTL> poisoned(red.begin(),red.end());poisoned.push_back(red[0]);poisoned.back().rhw=std::numeric_limits<float>::quiet_NaN();
+  renderer.clear(W,H,0,0,0);renderer.draw(W,H,poisoned.data(),poisoned.size(),indices,6,state);check(pixel(16,16,255,0,0),"Unused poisoned TL vertex does not reject referenced geometry");
+  const std::uint16_t poisonedIndices[]={0,1,4};rejected=false;
+  try{renderer.draw(W,H,poisoned.data(),poisoned.size(),poisonedIndices,3,state);}catch(const std::exception &){rejected=true;}check(rejected,"Referenced poisoned TL vertex is rejected");
+  rejected=false;try{renderer.draw(W,H,poisoned.data(),poisoned.size(),bad,3,state);}catch(const std::exception &e){rejected=std::string(e.what()).find("index out of bounds")!=std::string::npos;}check(rejected,"Index bounds validated before poisoned vertex coordinates");
   // Homogeneous world batches must match the already-projected original TL path.
   auto varied=quad(0xffffffff);varied[1].rhw=.4f;varied[2].rhw=.6f;varied[3].rhw=.8f;
   varied[0].diffuse=0xffff0000;varied[1].diffuse=0xff00ff00;varied[2].diffuse=0xff0000ff;
@@ -39,6 +47,9 @@ std::string renderer_checks(LegacyGles &renderer){
   bool same=true;for(std::size_t i=0;i<pixels.size();++i)if(std::abs(int(pixels[i])-int(tlPixels[i]))>2)same=false;
   check(same,"World/TL perspective texture and affine color parity");
   const std::uint16_t triangle[]={0,1,2};
+  std::vector<LegacyClip> spare(homogeneous.begin(),homogeneous.end());spare.push_back(homogeneous[0]);spare.back().w=std::numeric_limits<float>::quiet_NaN();
+  renderer.clear(W,H,0,0,0);renderer.draw_clip(W,H,spare.data(),spare.size(),indices,6,state);
+  rejected=false;try{renderer.draw_clip(W,H,spare.data(),spare.size(),poisonedIndices,3,state);}catch(const std::exception &){rejected=true;}check(rejected,"Referenced invalid homogeneous vertex rejected; unused invalid vertex allowed");
   std::array<LegacyClip,3> crossing={{{-.8f,-.8f,.5f,1,0xffff0000,0xff000000,0,0},{.8f,-.8f,.5f,1,0xffff0000,0xff000000,0,0},{0,.8f,-.5f,1,0xffff0000,0xff000000,0,0}}};
   state={};state.depth_test=true;state.depth_write=true;renderer.clear(W,H,0,0,0);renderer.draw_clip(W,H,crossing.data(),3,triangle,3,state);
   check(pixel(16,8,255,0,0)&&pixel(16,24,0,0,0),"World near-plane triangle clipping");

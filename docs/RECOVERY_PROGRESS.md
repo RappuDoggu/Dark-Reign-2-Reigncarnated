@@ -135,8 +135,42 @@ checks passed. Both Android libraries link, including the mission library linked
 603 newly compiled objects and freshly built FFmpeg-enabled foundations.
 Packaging is recorded with each artifact receipt.
 
-Draw rejection diagnostics and referenced-vertex validation are the next phase,
-after preserving and packaging the reconstructed streaming baseline.
+The reconstructed baseline was packaged first from source
+`ccb309fd4560c64b1b119c1b714c6659f247b2a2`, with remote backup verified.
+`Reigncarnated-Recovery-Baseline.apk` SHA-256:
+`7bf124c34a16c1fffb0e5b7a471ff6842afbb4169c9cf394b1b1d722f3e58543`.
+Signature, receipt/library hash equality, ARM64 payload, 16 KiB ELF/ZIP alignment,
+notice/build-only assets, and absence of duplicate ZIP entries passed.
+It is versionCode 13, `0.12-recovery.1`, separate app `org.reigncarnated.recovery`.
+
+### Subsequent draw investigation
+
+After preserving the baseline, regression tests confirmed that validation of an
+unused poisoned TL vertex rejected an otherwise valid indexed batch. The GLES
+path now checks all index bounds first, then only referenced TL/clip vertices.
+Invalid referenced coordinates or rhw still fail. Tests cover both cases, bounds
+precedence, real rendered output, and DX7 dispatch across two EGL contexts.
+This is a confirmed code defect, not proof that it caused every historical
+device exception.
+
+DX7 draw rejections now retain HRESULT, source line, primitive, FVF, flags,
+submitted and converted index counts, vertex count, texture operations/arguments,
+filters, cull mode and exception reason in the bounded journal. Unsupported
+generated device methods report their names; state setters report type/value.
+Unknown formats, primitives, flags and unsupported operations still return errors.
+No unsupported draw flags or vertex formats have been silently accepted.
+
+The second package is versionCode 14, `0.12-recovery.2`, using the same private
+recovery signer/application ID for update compatibility. Post-change checks:
+65 host tests and 10 engine foundation tests pass; focused GLES/TL and DX7
+rejection tests pass. The original 603 compiled units are reused for this
+adapter-only phase. The simulation and engine ABI remain unchanged.
+
+The historical 555 E_NOTIMPL rejections cannot yet be assigned a cause: their
+old logs omitted primitive/FVF/flags. A device mission run with the new report
+and explicit PNG is required before extending draw support. No owned-data mission
+or Android device is available on this host, and no device FPS/fidelity/audio
+success is claimed.
 
 ### Supplied v0.12 binary inspection
 

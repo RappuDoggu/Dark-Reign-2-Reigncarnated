@@ -7,6 +7,8 @@
 #include <cmath>
 #include <cstring>
 #include <unordered_map>
+#include <sstream>
+#include "reign/native_diagnostics.hpp"
 namespace NativeEngine {
 namespace {
 class Device final:public UnsupportedDevice {
@@ -30,51 +32,52 @@ class Device final:public UnsupportedDevice {
  DWORD cullMode=D3DCULL_NONE;
  DWORD minFilter=D3DTFN_POINT,magFilter=D3DTFG_POINT;
 
+ HRESULT Reject(const char *method,int line,HRESULT hr,DWORD type=0,DWORD value=0){reign::nativeDiagnostics.record(std::string("DX7 ")+method+":"+std::to_string(line)+" rejected "+std::to_string(std::uint32_t(hr))+" type="+std::to_string(type)+" value="+std::to_string(value));return hr;}
 public:
  Device(reign::LegacyGles &r,IDirectDrawSurface7 *t,DWORD w,DWORD h):renderer(r),target(t),width(w),height(h){target->AddRef();}
  ~Device(){textures.clear();target->Release();}
  ULONG AddRef()override{return ++refs;}
  ULONG Release()override{auto remaining=--refs;if(!remaining)delete this;return remaining;}
- HRESULT BeginScene()override{if(scene)return E_FAIL;scene=true;return S_OK;}
- HRESULT EndScene()override{if(!scene)return E_FAIL;scene=false;return S_OK;}
+ HRESULT BeginScene()override{if(scene)return Reject(__func__,__LINE__,E_FAIL);scene=true;return S_OK;}
+ HRESULT EndScene()override{if(!scene)return Reject(__func__,__LINE__,E_FAIL);scene=false;return S_OK;}
  // Prelit TL vertices carry final lighting; material remains queryable DX7 state.
- HRESULT SetMaterial(D3DMATERIAL7 *value)override{if(!value)return E_INVALIDARG;material=*value;return S_OK;}
- HRESULT GetMaterial(D3DMATERIAL7 *out)override{if(!out)return E_INVALIDARG;*out=material;return S_OK;}
- HRESULT GetRenderTarget(IDirectDrawSurface7 **out)override{if(!out)return E_INVALIDARG;target->AddRef();*out=target;return S_OK;}
+ HRESULT SetMaterial(D3DMATERIAL7 *value)override{if(!value)return Reject(__func__,__LINE__,E_INVALIDARG);material=*value;return S_OK;}
+ HRESULT GetMaterial(D3DMATERIAL7 *out)override{if(!out)return Reject(__func__,__LINE__,E_INVALIDARG);*out=material;return S_OK;}
+ HRESULT GetRenderTarget(IDirectDrawSurface7 **out)override{if(!out)return Reject(__func__,__LINE__,E_INVALIDARG);target->AddRef();*out=target;return S_OK;}
  HRESULT GetCaps(D3DDEVICEDESC7 *out)override{
-  if(!out)return E_INVALIDARG;*out={};out->dwMaxTextureWidth=out->dwMaxTextureHeight=2048;
+  if(!out)return Reject(__func__,__LINE__,E_INVALIDARG);*out={};out->dwMaxTextureWidth=out->dwMaxTextureHeight=2048;
   out->wMaxTextureBlendStages=out->wMaxSimultaneousTextures=1;
   out->dpcTriCaps.dwTextureFilterCaps=D3DPTFILTERCAPS_MINFPOINT|D3DPTFILTERCAPS_MINFLINEAR|D3DPTFILTERCAPS_MAGFPOINT|D3DPTFILTERCAPS_MAGFLINEAR;
   return S_OK;
  }
  HRESULT EnumTextureFormats(LPD3DENUMPIXELFORMATSCALLBACK cb,void *context)override{
-  if(!cb)return E_INVALIDARG;
+  if(!cb)return Reject(__func__,__LINE__,E_INVALIDARG);
   DDPIXELFORMAT format{};format.dwSize=sizeof(format);format.dwFlags=DDPF_RGB|DDPF_ALPHAPIXELS;format.dwRGBBitCount=32;
   format.dwRBitMask=0xff0000;format.dwGBitMask=0xff00;format.dwBBitMask=0xff;format.dwRGBAlphaBitMask=0xff000000;
   cb(&format,context);return S_OK;
  }
  HRESULT SetViewport(D3DVIEWPORT7 *v)override{
-  if(!v)return E_INVALIDARG;
+  if(!v)return Reject(__func__,__LINE__,E_INVALIDARG);
   return !v->dwX&&!v->dwY&&v->dwWidth==width&&v->dwHeight==height&&v->dvMinZ==0&&v->dvMaxZ==1?S_OK:E_NOTIMPL;
  }
- HRESULT GetViewport(D3DVIEWPORT7 *v)override{if(!v)return E_INVALIDARG;*v={0,0,width,height,0,1};return S_OK;}
+ HRESULT GetViewport(D3DVIEWPORT7 *v)override{if(!v)return Reject(__func__,__LINE__,E_INVALIDARG);*v={0,0,width,height,0,1};return S_OK;}
  HRESULT Clear(DWORD count,D3DRECT *rectangles,DWORD flags,D3DCOLOR color,D3DVALUE depth,DWORD)override{
   if(count){
-   if(!rectangles)return E_INVALIDARG;
-   if(count!=1||rectangles[0].x1!=0||rectangles[0].y1!=0||rectangles[0].x2!=LONG(width)||rectangles[0].y2!=LONG(height))return E_NOTIMPL;
+   if(!rectangles)return Reject(__func__,__LINE__,E_INVALIDARG);
+   if(count!=1||rectangles[0].x1!=0||rectangles[0].y1!=0||rectangles[0].x2!=LONG(width)||rectangles[0].y2!=LONG(height))return Reject(__func__,__LINE__,E_NOTIMPL);
   }
-  if(flags&~DWORD(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER))return E_NOTIMPL;
-  if((flags&D3DCLEAR_ZBUFFER)&&(!std::isfinite(depth)||depth<0||depth>1))return E_INVALIDARG;
-  try{renderer.clear_buffers(width,height,(flags&D3DCLEAR_TARGET)!=0,(flags&D3DCLEAR_ZBUFFER)!=0,float((color>>16)&255)/255,float((color>>8)&255)/255,float(color&255)/255,float(color>>24)/255,(flags&D3DCLEAR_ZBUFFER)?depth:1);return S_OK;}catch(...){return E_FAIL;}
+  if(flags&~DWORD(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER))return Reject(__func__,__LINE__,E_NOTIMPL);
+  if((flags&D3DCLEAR_ZBUFFER)&&(!std::isfinite(depth)||depth<0||depth>1))return Reject(__func__,__LINE__,E_INVALIDARG);
+  try{renderer.clear_buffers(width,height,(flags&D3DCLEAR_TARGET)!=0,(flags&D3DCLEAR_ZBUFFER)!=0,float((color>>16)&255)/255,float((color>>8)&255)/255,float(color&255)/255,float(color>>24)/255,(flags&D3DCLEAR_ZBUFFER)?depth:1);return S_OK;}catch(...){return Reject(__func__,__LINE__,E_FAIL);}
  }
  HRESULT SetTexture(DWORD stage,IDirectDrawSurface7 *surface)override{
-  if(stage)return E_NOTIMPL;
+  if(stage)return Reject(__func__,__LINE__,E_NOTIMPL);
   if(texture==surface)return S_OK;
   try{
    if(!surface){upload=nullptr;texture=nullptr;return S_OK;}
    auto found=textures.find(surface);
    if(found==textures.end()){
-    DDSURFACEDESC2 desc{};desc.dwSize=sizeof(desc);if(FAILED(surface->GetSurfaceDesc(&desc)))return E_FAIL;
+    DDSURFACEDESC2 desc{};desc.dwSize=sizeof(desc);if(FAILED(surface->GetSurfaceDesc(&desc)))return Reject(__func__,__LINE__,E_FAIL);
     const std::uint64_t bytes=std::uint64_t(desc.dwWidth)*desc.dwHeight*4;
     auto image=std::make_unique<SurfaceTexture>(surface);
     // Bound retained CPU surface references and GPU storage. LRU entries own a
@@ -87,15 +90,15 @@ public:
     found=textures.emplace(surface,CachedTexture{std::move(image),0,bytes}).first;textureBytes+=bytes;
    }
    found->second.used=++textureTick;upload=found->second.image.get();texture=surface;return S_OK;
-  }catch(...){return E_FAIL;}
+  }catch(...){return Reject(__func__,__LINE__,E_FAIL);}
  }
  HRESULT GetTexture(DWORD stage,IDirectDrawSurface7 **out)override{
-  if(!out)return E_INVALIDARG;*out=nullptr;if(stage)return E_NOTIMPL;
+  if(!out)return Reject(__func__,__LINE__,E_INVALIDARG);*out=nullptr;if(stage)return Reject(__func__,__LINE__,E_NOTIMPL);
   if(texture)texture->AddRef();*out=texture;return S_OK;
  }
  HRESULT GetTextureStageState(DWORD stage,D3DTEXTURESTAGESTATETYPE type,DWORD *out)override{
-  if(!out)return E_INVALIDARG;*out=0;
-  if(stage){if(stage==1&&(type==D3DTSS_COLOROP||type==D3DTSS_ALPHAOP)){*out=D3DTOP_DISABLE;return S_OK;}return E_NOTIMPL;}
+  if(!out)return Reject(__func__,__LINE__,E_INVALIDARG);*out=0;
+  if(stage){if(stage==1&&(type==D3DTSS_COLOROP||type==D3DTSS_ALPHAOP)){*out=D3DTOP_DISABLE;return S_OK;}return Reject(__func__,__LINE__,E_NOTIMPL);}
   switch(type){
    case D3DTSS_COLOROP:*out=colorOp;break;case D3DTSS_ALPHAOP:*out=alphaOp;break;
    case D3DTSS_COLORARG1:*out=color1;break;case D3DTSS_COLORARG2:*out=color2;break;
@@ -103,11 +106,11 @@ public:
    case D3DTSS_MINFILTER:*out=minFilter;break;case D3DTSS_MAGFILTER:*out=magFilter;break;
    case D3DTSS_MIPFILTER:*out=D3DTFP_NONE;break;
    case D3DTSS_ADDRESS:*out=state.address==reign::TextureAddress::wrap?D3DTADDRESS_WRAP:state.address==reign::TextureAddress::mirror?D3DTADDRESS_MIRROR:D3DTADDRESS_CLAMP;break;
-   default:return E_NOTIMPL;
+   default:return Reject(__func__,__LINE__,E_NOTIMPL);
   }return S_OK;
  }
  HRESULT GetRenderState(D3DRENDERSTATETYPE type,DWORD *out)override{
-  if(!out)return E_INVALIDARG;*out=0;
+  if(!out)return Reject(__func__,__LINE__,E_INVALIDARG);*out=0;
   switch(type){
    case D3DRENDERSTATE_CLIPPING:*out=clipping;break;
    case D3DRENDERSTATE_DITHERENABLE:*out=state.dither;break;
@@ -134,75 +137,78 @@ public:
    case D3DRENDERSTATE_ALPHAFUNC:*out=D3DCMP_GREATER;break;
    case D3DRENDERSTATE_ALPHATESTENABLE:*out=state.alpha_test;break;
    case D3DRENDERSTATE_ALPHAREF:*out=DWORD(std::lround(state.alpha_reference*255));break;
-   default:return E_NOTIMPL;
+   default:return Reject(__func__,__LINE__,E_NOTIMPL);
   }return S_OK;
  }
  HRESULT SetTextureStageState(DWORD stage,D3DTEXTURESTAGESTATETYPE type,DWORD value)override{
   if(stage)return (stage==1&&(type==D3DTSS_COLOROP||type==D3DTSS_ALPHAOP)&&value==D3DTOP_DISABLE)?S_OK:E_NOTIMPL;
   switch(type){
    case D3DTSS_COLOROP:case D3DTSS_ALPHAOP:
-    if(value!=D3DTOP_MODULATE&&value!=D3DTOP_SELECTARG1&&!(type==D3DTSS_COLOROP&&value==D3DTOP_DISABLE)&&!(type==D3DTSS_COLOROP&&(value==D3DTOP_MODULATE2X||value==D3DTOP_MODULATE4X)))return E_NOTIMPL;
+    if(value!=D3DTOP_MODULATE&&value!=D3DTOP_SELECTARG1&&!(type==D3DTSS_COLOROP&&value==D3DTOP_DISABLE)&&!(type==D3DTSS_COLOROP&&(value==D3DTOP_MODULATE2X||value==D3DTOP_MODULATE4X)))return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);
     (type==D3DTSS_COLOROP?colorOp:alphaOp)=value;return S_OK;
    case D3DTSS_COLORARG1:case D3DTSS_COLORARG2:case D3DTSS_ALPHAARG1:case D3DTSS_ALPHAARG2:
-    if(value!=D3DTA_TEXTURE&&value!=D3DTA_DIFFUSE&&value!=D3DTA_CURRENT)return E_NOTIMPL;
+    if(value!=D3DTA_TEXTURE&&value!=D3DTA_DIFFUSE&&value!=D3DTA_CURRENT)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);
     if(type==D3DTSS_COLORARG1)color1=value;else if(type==D3DTSS_COLORARG2)color2=value;else if(type==D3DTSS_ALPHAARG1)alpha1=value;else alpha2=value;return S_OK;
-   case D3DTSS_MINFILTER:if(value!=D3DTFN_POINT&&value!=D3DTFN_LINEAR)return E_NOTIMPL;minFilter=value;return S_OK;
-   case D3DTSS_MAGFILTER:if(value!=D3DTFG_POINT&&value!=D3DTFG_LINEAR)return E_NOTIMPL;magFilter=value;return S_OK;
+   case D3DTSS_MINFILTER:if(value!=D3DTFN_POINT&&value!=D3DTFN_LINEAR)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);minFilter=value;return S_OK;
+   case D3DTSS_MAGFILTER:if(value!=D3DTFG_POINT&&value!=D3DTFG_LINEAR)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);magFilter=value;return S_OK;
    case D3DTSS_MIPFILTER:return value==D3DTFP_NONE?S_OK:E_NOTIMPL;
    case D3DTSS_ADDRESS:
     if(value==D3DTADDRESS_WRAP)state.address=reign::TextureAddress::wrap;
     else if(value==D3DTADDRESS_CLAMP)state.address=reign::TextureAddress::clamp;
     else if(value==D3DTADDRESS_MIRROR)state.address=reign::TextureAddress::mirror;
-    else return E_NOTIMPL;return S_OK;
-   default:return E_NOTIMPL;
+    else return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);return S_OK;
+   default:return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);
   }
  }
  HRESULT SetRenderState(D3DRENDERSTATETYPE type,DWORD value)override{
   switch(type){
    // TL vertices are already lit; GLES clips and rasterizes solid interpolated triangles.
-   case D3DRENDERSTATE_CLIPPING:if(value>1)return E_NOTIMPL;clipping=value!=0;return S_OK;
-   case D3DRENDERSTATE_DITHERENABLE:if(value>1)return E_INVALIDARG;state.dither=value!=0;return S_OK;
+   case D3DRENDERSTATE_CLIPPING:if(value>1)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);clipping=value!=0;return S_OK;
+   case D3DRENDERSTATE_DITHERENABLE:if(value>1)return Reject(__func__,__LINE__,E_INVALIDARG,DWORD(type),value);state.dither=value!=0;return S_OK;
    // TL vertices already contain lighting and the CPU-computed fog factor.
    case D3DRENDERSTATE_AMBIENT:ambientColor=value;return S_OK;
    case D3DRENDERSTATE_TEXTUREFACTOR:textureFactor=value;return S_OK;
    case D3DRENDERSTATE_FOGSTART:case D3DRENDERSTATE_FOGEND:{
-    float distance;std::memcpy(&distance,&value,sizeof(distance));if(!std::isfinite(distance))return E_INVALIDARG;
+    float distance;std::memcpy(&distance,&value,sizeof(distance));if(!std::isfinite(distance))return Reject(__func__,__LINE__,E_INVALIDARG,DWORD(type),value);
     (type==D3DRENDERSTATE_FOGSTART?fogStart:fogEnd)=value;return S_OK;
    }
-   case D3DRENDERSTATE_TEXTUREPERSPECTIVE:if(value>1)return E_INVALIDARG;state.perspective=value!=0;return S_OK;
+   case D3DRENDERSTATE_TEXTUREPERSPECTIVE:if(value>1)return Reject(__func__,__LINE__,E_INVALIDARG,DWORD(type),value);state.perspective=value!=0;return S_OK;
    case D3DRENDERSTATE_ANTIALIAS:case D3DRENDERSTATE_EDGEANTIALIAS:
    case D3DRENDERSTATE_COLORKEYENABLE:case D3DRENDERSTATE_ZBIAS:return value==0?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_EXTENTS:case D3DRENDERSTATE_LIGHTING:return value==0?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_FILLMODE:return value==D3DFILL_SOLID?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_SHADEMODE:return value==D3DSHADE_GOURAUD?S_OK:E_NOTIMPL;
-   case D3DRENDERSTATE_ZENABLE:if(value>1)return E_NOTIMPL;state.depth_test=value!=0;return S_OK;
+   case D3DRENDERSTATE_ZENABLE:if(value>1)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);state.depth_test=value!=0;return S_OK;
    case D3DRENDERSTATE_ZWRITEENABLE:state.depth_write=value!=0;return S_OK;
    case D3DRENDERSTATE_ALPHABLENDENABLE:state.blend=value?reign::Blend::custom:reign::Blend::opaque;return S_OK;
    case D3DRENDERSTATE_SRCBLEND:case D3DRENDERSTATE_DESTBLEND:
-    if(value<1||value>(type==D3DRENDERSTATE_SRCBLEND?11u:10u))return E_NOTIMPL;
+    if(value<1||value>(type==D3DRENDERSTATE_SRCBLEND?11u:10u))return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);
     (type==D3DRENDERSTATE_SRCBLEND?state.source_factor:state.destination_factor)=static_cast<reign::BlendFactor>(value);return S_OK;
    case D3DRENDERSTATE_FOGENABLE:state.fog=value!=0;return S_OK;
    case D3DRENDERSTATE_FOGCOLOR:fogColor=value;for(unsigned i=0;i<3;++i)state.fog_rgb[i]=float((value>>(16-i*8))&255)/255;return S_OK;
    case D3DRENDERSTATE_SPECULARENABLE:state.specular=value!=0;return S_OK;
-   case D3DRENDERSTATE_CULLMODE:if(value<D3DCULL_NONE||value>D3DCULL_CCW)return E_INVALIDARG;cullMode=value;return S_OK;
+   case D3DRENDERSTATE_CULLMODE:if(value<D3DCULL_NONE||value>D3DCULL_CCW)return Reject(__func__,__LINE__,E_INVALIDARG,DWORD(type),value);cullMode=value;return S_OK;
    case D3DRENDERSTATE_ZFUNC:return value==D3DCMP_LESSEQUAL?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_ALPHAFUNC:return value==D3DCMP_GREATER?S_OK:E_NOTIMPL;
    case D3DRENDERSTATE_ALPHATESTENABLE:state.alpha_test=value!=0;return S_OK;
-   case D3DRENDERSTATE_ALPHAREF:if(value>255)return E_INVALIDARG;state.alpha_reference=float(value)/255;return S_OK;
-   default:return E_NOTIMPL;
+   case D3DRENDERSTATE_ALPHAREF:if(value>255)return Reject(__func__,__LINE__,E_INVALIDARG,DWORD(type),value);state.alpha_reference=float(value)/255;return S_OK;
+   default:return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);
   }
  }
  HRESULT DrawIndexedPrimitive(D3DPRIMITIVETYPE kind,DWORD fvf,void *vertices,DWORD count,WORD *indices,DWORD n,DWORD flags)override{
-  if(!scene||!vertices||!indices||!count||n<3||n>196608||count>65536)return E_INVALIDARG;
-  if((kind!=D3DPT_TRIANGLELIST&&kind!=D3DPT_TRIANGLESTRIP&&kind!=D3DPT_TRIANGLEFAN)||fvf!=D3DFVF_TLVERTEX||flags)return E_NOTIMPL;
-  if(kind==D3DPT_TRIANGLELIST&&n%3)return E_INVALIDARG;
+  const DWORD submittedIndices=n;
+  auto reject=[&](HRESULT hr,int line,const char *reason){std::ostringstream out;out<<"DX7 DrawIndexedPrimitive:"<<line<<" hr=0x"<<std::hex<<std::uint32_t(hr)<<" primitive="<<std::dec<<unsigned(kind)<<" FVF=0x"<<std::hex<<fvf<<" flags=0x"<<flags<<std::dec<<" vertices="<<count<<" indices="<<submittedIndices<<" triangleIndices="<<n<<" colorOp="<<colorOp<<" alphaOp="<<alphaOp<<" colorArgs="<<color1<<'/'<<color2<<" alphaArgs="<<alpha1<<'/'<<alpha2<<" filters="<<minFilter<<'/'<<magFilter<<" cull="<<cullMode<<" reason="<<reason;reign::nativeDiagnostics.record(out.str());return hr;};
+
+  if(!scene||!vertices||!indices||!count||n<3||n>196608||count>65536)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
+  if((kind!=D3DPT_TRIANGLELIST&&kind!=D3DPT_TRIANGLESTRIP&&kind!=D3DPT_TRIANGLEFAN)||fvf!=D3DFVF_TLVERTEX||flags)return reject(E_NOTIMPL,__LINE__,"unsupported or invalid draw arguments/state");
+  if(kind==D3DPT_TRIANGLELIST&&n%3)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
   try{
    // Original bucket allocations can place the index array at an odd address.
    // Copy its bytes before accessing WORDs, including on strict-alignment ARM64.
    alignedIndices.resize(n);
    std::memcpy(alignedIndices.data(),indices,std::size_t(n)*sizeof(WORD));
    indices=alignedIndices.data();
-   for(DWORD i=0;i<n;++i)if(indices[i]>=count)return E_INVALIDARG;
+   for(DWORD i=0;i<n;++i)if(indices[i]>=count)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
    triangles.clear();
    if(kind!=D3DPT_TRIANGLELIST){
     triangles.reserve(std::size_t(n-2)*3);
@@ -217,13 +223,13 @@ public:
    if(texture&&colorOp!=D3DTOP_DISABLE){
     if(color1!=D3DTA_TEXTURE||alpha1!=D3DTA_TEXTURE||
        (colorOp!=D3DTOP_SELECTARG1&&color2!=D3DTA_DIFFUSE&&color2!=D3DTA_CURRENT)||
-       (alphaOp==D3DTOP_MODULATE&&alpha2!=D3DTA_DIFFUSE&&alpha2!=D3DTA_CURRENT))return E_NOTIMPL;
+       (alphaOp==D3DTOP_MODULATE&&alpha2!=D3DTA_DIFFUSE&&alpha2!=D3DTA_CURRENT))return reject(E_NOTIMPL,__LINE__,"unsupported or invalid draw arguments/state");
     if(colorOp==D3DTOP_MODULATE)draw.texture_op=alphaOp==D3DTOP_MODULATE?reign::TextureOp::modulate_rgba:reign::TextureOp::modulate_rgb_texture_alpha;
     else if(colorOp==D3DTOP_SELECTARG1)draw.texture_op=alphaOp==D3DTOP_SELECTARG1?reign::TextureOp::texture:reign::TextureOp::decal;
     else if(alphaOp==D3DTOP_MODULATE)draw.texture_op=colorOp==D3DTOP_MODULATE2X?reign::TextureOp::modulate2x:reign::TextureOp::modulate4x;
-    else return E_NOTIMPL;
+    else return reject(E_NOTIMPL,__LINE__,"unsupported or invalid draw arguments/state");
    }
-   if((minFilter==D3DTFN_LINEAR)!=(magFilter==D3DTFG_LINEAR))return E_NOTIMPL;
+   if((minFilter==D3DTFN_LINEAR)!=(magFilter==D3DTFG_LINEAR))return reject(E_NOTIMPL,__LINE__,"unsupported or invalid draw arguments/state");
    draw.filtered=minFilter==D3DTFN_LINEAR;
    draw.texture=upload?upload->Refresh(renderer):0;
    const auto *tl=static_cast<const reign::LegacyTL *>(vertices);
@@ -239,7 +245,7 @@ public:
     if(visible.empty())return S_OK;indices=visible.data();n=DWORD(visible.size());
    }
    renderer.draw(width,height,tl,count,indices,n,draw);return S_OK;
-  }catch(...){return E_FAIL;}
+  }catch(const std::exception &e){return reject(E_FAIL,__LINE__,e.what());}catch(...){return reject(E_FAIL,__LINE__,"unknown exception");}
  }
  HRESULT DrawPrimitive(D3DPRIMITIVETYPE kind,DWORD fvf,void *vertices,DWORD count,DWORD flags)override{
   if(count>65536||!count)return E_INVALIDARG;

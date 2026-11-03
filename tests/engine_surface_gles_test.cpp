@@ -7,6 +7,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <limits>
 #include <memory>
 namespace {
 constexpr unsigned W=32,H=32;
@@ -116,6 +117,14 @@ int main(){try{
   check(device->SetRenderState(D3DRENDERSTATE_ZENABLE,0)==S_OK);
   triangleIndices[5]=4;check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==E_INVALIDARG);triangleIndices[5]=3;
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_XYZ,vertices.data(),4,triangleIndices,6,0)==E_NOTIMPL);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0x80000000u)==E_NOTIMPL);
+  check(renderer.diagnostics().find("flags=0x80000000")!=std::string::npos);
+  check(renderer.diagnostics().find("FVF=0x2")!=std::string::npos);
+  auto poison=std::vector<reign::LegacyTL>(vertices.begin(),vertices.end());poison.push_back(vertices[0]);poison.back().rhw=std::numeric_limits<float>::quiet_NaN();
+  check(device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,poison.data(),5,triangleIndices,6,0)==S_OK);
+  WORD badReference[]={0,1,4};check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,poison.data(),5,badReference,3,0)==E_FAIL);
+  check(renderer.diagnostics().find("Invalid referenced TL coordinates/rhw at vertex 4")!=std::string::npos);
   DWORD stored=0;
   for(auto type:{D3DRENDERSTATE_TEXTUREPERSPECTIVE,D3DRENDERSTATE_DITHERENABLE,D3DRENDERSTATE_CLIPPING}){
    for(DWORD value:{0u,1u}){check(device->SetRenderState(type,value)==S_OK);check(device->GetRenderState(type,&stored)==S_OK&&stored==value);}

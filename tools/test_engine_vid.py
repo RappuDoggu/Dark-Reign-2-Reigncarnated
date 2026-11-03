@@ -24,6 +24,7 @@ for directory in a.objects:
    objects[source]=directory/(source.replace('/','__')+'.o')
    if source=='graphics/vid.cpp':compile_command=unit['command'][:-3]
 if compile_command is None:raise RuntimeError('No compiled native Vid source')
+compile_command += ['-I'+str(repo/'include')]
 obj=a.output/(Path(a.test_source).stem+'.o');binary=a.output/Path(a.test_source).stem;archive=a.output/'original_host.a'
 if a.test_source in ('engine_vid_gles_test.cpp','engine_graphics_startup_test.cpp','engine_mission_boot_test.cpp','engine_simulation_test.cpp','engine_app_test.cpp'):
  if not a.khronos_headers:raise RuntimeError('Provide --khronos-headers for real GLES integration test')

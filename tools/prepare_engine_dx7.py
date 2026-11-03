@@ -40,7 +40,7 @@ for line in block.splitlines():
  match=re.search(r'STDMETHOD\((\w+)\)\s*\((.*?)\)\s*PURE;',line)
  if match:
   name,args=match.groups();args=args.replace('THIS_','').replace('THIS','').replace('FAR','').strip()
-  methods.append(f' HRESULT {name}({args}) override {{ return E_NOTIMPL; }}')
-header='#pragma once\n#include "d3d.h"\nnamespace NativeEngine {\nstruct UnsupportedDevice : IDirect3DDevice7 {\n'+'\n'.join(methods)+'\n};\n}\n'
+  methods.append(f' HRESULT {name}({args}) override {{ reign::nativeDiagnostics.record("DX7 unsupported {name}"); return E_NOTIMPL; }}')
+header='#pragma once\n#include "reign/native_diagnostics.hpp"\n#include "d3d.h"\nnamespace NativeEngine {\nstruct UnsupportedDevice : IDirect3DDevice7 {\n'+'\n'.join(methods)+'\n};\n}\n'
 dest=out/'device_unsupported.h'
 if not dest.exists() or dest.read_text()!=header:dest.write_text(header)
