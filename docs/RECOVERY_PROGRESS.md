@@ -342,3 +342,54 @@ stability before moving to campaigns, cutscenes and options. No additional
 renderer changes or new APK are justified by this successful mission collection
 alone. Current testing APK remains v16. Raw device logs/images stay outside Git;
 a source-verified measurement summary is retained under `docs/logs/fenced-stream`.
+
+## Match menus, controls and pillar address state (version 17)
+
+The owner confirms units move and selection/building work, but pillar textures
+still look stretched. The shell model renderer was clamping all material UVs;
+pinned `graphics/Vertex.h` specifies wrap by default, with separate mirror/clamp
+flags at bit 14. Model and sky buckets now apply those original flags. Reserved
+address mode 3 throws an explicit error. Software GLES pixel checks cover tiled
+UVs beyond one for wrap, mirror and clamp. This addresses a concrete discrepancy;
+the pillar appearance still needs a fresh device screenshot/collection.
+
+The agreed sequence is controls/rendering, Instant Action options and original
+AI, then the campaign menu. Version 17 adds two-finger pan/pinch, retains tap and
+drag selection, uses the original deselect event, and exposes zoom and placement
+direction/rotation buttons through a Controls toggle. Pinch events use complete
+120-unit wheel steps, as the original viewer divides wheel input by 120.
+
+Instant Action options enumerate installed maps from original group metadata,
+excluding system groups. Choices include practice/one AI, imported difficulty
+settings and a reproducible seed. A requested opponent uses original
+`Strategic::Create` and an actual randomizable personality mod on the second
+playable team; teams become mutual enemies and unused starting teams are purged
+after retaining the AI. Missing teams/mods fail explicitly. Reports identify
+requested options and actual playable teams, AI status and personality. This is
+an initial options menu, not the full original multiplayer lobby.
+
+The Campaigns button and explicit Campaign missions entry now open a selector.
+It reads original mission order and the Commander runtime profile's win records,
+offering completed missions plus the next mission. Campaign launch retains
+original default-client/scripted-AI setup and does not purge scripted teams.
+Shutdown saves the user before clearing campaign globals. Full campaign story
+flow, cutscenes, completion navigation and shell/runtime profile unification
+remain separate work. No campaign mission or AI combat was executed in this
+cloud workspace, which has no accessible owned installation or Android device.
+
+Validation: all 66 ASan/UBSan host tests and the 10 foundation tests pass. The new
+catalog test covers map filtering, campaign ordering/unlocks, missing maps and
+duplicate rejection; the original menu event fixture verifies Campaigns routes
+to the selector while unavailable actions remain guarded. A separately linked
+host session test passes invalid-option transaction checks and native AI/seed/
+difficulty storage; its reused original objects are not sanitizer-instrumented.
+Both Android native libraries link without unresolved symbols, with the changed
+original session unit recompiled. All Java compiles for SDK 35. The pinned
+1,791-file source check passes through `prepare_engine_full.py` into fresh staging.
+
+The v16 fence-protected append stream, original 10 Hz simulation and engine ABI
+flags are unchanged. The previously measured 120.1 FPS belongs to the supplied
+v16 device run; v17 performance, gesture feel, pillar appearance, AI behavior and
+campaign launch/save remain device acceptance gates. Keep the same recovery
+signer and application ID; never include signing keys or owned game assets in
+source backups or APKs.

@@ -43,7 +43,11 @@
 #include "camera.h"
 #include "terrain_priv.h"
 #include "worldctrl.h"
+#include "gameconstants.h"
 #include "team.h"
+#include "viewer.h"
+#include "client_private.h"
+#include <cmath>
 namespace Sight {class Map;}
 #include "sight.h"
 #include "unitobj.h"
@@ -76,7 +80,7 @@ struct MissionApp::Impl {
   engineActive=false;if(first){enginePoisoned=true;std::rethrow_exception(first);}
  }
  ~Impl(){try{Stop();}catch(const std::exception &e){std::fprintf(stderr,"Mission shutdown: %s\n",e.what());}}
- void Start(const std::string &installation,const std::string &writable,const std::string &mission,reign::LegacyGles &renderer,PresentVideo present,void *context){
+ void Start(const std::string &installation,const std::string &writable,const std::string &mission,reign::LegacyGles &renderer,PresentVideo present,void *context,const MissionOptions &options){
   if(engineActive||enginePoisoned)throw std::logic_error("Original engine is already active or requires a process restart");
   if(!present)throw std::invalid_argument("Missing presentation callback");
   auto root=std::filesystem::canonical(installation);auto work=std::filesystem::absolute(writable);
@@ -85,7 +89,7 @@ struct MissionApp::Impl {
   Require(std::filesystem::exists(pack),"Missing owned base.zwp");
   std::filesystem::create_directories(work);auto previous=std::filesystem::current_path();
   engineActive=true;owns=true;Defer([previous]{std::filesystem::current_path(previous);});
-  for(const char *name:{"missions","worlds","sides","mods"})if(std::filesystem::exists(root/name)&&!std::filesystem::exists(work/name))std::filesystem::create_directory_symlink(root/name,work/name);
+  for(const char *name:{"missions","worlds","sides","mods","library","movies","data"})if(std::filesystem::exists(root/name)&&!std::filesystem::exists(work/name))std::filesystem::create_directory_symlink(root/name,work/name);
   if(!std::filesystem::exists(work/"packs")){
    std::filesystem::create_directory(work/"packs");
    if(std::filesystem::is_directory(root/"packs"))for(const auto &entry:std::filesystem::directory_iterator(root/"packs"))std::filesystem::create_symlink(entry.path(),work/"packs"/entry.path().filename());
@@ -122,22 +126,34 @@ struct MissionApp::Impl {
   User::Init();Defer([]{User::Done();});
   FileIdent user("Commander");if(auto *existing=User::Find(user))Require(User::Login(existing),"Cannot log in to local profile");else Require(User::Create(user),"Cannot create local profile");
   Game::Init();gameInitialized=true;Defer([this]{EndGame();});
-  Campaigns::Init();Defer([]{Campaigns::Done();});Missions::Init();Defer([]{Missions::Done();});Difficulty::Init();Defer([]{Difficulty::Done();});
+  Campaigns::Init();Defer([]{Campaigns::Done();});
+  // Save while campaign progress is alive, including a failed startup.
+  Defer([this]{EndGame();if(User::LoggedIn()){bool saved=User::Save();User::Logout();Require(saved,"Could not save local campaign profile");}});
+  Missions::Init();Defer([]{Missions::Done();});Difficulty::Init();Defer([]{Difficulty::Done();});if(!options.difficulty.empty()){auto *setting=Difficulty::FindSetting(GameIdent(options.difficulty.c_str()));Require(setting!=nullptr,"Unknown imported difficulty setting");Difficulty::SetCurrentSetting(setting->GetName());}
   Mods::Init();Defer([]{Mods::Done();});Sides::Init();Defer([]{Sides::Done();});SaveGame::Init();Defer([]{SaveGame::Done();});GameTime::Init();Defer([]{GameTime::Done();});
-  auto *group=Missions::FindGroup("missions\\multiplayer");Require(group!=nullptr,"No multiplayer mission group was imported");
-  auto *selected=group->FindMission(mission.c_str());Require(selected!=nullptr,"Requested Instant Action map is missing");Missions::SetSelected(selected);
-  BeginOfflineSession(mission,"Commander");Defer([]{EndOfflineSession();});GameGod::Loader::InitNativeVariables();
+  std::string groupPath=options.group;std::replace(groupPath.begin(),groupPath.end(),'/','\\');auto *group=Missions::FindGroup(groupPath.c_str());Require(group!=nullptr,"Selected mission group was not imported");
+  auto *selected=group->FindMission(mission.c_str());Require(selected!=nullptr,"Selected mission is missing from the imported group");if(options.campaign&&!Campaigns::Find(selected))throw std::invalid_argument("Selected mission is not part of an imported campaign");if(!options.campaign&&!group->InstantAction())throw std::invalid_argument("Selected group is not available for Instant Action");Missions::SetSelected(selected);
+  BeginOfflineSession(mission,"Commander",options.campaign,options.opponents,options.seed,options.difficulty);Defer([]{EndOfflineSession();});GameGod::Loader::InitNativeVariables();
   Orders::Init();Defer([]{Orders::Done();});Sync::Init();Defer([]{Sync::Done();});Demo::Init();Defer([]{Demo::Done();});InitializeRuntimeVariables();
   Defer([this]{EndGame();});
   InitializeFrameClock(Clock::Time::Ms());Game::RC::Init();Defer([]{Game::RC::Clear();Game::RC::Done();});Game::RC::Set("Load");
  }
 };
-MissionApp::MissionApp(const std::string &installation,const std::string &writable,const std::string &mission,reign::LegacyGles &renderer,PresentVideo present,void *context):impl(std::make_unique<Impl>()){
- try{impl->Start(installation,writable,mission,renderer,present,context);}catch(...){if(impl->owns)enginePoisoned=true;throw;}
+MissionApp::MissionApp(const std::string &installation,const std::string &writable,const std::string &mission,reign::LegacyGles &renderer,PresentVideo present,void *context,const MissionOptions &options):impl(std::make_unique<Impl>()){
+ try{impl->Start(installation,writable,mission,renderer,present,context,options);}catch(...){if(impl->owns)enginePoisoned=true;throw;}
 }
 MissionApp::~MissionApp()=default;
-std::string MissionApp::Diagnostics()const{std::ostringstream out;out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}return out.str();}
+std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *session=CurrentOfflineSession())out<<"mission="<<session->mission<<" campaign="<<session->campaign<<" opponents="<<session->opponents<<" seed="<<session->seed<<" difficulty="<<(session->difficulty.empty()?"mission default":session->difficulty)<<"\n";out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(InSimulation())for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay())out<<"\nplayable team="<<team->GetName()<<" ai="<<team->IsAI()<<" strategic="<<(team->GetStrategicObject()?"set":"none")<<" personality="<<team->GetPersonality();if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}return out.str();}
 void MissionApp::Close(){impl->Stop();}
+void MissionApp::Control(unsigned action,float x,float y){
+ if(!InSimulation())throw std::logic_error("Mission is still loading");
+ if(!std::isfinite(x)||!std::isfinite(y))throw std::invalid_argument("Invalid camera gesture");
+ if(action==1)Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr("de::deselect"),0,0);
+ else if(action==2||action==3)Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr(action==2?"de::prevdir":"de::nextdir"),0,0);
+ else if(action==4)QueueWheel(S32(std::clamp(x,-120.f,120.f)));
+ else if(action==5){auto *camera=Viewer::GetCurrent();if(!camera)throw std::logic_error("No active viewer");auto matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();Vector position=camera->GetPosition()+right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->Set(position,camera->GetOrienation(),0);}
+ else throw std::invalid_argument("Unknown mission control");
+}
 void MissionApp::Frame(){if(impl->closed)throw std::logic_error("Mission runtime is closed");if(BeginNativeFrame()){Game::RC::Process();Sound::Poll();}}
 void MissionApp::SetActive(bool active){
  if(impl->closed||impl->active==active)return;

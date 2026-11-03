@@ -54,6 +54,12 @@ int main(){try{
  MultiPlayer::Data::UnRegisterHandler(123);
  bool unhandled=false;try{MultiPlayer::Data::Send(123,sizeof(bytes),bytes,TRUE);}catch(const std::runtime_error &){unhandled=true;}check(unhandled);
  bool longName=false;try{NativeEngine::BeginOfflineSession("2crazed","This name is too long");}catch(const std::invalid_argument &){longName=true;}check(longName&&NativeEngine::CurrentOfflineSession()->player=="Local Commander");
+ // Rejected match options must leave the active player, readiness and CRC intact.
+ MultiPlayer::SetReady();MultiPlayer::SetDataCrc(0x12345678);
+ for(unsigned option=0;option<3;++option){bool invalid=false;try{NativeEngine::BeginOfflineSession("other","Commander",option==0,option==0?1:0,option==1?0:1,option==2?std::string(65,'x'):"");}catch(const std::invalid_argument &){invalid=true;}check(invalid&&NativeEngine::CurrentOfflineSession()->mission=="2crazed"&&MultiPlayer::GetDataCrc()==0x12345678&&MultiPlayer::Network::GetPlayers().GetCount()==1);}
+ check(MultiPlayer::IsReady());
+ NativeEngine::BeginOfflineSession("other","Commander",false,1,42,"Hard");
+ check(NativeEngine::CurrentOfflineSession()->opponents==1&&NativeEngine::CurrentOfflineSession()->seed==42&&NativeEngine::CurrentOfflineSession()->difficulty=="Hard"&&!MultiPlayer::GetDataCrc()&&!MultiPlayer::IsReady());
  FScope unsupportedSave(nullptr,"Save");bool saveRejected=false;try{MultiPlayer::Save(&unsupportedSave);}catch(const std::runtime_error &){saveRejected=true;}check(saveRejected);
 
  FScope empty(nullptr,"Local");MultiPlayer::Load(&empty);

@@ -130,3 +130,37 @@ updating, verify that fast rollover checks pass on the phone, inspect the pillar
 and mission flickering, and compare normal fast FPS with the v15 report. A
 synchronized comparison remains a diagnostic mode. Do not treat a host pass as
 proof that the Adreno failure is resolved.
+
+## Match menus and controls (version 17)
+
+Update the recovery application normally to retain its imported data. Choose
+**Instant Action** to select an imported map, practice or one original AI
+opponent, an imported difficulty setting and a positive random seed. An AI game
+requires a second playable starting team and imported personality mods; missing
+prerequisites produce an explicit error. This is the original strategic AI,
+not a replacement implementation. Additional lobby settings and more opponents
+are not yet exposed.
+
+Choose **Campaign missions**, or the original Campaigns button, for installed
+campaigns in their original `Campaign/Missions/Add` order. A fresh local Commander
+profile offers the first mission of each installed campaign; previous wins
+unlock the next mission. The selector reads the native mission-runtime profile,
+which is distinct from shell profile selection. Campaign launches keep the
+mission's original player, scripted AI and teams. Closing a mission saves the
+local profile before campaign globals are cleared. Full campaign completion,
+cutscenes and end-of-mission navigation still require implementation/validation;
+the selector is not a claim of complete campaign parity.
+
+Two fingers pan; spreading pinches zooms in and closing pinches zooms out. Tap
+**Controls** for zoom, direction/building rotation and arrow buttons. **Deselect**
+clears selection through the original event. Single-finger drag retains the
+original selection path. Use the all-in-one collector from both the menu and
+mission to compare pillar appearance, performance and the actual AI/team report.
+
+The full source builder above includes the changed session adapter automatically.
+For an incremental rebuild from the verified v16 object set, recompile original
+`multiplayer/multiplayer.cpp` (which includes `session_native.inc` and
+`session_game_native.inc`), then supply that object report after the baseline
+report to `link_mission_android.py` using a second `--objects` argument. Rebuild
+both native libraries and repackage all Java together; the mission JNI launch
+signature changed. Do not package a v17 Java/native mixture.

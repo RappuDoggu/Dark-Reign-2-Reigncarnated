@@ -23,6 +23,8 @@ public final class MenuActivity extends Activity {
  static {System.loadLibrary("reign_menu");}
  private static final int PICK_FOLDER=20,PICK_ZIP=21,PICK_MUSIC=22;
  private native long openNative(String pack,String profiles,String shell);
+ private native String[] catalogNative(long h,boolean campaign);
+ private native String[] difficultyNative(long h);
  private native String errorNative();
  private native String debugNative(long h,int action);
  private native int[] captureNative(long h);
@@ -52,7 +54,7 @@ public final class MenuActivity extends Activity {
  private boolean hasData(){String base=getPreferences(0).getString("pack",null),shell=getPreferences(0).getString("shell",null);return base!=null&&shell!=null&&new File(base).isFile()&&new File(shell).isFile()&&dataRoot!=null&&new File(dataRoot,"worlds/sprawl.zwp").isFile();}
  private void record(String s){Diagnostics.event(s);runOnUiThread(()->{if(destroyed)return;report=s;if(history.length()>12000)history.delete(0,6000);history.append(s).append('\n');});}
  private void message(String s){if(s==null)return;runOnUiThread(()->{
-  if(destroyed)return;if(s.equals("@quit")){finish();return;}if(s.equals("@options")){showOptions();return;}if(s.equals("@instant")){showInstantAction();return;}
+  if(destroyed)return;if(s.equals("@quit")){finish();return;}if(s.equals("@options")){showOptions();return;}if(s.equals("@instant")){showInstantAction();return;}if(s.equals("@campaign")){showMissionOptions(true);return;}
   record(s);if(setup.getVisibility()==View.VISIBLE)status.setText(s);else Toast.makeText(this,s,Toast.LENGTH_LONG).show();
  });}
  private void startupFailure(String s){runOnUiThread(()->{if(destroyed)return;setup.setVisibility(View.VISIBLE);message(s);});}
@@ -61,7 +63,8 @@ public final class MenuActivity extends Activity {
   FrameLayout screen=new FrameLayout(this);view=new MenuView();screen.addView(view,new FrameLayout.LayoutParams(-1,-1));
   Button reportButton=new Button(this);reportButton.setText("Report / data");reportButton.setOnClickListener(v->showDebugTools());
   FrameLayout.LayoutParams tools=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.END);screen.addView(reportButton,tools);
-  Button instant=new Button(this);instant.setText("Instant Action (test)");instant.setOnClickListener(v->showInstantAction());screen.addView(instant,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
+  Button campaignButton=new Button(this);campaignButton.setText("Campaign missions");campaignButton.setOnClickListener(v->showMissionOptions(true));FrameLayout.LayoutParams cp=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.CENTER_HORIZONTAL);screen.addView(campaignButton,cp);
+  Button instant=new Button(this);instant.setText("Instant Action");instant.setOnClickListener(v->showInstantAction());screen.addView(instant,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
   setup=new LinearLayout(this);setup.setOrientation(LinearLayout.VERTICAL);setup.setGravity(Gravity.CENTER);setup.setPadding(dp(28),dp(24),dp(28),dp(24));setup.setBackgroundColor(0xff101710);
   TextView title=new TextView(this);title.setText("REIGNCARNATED");title.setTextColor(0xffaadd99);title.setTextSize(28);title.setGravity(Gravity.CENTER);setup.addView(title);
   TextView description=new TextView(this);description.setText("Select ZIP files from your legally owned Dark Reign 2 installation.\n\nFor Instant Action, include the complete packs, missions, worlds, sides, mods and library folders. Music is imported automatically. Select multiple ZIPs together if needed. Data is copied once; later launches play the original introduction and open the native menu.");description.setTextColor(0xffeeeeee);description.setGravity(Gravity.CENTER);description.setPadding(0,dp(20),0,dp(20));setup.addView(description);
@@ -75,10 +78,23 @@ public final class MenuActivity extends Activity {
   final String keepRoot=dataRoot;File parent=new File(getFilesDir(),"installations");File[] abandoned=parent.listFiles();
   if(abandoned!=null)new Thread(()->{for(File f:abandoned)if((f.getName().startsWith("import-")||f.getName().startsWith("data-"))&&!f.getAbsolutePath().equals(keepRoot))DataFolderImporter.remove(f);},"ReignCleanup").start();
  }
- private void showInstantAction(){
+ private void showInstantAction(){showMissionOptions(false);}
+ private void showMissionOptions(boolean campaign){
   if(!hasData()){message("Import your complete game data first.");return;}
-  if(!new File(dataRoot,"library/engine/startup.cfg").isFile()){message("Reimport the v0.6 game-data ZIP, including the library folder.");return;}
-  new android.app.AlertDialog.Builder(this).setTitle("Instant Action — test map").setSingleChoiceItems(new String[]{"2crazed"},0,(d,which)->{}).setPositiveButton("Launch",(d,w)->{Intent launch=new Intent(this,MissionActivity.class);launch.putExtra("installation",dataRoot);launch.putExtra("musicRoot",getPreferences(0).getString("audio.musicRoot",dataRoot));launch.putExtra("musicVolume",getPreferences(0).getInt("musicVolume",40)/100f);startActivity(launch);}).setNegativeButton("Cancel",null).show();
+  view.queueEvent(()->{if(view.handle==0){message("Wait for the main menu to finish loading");return;}String[] rows=catalogNative(view.handle,campaign),difficulty=difficultyNative(view.handle);if(rows==null||difficulty==null){message(errorNative());return;}runOnUiThread(()->missionOptions(campaign,rows,difficulty));});
+ }
+ private void missionOptions(boolean campaign,String[] rows,String[] difficulties){
+  if(destroyed)return;if(rows.length==0){message("No imported "+(campaign?"campaign":"Instant Action")+" missions were found. Import the complete missions folder.");return;}
+  LinearLayout panel=new LinearLayout(this);panel.setOrientation(LinearLayout.VERTICAL);panel.setPadding(dp(16),dp(8),dp(16),dp(8));
+  TextView mapLabel=new TextView(this);mapLabel.setText(campaign?"Campaign / mission":"Map");panel.addView(mapLabel);Spinner maps=new Spinner(this);String[] labels=new String[rows.length];for(int i=0;i<rows.length;i++)labels[i]=rows[i].replace('\t','/');maps.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,labels));panel.addView(maps);
+  int previous=getPreferences(0).getInt(campaign?"campaignMap":"instantMap",0);maps.setSelection(Math.min(previous,rows.length-1));
+  TextView aiLabel=new TextView(this);aiLabel.setText("Opponent");Spinner ai=new Spinner(this);ai.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"No opponent (practice)","One original AI opponent"}));ai.setSelection(getPreferences(0).getInt("opponents",0));if(!campaign){panel.addView(aiLabel);panel.addView(ai);}
+  TextView levelLabel=new TextView(this);levelLabel.setText("Difficulty");panel.addView(levelLabel);Spinner level=new Spinner(this);String[] levelLabels=difficulties.clone();if(levelLabels.length>0)levelLabels[0]="Mission default";level.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,levelLabels));panel.addView(level);
+  TextView seedLabel=new TextView(this);seedLabel.setText("Random seed");panel.addView(seedLabel);EditText seed=new EditText(this);seed.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);seed.setText(Integer.toString(getPreferences(0).getInt("seed",1)));panel.addView(seed);
+  android.app.AlertDialog dialog=new android.app.AlertDialog.Builder(this).setTitle(campaign?"Campaign missions":"Instant Action options").setView(panel).setPositiveButton("Launch",null).setNegativeButton("Cancel",null).create();
+  dialog.setOnShowListener(d->dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v->{try{int value=Integer.parseInt(seed.getText().toString());if(value<=0)throw new NumberFormatException();int index=maps.getSelectedItemPosition();String[] parts=rows[index].split("\t",-1);if(parts.length!=2)throw new IllegalStateException("Invalid mission entry");getPreferences(0).edit().putInt(campaign?"campaignMap":"instantMap",index).putInt("opponents",ai.getSelectedItemPosition()).putInt("seed",value).apply();
+   Intent launch=new Intent(this,MissionActivity.class);launch.putExtra("installation",dataRoot);launch.putExtra("group",parts[0]);launch.putExtra("mission",parts[1]);launch.putExtra("campaign",campaign);launch.putExtra("opponents",campaign?0:ai.getSelectedItemPosition());launch.putExtra("seed",value);launch.putExtra("difficulty",difficulties[level.getSelectedItemPosition()]);launch.putExtra("musicRoot",getPreferences(0).getString("audio.musicRoot",dataRoot));launch.putExtra("musicVolume",getPreferences(0).getInt("musicVolume",40)/100f);Diagnostics.event("Launch "+parts[0]+"/"+parts[1]+" campaign="+campaign+" opponents="+(campaign?0:ai.getSelectedItemPosition())+" seed="+value);dialog.dismiss();startActivity(launch);
+  }catch(NumberFormatException e){seed.setError("Enter a positive seed up to 2147483647");}catch(Exception e){message(e.toString());}}));dialog.show();
  }
  private void showDebugTools(){new android.app.AlertDialog.Builder(this).setTitle("Recovery debug tools").setItems(new String[]{"Share full report","GPU pixel checks","Fast stream (normal)","Synchronized stream (compare)","Audit next frame","Capture frame and report","Replay intro","Import music ZIP","Import game ZIP","Collect diagnostics ZIP (all in one)"},(d,which)->{
   if(which==9){collectDiagnostics();return;}

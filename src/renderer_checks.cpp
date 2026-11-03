@@ -1,4 +1,5 @@
 #include "reign/renderer_checks.hpp"
+#include "reign/mesh_address.hpp"
 #include <array>
 #include <cmath>
 #include <sstream>
@@ -22,6 +23,10 @@ std::string renderer_checks(LegacyGles &renderer){
   const std::uint8_t texels[]={255,0,0,255,0,255,0,255,0,0,255,255,255,255,255,255};auto texture=renderer.texture_rgba(2,2,texels);
   auto white=quad(0xffffffff);state.texture=texture;state.texture_op=reign::TextureOp::modulate_rgba;renderer.clear(W,H,0,0,0);draw(white,state);
   check(pixel(8,8,255,0,0)&&pixel(24,8,0,255,0)&&pixel(8,24,0,0,255),"D3D top-left texture orientation");
+  auto tiled=white;for(auto &v:tiled)v.u*=2;
+  state.texture_op=TextureOp::texture;state.address=mesh_address(0);renderer.clear(W,H,0,0,0);draw(tiled,state);check(pixel(20,8,255,0,0)&&pixel(28,8,0,255,0),"GOD default wrap repeats UVs beyond one");
+  state.address=mesh_address(1u<<14);renderer.clear(W,H,0,0,0);draw(tiled,state);check(pixel(20,8,0,255,0)&&pixel(28,8,255,0,0),"GOD mirror address flag");
+  state.address=mesh_address(2u<<14);renderer.clear(W,H,0,0,0);draw(tiled,state);check(pixel(20,8,0,255,0)&&pixel(28,8,0,255,0),"GOD explicit clamp address flag");
   state={};state.blend=reign::Blend::alpha;auto alpha=quad(0x80ff0000);renderer.clear(W,H,0,0,1);draw(alpha,state);check(pixel(16,16,128,0,127),"Source-alpha blending");
   state.alpha_test=true;state.alpha_reference=.75f;renderer.clear(W,H,0,0,1);draw(alpha,state);check(pixel(16,16,0,0,255),"Alpha reference discard");
   state={};state.depth_test=true;state.depth_write=true;auto near=quad(0xffff0000,.2f),far=quad(0xff0000ff,.8f);renderer.clear(W,H,0,0,0);draw(near,state);draw(far,state);check(pixel(16,16,255,0,0),"Zero-to-one depth mapping and occlusion");

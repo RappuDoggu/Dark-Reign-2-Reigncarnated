@@ -78,15 +78,16 @@ void requestHost(const std::string &action){if(!hostCommand)throw std::runtime_e
 void runCodeCommand(U32){const char *name=nullptr;if(Console::ArgCount()!=2||!Console::GetArgString(1,name))throw std::invalid_argument("Expected one run code");requestHost(name);}
 void instantCommand(U32 id){
  const char *target=nullptr;
- if(id!=Crc::CalcStr("gamegod.verify")||Console::ArgCount()!=2||!Console::GetArgString(1,target)||std::string(target)!="Shell::Main.InstantAction")throw std::invalid_argument("Unsupported shell host command");
+ if(id!=Crc::CalcStr("gamegod.verify")||Console::ArgCount()!=2||!Console::GetArgString(1,target)||(std::string(target)!="Shell::Main.InstantAction"&&std::string(target)!="Shell::Main.Campaigns"))throw std::invalid_argument("Unsupported shell host command");
  // The original button requests this command before entering Instant Action.
  // Route it to the available native mission chooser after event dispatch.
- requestHost("instant");
+ requestHost(std::string(target)=="Shell::Main.Campaigns"?"campaign":"instant");
 }
 class ShellHandler final:public ICWindow {
 public:explicit ShellHandler(IControl *p):ICWindow(p){}
  U32 HandleEvent(Event &e) override {
   if(e.type==IFace::EventID()&&e.subType==IFace::NOTIFY){
+   if(e.iface.p1==Crc::CalcStr("Campaigns::Enter")){requestHost("campaign");return TRUE;}
    if(e.iface.p1==Crc::CalcStr("Options::Enter")){requestHost("options");return TRUE;}
    if(e.iface.p1==Crc::CalcStr("Main::Exit")){auto *v=VarSys::FindVarItem("gamegod.flow.state");requestHost(v&&std::string(v->Str())=="Logout"?"login":"quit");return TRUE;}
   }return ICWindow::HandleEvent(e);
@@ -204,7 +205,7 @@ struct MenuFrontend::Impl {
   defs->InitIterators();IFace::ConfigureNative(defs);
   auto *handler=new ShellHandler(root.get());handler->SetName("Shell::EventHandler");handler->Activate();
   IFace::CreateNativeRootControl(main);
-  for(auto name:{"Campaigns","LoadGame","Multi","Credits"}){
+  for(auto name:{"LoadGame","Multi","Credits"}){
    auto path=std::string("Shell::Main.")+name;auto *c=IFace::FindByName(path.c_str(),root.get());
    if(c)c->SetStateItem("Disabled",TRUE);
   }
@@ -220,7 +221,7 @@ struct MenuFrontend::Impl {
   }else if(next=="login"){
    User::Logout();auto *shell=IFace::FindByName("Shell::Main",root.get());if(shell)shell->Deactivate();
    IFace::NativeClearRouting();IFace::FindByName("DlgLogin",root.get())->Activate();action="Select a profile to log in.";
-  }else if(next=="quit"||next=="options"||next=="instant")action="@"+next;
+  }else if(next=="quit"||next=="options"||next=="instant"||next=="campaign")action="@"+next;
   else throw std::runtime_error("Run code not implemented: "+next);
  }
  void destroy_tree(){
@@ -259,7 +260,7 @@ void MenuFrontend::open_shell_preview(){
  impl_->run([&]{impl_->load_shell();
   for(auto name:{"DlgLogin","Backdrop"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();
   auto *shell=IFace::FindByName("Shell::Main",impl_->root.get());shell->Activate();
-  for(auto name:{"Campaigns","LoadGame","Multi","Credits","Logout"}){
+  for(auto name:{"LoadGame","Multi","Credits","Logout"}){
    auto path=std::string("Shell::Main.")+name;if(auto *c=IFace::FindByName(path.c_str(),impl_->root.get()))c->SetStateItem("Disabled",TRUE);
   }
   IFace::NativeClearRouting();

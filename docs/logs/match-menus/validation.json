@@ -1,0 +1,20 @@
+{
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "original_source_files_verified": 1791,
+  "tree_sha256": "13bc6a7028f64297118b8f1238261873aa0fe1f7cc74f28eca24c31a6b362724",
+  "fresh_staging_command": "python3 tools/prepare_engine_full.py \"$REIGN_UPSTREAM\" /workspace/reign-recovery/staged-options-verify",
+  "fresh_staging_exit_code": 0,
+  "host_tests": 66,
+  "foundation_tests": 10,
+  "extra_session_boundary_test": "passed; sanitizer-linked harness/foundations, original reused objects not instrumented",
+  "android_executed": false,
+  "device_gates": [
+    "pillar appearance",
+    "v17 performance",
+    "touch controls",
+    "original AI combat",
+    "campaign launch, save and progression"
+  ],
+  "original_simulation_hz": 10,
+  "append_stream_unchanged_since_v16": true
+}

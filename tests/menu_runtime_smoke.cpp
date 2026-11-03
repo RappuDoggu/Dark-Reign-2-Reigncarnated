@@ -40,7 +40,8 @@ ConfigureInterface(){DefineControlType("ShellMainSmallButton","Button"){Size(100
 CreateControl("Shell::Main","Window"){Size(640,480);
  CreateControl("Options","ShellMainSmallButton"){Pos(10,10);TranslateEvent("Button::Notify::Pressed","Options::Enter","|Shell::EventHandler");}
  CreateControl("Logout","ShellMainSmallButton"){Pos(10,60);OnEvent("Button::Notify::Pressed"){Op("gamegod.flow.state","=","Logout");SendNotifyEvent("|Shell::EventHandler","Main::Exit");}}
- CreateControl("Campaigns","ShellMainSmallButton"){Pos(10,110);OnEvent("Button::Notify::Pressed"){Cmd("sys.runcode mission");}}
+ CreateControl("Campaigns","ShellMainSmallButton"){Pos(10,110);OnEvent("Button::Notify::Pressed"){Cmd("gamegod.verify Shell::Main.Campaigns");}}
+ CreateControl("LoadGame","ShellMainSmallButton"){Pos(10,160);OnEvent("Button::Notify::Pressed"){Cmd("sys.runcode mission");}}
 })";
   return std::vector<std::uint8_t>(cfg.begin(),cfg.end());
  };
@@ -49,7 +50,8 @@ CreateControl("Shell::Main","Window"){Size(640,480);
   available=true;menu.login_selected_profile();check(menu.control_active("Shell::Main")&&!menu.control_active("DlgLogin"));
   auto frame=menu.draw([](const auto &){},[](const auto &,const auto &){},0,0);check(frame.geometry_batches>0);
   auto click=[&](const std::string &name){auto p=menu.control_center(name);menu.pointer_move(p[0],p[1]);menu.pointer_button(true,p[0],p[1]);menu.pointer_button(false,p[0],p[1]);};
-  menu.take_action();click("Shell::Main.Campaigns");check(menu.take_action().empty()&&menu.control_active("Shell::Main"));
+  menu.take_action();click("Shell::Main.Campaigns");check(menu.take_action()=="@campaign"&&menu.control_active("Shell::Main"));
+  click("Shell::Main.LoadGame");check(menu.take_action().empty()&&menu.control_active("Shell::Main"));
   click("Shell::Main.Options");check(menu.take_action()=="@options");
   menu.set_effect_volume(.37f);check(menu.effect_volume()==.37f);
   click("Shell::Main.Logout");check(menu.profile_name().empty()&&menu.control_active("DlgLogin")&&!menu.control_active("Shell::Main"));

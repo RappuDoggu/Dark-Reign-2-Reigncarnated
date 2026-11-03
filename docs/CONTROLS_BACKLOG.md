@@ -1,11 +1,17 @@
-# Pinned controls ideas — deferred until single-screen gameplay
+# Single-screen controls and remaining ideas
 
-Current priority is original engine launch and rendering. Touch controls and AYN Thor dual-screen UI are not prerequisites for engine bring-up.
+Version 17 adds two-finger pan and pinch zoom. Tap selects/orders through the
+original mouse input path; one-finger drag retains rectangle selection. Starting
+with two fingers avoids issuing a tap. Deselect calls the engine's discrete
+deselect event. The Controls toggle exposes zoom, direction/building rotation
+and the existing arrow-key buttons. Rotate changes the placement/order direction,
+not the camera heading. All engine commands execute on the render thread and
+the original simulation remains at 10 Hz. Gesture feel, placement rotation and
+selection accuracy still need device testing.
 
-Touch candidates to prototype with the original selection/order model:
+Remaining touch candidates using the original selection/order model:
 
-- Tap a unit to select; drag a selection rectangle in an explicit selection mode.
-- Two-finger pan and pinch zoom keep camera gestures separate from issuing orders.
+- Add an explicit selection-mode toggle if device tests show accidental orders.
 - Long press opens contextual orders; selected-unit commands remain visible and cancellable.
 - Optional pen/stylus support can use hover for labels and a supported pen button for contextual orders. Ordinary touch must remain fully usable; no stylus feature is assumed available.
 - Test UI scaling, selection accuracy and accidental orders on Fold 5 before committing to a gesture scheme.

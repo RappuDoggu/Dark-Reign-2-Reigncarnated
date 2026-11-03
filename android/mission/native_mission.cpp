@@ -32,9 +32,9 @@ struct State {
  std::chrono::steady_clock::time_point sampleTime=std::chrono::steady_clock::now();
  void Present(){auto start=std::chrono::steady_clock::now();renderer->present_to(width,height);presentMillis+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();presented=true;}
  static bool present(void *value){static_cast<State *>(value)->Present();return true;}
- State(const std::string &root,const std::string &work){
+ State(const std::string &root,const std::string &work,const std::string &mission,const NativeEngine::MissionOptions &options){
   NativeEngine::SetRenderLayers(7);renderer=std::make_unique<reign::LegacyGles>(resolve);
-  app=std::make_unique<NativeEngine::MissionApp>(root,work,"2crazed",*renderer,present,this);
+  app=std::make_unique<NativeEngine::MissionApp>(root,work,mission,*renderer,present,this,options);
   audio=std::make_unique<NativeEngine::AndroidAudioOutput>(NativeEngine::GetDigitalMixer());
   Sound::Digital::Claim(32,32);
   if(!audio->Start())__android_log_print(ANDROID_LOG_WARN,"ReignMission","Audio output unavailable; running muted");
@@ -45,7 +45,7 @@ State &state(jlong handle){if(!handle)throw std::runtime_error("Mission is not i
 jstring failed(JNIEnv *env,const std::exception &e){lastError=e.what();__android_log_print(ANDROID_LOG_ERROR,"ReignMission","%s",lastError.c_str());return env->NewStringUTF(lastError.c_str());}
 }
 extern "C" {
-JNIEXPORT jlong JNICALL Java_org_reigncarnated_menu_MissionActivity_openMission(JNIEnv *env,jclass,jstring root,jstring work){try{lastError.clear();return reinterpret_cast<jlong>(new State(utf(env,root),utf(env,work)));}catch(const std::exception &e){failed(env,e);return 0;}}
+JNIEXPORT jlong JNICALL Java_org_reigncarnated_menu_MissionActivity_openMission(JNIEnv *env,jclass,jstring root,jstring work,jstring group,jstring mission,jboolean campaign,jint opponents,jint seed,jstring difficulty){try{lastError.clear();NativeEngine::MissionOptions options;options.group=utf(env,group);options.campaign=campaign;options.opponents=unsigned(opponents);options.seed=unsigned(seed);options.difficulty=utf(env,difficulty);return reinterpret_cast<jlong>(new State(utf(env,root),utf(env,work),utf(env,mission),options));}catch(const std::exception &e){failed(env,e);return 0;}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_missionError(JNIEnv *env,jclass){return env->NewStringUTF(lastError.c_str());}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_frameMission(JNIEnv *env,jclass,jlong handle,jint width,jint height){try{auto &s=state(handle);if(width<=0||height<=0)return nullptr;s.width=unsigned(width);s.height=unsigned(height);s.presented=false;auto start=std::chrono::steady_clock::now();{reign::FrameSpan span("Engine");s.app->Frame();}if(!s.presented)s.Present();s.frameMillis+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();++s.frames;return nullptr;}catch(const std::exception &e){return failed(env,e);}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_performanceMission(JNIEnv *env,jclass,jlong handle){try{
@@ -77,3 +77,5 @@ extern "C" JNIEXPORT jintArray JNICALL Java_org_reigncarnated_menu_MissionActivi
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_diagnosticsMission(JNIEnv *env,jobject,jlong handle){try{auto &s=state(handle);return env->NewStringUTF((s.app->Diagnostics()+" display layers="+std::to_string(NativeEngine::RenderLayers())+"\n"+s.renderer->diagnostics()).c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
 
 extern "C" JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MissionActivity_abandonMission(JNIEnv *,jclass,jlong handle){if(handle)state(handle).renderer->abandon_context();}
+
+extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_controlMission(JNIEnv *env,jclass,jlong handle,jint action,jfloat x,jfloat y){try{state(handle).app->Control(unsigned(action),x,y);return nullptr;}catch(const std::exception&e){return env->NewStringUTF(e.what());}}

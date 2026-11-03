@@ -7,7 +7,11 @@
 #include "reign/frontend_presenter.hpp"
 #include "reign/legacy_gles.hpp"
 #include "reign/archive.hpp"
+#include "reign/mission_menu_catalog.hpp"
+#include "reign/config.hpp"
+#include <cstdio>
 #include "reign/engine_file.hpp"
+#include "crc.h"
 #include <jni.h>
 #include <EGL/egl.h>
 #include <android/log.h>
@@ -35,7 +39,7 @@ struct State {
  }
 #endif
  reign::LegacyGles::Statistics previousStats;std::chrono::steady_clock::time_point sampleTime=std::chrono::steady_clock::now();
- std::string dataPath,ambientPath;
+ std::string dataPath,ambientPath;std::filesystem::path progressFile;
  jlong startMs=-1,lastMs=0,frameMs=0,resumeClock=-1;
  reign::Archive archive;
  std::unique_ptr<reign::Archive> shell;
@@ -46,6 +50,7 @@ struct State {
  std::unique_ptr<reign::ShellScene> scene;
  std::unique_ptr<reign::MenuAudio> audio;
  State(const std::string &pack,const std::string &profiles,const std::string &shellPath):dataPath(std::filesystem::path(pack).parent_path().string()),archive(pack){
+  char profileId[9];std::snprintf(profileId,sizeof(profileId),"%08X",unsigned(Crc::CalcStr("Commander")));progressFile=std::filesystem::path(profiles).parent_path()/"mission-runtime/users"/profileId/"data.cfg";
   if(!shellPath.empty())shell=std::make_unique<reign::Archive>(shellPath);
   auto loader=[this](const std::string &name){auto at=name.find_last_of("/\\");auto key=at==std::string::npos?name:name.substr(at+1);if(shell&&shell->find(key))return shell->read(key);if(!archive.find(key))throw FileSys::FileNotFound(key);return archive.read(key);};
   audio=std::make_unique<reign::MenuAudio>(loader,std::filesystem::path(profiles).parent_path()/"menu-audio");
@@ -151,3 +156,6 @@ extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_pe
  auto &s=state(handle);auto stats=s.renderer->statistics();auto now=std::chrono::steady_clock::now();double seconds=std::max(0.001,std::chrono::duration<double>(now-s.sampleTime).count());double frames=std::max<std::uint64_t>(1,stats.presents-s.previousStats.presents);
  std::ostringstream out;out.precision(3);out<<(stats.draws-s.previousStats.draws)/frames<<" draws/frame | "<<(stats.texture_uploads-s.previousStats.texture_uploads)/seconds<<" uploads/s\nGeometry upload "<<(stats.geometry_ms-s.previousStats.geometry_ms)/frames<<" ms | Draw submit "<<(stats.draw_ms-s.previousStats.draw_ms)/frames<<" ms\n"<<(stats.geometry_bytes-s.previousStats.geometry_bytes)/frames/1048576<<" MiB geometry/frame | "<<(stats.stream_renewals-s.previousStats.stream_renewals)/frames<<" stream renewals/frame\n"<<reign::frame_profile();
  s.previousStats=stats;s.sampleTime=now;return env->NewStringUTF(out.str().c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
+
+extern "C" JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MenuActivity_catalogNative(JNIEnv *env,jobject,jlong handle,jboolean campaign){try{auto rows=reign::menu_missions(state(handle).dataPath,campaign,state(handle).progressFile);auto result=env->NewObjectArray(rows.size(),env->FindClass("java/lang/String"),nullptr);for(unsigned i=0;i<rows.size();++i){auto row=env->NewStringUTF((rows[i].group+"\t"+rows[i].name).c_str());env->SetObjectArrayElement(result,i,row);env->DeleteLocalRef(row);}return result;}catch(const std::exception&e){failure(e);return nullptr;}}
+extern "C" JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MenuActivity_difficultyNative(JNIEnv *env,jobject,jlong handle){try{auto &s=state(handle);auto cfg=reign::parse_config([&](const std::string&name){return s.archive.read(name);},"difficulty.cfg");std::vector<std::string> names{""};for(const auto&n:cfg)if(n.name=="CreateSetting"&&!n.arguments.empty())names.push_back(std::get<std::string>(n.arguments[0]));auto result=env->NewObjectArray(names.size(),env->FindClass("java/lang/String"),nullptr);for(unsigned i=0;i<names.size();++i){auto name=env->NewStringUTF(names[i].c_str());env->SetObjectArrayElement(result,i,name);env->DeleteLocalRef(name);}return result;}catch(const std::exception&e){failure(e);return nullptr;}}
