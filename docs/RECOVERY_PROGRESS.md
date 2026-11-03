@@ -253,3 +253,13 @@ both modes, captured-frame count, restoration, cancellation, failure, ZIP conten
 path rejection, size limits, and preservation of a prior ZIP on failure. All Java
 sources compile against SDK 35. Android interaction and the reported flickering
 still require the owner's next diagnostic ZIP; this release does not claim a fix.
+
+
+Diagnostic ZIP release: `Reigncarnated-Diagnostics-Zip-v15.apk`, source
+`2a3098a189d5b9271e0f865c2720848f00b792ce`, SHA-256
+`d43b30d6b2b2752f9dc5d1fed1dc7221c68c35a584e6260612b73dad1364afc6`.
+APK signature/ZIP alignment and receipt checks passed. It uses the same recovery
+signer/application ID and byte-identical native libraries as version 14, preserving
+imported data on update. Diagnostic collection code is present in the DEX; only
+notice/build assets are bundled. On-device ZIP collection/save/share remains to
+be exercised by the owner. Upload menu and mission collections for investigation.
