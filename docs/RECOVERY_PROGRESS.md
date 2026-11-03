@@ -303,3 +303,13 @@ signer/application ID and byte-identical native libraries as version 14, preserv
 imported data on update. Diagnostic collection code is present in the DEX; only
 notice/build assets are bundled. On-device ZIP collection/save/share remains to
 be exercised by the owner. Upload menu and mission collections for investigation.
+
+
+Version 16 artifact: `Reigncarnated-FencedStreaming-v16.apk`, source
+`4c843a4f6ecb6ab03fdd2b116d3bb2dc6c5dc4e1`, SHA-256
+`00d0b809df67835f682ef051ec6b35e4a36b3ace38df80f84c7f5174b62e00d5`.
+Source/native hash receipts, ZIP integrity/alignment, ARM64/16 KiB ELF alignment
+and matching v15 recovery signer checks pass. It updates the recovery app with
+imported data retained. The all-in-one diagnostic collector remains available;
+its next fast rollover result on Adreno is the acceptance gate, alongside visible
+flicker and normal fast-mode performance. Host tests cannot close that gate.
