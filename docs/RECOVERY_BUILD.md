@@ -97,3 +97,29 @@ source receipts, share diagnostic reports and explicit captures, and listen to
 music/intro playback. Desktop fidelity, other missions, complete shell/AI/save
 flow, and on-device performance require separate validation. Resolution/mod/
 cheat controls are not advertised as working features in this recovery.
+
+## All-in-one device collection (version 15)
+
+Choose **Collect diagnostics ZIP (all in one)** in the menu's Report / data
+dialog or the mission's Debug tools. Keep that screen active while collection
+samples two seconds in fast mode and two seconds in synchronized mode, requests
+three timed frame captures per mode, retains both one-frame geometry audits and
+native journals, and runs GPU checks afterward. The original stream mode is
+restored on completion, failure, pause, or cancellation. Simulation and render
+layers are left unchanged. The final dialog offers **Save ZIP** through Android's
+document picker or **Share ZIP** with a temporary read grant.
+
+Collect in the menu first to capture the pillar artifacts, then repeat in Instant
+Action while flickering is visible. A collection includes the previous explicit
+collection from the other screen up to 6 MiB; larger/missing prior collections
+are noted in the ZIP. Save both ZIPs if needed. Only current/previous explicit
+collections are combined, without recursively accumulating earlier ZIPs.
+
+Payload: source receipt, bounded session history/tail and prior exit reasons,
+device/GPU identification, per-mode native/callback timing summaries, native
+render rejection arguments/audits, timed PNGs and GPU-check output. ZIP publication
+is atomic and payloads are bounded to 16 MiB uncompressed. Whole game folders,
+signing keys and unrelated app files are excluded. Readback stalls are explicitly
+identified in reports; these callback timings are not GPU elapsed time or proof
+of rendering fidelity. Sampling stops on lifecycle transitions. Android save/share
+and visual correctness still require device validation.

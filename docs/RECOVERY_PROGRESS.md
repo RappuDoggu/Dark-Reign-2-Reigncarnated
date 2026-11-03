@@ -233,3 +233,23 @@ controlled diagnostic comparison, not as an assumed performance fix. A fresh
 report must include the rejected draw arguments before implementing new draw
 semantics. FPS, audible music/intro and desktop-fidelity claims remain pending
 that device validation.
+
+## Device feedback and diagnostic ZIP follow-up
+
+Owner reports that the recovery APK imports successfully and loads the menu,
+but pillar artifacts and substantial Instant Action flickering persist. Passing
+GPU/import checks has not established visual fidelity. Rendering stability and
+performance remain the immediate priority. After that gate, focus the main-menu
+workflow on campaign missions, cutscenes and options; these are queued work,
+not features added by this diagnostic release.
+
+Version 15 adds one automatic diagnostic sweep from either screen, a ZIP with
+six requested captures across fast/synchronized modes, per-mode timing/native
+reports, GPU checks, build receipt and bounded session history. It restores the
+original mode and offers Save/Share. A previous other-screen collection is included
+within a stated size cap. Native rendering/simulation code and ABI are unchanged.
+The collection state machine and ZIP publisher passed 21 host checks covering
+both modes, captured-frame count, restoration, cancellation, failure, ZIP content,
+path rejection, size limits, and preservation of a prior ZIP on failure. All Java
+sources compile against SDK 35. Android interaction and the reported flickering
+still require the owner's next diagnostic ZIP; this release does not claim a fix.
