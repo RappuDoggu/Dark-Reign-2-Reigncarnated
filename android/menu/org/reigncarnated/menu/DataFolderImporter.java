@@ -74,6 +74,25 @@ final class DataFolderImporter {
    complete=true;return new Result(ready,tracks.size(),scene.size());
   }finally{if(!complete)remove(staging);}
  }
+ /** Independent music snapshot; caller commits the preference only after success. */
+ Result runMusic(Node selected,File parent)throws IOException{
+  total=lastProgress=0;check();Node music=child(selected,"music",true,false);if(music==null)music=selected;
+  List<Node> tracks=new ArrayList<>();long known=0;
+  for(Node n:source.children(music))if(!n.directory&&n.name.toLowerCase(Locale.ROOT).matches(".*\\.(ogg|mp3|wav)")){
+   if(n.size>MAX_FILE)throw new IOException("Music file exceeds size limit");tracks.add(n);if(n.size>0)known+=n.size;
+  }
+  if(tracks.isEmpty()||tracks.size()>128)throw new IOException("Music ZIP must contain 1–128 OGG/MP3/WAV tracks");
+  if(known>MAX_TOTAL)throw new IOException("Music ZIP exceeds 2 GiB");
+  if(!parent.isDirectory()&&!parent.mkdirs())throw new IOException("Cannot create music directory");
+  long free=parent.getUsableSpace();if(free>0&&known+32L*1024*1024>free)throw new IOException("Not enough storage for music");
+  tracks.sort((a,b)->a.name.compareToIgnoreCase(b.name));String token=UUID.randomUUID().toString();
+  File staging=new File(parent,"import-"+token),ready=new File(parent,"music-"+token);
+  if(!staging.mkdir())throw new IOException("Cannot create music snapshot");boolean complete=false;
+  try{File folder=new File(staging,"music");if(!folder.mkdir())throw new IOException("Cannot create music folder");
+   int i=0;for(Node n:tracks){String ext=n.name.substring(n.name.lastIndexOf('.')).toLowerCase(Locale.ROOT);copy(n,new File(folder,String.format(Locale.ROOT,"%03d%s",i++,ext)));}
+   check();if(!staging.renameTo(ready))throw new IOException("Cannot finalize music");complete=true;return new Result(ready,tracks.size(),0);
+  }finally{if(!complete)remove(staging);}
+ }
  private void copyRuntimeTree(Node dir,File target,String relative,int depth)throws IOException{
   if(depth>16)throw new IOException("Game data folders nested too deeply");
   Set<String> names=new HashSet<>();

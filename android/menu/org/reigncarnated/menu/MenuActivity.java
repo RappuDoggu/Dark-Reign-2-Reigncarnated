@@ -21,9 +21,14 @@ import javax.microedition.khronos.opengles.GL10;
 
 public final class MenuActivity extends Activity {
  static {System.loadLibrary("reign_menu");}
- private static final int PICK_FOLDER=20,PICK_ZIP=21;
+ private static final int PICK_FOLDER=20,PICK_ZIP=21,PICK_MUSIC=22;
  private native long openNative(String pack,String profiles,String shell);
  private native String errorNative();
+ private native String debugNative(long h,int action);
+ private native int[] captureNative(long h);
+ private native String diagnosticsNative(long h);
+ private native String performanceNative(long h);
+
  private native String drawNative(long h,int w,int height,long ms);
  private native String inputNative(long h,int kind,int x,int y,String text);
  private native String resetGpuNative(long h);
@@ -36,7 +41,7 @@ public final class MenuActivity extends Activity {
  private native String ambientNative(long h);
  private native int[] movieInfoNative(long h);
  private native short[] moviePcmNative(long h);
- private IntroAudioPlayer introAudio;private boolean menuReady;
+ private IntroAudioPlayer introAudio;private volatile boolean menuReady;
  private native float volumeNative(long h);
  private volatile MenuAudioPlayer audioPlayer;
  private MenuView view;private LinearLayout setup;private TextView status;private Button choose,chooseZip,cancelImport;
@@ -45,16 +50,16 @@ public final class MenuActivity extends Activity {
  private final StringBuilder history=new StringBuilder();
  private int dp(int n){return Math.round(n*getResources().getDisplayMetrics().density);}
  private boolean hasData(){String base=getPreferences(0).getString("pack",null),shell=getPreferences(0).getString("shell",null);return base!=null&&shell!=null&&new File(base).isFile()&&new File(shell).isFile()&&dataRoot!=null&&new File(dataRoot,"worlds/sprawl.zwp").isFile();}
- private void record(String s){runOnUiThread(()->{if(destroyed)return;report=s;if(history.length()>12000)history.delete(0,6000);history.append(s).append('\n');});}
+ private void record(String s){Diagnostics.event(s);runOnUiThread(()->{if(destroyed)return;report=s;if(history.length()>12000)history.delete(0,6000);history.append(s).append('\n');});}
  private void message(String s){if(s==null)return;runOnUiThread(()->{
   if(destroyed)return;if(s.equals("@quit")){finish();return;}if(s.equals("@options")){showOptions();return;}if(s.equals("@instant")){showInstantAction();return;}
   record(s);if(setup.getVisibility()==View.VISIBLE)status.setText(s);else Toast.makeText(this,s,Toast.LENGTH_LONG).show();
  });}
  private void startupFailure(String s){runOnUiThread(()->{if(destroyed)return;setup.setVisibility(View.VISIBLE);message(s);});}
  @Override public void onCreate(Bundle saved){
-  super.onCreate(saved);dataRoot=getPreferences(0).getString("dataRoot",null);
+  super.onCreate(saved);Diagnostics.init(this);dataRoot=getPreferences(0).getString("dataRoot",null);
   FrameLayout screen=new FrameLayout(this);view=new MenuView();screen.addView(view,new FrameLayout.LayoutParams(-1,-1));
-  Button reportButton=new Button(this);reportButton.setText("Report / data");reportButton.setOnClickListener(v->new android.app.AlertDialog.Builder(this).setTitle("Native menu proof of concept").setMessage("Performance test: optimized native menu and mission renderer. Instant Action opens the available test map.").setPositiveButton("Share report",(d,w)->{Intent i=new Intent(Intent.ACTION_SEND);i.setType("text/plain");i.putExtra(Intent.EXTRA_TEXT,"Reigncarnated 0.7 Performance Test\n"+metrics.latest()+"\n"+history.toString());startActivity(Intent.createChooser(i,"Share report"));}).setNeutralButton("Import ZIP",(d,w)->pickZip()).setNegativeButton("Close",null).show());
+  Button reportButton=new Button(this);reportButton.setText("Report / data");reportButton.setOnClickListener(v->showDebugTools());
   FrameLayout.LayoutParams tools=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.END);screen.addView(reportButton,tools);
   Button instant=new Button(this);instant.setText("Instant Action (test)");instant.setOnClickListener(v->showInstantAction());screen.addView(instant,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
   setup=new LinearLayout(this);setup.setOrientation(LinearLayout.VERTICAL);setup.setGravity(Gravity.CENTER);setup.setPadding(dp(28),dp(24),dp(28),dp(24));setup.setBackgroundColor(0xff101710);
@@ -73,23 +78,39 @@ public final class MenuActivity extends Activity {
  private void showInstantAction(){
   if(!hasData()){message("Import your complete game data first.");return;}
   if(!new File(dataRoot,"library/engine/startup.cfg").isFile()){message("Reimport the v0.6 game-data ZIP, including the library folder.");return;}
-  new android.app.AlertDialog.Builder(this).setTitle("Instant Action — test map").setSingleChoiceItems(new String[]{"2crazed"},0,(d,which)->{}).setPositiveButton("Launch",(d,w)->{Intent launch=new Intent(this,MissionActivity.class);launch.putExtra("installation",dataRoot);startActivity(launch);}).setNegativeButton("Cancel",null).show();
+  new android.app.AlertDialog.Builder(this).setTitle("Instant Action — test map").setSingleChoiceItems(new String[]{"2crazed"},0,(d,which)->{}).setPositiveButton("Launch",(d,w)->{Intent launch=new Intent(this,MissionActivity.class);launch.putExtra("installation",dataRoot);launch.putExtra("musicRoot",getPreferences(0).getString("audio.musicRoot",dataRoot));launch.putExtra("musicVolume",getPreferences(0).getInt("musicVolume",40)/100f);startActivity(launch);}).setNegativeButton("Cancel",null).show();
+ }
+ private void showDebugTools(){new android.app.AlertDialog.Builder(this).setTitle("Recovery debug tools").setItems(new String[]{"Share full report","GPU pixel checks","Fast stream (normal)","Synchronized stream (compare)","Audit next frame","Capture frame and report","Replay intro","Import music ZIP","Import game ZIP"},(d,which)->{
+  if(which==7){if(!importing){Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(i,PICK_MUSIC);}return;}
+  if(which==8){pickZip();return;}
+  if(which==2||which==3)getSharedPreferences("debug",0).edit().putBoolean("synchronized",which==3).apply();
+  view.queueEvent(()->{if(view.handle==0){message("Open game data first");return;}if(which==0||which==5){Diagnostics.share(this,metrics.latest()+"\n"+diagnosticsNative(view.handle),which==5?captureNative(view.handle):null);}
+   else if(which==6){message(restoreNative(view.handle,1,0,android.os.SystemClock.uptimeMillis()));runOnUiThread(()->{menuReady=false;if(audioPlayer!=null){audioPlayer.close();audioPlayer=null;}});}
+   else message(debugNative(view.handle,which==4?4:which));});
+ }).show();}
+ private void importMusic(android.net.Uri uri){if(uri==null||importing)return;importing=true;cancelled=false;Diagnostics.event("Supplemental music import started");
+  new Thread(()->{File cache=new File(getCacheDir(),"music-import-"+UUID.randomUUID()+".zip");DataFolderImporter.Result imported=null;
+   try{try(InputStream in=getContentResolver().openInputStream(uri);FileOutputStream out=new FileOutputStream(cache)){if(in==null)throw new IOException("Cannot open music ZIP");byte[] b=new byte[262144];long size=0;int n;while((n=in.read(b))!=-1){if(cancelled||destroyed)throw new IOException("Import cancelled");if((size+=n)>DataFolderImporter.MAX_TOTAL)throw new IOException("Music ZIP exceeds 2 GiB");out.write(b,0,n);}}
+    try(ZipGameSource source=new ZipGameSource(Collections.singletonList(cache),false)){imported=new DataFolderImporter(source,()->cancelled||destroyed,this::record).runMusic(source.root(),new File(getFilesDir(),"music-imports"));}
+    final DataFolderImporter.Result ready=imported;runOnUiThread(()->{importing=false;if(destroyed||cancelled){DataFolderImporter.remove(ready.directory);return;}String previousMusic=getPreferences(0).getString("audio.musicRoot",null);if(!getPreferences(0).edit().putString("audio.musicRoot",ready.directory.getAbsolutePath()).commit()){getPreferences(0).edit().putString("audio.musicRoot",previousMusic).commit();DataFolderImporter.remove(ready.directory);message("Cannot save music selection");return;}record("Music imported: "+ready.tracks);startAudio();});
+   }catch(Exception e){if(imported!=null)DataFolderImporter.remove(imported.directory);runOnUiThread(()->{importing=false;message("Music import failed: "+e.getMessage());});}finally{cache.delete();}
+  },"ReignMusicImport").start();
  }
  private void showKeyboard(){view.requestFocus();((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);}
  private void pickZip(){if(importing)return;Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT);i.addCategory(Intent.CATEGORY_OPENABLE);i.setType("*/*");i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);startActivityForResult(i,PICK_ZIP);}
  private void pickFolder(){if(importing)return;Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);startActivityForResult(i,PICK_FOLDER);}
- private List<String> musicTracks(){if(dataRoot!=null)return DataFolderImporter.playlist(new File(dataRoot));String legacy=getPreferences(0).getString("music",null);return legacy!=null&&new File(legacy).isFile()?Collections.singletonList(legacy):Collections.emptyList();}
+ private List<String> musicTracks(){String musicRoot=getPreferences(0).getString("audio.musicRoot",dataRoot);if(musicRoot!=null)return DataFolderImporter.playlist(new File(musicRoot));String legacy=getPreferences(0).getString("music",null);return legacy!=null&&new File(legacy).isFile()?Collections.singletonList(legacy):Collections.emptyList();}
  private void startAudio(){if(!resumed)return;if(audioPlayer!=null)audioPlayer.close();audioPlayer=new MenuAudioPlayer(this,this::message);audioPlayer.setMusicVolume(getPreferences(0).getInt("musicVolume",40)/100f);if(menuReady)audioPlayer.playPlaylist(musicTracks());}
- @Override protected void onResume(){super.onResume();resumed=true;menuReady=false;startAudio();view.onResume();view.requestRender();}
- @Override protected void onPause(){resumed=false;audioGeneration++;menuReady=false;if(introAudio!=null){introAudio.close();introAudio=null;}MenuAudioPlayer old=audioPlayer;audioPlayer=null;if(old!=null)old.close();view.queueEvent(()->{if(view.handle!=0){launchCheckpoint=checkpointNative(view.handle);closeNative(view.handle);view.handle=0;}});view.onPause();super.onPause();}
+ @Override protected void onResume(){super.onResume();Diagnostics.event("Menu resume");metrics.reset();resumed=true;menuReady=false;startAudio();view.onResume();view.requestRender();}
+ @Override protected void onPause(){Diagnostics.event("Menu pause");resumed=false;audioGeneration++;menuReady=false;if(introAudio!=null){introAudio.close();introAudio=null;}MenuAudioPlayer old=audioPlayer;audioPlayer=null;if(old!=null)old.close();view.queueEvent(()->{if(view.handle!=0){launchCheckpoint=checkpointNative(view.handle);closeNative(view.handle);view.handle=0;}});view.onPause();super.onPause();}
  @Override protected void onDestroy(){destroyed=true;cancelled=true;super.onDestroy();}
  private final class MenuView extends GLSurfaceView implements GLSurfaceView.Renderer {
   long handle;int width,height;String pack,shell;boolean failed;String gpu="";
   MenuView(){super(MenuActivity.this);pack=getPreferences(0).getString("pack",null);shell=getPreferences(0).getString("shell",null);if(!hasData())pack=null;setFocusable(true);setFocusableInTouchMode(true);setEGLContextClientVersion(3);setEGLConfigChooser(8,8,8,8,16,0);setRenderer(this);setRenderMode(RENDERMODE_CONTINUOUSLY);}
-  public void onSurfaceCreated(GL10 gl,EGLConfig c){gpu="Device: "+android.os.Build.MANUFACTURER+" "+android.os.Build.MODEL+" API "+android.os.Build.VERSION.SDK_INT+"\nGPU: "+gl.glGetString(GL10.GL_RENDERER);failed=false;if(handle!=0){String error=resetGpuNative(handle);if(error!=null){failed=true;message(error);}}}
+  public void onSurfaceCreated(GL10 gl,EGLConfig c){gpu="Device: "+android.os.Build.MANUFACTURER+" "+android.os.Build.MODEL+" API "+android.os.Build.VERSION.SDK_INT+"\nGPU: "+gl.glGetString(GL10.GL_RENDERER);failed=false;if(handle!=0){String error=resetGpuNative(handle);if(error!=null){failed=true;message(error);}else debugNative(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;requestRender();}
-  public void onDrawFrame(GL10 gl){final int generation=audioGeneration;if(!resumed)return;if(width<=0||height<=0||pack==null||failed||importing)return;if(handle==0){handle=openNative(pack,new File(getFilesDir(),"profiles").getAbsolutePath(),shell);if(handle==0){failed=true;startupFailure("Native startup failed: "+errorNative());return;}long[] checkpoint=launchCheckpoint;if(checkpoint!=null){String restoreError=restoreNative(handle,checkpoint[0],checkpoint[1],android.os.SystemClock.uptimeMillis());if(restoreError!=null){failed=true;startupFailure(restoreError);return;}launchCheckpoint=null;}record(gpu+"\nOriginal intro sequence loaded. Native shell follows the movies; tap to skip the current clip.");}long drawStart=System.nanoTime();String e=drawNative(handle,width,height,android.os.SystemClock.uptimeMillis());metrics.frame(drawStart,System.nanoTime(),()->null);String ambientPath=ambientNative(handle);int[] movie=movieInfoNative(handle);short[] pcm=moviePcmNative(handle);
-   runOnUiThread(()->{if(destroyed||!resumed||generation!=audioGeneration)return;try{if(movie!=null&&movie[0]>0){if(movie[1]>0){if(introAudio==null||introAudio.movie!=movie[0]){if(introAudio!=null)introAudio.close();introAudio=new IntroAudioPlayer(MenuActivity.this,movie[0],movie[1],MenuActivity.this::message);}introAudio.accept(pcm);}}else if(!menuReady){if(introAudio!=null){introAudio.close();introAudio=null;}menuReady=true;startAudio();if(audioPlayer!=null)audioPlayer.playAmbient(ambientPath);}}catch(Exception ex){message("Intro audio failed: "+ex.getMessage());}});
+  public void onDrawFrame(GL10 gl){final int generation=audioGeneration;if(!resumed)return;if(width<=0||height<=0||pack==null||failed||importing)return;if(handle==0){handle=openNative(pack,new File(getFilesDir(),"profiles").getAbsolutePath(),shell);if(handle==0){failed=true;startupFailure("Native startup failed: "+errorNative());return;}long[] checkpoint=launchCheckpoint;if(checkpoint!=null){String restoreError=restoreNative(handle,checkpoint[0],checkpoint[1],android.os.SystemClock.uptimeMillis());if(restoreError!=null){failed=true;startupFailure(restoreError);return;}launchCheckpoint=null;}debugNative(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);record(gpu+"\nOriginal intro sequence loaded. Native shell follows the movies; tap to skip the current clip.");}long drawStart=System.nanoTime();String e=drawNative(handle,width,height,android.os.SystemClock.uptimeMillis());metrics.frame(drawStart,System.nanoTime(),()->performanceNative(handle));String ambientPath=ambientNative(handle);int[] movie=movieInfoNative(handle);short[] pcm=moviePcmNative(handle);
+   if((movie!=null&&movie[0]>0)||!menuReady)runOnUiThread(()->{if(destroyed||!resumed||generation!=audioGeneration)return;try{if(movie!=null&&movie[0]>0){if(movie[1]>0){if(introAudio==null||introAudio.movie!=movie[0]){if(introAudio!=null)introAudio.close();introAudio=new IntroAudioPlayer(MenuActivity.this,movie[0],movie[1],MenuActivity.this::message);}introAudio.accept(pcm);}}else if(!menuReady){if(introAudio!=null){introAudio.close();introAudio=null;}menuReady=true;startAudio();if(audioPlayer!=null)audioPlayer.playAmbient(ambientPath);}}catch(Exception ex){message("Intro audio failed: "+ex.getMessage());}});
    String[] sounds=audioNative(handle);MenuAudioPlayer player=audioPlayer;if(player!=null&&sounds!=null&&sounds.length>0)runOnUiThread(()->{if(audioPlayer==player)player.accept(sounds);});if(e!=null){failed=true;startupFailure("Render failure: "+e);}}
   void input(int kind,int x,int y,String text){queueEvent(()->{if(handle!=0)message(inputNative(handle,kind,x,y,text));});requestRender();}
   @Override public boolean onTouchEvent(MotionEvent e){requestFocus();if(e.getPointerCount()!=1){input(2,-32768,-32768,null);return true;}float scale=Math.min(width/640f,height/480f);if(scale<=0)return true;int x=(int)((e.getX()-(width-640*scale)/2)/scale),y=(int)((e.getY()-(height-480*scale)/2)/scale);int a=e.getActionMasked();if(a==MotionEvent.ACTION_DOWN)input(1,x,y,null);else if(a==MotionEvent.ACTION_UP)input(2,x,y,null);else if(a==MotionEvent.ACTION_CANCEL)input(2,-32768,-32768,null);else if(a==MotionEvent.ACTION_MOVE)input(0,x,y,null);return true;}
@@ -98,7 +119,7 @@ public final class MenuActivity extends Activity {
  }
  private void showOptions(){} // Navigation deferred in the proof of concept.
  @Override protected void onActivityResult(int request,int result,Intent data){
-  super.onActivityResult(request,result,data);if((request!=PICK_FOLDER&&request!=PICK_ZIP)||result!=RESULT_OK||data==null||importing)return;
+  super.onActivityResult(request,result,data);if(request==PICK_MUSIC){if(result==RESULT_OK&&data!=null)importMusic(data.getData());return;}if((request!=PICK_FOLDER&&request!=PICK_ZIP)||result!=RESULT_OK||data==null||importing)return;
   final List<Uri> uris=new ArrayList<>();if(data.getClipData()!=null){for(int i=0;i<data.getClipData().getItemCount();i++)uris.add(data.getClipData().getItemAt(i).getUri());}else if(data.getData()!=null)uris.add(data.getData());if(uris.isEmpty())return;
   importing=true;cancelled=false;setup.setVisibility(View.VISIBLE);choose.setEnabled(false);chooseZip.setEnabled(false);cancelImport.setVisibility(View.VISIBLE);status.setText("Checking game data…");
   new Thread(()->{

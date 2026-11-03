@@ -36,6 +36,7 @@
 #include "ptree.h"
 #include <filesystem>
 #include <chrono>
+#include <sstream>
 
 #include "light_priv.h"
 #include "mesh.h"
@@ -135,6 +136,7 @@ MissionApp::MissionApp(const std::string &installation,const std::string &writab
  try{impl->Start(installation,writable,mission,renderer,present,context);}catch(...){if(impl->owns)enginePoisoned=true;throw;}
 }
 MissionApp::~MissionApp()=default;
+std::string MissionApp::Diagnostics()const{std::ostringstream out;out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}return out.str();}
 void MissionApp::Close(){impl->Stop();}
 void MissionApp::Frame(){if(impl->closed)throw std::logic_error("Mission runtime is closed");if(BeginNativeFrame()){Game::RC::Process();Sound::Poll();}}
 void MissionApp::SetActive(bool active){

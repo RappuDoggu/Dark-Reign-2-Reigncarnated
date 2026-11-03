@@ -12,6 +12,11 @@
 #include <EGL/egl.h>
 #include <android/log.h>
 #include <memory>
+#include <vector>
+#include <sstream>
+#include "reign/renderer_checks.hpp"
+#include "reign/native_diagnostics.hpp"
+#include "reign/frame_profile.hpp"
 #include <string>
 namespace {
 thread_local std::string error;
@@ -19,8 +24,8 @@ std::string utf(JNIEnv *env,jstring value){if(!value)throw std::invalid_argument
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
 struct State {
 #ifdef REIGN_BINK
- std::unique_ptr<reign::BinkMovie> movie;unsigned movieIndex=0,movieTexture=0;std::int64_t movieFrame=-1;jlong movieStart=-1;
- void nextMovie(){if(movieTexture&&renderer)renderer->delete_texture(movieTexture);movieTexture=0;movie.reset();auto name="intro-movie-"+std::to_string(movieIndex++)+".bik";if(archive.find(name))movie=std::make_unique<reign::BinkMovie>(archive.read(name));movieStart=-1;movieFrame=-1;startMs=-1;}
+ std::unique_ptr<reign::BinkMovie> movie;unsigned movieIndex=0,movieTexture=0,skipArmedMovie=0;std::int64_t movieFrame=-1;jlong movieStart=-1;
+ void nextMovie(){if(movieTexture&&renderer)renderer->delete_texture(movieTexture);movieTexture=0;movie.reset();auto name="intro-movie-"+std::to_string(movieIndex++)+".bik";if(archive.find(name)){movie=std::make_unique<reign::BinkMovie>(archive.read(name));reign::nativeDiagnostics.record("Intro start "+name);}else reign::nativeDiagnostics.record(movieIndex==4?"Intro sequence complete":"Intro clip missing "+name);movieStart=-1;movieFrame=-1;startMs=-1;}
  bool drawMovie(jlong ms,int width,int height){
   if(!movie)return false;if(movieStart<0)movieStart=ms;
   if(!movie->advance(double(ms-movieStart)/1000)){nextMovie();renderer->clear(640,480,0,0,0);renderer->present_to(width,height);return bool(movie);}
@@ -29,6 +34,7 @@ struct State {
   reign::LegacyTL v[]={{x,y,0,1,0xffffffff,0xff000000,0,0},{x+w,y,0,1,0xffffffff,0xff000000,1,0},{x+w,y+h,0,1,0xffffffff,0xff000000,1,1},{x,y+h,0,1,0xffffffff,0xff000000,0,1}};std::uint16_t indices[]={0,1,2,0,2,3};reign::DrawState state;state.texture=movieTexture;state.texture_op=reign::TextureOp::texture;state.filtered=true;renderer->draw(640,480,v,4,indices,6,state);renderer->present_to(width,height);return true;
  }
 #endif
+ reign::LegacyGles::Statistics previousStats;std::chrono::steady_clock::time_point sampleTime=std::chrono::steady_clock::now();
  std::string dataPath,ambientPath;
  jlong startMs=-1,lastMs=0,frameMs=0,resumeClock=-1;
  reign::Archive archive;
@@ -75,7 +81,7 @@ JNIEXPORT jlongArray JNICALL Java_org_reigncarnated_menu_MenuActivity_checkpoint
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_restoreNative(JNIEnv *env,jobject,jlong h,jlong clip,jlong elapsed,jlong now){try{
  if(clip<0||clip>256||elapsed<0||elapsed>now)throw std::runtime_error("Invalid launch checkpoint");auto &s=state(h);
 #ifdef REIGN_BINK
- s.movie.reset();
+ if(s.movieTexture)s.renderer->delete_texture(s.movieTexture);s.movieTexture=0;s.movieFrame=-1;s.movie.reset();
  if(clip){s.movieIndex=unsigned(clip-1);s.nextMovie();if(!s.movie)throw std::runtime_error("Checkpoint intro is missing");
   double target=double(elapsed)/1000;if(target>=s.movie->duration())throw std::runtime_error("Checkpoint exceeds intro duration");
   // Sequential Bink decode rebuilds reference frames. Drain skipped PCM to keep
@@ -96,10 +102,11 @@ JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_drawNative(JN
 #ifdef REIGN_BINK
  if(s.drawMovie(ms,width,height))return nullptr;
 #endif
- if(s.startMs<0){s.startMs=ms;s.lastMs=ms;}auto step=static_cast<unsigned>(std::min<jlong>(100,std::max<jlong>(0,ms-s.lastMs)));s.lastMs=ms;s.presenter->begin(640,480);s.scene->draw(float(ms-s.startMs)/1000.f);for(auto &sound:s.scene->take_sounds())s.audio->load(sound)(1.f);if(ms-s.startMs>=4000)s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms-s.startMs),step);s.scene->finish_frame(float(ms-s.startMs)/1000.f);s.presenter->present(width,height);return nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
+ if(s.startMs<0){s.startMs=ms;s.lastMs=ms;}auto step=static_cast<unsigned>(std::min<jlong>(100,std::max<jlong>(0,ms-s.lastMs)));s.lastMs=ms;s.presenter->begin(640,480);{reign::FrameSpan span("Scene");s.scene->draw(float(ms-s.startMs)/1000.f);}for(auto &sound:s.scene->take_sounds())s.audio->load(sound)(1.f);if(ms-s.startMs>=4000)s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms-s.startMs),step);s.scene->finish_frame(float(ms-s.startMs)/1000.f);{reign::FrameSpan span("Present");s.presenter->present(width,height);}return nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_inputNative(JNIEnv *env,jobject,jlong h,jint kind,jint x,jint y,jstring text){try{auto &s=state(h);
 #ifdef REIGN_BINK
- if(s.movie){if(kind==2||kind==4)s.nextMovie();return nullptr;}
+ if(s.movie){if(kind==1&&x>=0&&x<640&&y>=0&&y<480)s.skipArmedMovie=s.movieIndex;
+ if(kind==4||(kind==2&&s.skipArmedMovie==s.movieIndex&&x>=0&&x<640&&y>=0&&y<480)){reign::nativeDiagnostics.record("Intro explicitly skipped clip "+std::to_string(s.movieIndex));s.nextMovie();}if(kind==2)s.skipArmedMovie=0;return nullptr;}
 #endif
  if(kind==0)s.menu->pointer_move(x,y);else if(kind==1||kind==2)s.menu->pointer_button(kind==1,x,y);else if(kind==3)s.menu->text(utf(env,text));else if(kind==4){s.menu->key(unsigned(x),true);s.menu->key(unsigned(x),false);}else if(kind==5)s.menu->set_effect_volume(x/100.0f);else throw std::invalid_argument("Unknown input action");auto action=s.menu->take_action();return action.empty()?nullptr:env->NewStringUTF(action.c_str());}catch(const std::exception &e){failure(e);return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_ambientNative(JNIEnv *env,jobject,jlong h){return h&&!state(h).ambientPath.empty()?env->NewStringUTF(state(h).ambientPath.c_str()):nullptr;}
@@ -123,3 +130,23 @@ JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MenuActivity_audioNat
 JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MenuActivity_closeNative(JNIEnv *,jobject,jlong h){if(!h)return;std::unique_ptr<State> s(reinterpret_cast<State *>(h));try{s->menu->close();}catch(const std::exception &e){failure(e);}}
 }
 
+
+extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_debugNative(JNIEnv *env,jobject,jlong handle,jint action){try{
+ auto &s=state(handle);std::string report;
+ if(action==1){const bool mode=s.renderer->synchronized_stream();try{report=reign::renderer_checks(*s.renderer);}catch(...){s.renderer->synchronized_stream(mode);s.renderer->clear(640,480,0,0,0);throw;}s.renderer->clear(640,480,0,0,0);}
+ else if(action==2||action==3){s.renderer->synchronized_stream(action==3);report="Stream mode changed";}
+ else if(action==4){s.renderer->arm_audit();report="Next frame audit armed";}
+ else throw std::invalid_argument("Unknown renderer debug action");
+ report+="\n"+s.renderer->diagnostics();return env->NewStringUTF(report.c_str());
+ }catch(const std::exception &e){return env->NewStringUTF(e.what());}}
+extern "C" JNIEXPORT jintArray JNICALL Java_org_reigncarnated_menu_MenuActivity_captureNative(JNIEnv *env,jobject,jlong handle){try{
+ auto &s=state(handle);std::vector<std::uint8_t> rgba(640*480*4);s.renderer->read_rgba(640,480,rgba.data());std::vector<jint> argb(640*480);
+ for(unsigned i=0;i<argb.size();++i)argb[i]=jint((std::uint32_t(rgba[((479-i/640)*640+i%640)*4+3])<<24)|(std::uint32_t(rgba[((479-i/640)*640+i%640)*4])<<16)|(std::uint32_t(rgba[((479-i/640)*640+i%640)*4+1])<<8)|rgba[((479-i/640)*640+i%640)*4+2]);
+ auto result=env->NewIntArray(argb.size());if(result)env->SetIntArrayRegion(result,0,argb.size(),argb.data());return result;
+ }catch(const std::exception &e){reign::nativeDiagnostics.record(e.what());return nullptr;}}
+extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_diagnosticsNative(JNIEnv *env,jobject,jlong handle){try{return env->NewStringUTF(state(handle).renderer->diagnostics().c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
+
+extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_performanceNative(JNIEnv *env,jobject,jlong handle){try{
+ auto &s=state(handle);auto stats=s.renderer->statistics();auto now=std::chrono::steady_clock::now();double seconds=std::max(0.001,std::chrono::duration<double>(now-s.sampleTime).count());double frames=std::max<std::uint64_t>(1,stats.presents-s.previousStats.presents);
+ std::ostringstream out;out.precision(3);out<<(stats.draws-s.previousStats.draws)/frames<<" draws/frame | "<<(stats.texture_uploads-s.previousStats.texture_uploads)/seconds<<" uploads/s\nGeometry upload "<<(stats.geometry_ms-s.previousStats.geometry_ms)/frames<<" ms | Draw submit "<<(stats.draw_ms-s.previousStats.draw_ms)/frames<<" ms\n"<<(stats.geometry_bytes-s.previousStats.geometry_bytes)/frames/1048576<<" MiB geometry/frame | "<<(stats.stream_renewals-s.previousStats.stream_renewals)/frames<<" stream renewals/frame\n"<<reign::frame_profile();
+ s.previousStats=stats;s.sampleTime=now;return env->NewStringUTF(out.str().c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}

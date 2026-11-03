@@ -259,7 +259,7 @@ void MenuFrontend::open_shell_preview(){
  impl_->run([&]{impl_->load_shell();
   for(auto name:{"DlgLogin","Backdrop"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();
   auto *shell=IFace::FindByName("Shell::Main",impl_->root.get());shell->Activate();
-  for(auto name:{"Campaigns","LoadGame","Multi","Credits","Options","Logout"}){
+  for(auto name:{"Campaigns","LoadGame","Multi","Credits","Logout"}){
    auto path=std::string("Shell::Main.")+name;if(auto *c=IFace::FindByName(path.c_str(),impl_->root.get()))c->SetStateItem("Disabled",TRUE);
   }
   IFace::NativeClearRouting();

@@ -1,4 +1,5 @@
 #include "reign/shell_scene.hpp"
+#include "reign/frame_profile.hpp"
 #include "reign/shell_camera.hpp"
 #include "reign/shell_lighting.hpp"
 #include "reign/god_pose.hpp"
@@ -139,7 +140,7 @@ struct ShellScene::Impl {
    auto weatherTick=std::int64_t(seconds*10);for(auto tick=std::max<std::int64_t>(0,weatherTick-6);rainActive&&tick<weatherTick;tick++)if(randomUnit(std::uint32_t(tick)^0x57ea123u)<=strikeChance){auto duration=2+unsigned(randomUnit(std::uint32_t(tick)^0x6789123u)*5);if(weatherTick-tick<=duration){float flash=.2f+randomUnit(std::uint32_t(weatherTick)^0x32f976u);light.ambient={flash,flash,flash*1.5f};if(tick>lastStrike){sounds.push_back("engine_thunder.wav");lastStrike=tick;}break;}}
 
    auto fog=[&](const std::array<float,4>&p){if(p[3]<=0)return 0xff000000u;float start=(farPlane-fogDepth)*.92f;float minimum=farPlane/(farPlane-1)*(1-1/start);float f=std::max(0.f,(p[2]/p[3]-minimum)/(1-minimum));return packed(0,0,0,std::max(0.f,1-f*f));};
-   drawSky(projection,sample.position,light,seconds);
+   {FrameSpan span("Sky");drawSky(projection,sample.position,light,seconds);}
    struct Batch{std::vector<reign::LegacyClip> vertices;std::vector<std::uint16_t> indices;};std::vector<Batch> batches(textures.size());
    for(unsigned cz=0;cz<height;cz+=4)for(unsigned cx=0;cx<width;cx+=4){
     std::array<std::array<float,4>,25> clip{};
@@ -175,9 +176,9 @@ struct ShellScene::Impl {
    }
    drawWater(projection,light,seconds);
    std::stable_sort(transparent.begin(),transparent.end(),[](auto &a,auto &b){return a.depth>b.depth;});for(auto &b:transparent)renderer.draw_clip(W,H,b.batch.vertices.data(),b.batch.vertices.size(),b.batch.indices.data(),b.batch.indices.size(),b.state);
-   drawParticles(projection,sample.direction,poses,seconds);
-   drawSplats(projection,sample.position,sample.direction,seconds);
-   drawRain(projection,sample.position,sample.direction,seconds);
+   {FrameSpan span("Particles");drawParticles(projection,sample.direction,poses,seconds);}
+   {FrameSpan span("Splats");drawSplats(projection,sample.position,sample.direction,seconds);}
+   flushSprites();drawRain(projection,sample.position,sample.direction,seconds);
  }
  // Terrain queries share the original diagonal split and cluster water bit.
  bool surface(float x,float z,float &ground,float &water)const{
@@ -185,9 +186,15 @@ struct ShellScene::Impl {
   float a=terrain.cells[iz*terrain.pitch+ix].height,b=terrain.cells[(iz+1)*terrain.pitch+ix].height,c=terrain.cells[(iz+1)*terrain.pitch+ix+1].height,d=terrain.cells[iz*terrain.pitch+ix+1].height;
   ground=u<v?a+(b-a)*v+(c-b)*u:a+(d-a)*u+(c-d)*v;auto &cluster=terrain.clusters.at((iz/4)*(width/4)+ix/4);water=(cluster.status&1)?cluster.waterHeight:-1e10f;return true;
  }
+ std::vector<LegacyClip> spriteVertices;std::vector<std::uint16_t> spriteIndices;unsigned spriteTexture=0;bool spriteAdditive=false;
+ void flushSprites(){if(spriteVertices.empty())return;DrawState state;state.depth_test=true;state.depth_write=false;state.blend=spriteAdditive?Blend::additive:Blend::alpha;state.filtered=true;state.texture_op=TextureOp::modulate_rgba;state.texture=spriteTexture;
+  renderer.draw_clip(W,H,spriteVertices.data(),spriteVertices.size(),spriteIndices.data(),spriteIndices.size(),state);spriteVertices.clear();spriteIndices.clear();
+ }
  void quad(const WorldProjection &projection,V3 center,V3 right,V3 up,std::uint32_t color,unsigned texture,bool additive=false){
   V3 points[]={add(add(center,mul(right,-1)),up),add(add(center,right),up),add(add(center,right),mul(up,-1)),add(add(center,mul(right,-1)),mul(up,-1))};LegacyClip v[4];
-  for(unsigned i=0;i<4;i++){auto p=projection.transform(points[i]);v[i]={p[0],p[1],p[2],p[3],color,0xff000000,i==1||i==2?1.f:0.f,i>=2?1.f:0.f};}std::uint16_t ix[]={0,1,2,0,2,3};DrawState state;state.depth_test=true;state.depth_write=false;state.blend=additive?Blend::additive:Blend::alpha;state.filtered=true;state.texture_op=TextureOp::modulate_rgba;state.texture=texture;renderer.draw_clip(W,H,v,4,ix,6,state);
+  for(unsigned i=0;i<4;i++){auto p=projection.transform(points[i]);v[i]={p[0],p[1],p[2],p[3],color,0xff000000,i==1||i==2?1.f:0.f,i>=2?1.f:0.f};}std::uint16_t ix[]={0,1,2,0,2,3};DrawState state;state.depth_test=true;state.depth_write=false;state.blend=additive?Blend::additive:Blend::alpha;state.filtered=true;state.texture_op=TextureOp::modulate_rgba;state.texture=texture;
+  if(!spriteVertices.empty()&&(spriteTexture!=texture||spriteAdditive!=additive||spriteVertices.size()+4>65532))flushSprites();
+  spriteTexture=texture;spriteAdditive=additive;auto offset=std::uint16_t(spriteVertices.size());spriteVertices.insert(spriteVertices.end(),v,v+4);for(auto index:ix)spriteIndices.push_back(offset+index);
  }
  void drawWater(const WorldProjection &projection,const ShellLightSample &light,float seconds){
   bool any=std::any_of(terrain.clusters.begin(),terrain.clusters.end(),[](auto &c){return c.status&1;});if(!any)return;

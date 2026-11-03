@@ -15,6 +15,7 @@ public:
  ~MissionApp();
  MissionApp(const MissionApp &)=delete;
  MissionApp &operator=(const MissionApp &)=delete;
+ std::string Diagnostics() const;
  void Frame();
  void SetActive(bool);
  void Close();

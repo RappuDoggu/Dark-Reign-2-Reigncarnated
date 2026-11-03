@@ -67,6 +67,23 @@ std::string renderer_checks(LegacyGles &renderer){
   check(resized==resized_presented&&std::abs(int(resized[0])-64)<=1&&std::abs(int(resized[1])-128)<=1&&std::abs(int(resized[2])-191)<=1,"Render-target resize and presentation");
   renderer.clear(W,H,0,0,0);
   renderer.delete_texture(texture);
+  const bool previousMode=renderer.synchronized_stream();
+  for(bool synchronized:{false,true}){
+   renderer.synchronized_stream(synchronized);
+   for(unsigned frame=0;frame<3;++frame){
+    auto left=quad(0xffff0000);for(auto &v:left)if(v.x>0)v.x=W/2.f-.5f;
+    auto right=quad(0xff00ff00);for(auto &v:right)if(v.x<0)v.x=W/2.f-.5f;
+    std::vector<LegacyTL> large(65536,right[0]);for(unsigned i=0;i<4;++i)large[i]=right[i];
+    std::vector<std::uint16_t> many(150000);for(unsigned i=0;i<many.size();++i)many[i]=indices[i%6];
+    renderer.clear(W,H,0,0,0);auto before=renderer.statistics();
+    state={};draw(left,state);renderer.draw(W,H,large.data(),large.size(),many.data(),many.size(),state);
+    // No readback/finish between submissions: old queued geometry must survive orphaning.
+    check(pixel(8,16,255,0,0)&&pixel(24,16,0,255,0),"Append-only arena rollover preserves pending red/green draws");
+    check(renderer.statistics().stream_renewals>before.stream_renewals,"Arena renewal telemetry");renderer.present();
+   }
+  }
+  renderer.synchronized_stream(previousMode);
+
   if(failed)throw std::runtime_error(report.str());
   report<<"GLES3 legacy-TL pixel checks: PASS\n";
   return report.str();

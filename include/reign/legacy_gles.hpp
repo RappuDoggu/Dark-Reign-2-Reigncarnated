@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <string>
 namespace reign {
 // Matches inspected graphics/Vertex.h VertexTL byte layout; no upstream implementation copied.
 struct LegacyTL {
@@ -39,8 +40,12 @@ class LegacyGles {
  struct Impl;std::unique_ptr<Impl> impl_;
  void draw_batch(unsigned,unsigned,const void*,std::size_t,const std::uint16_t*,std::size_t,const DrawState&,bool);
 public:
- struct Statistics {std::uint64_t draws=0,texture_uploads=0,texture_bytes=0,geometry_bytes=0,presents=0;};
+ struct Statistics {std::uint64_t draws=0,texture_uploads=0,texture_bytes=0,geometry_bytes=0,presents=0,stream_renewals=0;double geometry_ms=0,draw_ms=0;};
  Statistics statistics() const;
+ void synchronized_stream(bool);
+ bool synchronized_stream() const;
+ void arm_audit();
+ std::string diagnostics() const;
  using Resolver=void *(*)(const char *);
  // Requires a current GLES3 context; destruction must occur before releasing that context.
  explicit LegacyGles(Resolver);

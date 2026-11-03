@@ -48,6 +48,7 @@ FontInfo validate_font(const std::vector<U8> &file){
 std::vector<CH> characters(const std::u16string &s){if(s.size()>65535)throw std::runtime_error("Font string exceeds diagnostic limit");return {s.begin(),s.end()};}
 }
 struct NativeFont::Impl {
+ std::shared_ptr<const void> owner=std::make_shared<int>(0);
  font_detail::Context context;font_detail::Font font;FontInfo info;
  Impl(std::vector<U8> file,bool half):info(validate_font(file)){
   context.half_texel=half;font_detail::Binding binding(context);
@@ -58,6 +59,7 @@ struct NativeFont::Impl {
 };
 NativeFont::NativeFont(std::vector<U8> file,bool half):impl_(std::make_unique<Impl>(std::move(file),half)){}
 NativeFont::~NativeFont()=default;
+std::weak_ptr<const void> NativeFont::cache_owner()const{return impl_->owner;}
 unsigned NativeFont::average_width()const{return impl_->font.AvgWidth();}
 unsigned NativeFont::version()const{return impl_->info.version;}
 unsigned NativeFont::glyph_count()const{return impl_->info.count;}

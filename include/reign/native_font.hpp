@@ -21,6 +21,7 @@ public:
  explicit NativeFont(std::vector<std::uint8_t> file,bool half_texel=true);
  ~NativeFont();
  NativeFont(const NativeFont&)=delete;NativeFont &operator=(const NativeFont&)=delete;
+ std::weak_ptr<const void> cache_owner()const;
  unsigned version()const;unsigned glyph_count()const;
  unsigned average_width()const;
  unsigned height()const;unsigned width(const std::u16string &)const;

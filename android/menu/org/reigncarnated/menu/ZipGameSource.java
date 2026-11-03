@@ -11,7 +11,8 @@ final class ZipGameSource implements DataFolderImporter.Source, AutoCloseable {
  private final Map<String,DataFolderImporter.Node> nodes=new LinkedHashMap<>();
  private final Map<String,ZipFile> owners=new HashMap<>();
  private final Map<String,ZipEntry> entries=new HashMap<>();
- ZipGameSource(List<File> files)throws IOException {
+ ZipGameSource(List<File> files)throws IOException {this(files,true);}
+ ZipGameSource(List<File> files,boolean requireWorld)throws IOException {
   try {
    directory("");directory("packs");directory("missions/system");directory("music");
    int count=0;
@@ -29,7 +30,7 @@ final class ZipGameSource implements DataFolderImporter.Source, AutoCloseable {
      else if(name.equals("shell.zwp"))dest="missions/system/shell.zwp";
      else if(name.equals("sprawl.zwp"))dest="worlds/sprawl.zwp";
      else if(name.equals("jda.zwp")||name.equals("sprawler.zwp"))dest="sides/client/"+name;
-     else if((lower.contains("music/")||name.matches("track[0-9]+\\.(ogg|mp3|wav)"))&&(name.endsWith(".ogg")||name.endsWith(".mp3")||name.endsWith(".wav")))dest="music/"+name;
+     else if((!requireWorld||lower.contains("music/")||name.matches("track[0-9]+\\.(ogg|mp3|wav)"))&&(name.endsWith(".ogg")||name.endsWith(".mp3")||name.endsWith(".wav")))dest="music/"+name;
      if(dest==null){
       // Preserve the runtime tree for worlds, missions, side data, movies and mods.
       String[] parts=lower.split("/");
@@ -44,7 +45,7 @@ final class ZipGameSource implements DataFolderImporter.Source, AutoCloseable {
      nodes.put(dest,new DataFolderImporter.Node(dest,name,false,e.getSize()));owners.put(dest,zip);entries.put(dest,e);
     }
    }
-   if(!nodes.containsKey("worlds/sprawl.zwp"))throw new IOException("Missing sprawl.zwp. The live menu needs the Sprawl world pack as well as base.zwp and shell.zwp. Select ZIPs containing all three.");
+   if(requireWorld&&!nodes.containsKey("worlds/sprawl.zwp"))throw new IOException("Missing sprawl.zwp. The live menu needs the Sprawl world pack as well as base.zwp and shell.zwp. Select ZIPs containing all three.");
   }catch(IOException|RuntimeException e){close();throw e;}
  }
  private void directory(String path){if(nodes.containsKey(path))return;int slash=path.lastIndexOf('/');if(slash>=0)directory(path.substring(0,slash));nodes.put(path,new DataFolderImporter.Node(path,slash<0?path:path.substring(slash+1),true,0));}

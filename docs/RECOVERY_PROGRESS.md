@@ -96,13 +96,47 @@ with the NDK's `llvm-strip --strip-unneeded`; compare those bytes against
 `lib/arm64-v8a/libreign_mission.so` and `libreign_menu.so` in the checked-in
 v0.7 APK. This verifies object-based recovery, not a full 603-source rebuild.
 
-Full source packaging uses `tools/build_performance_candidate.py --help` and
-still requires its exact external v0.5 base APK (SHA-256
+The original baseline packager required its exact external v0.5 base APK (SHA-256
 `1d0fa253b52d5d7200caa3d356a1f6b58f9d2fa7084f1cd61940581ef04bc598`).
 Existing compatible-update signing also requires the private candidate key.
-Do not silently substitute another base APK or signing identity.
+The reconstructed packager now accepts checksum-pinned v0.7/v0.12 bases too, always replaces both native libraries and recompiles Java. Do not silently substitute an unverified base or signing identity.
 
 ## Required next evidence
+
+## Conversation-guided reconstruction
+
+The directly attached conversation handoff has now been read in full. Its
+SHA-256 is `64161808f199e316b3c061d3517dca6c1ff95cdf87769a1d6bec2c9e881755b6`.
+It describes itself as a reconstructed summary, not a complete verbatim export.
+It confirms that later C++ source was lost, and that no additional user-maintained
+source repository exists. The second attached v0.12 APK matches the SHA-256 below.
+The missing-history blocker described in the initial baseline is resolved.
+
+Reconstruction now restores append-only mapped vertex/index arenas with checked
+mapping/unmapping and jointly orphaned storage, fast/synchronized comparison,
+bounded weak-owner bitmap/font texture caches, adjacent ordered sprite batching,
+frame/native stage timings, bounded native/site and Java session journals,
+explicit geometry audit and PNG/report sharing, layer toggles, intro replay/skip
+logging, and transactional supplemental music import with menu/mission playback.
+These are new equivalent implementations, not exact recovered v0.12 source.
+The simulation clock and engine ABI defines are unchanged. GPU/host tests cover
+arena rollover with pending colored geometry and retained font atlas uploads.
+
+See [RECOVERY_BUILD.md](RECOVERY_BUILD.md) for reproducible full-source commands,
+signing and APK/source receipts. The original signing key is unavailable through
+the file-transfer limit; an explicitly separate recovery package/key preserves
+the existing installed candidate. No game assets or private keys are committed.
+
+The 110–120 FPS result remains historical Adreno 740 evidence from the handoff.
+This cloud host cannot certify that device rate or audible media/fidelity.
+Current reconstruction checks: 603/603 original ARM64 source units compiled;
+65/65 host tests, 10/10 engine foundation/GLES tests and 55 Java importer/timing
+checks passed. Both Android libraries link, including the mission library linked against all
+603 newly compiled objects and freshly built FFmpeg-enabled foundations.
+Packaging is recorded with each artifact receipt.
+
+Draw rejection diagnostics and referenced-vertex validation are the next phase,
+after preserving and packaging the reconstructed streaming baseline.
 
 ### Supplied v0.12 binary inspection
 
@@ -130,19 +164,11 @@ has entered the checkout, APKs, or remote backup. The uploaded APK and extracted
 inspection files remain outside Git under `/workspace/attachments` and
 `/workspace/reign-recovery/v12-inspection`.
 
-The project conversation and v0.8–v0.12 sources are not accessible yet. Shared
-chat and supplied ChatGPT Library URLs return proxy HTTP 403; this session has
-no Library-resolution tool. Attach the conversation/export and later files
-directly before implementation. No v0.8–v0.12 behavior has been invented from
-version labels. The checked-in v0.7 device record reports 10–15 mission FPS;
-the later reported 110–120 FPS needs its implementation and device evidence.
-
-After reading that history: recover append-only unsynchronized geometry
-streaming, retained textures, music import and diagnostics; preserve the
-original 10 Hz simulation, `DEVELOPMENT=1`, `-fno-strict-aliasing`, `-fwrapv`
-and existing ABI choices. Establish the recovery performance baseline before
-investigating rejected mission draws and invalid TL vertices. Unsupported
-rendering must remain observable rather than silently discarded.
+At the initial baseline, the chat/Library URLs were inaccessible. The directly
+attached reconstructed conversation handoff subsequently resolved that blocker.
+The lost v0.8–v0.12 working tree cannot be fetched; this branch reconstructs its
+reported behavior from the surviving inputs. The v0.7 record reports 10–15 FPS;
+the later 110–120 FPS report is device evidence supplied through the handoff.
 
 No device or owned mission data is available in this session. FPS, rejected
 mission draws and invalid live TL vertices have not been reproduced. Future

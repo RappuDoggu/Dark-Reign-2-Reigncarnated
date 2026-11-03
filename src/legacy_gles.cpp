@@ -6,6 +6,10 @@
 #include <limits>
 #include <algorithm>
 #include <vector>
+#include <cstring>
+#include <chrono>
+#include <sstream>
+#include "reign/native_diagnostics.hpp"
 namespace reign {
 #define REIGN_GL(X) \
  X(CreateShader,PFNGLCREATESHADERPROC) X(ShaderSource,PFNGLSHADERSOURCEPROC) X(CompileShader,PFNGLCOMPILESHADERPROC) \
@@ -15,7 +19,7 @@ namespace reign {
  X(UseProgram,PFNGLUSEPROGRAMPROC) X(GetUniformLocation,PFNGLGETUNIFORMLOCATIONPROC) X(Uniform1i,PFNGLUNIFORM1IPROC) \
  X(Uniform1f,PFNGLUNIFORM1FPROC) X(Uniform2f,PFNGLUNIFORM2FPROC) X(Uniform3fv,PFNGLUNIFORM3FVPROC) \
  X(GenVertexArrays,PFNGLGENVERTEXARRAYSPROC) X(BindVertexArray,PFNGLBINDVERTEXARRAYPROC) X(DeleteVertexArrays,PFNGLDELETEVERTEXARRAYSPROC) \
- X(GenBuffers,PFNGLGENBUFFERSPROC) X(BindBuffer,PFNGLBINDBUFFERPROC) X(BufferData,PFNGLBUFFERDATAPROC) X(BufferSubData,PFNGLBUFFERSUBDATAPROC) X(DeleteBuffers,PFNGLDELETEBUFFERSPROC) \
+ X(GenBuffers,PFNGLGENBUFFERSPROC) X(BindBuffer,PFNGLBINDBUFFERPROC) X(BufferData,PFNGLBUFFERDATAPROC) X(MapBufferRange,PFNGLMAPBUFFERRANGEPROC) X(UnmapBuffer,PFNGLUNMAPBUFFERPROC) X(DeleteBuffers,PFNGLDELETEBUFFERSPROC) \
  X(EnableVertexAttribArray,PFNGLENABLEVERTEXATTRIBARRAYPROC) X(VertexAttribPointer,PFNGLVERTEXATTRIBPOINTERPROC) \
  X(GenTextures,PFNGLGENTEXTURESPROC) X(BindTexture,PFNGLBINDTEXTUREPROC) X(TexParameteri,PFNGLTEXPARAMETERIPROC) \
  X(TexImage2D,PFNGLTEXIMAGE2DPROC) X(TexSubImage2D,PFNGLTEXSUBIMAGE2DPROC) X(GenSamplers,PFNGLGENSAMPLERSPROC) X(BindSampler,PFNGLBINDSAMPLERPROC) X(SamplerParameteri,PFNGLSAMPLERPARAMETERIPROC) X(DeleteSamplers,PFNGLDELETESAMPLERSPROC) X(DeleteTextures,PFNGLDELETETEXTURESPROC) X(ActiveTexture,PFNGLACTIVETEXTUREPROC) \
@@ -37,6 +41,7 @@ struct LegacyGles::Impl {
  GLuint samplers[6]={},boundTexture=0;
  DrawState previous;
  bool stateValid=false,previousHomogeneous=false,newStream=true;
+ bool synchronized=false,auditArmed=false,auditing=false;unsigned auditCount=0;std::string audit;
  unsigned previousWidth=0,previousHeight=0;
  std::size_t vertexCapacity=2*1024*1024,indexCapacity=256*1024,vertexOffset=0,indexOffset=0;
  GLint uHomogeneous,uPerspective,uViewport,uTextureOp,uFog,uSpecular,uFogRgb,uAlpha,uAlphaRef,uImage;
@@ -45,7 +50,7 @@ struct LegacyGles::Impl {
   REIGN_GL(LOAD)
 #undef LOAD
  }
- void check(){if(auto error=GetError())throw std::runtime_error("GLES error "+std::to_string(error));}
+ void check(){if(auto error=GetError()){auto message="GLES error "+std::to_string(error);nativeDiagnostics.record(message);throw std::runtime_error(message);}}
  void target(unsigned w,unsigned h){
   if(!w||!h||w>16384||h>16384||std::uint64_t(w)*h*4>128*1024*1024)throw std::runtime_error("Invalid native render target size");
   if(w==width&&h==height&&fbo){BindFramebuffer(GL_FRAMEBUFFER,fbo);return;}
@@ -159,6 +164,11 @@ unsigned LegacyGles::texture_rgba(unsigned width,unsigned height,const std::uint
  ++g.stats.texture_uploads;g.stats.texture_bytes+=std::uint64_t(width)*height*4;g.check();return id;
 }
 LegacyGles::Statistics LegacyGles::statistics() const{return impl_->stats;}
+void LegacyGles::synchronized_stream(bool value){impl_->synchronized=value;impl_->newStream=true;}
+bool LegacyGles::synchronized_stream()const{return impl_->synchronized;}
+void LegacyGles::arm_audit(){impl_->auditArmed=true;}
+std::string LegacyGles::diagnostics()const{return std::string("Stream mode ")+(impl_->synchronized?"synchronized (diagnostic)":"append-only unsynchronized")+"\n"+nativeDiagnostics.report()+impl_->audit;}
+
 void LegacyGles::update_texture_rgba(unsigned id,unsigned width,unsigned height,const std::uint8_t *data){
  if(!id||!width||!height||width>16384||height>16384||!data)throw std::invalid_argument("Invalid texture update");
  auto &g=*impl_;g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,id);g.PixelStorei(GL_UNPACK_ALIGNMENT,1);
@@ -214,21 +224,39 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
  const GLuint tex=state.texture?state.texture:g.white;
  if(first||g.boundTexture!=tex){g.BindTexture(GL_TEXTURE_2D,tex);g.boundTexture=tex;}
  if(first||old.filtered!=state.filtered||old.address!=state.address)g.BindSampler(0,g.samplers[(state.filtered?3:0)+static_cast<unsigned>(state.address)]);
+ const auto uploadStart=std::chrono::steady_clock::now();
  const std::size_t vb=count*sizeof(LegacyTL),ib=index_count*sizeof(std::uint16_t);
+ if(g.auditArmed){g.auditArmed=false;g.auditing=true;g.auditCount=0;g.audit="Explicit geometry audit (first 96 draws):\n";}
+ if(g.auditing&&g.auditCount<96){
+  std::uint64_t hash=14695981039346656037ull;auto bytes=[&](const void *data,std::size_t n){auto p=static_cast<const unsigned char*>(data);for(std::size_t i=0;i<n;++i){hash^=p[i];hash*=1099511628211ull;}};bytes(vertices,vb);bytes(indices,ib);
+  const auto *v=static_cast<const LegacyTL*>(vertices);std::ostringstream out;out<<g.auditCount++<<" texture="<<state.texture<<" vertices="<<count<<" indices="<<index_count<<" hash="<<hash<<" z="<<v[0].z<<" w/rhw="<<v[0].rhw<<" blend="<<unsigned(state.blend)<<" depth="<<state.depth_test<<'/'<<state.depth_write<<'\n';g.audit+=out.str();
+ }
  g.BindBuffer(GL_ARRAY_BUFFER,g.vbo);g.BindBuffer(GL_ELEMENT_ARRAY_BUFFER,g.ibo);
  // Orphan once per frame (or arena exhaustion), then append batches. Previously
  // every draw reallocated both buffers, multiplying driver allocation work.
  if(g.newStream||g.vertexOffset+vb>g.vertexCapacity||g.indexOffset+ib>g.indexCapacity){
   g.vertexCapacity=std::max(g.vertexCapacity,vb);g.indexCapacity=std::max(g.indexCapacity,ib);
   g.BufferData(GL_ARRAY_BUFFER,g.vertexCapacity,nullptr,GL_STREAM_DRAW);g.BufferData(GL_ELEMENT_ARRAY_BUFFER,g.indexCapacity,nullptr,GL_STREAM_DRAW);
-  g.vertexOffset=g.indexOffset=0;g.newStream=false;
+  g.vertexOffset=g.indexOffset=0;g.newStream=false;++g.stats.stream_renewals;
  }
- g.BufferSubData(GL_ARRAY_BUFFER,g.vertexOffset,vb,vertices);g.BufferSubData(GL_ELEMENT_ARRAY_BUFFER,g.indexOffset,ib,indices);
+ // Both arenas are orphaned together before either offset is reused. Only
+ // append into fresh ranges, never overwrite storage still referenced by a draw.
+ const GLbitfield access=GL_MAP_WRITE_BIT|(g.synchronized?0:GL_MAP_UNSYNCHRONIZED_BIT);
+ auto upload=[&](GLenum target,std::size_t offset,std::size_t size,const void *data){
+  void *mapped=g.MapBufferRange(target,offset,size,access);
+  if(!mapped){g.newStream=true;g.stateValid=false;g.boundTexture=0;nativeDiagnostics.record("Geometry stream mapping failed");throw std::runtime_error("Geometry stream mapping failed");}
+  std::memcpy(mapped,data,size);
+  if(g.UnmapBuffer(target)!=GL_TRUE){g.newStream=true;g.stateValid=false;g.boundTexture=0;nativeDiagnostics.record("Geometry stream contents invalid after unmap");throw std::runtime_error("Geometry stream contents invalid after unmap");}
+ };
+ upload(GL_ARRAY_BUFFER,g.vertexOffset,vb,vertices);upload(GL_ELEMENT_ARRAY_BUFFER,g.indexOffset,ib,indices);
+ const auto drawStart=std::chrono::steady_clock::now();
+ g.stats.geometry_ms+=std::chrono::duration<double,std::milli>(drawStart-uploadStart).count();
  g.VertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset));
  g.VertexAttribPointer(1,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+16));
  g.VertexAttribPointer(2,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+20));
  g.VertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+24));
  g.DrawElements(GL_TRIANGLES,index_count,GL_UNSIGNED_SHORT,reinterpret_cast<void *>(g.indexOffset));
+ g.stats.draw_ms+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-drawStart).count();
  g.vertexOffset+=vb;g.indexOffset+=ib;++g.stats.draws;g.stats.geometry_bytes+=vb+ib;
  g.previous=state;g.previousHomogeneous=homogeneous;g.previousWidth=w;g.previousHeight=h;g.stateValid=true;
  // Validate at presentation/readback boundaries; avoid a driver query per batch.
@@ -237,12 +265,12 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
 #endif
 }
 void LegacyGles::present(){
- auto &g=*impl_;g.stateValid=false;g.newStream=true;++g.stats.presents;if(!g.fbo)throw std::runtime_error("No native frame to present");
+ auto &g=*impl_;g.stateValid=false;g.newStream=true;g.auditing=false;++g.stats.presents;if(!g.fbo)throw std::runtime_error("No native frame to present");
  g.Disable(GL_SCISSOR_TEST);g.BindFramebuffer(GL_READ_FRAMEBUFFER,g.fbo);g.BindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
  g.BlitFramebuffer(0,0,g.width,g.height,0,g.height,g.width,0,GL_COLOR_BUFFER_BIT,GL_NEAREST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.check();
 }
 void LegacyGles::present_to(unsigned width,unsigned height){
- auto &g=*impl_;g.stateValid=false;g.newStream=true;++g.stats.presents;if(!g.fbo||!width||!height||width>32768||height>32768)throw std::invalid_argument("Invalid presentation surface");
+ auto &g=*impl_;g.stateValid=false;g.newStream=true;g.auditing=false;++g.stats.presents;if(!g.fbo||!width||!height||width>32768||height>32768)throw std::invalid_argument("Invalid presentation surface");
  double scale=std::min(double(width)/g.width,double(height)/g.height);int w=int(g.width*scale),h=int(g.height*scale),x=(int(width)-w)/2,y=(int(height)-h)/2;
  g.Disable(GL_SCISSOR_TEST);g.BindFramebuffer(GL_FRAMEBUFFER,0);g.ClearColor(0,0,0,1);g.Clear(GL_COLOR_BUFFER_BIT);
  g.BindFramebuffer(GL_READ_FRAMEBUFFER,g.fbo);g.BindFramebuffer(GL_DRAW_FRAMEBUFFER,0);

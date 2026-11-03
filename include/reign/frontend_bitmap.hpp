@@ -17,6 +17,7 @@ public:
  float InvHeight()const{return 1.f/surface_->Height();}
  float UVShiftWidth()const{return surface_->UVShiftWidth();}
  float UVShiftHeight()const{return surface_->UVShiftHeight();}
+ std::weak_ptr<const void> cache_owner()const{return surface_;}
  const reign::BitmapSurface &surface()const{return *surface_;}
 };
 namespace reign {
