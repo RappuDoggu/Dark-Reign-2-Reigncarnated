@@ -254,6 +254,46 @@ path rejection, size limits, and preservation of a prior ZIP on failure. All Jav
 sources compile against SDK 35. Android interaction and the reported flickering
 still require the owner's next diagnostic ZIP; this release does not claim a fix.
 
+## Device ZIP findings and fenced-stream candidate (version 16)
+
+The two supplied v15 collections passed ZIP integrity checks and identify source
+`2a3098a189d5b9271e0f865c2720848f00b792ce`. Current top-level collections cover
+the menu and mission; nested prior captures/session tails are historical context,
+not additional independent current measurements. Raw logs and screenshots remain
+outside Git; a bounded textual measurement summary is saved with the test logs.
+
+Both current GPU reports show three fast-mode rollover pixel failures followed
+by three synchronized-mode passes. This is a real device correctness failure
+despite the previous software-GLES passes. The fast menu averaged 7.875 ms native
+wall time and approximately 120 FPS; synchronized averaged 149.666 ms (6.6 FPS).
+Mission fast averaged 7.632 ms (approximately 120 FPS); synchronized averaged
+63.236 ms (about 15 FPS). Readback-affected callback intervals are labeled in the
+reports; none of these timings is GPU elapsed time.
+
+Version 16 replaces reliance on same-object orphaning with a pool of at most
+eight physically separate vertex/index buffer pairs. A retired pair receives a
+GPU fence and is reused only after completion. Unsynchronized append mapping
+remains enabled in fast mode; offsets never overwrite queued ranges. Pool
+exhaustion has an explicit completion wait and journal counter, rather than unsafe
+reuse or unbounded allocation. Diagnostics report bank count/waits. Context loss
+abandons old fence objects before destroying the mission renderer.
+
+The previously unidentified E_NOTIMPL draws are primitive 2 (DX7 line lists),
+FVF 0x1c4 (TL), flags 0, with even counts. That specific path now dispatches
+GL_LINES with existing texture/blend/depth state, ignores triangle-only culling,
+and checks pair topology and referenced vertices. Unknown primitives/FVF/flags
+still fail. The remaining invalid referenced triangle vertex 13 is not bypassed;
+future rejections include x/y/z/rhw/uv values for diagnosis.
+
+Host validation: all 65 host and 10 engine foundation tests pass. Targeted checks
+cover rollover pixels in both modes across contexts, a forced-unsignaled fence
+pool reaching its eight-bank cap and safe wait/reuse, DX7 line-list pixels and
+odd-count rejection, and continued rejection of unsupported point lists. Both
+Android native libraries rebuild/link against the pinned original engine objects.
+The original simulation and ABI defines are unchanged. The candidate's device
+flicker, pillar appearance and 120 FPS retention are not yet verified; collect
+fresh v16 ZIPs before advancing to campaign/cutscene/options implementation.
+
 
 Diagnostic ZIP release: `Reigncarnated-Diagnostics-Zip-v15.apk`, source
 `2a3098a189d5b9271e0f865c2720848f00b792ce`, SHA-256

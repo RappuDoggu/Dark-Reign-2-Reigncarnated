@@ -1,5 +1,7 @@
 #include "reign/renderer_checks.hpp"
 #include <EGL/egl.h>
+#include <GLES3/gl3.h>
+#include <cstring>
 #include <EGL/eglext.h>
 #include <array>
 #include <cmath>
@@ -21,6 +23,11 @@ void original_world_gpu_checks(reign::LegacyGles &);
 namespace {
 constexpr unsigned W=32,H=32;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
+unsigned probeBuffers=0,probeFinishes=0;
+void GL_APIENTRY probeGen(GLsizei n,GLuint *out){probeBuffers+=n;reinterpret_cast<PFNGLGENBUFFERSPROC>(resolve("glGenBuffers"))(n,out);}
+GLenum GL_APIENTRY probeWait(GLsync,GLbitfield,GLuint64){return GL_TIMEOUT_EXPIRED;}
+void GL_APIENTRY probeFinish(){++probeFinishes;reinterpret_cast<PFNGLFINISHPROC>(resolve("glFinish"))();}
+void *probeResolve(const char *name){if(!std::strcmp(name,"glGenBuffers"))return reinterpret_cast<void*>(probeGen);if(!std::strcmp(name,"glClientWaitSync"))return reinterpret_cast<void*>(probeWait);if(!std::strcmp(name,"glFinish"))return reinterpret_cast<void*>(probeFinish);return resolve(name);}
 struct Context {
  EGLDisplay display=EGL_NO_DISPLAY;EGLSurface surface=EGL_NO_SURFACE;EGLContext context=EGL_NO_CONTEXT;
  Context(){
@@ -52,6 +59,10 @@ int main(){
  original_font_gpu_checks(renderer);
  original_frontend_gpu_checks(renderer);original_presenter_gpu_checks(renderer);
 #endif
+{probeBuffers=probeFinishes=0;reign::LegacyGles pooled(probeResolve);reign::DrawState state;auto red=quad(0xffff0000);
+ for(unsigned frame=0;frame<12;++frame){pooled.clear(W,H,0,0,0);pooled.draw(W,H,red.data(),red.size(),indices,6,state);pooled.present();}
+ if(probeBuffers!=16||probeFinishes!=1)throw std::runtime_error("Unsignaled bank was reused or buffer pool grew beyond its cap");
+ std::cout<<"Forced unsignaled fences: eight physical banks, bounded GPU wait, safe reuse PASS\n";}
 }return 0;}
  catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}
 }

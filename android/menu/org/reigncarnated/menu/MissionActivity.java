@@ -12,6 +12,7 @@ import javax.microedition.khronos.opengles.GL10;
 public final class MissionActivity extends Activity {
  static {System.loadLibrary("reign_mission");}
  private static native long openMission(String root,String writable);
+ private static native void abandonMission(long h);
  private static native String missionError();
  private static native String debugMission(long h,int action);
  private static native String diagnosticsMission(long h);
@@ -52,7 +53,7 @@ public final class MissionActivity extends Activity {
   DiagnosticSweep sweep;
   long handle;int width,height,pressed=-1;boolean failed,ready;volatile int lastX=320,lastY=240;
   MissionView(){super(MissionActivity.this);setEGLContextClientVersion(3);setPreserveEGLContextOnPause(true);setEGLConfigChooser(8,8,8,8,16,0);setRenderer(this);}
-  public void onSurfaceCreated(GL10 gl,EGLConfig config){if(sweep!=null){sweep.cancel();sweep=null;}Diagnostics.event("Mission GPU: "+gl.glGetString(GL10.GL_RENDERER)+" | "+gl.glGetString(GL10.GL_VERSION));if(handle!=0){closeMission(handle);handle=0;report("Graphics context restored; restarting test mission…");}failed=ready=false;}
+  public void onSurfaceCreated(GL10 gl,EGLConfig config){if(sweep!=null){sweep.cancel();sweep=null;}Diagnostics.event("Mission GPU: "+gl.glGetString(GL10.GL_RENDERER)+" | "+gl.glGetString(GL10.GL_VERSION));if(handle!=0){abandonMission(handle);closeMission(handle);handle=0;report("Graphics context restored; restarting test mission…");}failed=ready=false;}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;}
   public void onDrawFrame(GL10 gl){if(!resumed||failed||width<=0||height<=0)return;
    if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),"mission-runtime").getAbsolutePath());if(handle==0){failed=true;report(missionError());return;}debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}

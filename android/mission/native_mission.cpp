@@ -75,3 +75,5 @@ extern "C" JNIEXPORT jintArray JNICALL Java_org_reigncarnated_menu_MissionActivi
  auto result=env->NewIntArray(argb.size());if(result)env->SetIntArrayRegion(result,0,argb.size(),argb.data());return result;
  }catch(const std::exception &e){reign::nativeDiagnostics.record(e.what());return nullptr;}}
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_diagnosticsMission(JNIEnv *env,jobject,jlong handle){try{auto &s=state(handle);return env->NewStringUTF((s.app->Diagnostics()+" display layers="+std::to_string(NativeEngine::RenderLayers())+"\n"+s.renderer->diagnostics()).c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
+
+extern "C" JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MissionActivity_abandonMission(JNIEnv *,jclass,jlong handle){if(handle)state(handle).renderer->abandon_context();}

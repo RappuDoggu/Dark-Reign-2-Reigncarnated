@@ -123,3 +123,10 @@ signing keys and unrelated app files are excluded. Readback stalls are explicitl
 identified in reports; these callback timings are not GPU elapsed time or proof
 of rendering fidelity. Sampling stops on lifecycle transitions. Android save/share
 and visual correctness still require device validation.
+
+Version 16 retains this collector and uses fence-protected physical buffer banks
+in fast mode. The GPU-check report labels each rollover mode explicitly. After
+updating, verify that fast rollover checks pass on the phone, inspect the pillars
+and mission flickering, and compare normal fast FPS with the v15 report. A
+synchronized comparison remains a diagnostic mode. Do not treat a host pass as
+proof that the Adreno failure is resolved.

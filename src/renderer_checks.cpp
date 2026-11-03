@@ -78,9 +78,10 @@ std::string renderer_checks(LegacyGles &renderer){
   check(resized==resized_presented&&std::abs(int(resized[0])-64)<=1&&std::abs(int(resized[1])-128)<=1&&std::abs(int(resized[2])-191)<=1,"Render-target resize and presentation");
   renderer.clear(W,H,0,0,0);
   renderer.delete_texture(texture);
+  LegacyTL line[]={{4,8,.5f,1,0xffff0000,0xff000000,0,0},{28,8,.5f,1,0xffff0000,0xff000000,0,0}};std::uint16_t lineIndices[]={0,1};state={};renderer.clear(W,H,0,0,0);renderer.draw_lines(W,H,line,2,lineIndices,2,state);check(pixel(16,8,255,0,0),"TL line list renders expected colored pixels");
   const bool previousMode=renderer.synchronized_stream();
   for(bool synchronized:{false,true}){
-   renderer.synchronized_stream(synchronized);
+   report<<"Rollover mode: "<<(synchronized?"synchronized":"fast")<<'\n';renderer.synchronized_stream(synchronized);
    for(unsigned frame=0;frame<3;++frame){
     auto left=quad(0xffff0000);for(auto &v:left)if(v.x>0)v.x=W/2.f-.5f;
     auto right=quad(0xff00ff00);for(auto &v:right)if(v.x<0)v.x=W/2.f-.5f;

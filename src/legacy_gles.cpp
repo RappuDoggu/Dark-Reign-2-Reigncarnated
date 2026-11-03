@@ -19,6 +19,7 @@ namespace reign {
  X(UseProgram,PFNGLUSEPROGRAMPROC) X(GetUniformLocation,PFNGLGETUNIFORMLOCATIONPROC) X(Uniform1i,PFNGLUNIFORM1IPROC) \
  X(Uniform1f,PFNGLUNIFORM1FPROC) X(Uniform2f,PFNGLUNIFORM2FPROC) X(Uniform3fv,PFNGLUNIFORM3FVPROC) \
  X(GenVertexArrays,PFNGLGENVERTEXARRAYSPROC) X(BindVertexArray,PFNGLBINDVERTEXARRAYPROC) X(DeleteVertexArrays,PFNGLDELETEVERTEXARRAYSPROC) \
+ X(FenceSync,PFNGLFENCESYNCPROC) X(ClientWaitSync,PFNGLCLIENTWAITSYNCPROC) X(DeleteSync,PFNGLDELETESYNCPROC) X(Finish,PFNGLFINISHPROC) \
  X(GenBuffers,PFNGLGENBUFFERSPROC) X(BindBuffer,PFNGLBINDBUFFERPROC) X(BufferData,PFNGLBUFFERDATAPROC) X(MapBufferRange,PFNGLMAPBUFFERRANGEPROC) X(UnmapBuffer,PFNGLUNMAPBUFFERPROC) X(DeleteBuffers,PFNGLDELETEBUFFERSPROC) \
  X(EnableVertexAttribArray,PFNGLENABLEVERTEXATTRIBARRAYPROC) X(VertexAttribPointer,PFNGLVERTEXATTRIBPOINTERPROC) \
  X(GenTextures,PFNGLGENTEXTURESPROC) X(BindTexture,PFNGLBINDTEXTUREPROC) X(TexParameteri,PFNGLTEXPARAMETERIPROC) \
@@ -36,6 +37,22 @@ struct LegacyGles::Impl {
  REIGN_GL(DECLARE)
 #undef DECLARE
  GLuint program=0,vao=0,vbo=0,ibo=0,white=0,fbo=0,color=0,depth=0;
+ struct Bank {GLuint vertex=0,index=0;GLsync fence=nullptr;std::size_t vertices=0,indices=0;};
+ std::vector<Bank> banks;std::size_t activeBank=0;bool hasBank=false;std::uint64_t bankWaits=0;
+ void renew(std::size_t vb,std::size_t ib){
+  if(hasBank){auto &old=banks[activeBank];old.fence=FenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE,0);if(!old.fence)throw std::runtime_error("Cannot fence geometry stream");}
+  std::size_t selected=banks.size();
+  for(std::size_t i=0;i<banks.size();++i){auto &b=banks[i];if(!b.fence){selected=i;break;}auto status=ClientWaitSync(b.fence,0,0);if(status==GL_WAIT_FAILED)throw std::runtime_error("Geometry fence query failed");if(status==GL_ALREADY_SIGNALED||status==GL_CONDITION_SATISFIED){DeleteSync(b.fence);b.fence=nullptr;selected=i;break;}}
+  if(selected==banks.size()){
+   if(banks.size()<8){Bank b;GenBuffers(1,&b.vertex);GenBuffers(1,&b.index);banks.push_back(b);}
+   else {Finish();++bankWaits;nativeDiagnostics.record("Geometry bank pool exhausted: waited for GPU");for(auto &b:banks)if(b.fence){DeleteSync(b.fence);b.fence=nullptr;}selected=0;}
+  }
+  activeBank=selected;hasBank=true;auto &b=banks[selected];vbo=b.vertex;ibo=b.index;
+  BindBuffer(GL_ARRAY_BUFFER,vbo);BindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo);
+  if(b.vertices<vb){b.vertices=std::max(vertexCapacity,vb);BufferData(GL_ARRAY_BUFFER,b.vertices,nullptr,GL_STREAM_DRAW);}
+  if(b.indices<ib){b.indices=std::max(indexCapacity,ib);BufferData(GL_ELEMENT_ARRAY_BUFFER,b.indices,nullptr,GL_STREAM_DRAW);}
+  vertexCapacity=b.vertices;indexCapacity=b.indices;vertexOffset=indexOffset=0;newStream=false;++stats.stream_renewals;
+ }
  unsigned width=0,height=0;
  LegacyGles::Statistics stats;
  GLuint samplers[6]={},boundTexture=0;
@@ -75,7 +92,7 @@ struct LegacyGles::Impl {
   if(!ok){char log[4096];GetShaderInfoLog(s,sizeof(log),nullptr,log);DeleteShader(s);throw std::runtime_error(log);}return s;
  }
  GLint uniform(const char *name){return GetUniformLocation(program,name);}
- ~Impl(){DeleteSamplers(6,samplers);if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);if(white)DeleteTextures(1,&white);if(ibo)DeleteBuffers(1,&ibo);if(vbo)DeleteBuffers(1,&vbo);if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
+ ~Impl(){DeleteSamplers(6,samplers);if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);if(white)DeleteTextures(1,&white);for(auto &b:banks){if(b.fence)DeleteSync(b.fence);DeleteBuffers(1,&b.vertex);DeleteBuffers(1,&b.index);}if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
 };
 LegacyGles::LegacyGles(Resolver resolver):impl_(std::make_unique<Impl>(resolver)){
  auto &g=*impl_;
@@ -147,7 +164,7 @@ void main(){
  GLint ok=0;g.GetProgramiv(g.program,GL_LINK_STATUS,&ok);if(!ok){char log[4096];g.GetProgramInfoLog(g.program,sizeof(log),nullptr,log);throw std::runtime_error(log);}
  g.uHomogeneous=g.uniform("homogeneous_input");g.uPerspective=g.uniform("texture_perspective");g.uViewport=g.uniform("viewport_size");g.uTextureOp=g.uniform("texture_op");
  g.uFog=g.uniform("fog_enabled");g.uSpecular=g.uniform("specular_enabled");g.uFogRgb=g.uniform("fog_rgb");g.uAlpha=g.uniform("alpha_test");g.uAlphaRef=g.uniform("alpha_reference");g.uImage=g.uniform("image");
- g.GenVertexArrays(1,&g.vao);g.GenBuffers(1,&g.vbo);g.GenBuffers(1,&g.ibo);
+ g.GenVertexArrays(1,&g.vao);
  g.BindVertexArray(g.vao);for(unsigned i=0;i<4;++i)g.EnableVertexAttribArray(i);
  g.GenSamplers(6,g.samplers);
  const GLint modes[]={GL_CLAMP_TO_EDGE,GL_REPEAT,GL_MIRRORED_REPEAT};
@@ -167,7 +184,7 @@ LegacyGles::Statistics LegacyGles::statistics() const{return impl_->stats;}
 void LegacyGles::synchronized_stream(bool value){impl_->synchronized=value;impl_->newStream=true;}
 bool LegacyGles::synchronized_stream()const{return impl_->synchronized;}
 void LegacyGles::arm_audit(){impl_->auditArmed=true;}
-std::string LegacyGles::diagnostics()const{return std::string("Stream mode ")+(impl_->synchronized?"synchronized (diagnostic)":"append-only unsynchronized")+"\n"+nativeDiagnostics.report()+impl_->audit;}
+std::string LegacyGles::diagnostics()const{return std::string("Stream mode ")+(impl_->synchronized?"synchronized (diagnostic)":"append-only unsynchronized")+" | fence-protected banks="+std::to_string(impl_->banks.size())+" pool waits="+std::to_string(impl_->bankWaits)+"\n"+nativeDiagnostics.report()+impl_->audit;}
 
 void LegacyGles::update_texture_rgba(unsigned id,unsigned width,unsigned height,const std::uint8_t *data){
  if(!id||!width||!height||width>16384||height>16384||!data)throw std::invalid_argument("Invalid texture update");
@@ -175,7 +192,7 @@ void LegacyGles::update_texture_rgba(unsigned id,unsigned width,unsigned height,
  g.TexSubImage2D(GL_TEXTURE_2D,0,0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,data);g.boundTexture=0;
  ++g.stats.texture_uploads;g.stats.texture_bytes+=std::uint64_t(width)*height*4;g.check();
 }
-void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0;for(auto &sampler:g.samplers)sampler=0;g.stateValid=false;g.boundTexture=0; }
+void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.banks.clear();g.hasBank=false;g.newStream=true;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0;for(auto &sampler:g.samplers)sampler=0;g.stateValid=false;g.boundTexture=0; }
 void LegacyGles::delete_texture(unsigned id){if(id){impl_->DeleteTextures(1,&id);if(impl_->boundTexture==id)impl_->boundTexture=0;}}
 void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
  clear_buffers(w,h,true,true,r,g,b,a,1);
@@ -186,12 +203,14 @@ void LegacyGles::clear_buffers(unsigned w,unsigned h,bool color,bool depth,float
  gl.ClearColor(r,g,b,a);gl.ClearDepthf(depth_value);
  gl.Clear((color?GL_COLOR_BUFFER_BIT:0)|(depth?GL_DEPTH_BUFFER_BIT:0));gl.check();
 }
-void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
+void LegacyGles::draw(unsigned w,unsigned h,const LegacyTL *v,std::size_t n,const std::uint16_t *i,std::size_t ni,const DrawState &s){draw_tl(w,h,v,n,i,ni,s,false);}
+void LegacyGles::draw_lines(unsigned w,unsigned h,const LegacyTL *v,std::size_t n,const std::uint16_t *i,std::size_t ni,const DrawState &s){draw_tl(w,h,v,n,i,ni,s,true);}
+void LegacyGles::draw_tl(unsigned w,unsigned h,const LegacyTL *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state,bool lines){
  if(!vertices||count>65536)throw std::runtime_error("Invalid TL batch");
- if(!indices||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle indices");
+ if(!indices||!index_count||index_count%(lines?2:3)||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL index topology");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
- for(std::size_t n=0;n<index_count;++n){auto i=indices[n];if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid referenced TL coordinates/rhw at vertex "+std::to_string(i));}
- draw_batch(w,h,vertices,count,indices,index_count,state,false);
+ for(std::size_t n=0;n<index_count;++n){auto i=indices[n];if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid referenced TL coordinates/rhw at vertex "+std::to_string(i)+" x="+std::to_string(vertices[i].x)+" y="+std::to_string(vertices[i].y)+" z="+std::to_string(vertices[i].z)+" rhw="+std::to_string(vertices[i].rhw)+" uv="+std::to_string(vertices[i].u)+","+std::to_string(vertices[i].v));}
+ draw_batch(w,h,vertices,count,indices,index_count,state,false,lines);
 }
 void LegacyGles::draw_clip(unsigned w,unsigned h,const LegacyClip *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
  if(!vertices||count>65536)throw std::runtime_error("Invalid homogeneous batch");
@@ -200,8 +219,8 @@ void LegacyGles::draw_clip(unsigned w,unsigned h,const LegacyClip *vertices,std:
  for(std::size_t n=0;n<index_count;++n){auto i=indices[n];const auto &v=vertices[i];if(!std::isfinite(v.x)||!std::isfinite(v.y)||!std::isfinite(v.z)||!std::isfinite(v.w)||!std::isfinite(v.u)||!std::isfinite(v.v))throw std::runtime_error("Invalid homogeneous coordinates");}
  draw_batch(w,h,vertices,count,indices,index_count,state,true);
 }
-void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state,bool homogeneous){
- if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL triangle batch");
+void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state,bool homogeneous,bool lines){
+ if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%(lines?2:3)||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL indexed batch");
  if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
  auto &g=*impl_;g.target(w,h);const bool first=!g.stateValid;const auto &old=g.previous;
@@ -235,16 +254,10 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
   std::uint64_t hash=14695981039346656037ull;auto bytes=[&](const void *data,std::size_t n){auto p=static_cast<const unsigned char*>(data);for(std::size_t i=0;i<n;++i){hash^=p[i];hash*=1099511628211ull;}};bytes(vertices,vb);bytes(indices,ib);
   const auto *v=static_cast<const LegacyTL*>(vertices);std::ostringstream out;out<<g.auditCount++<<" texture="<<state.texture<<" vertices="<<count<<" indices="<<index_count<<" hash="<<hash<<" z="<<v[0].z<<" w/rhw="<<v[0].rhw<<" blend="<<unsigned(state.blend)<<" depth="<<state.depth_test<<'/'<<state.depth_write<<'\n';g.audit+=out.str();
  }
+ // A bank's physical buffer objects are never reused until their retirement
+ // fence signals. Do not depend on driver orphaning to protect queued draws.
+ if(g.newStream||g.vertexOffset+vb>g.vertexCapacity||g.indexOffset+ib>g.indexCapacity)g.renew(vb,ib);
  g.BindBuffer(GL_ARRAY_BUFFER,g.vbo);g.BindBuffer(GL_ELEMENT_ARRAY_BUFFER,g.ibo);
- // Orphan once per frame (or arena exhaustion), then append batches. Previously
- // every draw reallocated both buffers, multiplying driver allocation work.
- if(g.newStream||g.vertexOffset+vb>g.vertexCapacity||g.indexOffset+ib>g.indexCapacity){
-  g.vertexCapacity=std::max(g.vertexCapacity,vb);g.indexCapacity=std::max(g.indexCapacity,ib);
-  g.BufferData(GL_ARRAY_BUFFER,g.vertexCapacity,nullptr,GL_STREAM_DRAW);g.BufferData(GL_ELEMENT_ARRAY_BUFFER,g.indexCapacity,nullptr,GL_STREAM_DRAW);
-  g.vertexOffset=g.indexOffset=0;g.newStream=false;++g.stats.stream_renewals;
- }
- // Both arenas are orphaned together before either offset is reused. Only
- // append into fresh ranges, never overwrite storage still referenced by a draw.
  const GLbitfield access=GL_MAP_WRITE_BIT|(g.synchronized?0:GL_MAP_UNSYNCHRONIZED_BIT);
  auto upload=[&](GLenum target,std::size_t offset,std::size_t size,const void *data){
   void *mapped=g.MapBufferRange(target,offset,size,access);
@@ -259,7 +272,7 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
  g.VertexAttribPointer(1,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+16));
  g.VertexAttribPointer(2,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+20));
  g.VertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,sizeof(LegacyTL),reinterpret_cast<void *>(g.vertexOffset+24));
- g.DrawElements(GL_TRIANGLES,index_count,GL_UNSIGNED_SHORT,reinterpret_cast<void *>(g.indexOffset));
+ g.DrawElements(lines?GL_LINES:GL_TRIANGLES,index_count,GL_UNSIGNED_SHORT,reinterpret_cast<void *>(g.indexOffset));
  g.stats.draw_ms+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-drawStart).count();
  g.vertexOffset+=vb;g.indexOffset+=ib;++g.stats.draws;g.stats.geometry_bytes+=vb+ib;
  g.previous=state;g.previousHomogeneous=homogeneous;g.previousWidth=w;g.previousHeight=h;g.stateValid=true;

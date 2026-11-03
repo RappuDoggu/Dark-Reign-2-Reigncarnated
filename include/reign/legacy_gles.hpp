@@ -38,7 +38,8 @@ struct DrawState {
 };
 class LegacyGles {
  struct Impl;std::unique_ptr<Impl> impl_;
- void draw_batch(unsigned,unsigned,const void*,std::size_t,const std::uint16_t*,std::size_t,const DrawState&,bool);
+ void draw_batch(unsigned,unsigned,const void*,std::size_t,const std::uint16_t*,std::size_t,const DrawState&,bool,bool=false);
+ void draw_tl(unsigned,unsigned,const LegacyTL*,std::size_t,const std::uint16_t*,std::size_t,const DrawState&,bool);
 public:
  struct Statistics {std::uint64_t draws=0,texture_uploads=0,texture_bytes=0,geometry_bytes=0,presents=0,stream_renewals=0;double geometry_ms=0,draw_ms=0;};
  Statistics statistics() const;
@@ -58,10 +59,11 @@ public:
  void abandon_context() noexcept;
  void clear(unsigned width,unsigned height,float r,float g,float b,float a=1);
  void clear_buffers(unsigned width,unsigned height,bool color,bool depth,float r,float g,float b,float a,float depth_value);
- // Initial supported Vid boundary: indexed triangle lists of pre-transformed/lit vertices.
+ // Indexed TL triangle and explicit line lists; homogeneous triangles retain GPU clipping.
  // Other FVF layouts/stages are deliberately not silently accepted.
  void draw(unsigned width,unsigned height,const LegacyTL *,std::size_t vertices,
            const std::uint16_t *,std::size_t indices,const DrawState &);
+ void draw_lines(unsigned,unsigned,const LegacyTL*,std::size_t,const std::uint16_t*,std::size_t,const DrawState&);
  void draw_clip(unsigned width,unsigned height,const LegacyClip *,std::size_t vertices,
                 const std::uint16_t *,std::size_t indices,const DrawState &);
  // Draw in logical game coordinates, then flip the completed color buffer once.

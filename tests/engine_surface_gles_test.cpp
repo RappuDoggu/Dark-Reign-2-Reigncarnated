@@ -169,6 +169,11 @@ int main(){try{
   vertices=quad(0x80404040);
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,vertices.data(),4,triangleIndices,6,0)==S_OK);
   renderer.read_rgba(W,H,result.data());check(result[center+2]==255&&result[center+3]==128);
+  check(device->SetTexture(0,nullptr)==S_OK);check(device->SetRenderState(D3DRENDERSTATE_ZENABLE,0)==S_OK);check(device->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_CW)==S_OK);
+  auto line=quad(0xffff0000);line[0].x=4;line[0].y=8;line[1].x=28;line[1].y=8;WORD lineIndices[]={0,1,0};check(device->Clear(0,nullptr,D3DCLEAR_TARGET,0xff000000,1,0)==S_OK);
+  check(device->DrawIndexedPrimitive(D3DPT_LINELIST,D3DFVF_TLVERTEX,line.data(),2,lineIndices,2,0)==S_OK);renderer.read_rgba(W,H,result.data());auto lineAt=((H-1-8)*W+16)*4;check(result[lineAt]==255&&result[lineAt+1]==0);
+  check(device->DrawIndexedPrimitive(D3DPT_LINELIST,D3DFVF_TLVERTEX,line.data(),2,lineIndices,3,0)==E_INVALIDARG);
+  check(device->DrawIndexedPrimitive(D3DPT_POINTLIST,D3DFVF_TLVERTEX,line.data(),2,lineIndices,3,0)==E_NOTIMPL);
   check(device->EndScene()==S_OK&&device->EndScene()==E_FAIL);check(device->Release()==0);
   // Unequal reciprocal W distinguishes perspective-correct from affine UVs.
   const std::uint8_t stripes[]={255,0,0,255,0,0,255,255};

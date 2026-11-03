@@ -199,9 +199,10 @@ public:
   const DWORD submittedIndices=n;
   auto reject=[&](HRESULT hr,int line,const char *reason){std::ostringstream out;out<<"DX7 DrawIndexedPrimitive:"<<line<<" hr=0x"<<std::hex<<std::uint32_t(hr)<<" primitive="<<std::dec<<unsigned(kind)<<" FVF=0x"<<std::hex<<fvf<<" flags=0x"<<flags<<std::dec<<" vertices="<<count<<" indices="<<submittedIndices<<" triangleIndices="<<n<<" colorOp="<<colorOp<<" alphaOp="<<alphaOp<<" colorArgs="<<color1<<'/'<<color2<<" alphaArgs="<<alpha1<<'/'<<alpha2<<" filters="<<minFilter<<'/'<<magFilter<<" cull="<<cullMode<<" reason="<<reason;reign::nativeDiagnostics.record(out.str());return hr;};
 
-  if(!scene||!vertices||!indices||!count||n<3||n>196608||count>65536)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
-  if((kind!=D3DPT_TRIANGLELIST&&kind!=D3DPT_TRIANGLESTRIP&&kind!=D3DPT_TRIANGLEFAN)||fvf!=D3DFVF_TLVERTEX||flags)return reject(E_NOTIMPL,__LINE__,"unsupported or invalid draw arguments/state");
-  if(kind==D3DPT_TRIANGLELIST&&n%3)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
+  const bool lines=kind==D3DPT_LINELIST;
+  if(!scene||!vertices||!indices||!count||n<(lines?2u:3u)||n>196608||count>65536)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
+  if((kind!=D3DPT_TRIANGLELIST&&kind!=D3DPT_TRIANGLESTRIP&&kind!=D3DPT_TRIANGLEFAN&&!lines)||fvf!=D3DFVF_TLVERTEX||flags)return reject(E_NOTIMPL,__LINE__,"unsupported or invalid draw arguments/state");
+  if((lines&&n%2)||(kind==D3DPT_TRIANGLELIST&&n%3))return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
   try{
    // Original bucket allocations can place the index array at an odd address.
    // Copy its bytes before accessing WORDs, including on strict-alignment ARM64.
@@ -210,7 +211,7 @@ public:
    indices=alignedIndices.data();
    for(DWORD i=0;i<n;++i)if(indices[i]>=count)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
    triangles.clear();
-   if(kind!=D3DPT_TRIANGLELIST){
+   if(!lines&&kind!=D3DPT_TRIANGLELIST){
     triangles.reserve(std::size_t(n-2)*3);
     for(DWORD i=2;i<n;++i){
      if(kind==D3DPT_TRIANGLEFAN)triangles.insert(triangles.end(),{indices[0],indices[i-1],indices[i]});
@@ -234,7 +235,7 @@ public:
    draw.texture=upload?upload->Refresh(renderer):0;
    const auto *tl=static_cast<const reign::LegacyTL *>(vertices);
    visible.clear();
-   if(cullMode!=D3DCULL_NONE){
+   if(!lines&&cullMode!=D3DCULL_NONE){
     visible.reserve(n);
     for(DWORD i=0;i<n;i+=3){const auto &a=tl[indices[i]],&b=tl[indices[i+1]],&c=tl[indices[i+2]];
      // TL coordinates have y down: positive signed area is clockwise.
@@ -244,7 +245,7 @@ public:
     }
     if(visible.empty())return S_OK;indices=visible.data();n=DWORD(visible.size());
    }
-   renderer.draw(width,height,tl,count,indices,n,draw);return S_OK;
+   if(lines)renderer.draw_lines(width,height,tl,count,indices,n,draw);else renderer.draw(width,height,tl,count,indices,n,draw);return S_OK;
   }catch(const std::exception &e){return reject(E_FAIL,__LINE__,e.what());}catch(...){return reject(E_FAIL,__LINE__,"unknown exception");}
  }
  HRESULT DrawPrimitive(D3DPRIMITIVETYPE kind,DWORD fvf,void *vertices,DWORD count,DWORD flags)override{
