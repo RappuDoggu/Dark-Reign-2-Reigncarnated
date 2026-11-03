@@ -1,0 +1,124 @@
+# Native ARM64 recovery progress
+
+Recovery started 2026-11-02 (America/Los_Angeles).
+
+## Provenance and scope
+
+- Starting checkpoint: `75e34b99c312238ca9367cb4abdcf579665f40f6`, fetched from
+  `dev/native-arm64-primitives`.
+- Recovery branch: `recovery/native-arm64-v012`. The branch name describes the
+  intended recovery; it does **not** claim v0.12 has been reconstructed.
+- `builds/v0.7/recovery.zip.part1` through `part5` reconstruct an archive with
+  SHA-256 `f3122fc8a81a24fb53824d21c21d9d23691ba974ccb5a76a9099e5c294d43abe`.
+  All 589 ZIP members pass CRC verification. All archived source-snapshot files
+  match the starting checkpoint byte for byte.
+- The archive identifies its source as
+  `4bdab5af0e9c58c62f6d033db1f17190d5b19db6`. Its README mentions a signing key,
+  but the checked-in recovery archive contains no keystore. Do not assume one
+  is present or publish credentials or owned game data.
+
+## Verified baseline
+
+- Upstream checkout: `9ce9da5f21604310a997f0c41e9cd383f5e292c3`, clean.
+  `tools/prepare_engine_full.py` passed the repository's full source-tree check:
+  1,791 files, aggregate SHA-256
+  `13bc6a7028f64297118b8f1238261873aa0fe1f7cc74f28eca24c31a6b362724`.
+- SDK platform 35 revision 2, build-tools 35.0.0, NDK 27.2.12479018/r27c:
+  downloaded and verified with `tools/install_android_sdk.sh` unchanged.
+  SDK 35 is the compile SDK; the existing native minimum API remains 26.
+- FFmpeg n6.1.1 source passed the pinned SHA-256 check in
+  `tools/build_bink_decoder.sh`; host and Android static decoder builds passed.
+- Java/Javac 21.0.12.1, Python 3.12.14, CMake 4.4.4, Ninja 1.13.2;
+  host software EGL/Mesa and extracted Debian GLES runtime available.
+- Java import tests: 28 folder-import checks and 12 ZIP-import checks passed.
+  All Android menu Java sources compile against SDK 35 using `--release 8`.
+- Engine foundation host build and all 9 tests passed under ASan/UBSan.
+  Engine ARM64 foundation build passed.
+- Main host build and all 65 tests passed with ASan/UBSan and software GLES,
+  including `gles_legacy_pixels`. This does not test owned-data mission draws.
+- Both native libraries retain 16 KiB ELF LOAD alignment. Repeating both
+  relinks produced identical SHA-256 hashes.
+- Both archived relink scripts passed with NDK r27c. After `llvm-strip
+  --strip-unneeded`, both libraries match the original v0.7 APK byte for byte:
+  mission `de4d63522736b6af1351fa0d0561815afd19a67b2e3b7e66383fe4a37701d1da`;
+  menu `b952d9a01c04b6ae928dbae024ce85b2d8d5145aaf338966ba2a912596d677d1`.
+- Original v0.7 APK SHA-256 matches its existing receipt:
+  `9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b`.
+  APK signature verification passed. No new APK is delivered by this checkpoint.
+
+## Reproduce the baseline
+
+Use the existing checkout; no extra worktree is required. Keep build outputs,
+toolchains, upstream sources, signing keys and owned assets outside the checkout.
+On a Linux x86_64 host, install a JDK, Python, CMake, Ninja, make, GCC/G++,
+unzip, EGL/Mesa and GLES runtime dependencies. This cloud machine lacks root;
+missing Java/GLES packages were downloaded through signature-verified Debian
+APT metadata and extracted into `/workspace/reign-recovery/host`. CMake/Ninja
+are isolated in `/workspace/reign-recovery/tools-venv`. Current-machine paths
+are initialized by `source /workspace/reign-recovery/env.sh`.
+
+From the repository root, with an external `$work` directory:
+
+```sh
+bash tools/fetch_upstream.sh "$work/upstream"
+bash tools/install_android_sdk.sh "$work/sdk"
+export ANDROID_SDK_ROOT="$work/sdk"
+export ANDROID_NDK_HOME="$work/sdk/ndk/27.2.12479018"
+bash tools/build_bink_decoder.sh "$work/ffmpeg" host
+bash tools/build_bink_decoder.sh "$work/ffmpeg" android
+python3 tools/prepare_engine_full.py "$work/upstream" "$work/staged"
+python3 tools/stage_khronos_headers.py "$ANDROID_NDK_HOME" "$work/khronos"
+cmake -S engine -B "$work/build-engine-host" -G Ninja \
+  -DREIGN_UPSTREAM="$work/upstream" -DREIGN_SANITIZE=ON
+cmake --build "$work/build-engine-host" --parallel 4
+ASAN_OPTIONS=detect_leaks=0 ctest --test-dir "$work/build-engine-host" --output-on-failure
+cmake -S . -B "$work/build-host" -G Ninja \
+  -DREIGN_UPSTREAM="$work/upstream" -DREIGN_SANITIZE=ON \
+  -DREIGN_GLES_BACKEND=ON -DREIGN_KHRONOS_HEADERS="$work/khronos" \
+  -DREIGN_FFMPEG_ROOT="$work/ffmpeg/host/install"
+cmake --build "$work/build-host" --parallel 4
+ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
+  ctest --test-dir "$work/build-host" --output-on-failure
+cmake -S engine -B "$work/build-engine-android" -G Ninja \
+  -DREIGN_UPSTREAM="$work/upstream" \
+  -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake" \
+  -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 \
+  -DANDROID_STL=c++_static -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+  '-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O2 -g -fno-strict-aliasing -fwrapv'
+cmake --build "$work/build-engine-android" --parallel 4
+```
+
+Concatenate the five recovery ZIP parts in numerical order into an external
+file, check the SHA-256 above, check ZIP integrity, and extract externally.
+Then run `NDK="$ANDROID_NDK_HOME" bash /path/to/extracted/mission/relink.sh`
+and the corresponding `menu/relink.sh`. Strip copies of the resulting libraries
+with the NDK's `llvm-strip --strip-unneeded`; compare those bytes against
+`lib/arm64-v8a/libreign_mission.so` and `libreign_menu.so` in the checked-in
+v0.7 APK. This verifies object-based recovery, not a full 603-source rebuild.
+
+Full source packaging uses `tools/build_performance_candidate.py --help` and
+still requires its exact external v0.5 base APK (SHA-256
+`1d0fa253b52d5d7200caa3d356a1f6b58f9d2fa7084f1cd61940581ef04bc598`).
+Existing compatible-update signing also requires the private candidate key.
+Do not silently substitute another base APK or signing identity.
+
+## Required next evidence
+
+The project conversation and v0.8–v0.12 sources are not accessible yet. Shared
+chat and supplied ChatGPT Library URLs return proxy HTTP 403; this session has
+no Library-resolution tool. Attach the conversation/export and later files
+directly before implementation. No v0.8–v0.12 behavior has been invented from
+version labels. The checked-in v0.7 device record reports 10–15 mission FPS;
+the later reported 110–120 FPS needs its implementation and device evidence.
+
+After reading that history: recover append-only unsynchronized geometry
+streaming, retained textures, music import and diagnostics; preserve the
+original 10 Hz simulation, `DEVELOPMENT=1`, `-fno-strict-aliasing`, `-fwrapv`
+and existing ABI choices. Establish the recovery performance baseline before
+investigating rejected mission draws and invalid TL vertices. Unsupported
+rendering must remain observable rather than silently discarded.
+
+No device or owned mission data is available in this session. FPS, rejected
+mission draws and invalid live TL vertices have not been reproduced. Future
+delivered APKs must embed their exact source revision, ship build instructions
+and update this record. Keep signing material and proprietary assets private.

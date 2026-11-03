@@ -1,0 +1,14 @@
+{
+  "mission": {
+    "unstripped_sha256": "3e931ea3ae9ffa63c5fd3d5cf87f7b9a20f096594961b1ac598dda1d255a6bfd",
+    "stripped_sha256": "de4d63522736b6af1351fa0d0561815afd19a67b2e3b7e66383fe4a37701d1da",
+    "apk_library_sha256": "de4d63522736b6af1351fa0d0561815afd19a67b2e3b7e66383fe4a37701d1da",
+    "byte_equal_to_v07_apk": true
+  },
+  "menu": {
+    "unstripped_sha256": "d92ad16f13f7df59285a45faec60b23b3464aaa46c84696590a29c63a797f6f9",
+    "stripped_sha256": "b952d9a01c04b6ae928dbae024ce85b2d8d5145aaf338966ba2a912596d677d1",
+    "apk_library_sha256": "b952d9a01c04b6ae928dbae024ce85b2d8d5145aaf338966ba2a912596d677d1",
+    "byte_equal_to_v07_apk": true
+  }
+}
