@@ -540,3 +540,11 @@ their v19 source/behavior. SDK 35/NDK 27.2.12479018, original ABI flags, fenced
 streaming and 10 Hz simulation are unchanged. Phone startup and the v19 gesture/
 transition changes still require device validation. No reimport is required for
 this code fix; the APK retains the recovery identity and signer.
+
+Version 20 artifact: `Reigncarnated-StartupFix-v20.apk`, source
+`9c09e6419a0aa7036a30a012e287740d4422af77`, SHA-256
+`2e2aa3362a0e5a525c103a7ee873590566520bd4c4cc1fbe722dedb0355c6017`.
+ZIP, signature, alignment, ARM64/16 KiB ELF loads and embedded source/build/
+progress receipts pass. Manifest code is 20. The mission native hash is identical
+to v19 and the signer matches for an update retaining imported data. Phone startup
+is pending; this release fixes the reproduced notification regression.
