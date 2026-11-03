@@ -20,7 +20,7 @@ void SetupMission(){
  if(!session||!Game::MissionPreLoaded())throw std::logic_error("Local mission must be preloaded before player setup");
  if(::Player::GetCurrentPlayer())throw std::logic_error("Previous mission player was not cleaned up");
  if(!session->difficulty.empty()){auto *setting=Difficulty::FindSetting(GameIdent(session->difficulty.c_str()));if(!setting)throw std::invalid_argument("Unknown imported difficulty setting");Difficulty::SetCurrentSetting(setting->GetName());}
- if(session->campaign)return; // Original Team::PostLoad creates campaign client and scripted AI.
+ if(session->campaign){Difficulty::SetApplyEnemy(!session->difficulty.empty());return;} // Original Team::PostLoad creates campaign client and scripted AI.
  ::Team *selected=nullptr;
  for(U32 id=0;id<Game::MAX_TEAMS;++id){auto *team=::Team::Id2Team(id);if(team&&team->IsAvailablePlay()){selected=team;break;}}
  if(!selected)throw std::runtime_error("Mission has no playable starting team");
