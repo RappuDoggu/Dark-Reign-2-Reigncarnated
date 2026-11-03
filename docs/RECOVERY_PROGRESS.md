@@ -104,6 +104,32 @@ Do not silently substitute another base APK or signing identity.
 
 ## Required next evidence
 
+### Supplied v0.12 binary inspection
+
+The directly attached `Reigncarnated-Diagnostics-v12.apk` was downloaded and
+passed ZIP CRC and Android v2/v3 signature verification. SHA-256:
+`1cd5e963306dc17d0869eda528fb6f02970164052374ce78d1fda1459f92cbe5`.
+Its manifest identifies `org.reigncarnated.missioncandidate`, versionCode 12,
+versionName `0.12-diagnostics`, compile/target SDK 35, minimum API 26 and an
+ARM64-only native payload. Both native libraries differ from v0.7.
+
+Static strings in both native libraries identify `Stream mode append-only
+unsynchronized` and a synchronized diagnostic mode. The DEX contains music ZIP
+import, diagnostic sharing, `Diagnostics` and `DiagnosticsProvider`; the
+manifest declares a non-exported diagnostics provider with URI grants. These
+are binary observations, not executed behavior or recovered source. No precise
+source revision is established by this inspection. Native strings also include
+invalid-index rejection and behind-camera GPU clipping diagnostics; their
+runtime incidence and correctness are unverified.
+
+The accompanying `Reigncarnated-v07-Source-Relink.zip` and
+`Reigncarnated-Instant-Action-Data-v06.zip` exceed this session's 32 MiB file
+transfer limit and were not downloaded. The supplied source archive has not
+been compared with the v0.7 archive already recovered from Git. No game data
+has entered the checkout, APKs, or remote backup. The uploaded APK and extracted
+inspection files remain outside Git under `/workspace/attachments` and
+`/workspace/reign-recovery/v12-inspection`.
+
 The project conversation and v0.8–v0.12 sources are not accessible yet. Shared
 chat and supplied ChatGPT Library URLs return proxy HTTP 403; this session has
 no Library-resolution tool. Attach the conversation/export and later files
