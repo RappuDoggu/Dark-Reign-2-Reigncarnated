@@ -13,6 +13,9 @@ public:
  ShellScene(const std::string &installation,LegacyGles &);
  ~ShellScene();
  void draw(float seconds);
+ void select_camera(const std::string &,float seconds);
+ bool camera_finished(float seconds) const;
+ std::string camera_name(float seconds) const;
  ShellEffectStats effect_stats()const;
  void abandon_context();
  std::string ambient_sound()const;

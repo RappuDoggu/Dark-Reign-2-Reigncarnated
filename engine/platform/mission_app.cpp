@@ -47,6 +47,7 @@
 #include "gameconstants.h"
 #include "team.h"
 #include "viewer.h"
+#include "viewer_private.h"
 #include "client_private.h"
 #include <cmath>
 namespace Sight {class Map;}
@@ -151,11 +152,7 @@ void MissionApp::Control(unsigned action,float x,float y){
  if(!std::isfinite(x)||!std::isfinite(y))throw std::invalid_argument("Invalid camera gesture");
  if(action==1){Client::Events::TriggerClientMode(Client::CM_NONE);Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr("de::deselect"),0,0);}
  else if(action==2||action==3)Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr(action==2?"de::prevdir":"de::nextdir"),0,0);
- else if(action==4)QueueWheel(S32(std::clamp(x,-120.f,120.f)));
- else if(action==5){auto *camera=Viewer::GetCurrent();if(!camera)throw std::logic_error("No active viewer");auto matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();Vector position=camera->GetPosition()+right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->Set(position,camera->GetOrienation(),0);}
- // Standard::Circle rotates yaw around its map pivot without invoking Swoop/zoom.
- // Screen clockwise map rotation uses the opposite camera yaw.
- else if(action==6){auto *camera=Viewer::GetCurrent();if(!camera||Crc::CalcStr(camera->GetName())!=Crc::CalcStr("Standard"))throw std::logic_error("Map rotation requires the Standard game camera");std::ostringstream command;command.imbue(std::locale::classic());command<<"camera.rotateby "<<-std::clamp(x,-90.f,90.f);Console::ProcessCmd(command.str().c_str());}
+ else if(action==5){auto *camera=dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent());if(!camera)throw std::logic_error("Map pan requires the Standard game camera");const auto &matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();auto delta=right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->PanNative(delta.x,delta.z);}
  else throw std::invalid_argument("Unknown mission control");
 }
 void MissionApp::Frame(){if(impl->closed)throw std::logic_error("Mission runtime is closed");if(BeginNativeFrame()){Game::RC::Process();Sound::Poll();}}

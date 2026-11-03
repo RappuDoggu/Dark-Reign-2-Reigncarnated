@@ -190,3 +190,32 @@ java -cp "$work/java" org.reigncarnated.menu.MissionTouchTest
 Verify twisting in both directions at a fixed zoom, building preview rotation
 before confirmation, quick cancel, ordinary selection and two-finger pan on the
 device. A host gesture test cannot establish on-device camera/placement behavior.
+
+## Pan, double tap and menu transition (version 19)
+
+One finger aims; a single-finger double tap performs one original left click.
+Two fingers pan only. Three-finger horizontal swipes rotate the selected building
+preview in compass steps. Left click/Build arrows/Deselect remain available.
+Touch zoom and map rotation are removed. Single-finger box dragging is replaced
+by aiming.
+
+The pan correction changes only the original Standard camera's horizontal scroll
+target. The full builder stages the SHA-verified original source, adds a
+non-virtual PanNative method and compiles it into `coregame/viewer_standard.cpp`.
+An incremental build must recompile that original unit as well as retaining the
+updated `multiplayer/multiplayer.cpp` from v17, then relink the mission adapter.
+All engine fields, virtual methods, ABI flags and the 10 Hz simulation remain.
+
+The main menu displays PackageManager's installed version name/code and binds
+the same value to original `sys.buildver`. Both Instant Action buttons play the
+imported Main::Exit bookmark before opening selection. Cancel/Back plays
+Main::Enter before enabling the main controls. Missing bookmarks fail explicitly.
+The timeline holds the last valid pose after a non-looping path completes.
+The remaining full source setup interface/scripts and attack-sound work are
+tracked in `INSTANT_ACTION_MENU_RESTORATION.md`.
+
+Rebuild both native libraries and all Java together: the menu JNI open call now
+also takes the APK version. Source/build/progress receipts stay embedded. Verify
+the visible APK 19 label, repeated panning over varied terrain without zoom creep,
+double-tap actions, three-finger building rotation, Instant Action entry and
+Cancel/Back, and pause/resume on the phone.

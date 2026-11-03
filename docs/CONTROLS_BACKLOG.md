@@ -1,5 +1,27 @@
 # Single-screen controls and remaining ideas
 
+## Current controls — version 19
+
+- One finger moves/aims the cursor. Double-tap with one finger issues one original
+  left click for selection, movement/orders, HUD actions or building placement.
+- Two fingers move the map only. Pinching and twisting do not zoom or rotate it.
+- While a building preview is selected, swipe three fingers left/right to step
+  its original placement direction. Build ↶/↷ remain available as buttons.
+- Left click confirms at the cursor; Deselect clears selection and cancels the
+  current placement/order mode.
+- Touch zoom and map rotation are removed, including their native action paths.
+  Single-finger dragging now aims rather than starting a box selection.
+
+The v18 pan adapter incorrectly passed a world-space Y coordinate into the
+Standard camera's terrain-relative Set interface. Original simulation then added
+the terrain floor again. Version 19 moves only the original horizontal scroll
+target through PanNative, leaving height, targetHeight and pitch untouched. The
+method is non-virtual, with no added fields/vtable entries; ARM64 size/alignment
+checks match the v18 camera classes. The owner's device must still confirm the
+reported zoom jump is resolved. Controller work remains deferred.
+
+## Version 18 history
+
 Version 18 implements the owner's immediate touch-control choices. Controller
 changes and control-group design are deferred.
 

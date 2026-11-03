@@ -2,6 +2,9 @@
 #include "bookmark_curve.h"
 #include <cmath>
 #include <limits>
+#include <map>
+#include <algorithm>
+#include <cctype>
 namespace reign {
 namespace {
 using camera_detail::BookmarkObj;
@@ -60,4 +63,27 @@ ShellCameraSample ShellCamera::sample(float seconds){
  for(float p:result.position)if(!std::isfinite(p))throw std::runtime_error("Invalid sampled camera position");
  result.active=true;return result;
 }
+namespace {
+std::string cameraKey(std::string s){for(char &c:s)c=char(std::tolower(static_cast<unsigned char>(c)));return s;}
+void validTime(float now){if(!std::isfinite(now)||now<0)throw std::invalid_argument("Invalid shell camera clock");}
+}
+struct ShellCameraTimeline::Impl {
+ std::map<std::string,std::unique_ptr<ShellCamera>> cameras;
+ std::string selected;float start=0;
+ explicit Impl(const std::vector<ConfigNode> &objects){
+  for(const auto &object:objects)for(const auto &scope:object.children)if(scope.name=="BookmarkObj"){
+   auto camera=std::make_unique<ShellCamera>(scope);auto key=cameraKey(camera->name());
+   if(!cameras.emplace(key,std::move(camera)).second)throw std::runtime_error("Duplicate shell camera bookmark: "+key);
+  }
+  if(!cameras.count("main::init")||!cameras.count("main::enter"))throw std::runtime_error("Missing original main camera bookmarks");
+ }
+ ShellCamera &current(float now)const{return *cameras.at(selected.empty()?(now<.5f?"main::init":"main::enter"):selected);}
+ float elapsed(float now)const{return std::max(0.f,now-(selected.empty()?(now<.5f?0.f:.5f):start));}
+};
+ShellCameraTimeline::ShellCameraTimeline(const std::vector<ConfigNode> &objects):impl_(std::make_unique<Impl>(objects)){}
+ShellCameraTimeline::~ShellCameraTimeline()=default;
+void ShellCameraTimeline::select(const std::string &name,float now){validTime(now);auto key=cameraKey(name);if(!impl_->cameras.count(key))throw std::runtime_error("Missing original shell bookmark: "+name);impl_->selected=key;impl_->start=now;}
+ShellCameraSample ShellCameraTimeline::sample(float now){validTime(now);auto &c=impl_->current(now);auto t=impl_->elapsed(now);if(!c.looping())t=std::min(t,std::nextafter(c.duration(),0.f));return c.sample(t);}
+bool ShellCameraTimeline::finished(float now)const{validTime(now);const auto &c=impl_->current(now);return !c.looping()&&impl_->elapsed(now)>=c.duration();}
+std::string ShellCameraTimeline::name(float now)const{validTime(now);return impl_->current(now).name();}
 }

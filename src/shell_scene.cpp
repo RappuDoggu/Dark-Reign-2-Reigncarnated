@@ -57,7 +57,7 @@ struct ShellScene::Impl {
  float farPlane=150,fogDepth=50;bool rainActive=false;float rainBlock=35,rainHeight=49,rainSpeed=10,rainWidth=.08f,rainLength=.76f;unsigned rainGrids=10,rainCount=5;V3 rainDirection{0,-1,0};std::uint32_t rainColor=0xffffffff;std::string rainTexture,rainSound;
  std::map<std::string,std::vector<Emitter>> emitters;std::map<std::string,ParticleDefinition> particles;std::vector<SplatDefinition> splats;
  std::vector<RainString> rainStrings;std::vector<V3> rainJitter;
- ShellTerrain terrain;std::unique_ptr<ShellCamera> camera,idle;
+ ShellTerrain terrain;std::unique_ptr<ShellCameraTimeline> cameras;
  std::unique_ptr<BitmapManager> bitmaps;std::vector<unsigned> textures;
  Impl(const std::string &path,LegacyGles &gpu):sources(path),loader([this](const std::string &name){return sources.load("gamedata",name);}),renderer(gpu){
  for(auto *s:{"mission","world","side"})sources.add_stream("gamedata",s);
@@ -118,8 +118,7 @@ struct ShellScene::Impl {
  if(placements.empty())throw std::runtime_error("No shell model placements");
 
  terrain=reign::load_shell_terrain(loader,width,height);
- for(auto &object:reign::parse_config(loader,"objects.cfg"))for(auto &b:object.children)if(b.name=="BookmarkObj"){auto name=std::get<std::string>(b.arguments.at(0));if(name=="Main::Enter")camera=std::make_unique<reign::ShellCamera>(b);if(name=="Main::Init")idle=std::make_unique<reign::ShellCamera>(b);}
- if(!camera||!idle)throw std::runtime_error("Missing Main::Enter camera");
+ cameras=std::make_unique<ShellCameraTimeline>(parse_config(loader,"objects.cfg"));
  // Match the original setup's extra bottom row.
  terrain.cells.resize((height+1)*terrain.pitch);for(unsigned x=0;x<terrain.pitch;++x){auto &c=terrain.cells[height*terrain.pitch+x];c.height=10;c.color=0xffffffff;}
   bitmaps=std::make_unique<reign::BitmapManager>(loader,[&](const std::string &name){try{loader(name);return true;}catch(const FileSys::FileNotFound&){return false;}},
@@ -133,7 +132,7 @@ struct ShellScene::Impl {
  void draw(float seconds){stats={};if(!std::isfinite(seconds)||seconds<0)throw std::invalid_argument("Invalid shell time");
    // Original objectives start Main::Init, then select Main::Enter at 0.5s.
    // Keep the final entrance view after this non-looping bookmark completes.
-   auto sample=seconds<0.5f?idle->sample(seconds):camera->sample(std::min(seconds-0.5f,std::nextafter(camera->duration(),0.f)));if(!sample.active)throw std::runtime_error("Camera sample inactive");
+   auto sample=cameras->sample(seconds);if(!sample.active)throw std::runtime_error("Camera sample inactive");
    // Shell release configuration supplies far distance and fog depth.
    reign::WorldProjection projection(sample.position,sample.direction,1.0471975512f,float(H)/W,1,farPlane);
    auto light=lighting->sample(seconds);
@@ -260,6 +259,9 @@ struct ShellScene::Impl {
 ShellScene::ShellScene(const std::string &path,LegacyGles &gpu):impl_(std::make_unique<Impl>(path,gpu)){}
 ShellScene::~ShellScene()=default;
 void ShellScene::draw(float seconds){impl_->draw(seconds);}
+void ShellScene::select_camera(const std::string &name,float seconds){impl_->cameras->select(name,seconds);}
+bool ShellScene::camera_finished(float seconds)const{return impl_->cameras->finished(seconds);}
+std::string ShellScene::camera_name(float seconds)const{return impl_->cameras->name(seconds);}
 void ShellScene::abandon_context(){impl_->bitmaps->abandon_context();
 #ifdef REIGN_BINK
  for(auto &entry:impl_->movies){entry.second.texture=0;entry.second.frame=-1;}

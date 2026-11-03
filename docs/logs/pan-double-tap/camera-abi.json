@@ -1,0 +1,23 @@
+{
+  "fields": [
+    "Base size",
+    "Base alignment",
+    "Standard size",
+    "Standard alignment"
+  ],
+  "aarch64_values": {
+    "v18": [
+      "256",
+      "8",
+      "496",
+      "8"
+    ],
+    "v19": [
+      "256",
+      "8",
+      "496",
+      "8"
+    ]
+  },
+  "equal": true
+}

@@ -74,6 +74,10 @@ for name,typ in [('coregame/promote.h','ReaperList<BASEOBJECT, BASENODE>'),('cor
 patch('coregame/resolver.h', [('ReaperList<TYPE, NODE>::Iterator','typename ReaperList<TYPE, NODE>::Iterator')])
 patch('coregame/terraingroup.h', [('Type::BlendName','BlendName')])
 patch('coregame/team.h', [('Team::GetConsoleId', 'GetConsoleId')])
+# Touch pan uses the original scroll target instead of resetting camera height.
+# A non-virtual method preserves all original fields and vtable entries.
+patch('coregame/viewer_private.h', [('    // Move to position\n    void LookAt(F32 x, F32 z);\n\n    // Exec a scope', '    void PanNative(F32 x, F32 z);\n\n    // Move to position\n    void LookAt(F32 x, F32 z);\n\n    // Exec a scope')])
+source=out/'coregame/viewer_standard.cpp';source.write_text(source.read_text()+'\n#include "viewer_pan_native.inc"\n')
 patch('graphics/tranbucket.h', [('TranBucketMan::SetMaxZ','SetMaxZ'),('TranBucketMan::SetMinZ','SetMinZ'),('TranBucketMan::SetMaxBucketCount','SetMaxBucketCount')])
 patch('interface/iftypes.h', [('sizeof TextureSkin','sizeof(TextureSkin)')])
 patch('interface/icontrol.h', [('class IControl;', 'class IControl;\nclass IFaceVar;')])

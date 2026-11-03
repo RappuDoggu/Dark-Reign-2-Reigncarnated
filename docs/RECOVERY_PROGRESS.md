@@ -463,3 +463,47 @@ entry point and embedded source/build/progress receipts pass verification. The
 signer matches v17 for compatible updates. A fresh download copy is provided
 separately from private signing keys and owned game data. Device checks remain
 pending; no new on-device FPS result is claimed.
+
+## v18 device feedback and version 19 corrections
+
+The owner reports continued broken finger interactions, two fingers driving the
+camera to maximum zoom, an outdated main-menu version and missing Instant Action
+transition. The requested replacement is two-finger pan only, three-finger
+building rotation and single-finger double taps for click actions. Controller
+work remains deferred.
+
+Source inspection found a concrete pan height-contract error: the adapter called
+Standard::Set with world position, while SplitMatrix interpreted its Y coordinate
+as terrain-relative height and the original simulation added the floor again.
+Version 19 adds a non-virtual PanNative method that moves only targetPos X/Z, using
+the original scroll path's height/pitch handling. Touch wheel/zoom and map-rotate
+actions are removed. ARM64 ABI probes give Base size/alignment 256/8 and Standard
+496/8 both before and after this method addition; no fields or vtable slots change.
+The SHA-verified stager and reproducible full build include this source adapter.
+The original viewer_standard and multiplayer units are recompiled for this APK.
+
+Single touches aim only. A double tap issues one original left click, including
+building selection, movement and placement. Two fingers emit pan only. Horizontal
+three-finger swipes step building direction while construction mode is active.
+Finger count/ID changes rebase without jumps; trailing fingers/cancel do not issue
+clicks. One-finger box selection is replaced by aiming. Existing click, building
+rotation and quick deselect buttons remain. The all-in-one ZIP collector remains.
+
+The old original `sys.buildver` string was hardcoded to 0.5 Native Launch. The
+menu now binds PackageManager's installed version name/code there and displays
+the same version in a persistent corner label. Both Instant Action entry points
+play the imported Main::Exit curve, hide main controls and wait for completion
+before opening selection. Cancel/Back plays Main::Enter and restores controls at
+completion. A bounded timeline loads imported bookmarks, preserves their final
+valid pose and rejects missing/duplicate names. Activity pause/GPU restoration
+return navigation to Main; stale dialog callbacks are guarded. Full source setup
+UI/objective scheduling and attack audio remain tracked separately.
+
+Validation: all 66 sanitizer host tests pass; camera tests now cover 29 checks
+including entrance/exit/return timing and held poses. The revised touch test has
+31 checks for double-tap-only clicks, aiming, two-finger pan without zoom/rotation,
+three-finger building steps, pointer changes and cancellation. Both Android
+libraries build/link and all Java compiles with SDK 35. The pinned 1,791-file
+source check passes. The original simulation, ABI defines and fenced streaming
+are unchanged. No v19 device test/FPS measurement has occurred; zoom invariance,
+physical gesture feel, building placement and menu navigation need phone testing.

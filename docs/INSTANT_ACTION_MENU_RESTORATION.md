@@ -4,6 +4,15 @@ The owner reports that v17 removes pillar artifacts and starts the original AI.
 The next requested milestone is full Instant Action selection and its original
 main-menu transitions. The existing Android dialog is an interim chooser.
 
+Version 19 connects both Instant Action entry points to imported Main::Exit
+playback and opens the chooser only when it completes. Cancel/Back selects the
+imported Main::Enter path and enables main controls after completion. This uses
+the real bookmark curves and their durations. No Multi/InstantAction bookmark is
+invented. The remaining work includes the full source setup controls, original
+objective/cineractive scheduling and the other options listed below. Device
+validation of v19's transition is pending. The earlier source notes below record
+the pre-v19 gap.
+
 ## Original source boundaries
 
 `src/menu_frontend.cpp` currently routes `gamegod.verify

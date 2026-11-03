@@ -26,6 +26,7 @@ public:
  std::string take_action();
  float effect_volume() const;
  void set_effect_volume(float);
+ void set_build_version(const std::string &);
  void text(const std::string &ascii);
  void key(unsigned scan,bool down);
  void pointer_move(int x,int y);

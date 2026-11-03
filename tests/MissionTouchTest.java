@@ -4,30 +4,29 @@ public final class MissionTouchTest {
  static int checks;
  static void check(boolean b){checks++;if(!b)throw new AssertionError("touch check "+checks);}
  static final class Sink implements MissionTouch.Sink {
-  List<String> mouse=new ArrayList<>();List<Integer> actions=new ArrayList<>();float rotation;
-  public void move(int x,int y){mouse.add("move "+x+" "+y);}
-  public void press(int x,int y){mouse.add("press "+x+" "+y);}
-  public void release(int x,int y){mouse.add("release "+x+" "+y);}
-  public void click(int x,int y){mouse.add("click "+x+" "+y);}
-  public void camera(int a,float x,float y){actions.add(a);if(a==6)rotation+=x;check(a!=4);}
+  List<String> clicks=new ArrayList<>();List<Integer> actions=new ArrayList<>();List<Float> pans=new ArrayList<>();int moves;
+  public void move(int x,int y){moves++;}
+  public void click(int x,int y){clicks.add(x+","+y);}
+  public void camera(int a,float x,float y){check(a==2||a==3||a==5);actions.add(a);if(a==5)pans.add(x);}
  }
- static void pair(MissionTouch t,float degrees,float radius){double a=Math.toRadians(degrees);float x=(float)Math.cos(a)*radius,y=(float)Math.sin(a)*radius;t.pair(2,320-x,240-y,9,320+x,240+y);}
+ static void tap(MissionTouch t,float x,float y,long time){t.down(x,y,time);t.up(x,y,time+40);}
+ static void fingers(MissionTouch t,int count,float x,float spread){int[] ids=new int[count];float[] xs=new float[count],ys=new float[count];for(int i=0;i<count;i++){ids[i]=i;xs[i]=x+(i-1)*spread;ys[i]=220;}t.fingers(ids,xs,ys);}
  public static void main(String[] args){
   Sink s=new Sink();MissionTouch t=new MissionTouch(s);
-  t.down(200,200);t.up(200,200);check(s.mouse.contains("click 200 200"));
-  s.mouse.clear();t.down(200,200);t.move(230,240);t.up(230,240);check(s.mouse.contains("press 200 200")&&s.mouse.contains("release 230 240"));check(s.mouse.stream().noneMatch(x->x.startsWith("click")));
-  s.mouse.clear();t.aim(true);t.down(200,200);t.move(260,280);t.up(260,280);check(s.mouse.stream().noneMatch(x->x.startsWith("press")||x.startsWith("click")));t.click();check(s.mouse.contains("click 260 280"));t.aim(false);
-  s.mouse.clear();t.down(200,200);pair(t,0,60);pair(t,30,60);pair(t,60,60);check(Math.abs(s.rotation-60)<.01f);check(s.actions.stream().allMatch(a->a==6));t.pairEnd();t.move(220,220);t.up(220,220);check(s.mouse.stream().noneMatch(x->x.startsWith("click")||x.startsWith("press")));
-  s.actions.clear();s.rotation=0;t.down(200,200);pair(t,0,60);pair(t,-30,60);check(Math.abs(s.rotation+30)<.01f);t.up(200,200);
-  s.actions.clear();s.rotation=0;t.down(200,200);pair(t,179,60);pair(t,-177,60);check(Math.abs(s.rotation-4)<.01f);t.up(200,200);
-  s.actions.clear();t.down(200,200);pair(t,0,60);pair(t,0,100);pair(t,0,30);check(s.actions.isEmpty());t.up(200,200);
-  s.actions.clear();t.down(200,200);t.pair(2,200,200,9,300,200);t.pair(9,320,220,2,220,220);check(s.actions.equals(Arrays.asList(5)));t.pair(2,225,200,9,315,240);check(s.actions.stream().allMatch(a->a==5));t.up(200,200);
-  s.actions.clear();t.down(200,200);pair(t,0,60);t.pair(3,320,180,9,320,300);check(s.actions.isEmpty());t.up(200,200);
-  s.actions.clear();s.rotation=0;t.down(200,200);pair(t,0,60);pair(t,0,1);pair(t,90,60);check(s.actions.isEmpty());pair(t,100,60);check(Math.abs(s.rotation-10)<.01f);t.cancel();
-  s.mouse.clear();t.down(-5,-5);t.up(10,10);check(s.mouse.stream().noneMatch(x->x.startsWith("click")));
-  s.mouse.clear();t.down(100,100);t.move(140,140);t.cancel();check(s.mouse.contains("release 140 140"));
-  s.mouse.clear();t.down(100,100);t.cancel();t.up(100,100);check(s.mouse.stream().noneMatch(x->x.startsWith("click")));t.up(100,100);check(s.mouse.stream().noneMatch(x->x.startsWith("click")));
-  s.mouse.clear();s.actions.clear();t.down(200,200);pair(t,0,60);pair(t,10,60);t.aim(true);pair(t,20,60);t.up(200,200);check(s.actions.equals(Arrays.asList(6,6)));check(s.mouse.stream().noneMatch(x->x.startsWith("click")));t.aim(false);
-  System.out.println("Mission touch: taps, drag, aim/click, rotation both ways, angle wrap, pinch without zoom, pan lock, pointer changes and cancel PASS ("+checks+" checks)");
+  tap(t,200,200,0);check(s.clicks.isEmpty());tap(t,200,200,150);check(s.clicks.equals(Arrays.asList("200,200")));
+  tap(t,200,200,600);check(s.clicks.size()==1);tap(t,200,200,1100);check(s.clicks.size()==1);tap(t,400,200,1250);check(s.clicks.size()==1);tap(t,400,200,1400);check(s.clicks.size()==2);
+  t.down(200,200,2000);t.move(240,240);t.up(240,240,2100);check(s.clicks.size()==2);tap(t,240,240,2200);check(s.clicks.size()==2);
+  t.aim(true);tap(t,250,250,3000);tap(t,250,250,3150);check(s.clicks.get(s.clicks.size()-1).equals("250,250"));
+  int before=s.clicks.size();t.down(200,200,4000);fingers(t,2,250,40);fingers(t,2,280,40);check(s.actions.equals(Arrays.asList(5)));check(Math.abs(s.pans.get(0)+3.6f)<.01f);t.pairEnd();t.move(220,220);t.up(220,220,4200);check(s.clicks.size()==before);
+  s.actions.clear();fingers(t,2,250,40);fingers(t,2,250,90);check(s.actions.equals(Arrays.asList(5))); // asymmetric centroid shifts are pan only
+  t.cancel();s.actions.clear();t.fingers(new int[]{1,2},new float[]{200,300},new float[]{200,200});t.fingers(new int[]{2,1},new float[]{340,160},new float[]{200,200});check(s.actions.isEmpty());
+  t.cancel();s.actions.clear();fingers(t,3,300,30);fingers(t,3,340,30);check(s.actions.equals(Arrays.asList(3)));fingers(t,3,260,30);check(s.actions.equals(Arrays.asList(3,2,2)));
+  t.pairEnd();s.actions.clear();fingers(t,2,300,30);check(s.actions.isEmpty());fingers(t,2,320,30);check(s.actions.equals(Arrays.asList(5)));
+  t.aim(false);t.cancel();s.actions.clear();fingers(t,3,300,30);fingers(t,3,400,30);check(s.actions.isEmpty());
+  t.cancel();s.actions.clear();fingers(t,4,300,30);fingers(t,4,400,30);check(s.actions.isEmpty());
+  tap(t,100,100,5000);t.cancel();tap(t,100,100,5150);check(s.clicks.size()==before);t.up(100,100,5200);check(s.clicks.size()==before);
+  tap(t,-5,-5,6000);tap(t,5,5,6150);check(s.clicks.size()==before);t.cancel();t.click();check(s.clicks.size()==before+1);
+  t.cancel();s.actions.clear();t.fingers(new int[]{1,2},new float[]{200,300},new float[]{200,200});t.fingers(new int[]{1,3},new float[]{500,600},new float[]{200,200});check(s.actions.isEmpty());
+  System.out.println("Double-tap-only clicks, single-finger aiming, two-finger pan without zoom/rotation, three-finger building steps, pointer changes and cancellation PASS ("+checks+" checks)");
  }
 }

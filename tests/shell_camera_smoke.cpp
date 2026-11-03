@@ -20,5 +20,19 @@ int main(){try{
  for(std::string invalid:std::vector<std::string>{"Loop(0);", "Loop(2);"+track.substr(8),"Loop(0);Segment(){Matrix(){Pos(0,0,0);Front(1,0,0);}Strength(1);Time(0);}"}){
   nodes=parse("BookmarkObj(\"invalid\"){Curve(){Movement(){"+invalid+"}}}");bool rejected=false;try{reign::ShellCamera bad(nodes[0]);}catch(const std::runtime_error&){rejected=true;}check(rejected);
  }
+ // Imported transition playback: initial entrance, original exit, held end pose,
+ // return entrance, and missing-source rejection without corrupting the timeline.
+ auto bookmark=[&](const std::string &name,const std::string &body){return "CreateObject() { BookmarkObj(\""+name+"\") { Curve() { Movement() { "+body+" } } } }";};
+ auto timelineNodes=parse(bookmark("Main::Init",one)+bookmark("Main::Enter",track)+bookmark("Main::Exit",track));
+ reign::ShellCameraTimeline timeline(timelineNodes);
+ check(timeline.name(0)=="Main::Init"&&!timeline.finished(0));
+ check(timeline.name(.5f)=="Main::Enter"&&!timeline.finished(2.49f)&&timeline.finished(2.5f));
+ auto held=timeline.sample(3);check(held.active&&timeline.sample(300).position==held.position);
+ timeline.select("MAIN::EXIT",4);check(timeline.name(4)=="Main::Exit"&&timeline.sample(4).position[0]==0);
+ check(!timeline.finished(5.99f)&&timeline.finished(6));held=timeline.sample(6);check(timeline.sample(100).position==held.position);
+ timeline.select("Main::Enter",100);check(!timeline.finished(100)&&timeline.finished(102));
+ check(timeline.sample(100).position[0]==0&&std::abs(timeline.sample(101).position[0]-1)<1e-5);
+ bool missing=false;try{timeline.select("Invented::Camera",103);}catch(const std::runtime_error&){missing=true;}check(missing&&timeline.name(103)=="Main::Enter");
+ bool duplicate=false;try{auto bad=timelineNodes;bad.push_back(timelineNodes[0]);reign::ShellCameraTimeline rejected(bad);}catch(const std::runtime_error&){duplicate=true;}check(duplicate);
  std::cout<<"Original camera build/loop/end/focus/invalid-data checks: PASS ("<<checks<<")\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -23,4 +23,15 @@ public:
  bool has_focus() const;
  ShellCameraSample sample(float seconds);
 };
+// Plays imported bookmarks and holds the last valid pose at completion.
+class ShellCameraTimeline {
+ struct Impl;std::unique_ptr<Impl> impl_;
+public:
+ explicit ShellCameraTimeline(const std::vector<ConfigNode> &objects);
+ ~ShellCameraTimeline();
+ void select(const std::string &name,float now);
+ ShellCameraSample sample(float now);
+ bool finished(float now) const;
+ std::string name(float now) const;
+};
 }

@@ -40,8 +40,6 @@ public final class MissionActivity extends Activity {
   FrameLayout root=new FrameLayout(this);view=new MissionView();root.addView(view);
   status=new TextView(this);status.setTextColor(0xffffffff);status.setBackgroundColor(0xc0000000);status.setText("Loading "+intentValue("mission","2crazed")+"…");root.addView(status,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
   LinearLayout cameraTools=new LinearLayout(this);cameraTools.setBackgroundColor(0xb0000000);
-  cameraTools.addView(actionButton("Zoom +","Zoom in; two-finger twists never change zoom",()->view.control(4,-120,0)));
-  cameraTools.addView(actionButton("Zoom −","Zoom out",()->view.control(4,120,0)));
   for(int i=0;i<4;i++){
    final int key=new int[]{0xcb,0xc8,0xd0,0xcd}[i];Button arrow=new Button(this);arrow.setText(new String[]{"◀","▲","▼","▶"}[i]);
    arrow.setOnTouchListener((v,event)->{int action=event.getActionMasked();if(action==MotionEvent.ACTION_DOWN)view.queueEvent(()->keyMission(key,true));else if(action==MotionEvent.ACTION_UP||action==MotionEvent.ACTION_CANCEL)view.queueEvent(()->keyMission(key,false));return true;});
@@ -54,9 +52,9 @@ public final class MissionActivity extends Activity {
   HorizontalScrollView scroll=new HorizontalScrollView(this);scroll.setHorizontalScrollBarEnabled(false);LinearLayout more=new LinearLayout(this);
   more.addView(actionButton("Build ↶","Rotate the selected building preview counterclockwise",()->view.control(2,0,0)));
   more.addView(actionButton("Build ↷","Rotate the selected building preview clockwise",()->view.control(3,0,0)));
-  more.addView(actionButton("Camera","Two-finger twist rotates the map. Parallel drag pans. Zoom uses these buttons.",()->cameraTools.setVisibility(cameraTools.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE)));
+  more.addView(actionButton("Camera","Two fingers pan the map only. Three fingers swipe left/right to rotate a building.",()->cameraTools.setVisibility(cameraTools.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE)));
   more.addView(actionButton("Debug","Collect or share diagnostics",this::showDebugTools));scroll.addView(more);toolbar.addView(scroll,new LinearLayout.LayoutParams(0,-2,1));root.addView(toolbar,new FrameLayout.LayoutParams(-1,-2,Gravity.TOP));
-  placementHint=new TextView(this);placementHint.setText("Building preview: tap or drag to aim • Build ↶/↷ rotates • Left click places • Deselect cancels");placementHint.setTextColor(0xffffffff);placementHint.setBackgroundColor(0xc0000000);placementHint.setVisibility(View.GONE);FrameLayout.LayoutParams hintPosition=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);hintPosition.topMargin=dp(52);root.addView(placementHint,hintPosition);
+  placementHint=new TextView(this);placementHint.setText("Double-tap to click • Two fingers pan • Three fingers swipe to rotate building • Deselect cancels");placementHint.setTextColor(0xffffffff);placementHint.setBackgroundColor(0xc0000000);placementHint.setVisibility(View.GONE);FrameLayout.LayoutParams hintPosition=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);hintPosition.topMargin=dp(52);root.addView(placementHint,hintPosition);
   metrics=new RenderMetrics(this,root,"Mission");setContentView(root);
  }
  private void showDebugTools(){
@@ -85,8 +83,6 @@ public final class MissionActivity extends Activity {
   long handle;int width,height;boolean failed,ready,tapRelease,placing;int tapX,tapY;
   final MissionTouch touch=new MissionTouch(new MissionTouch.Sink(){
    public void move(int x,int y){queueEvent(()->pointerMission(x,y,-1,false));}
-   public void press(int x,int y){queueEvent(()->pointerMission(x,y,0,true));}
-   public void release(int x,int y){queueEvent(()->{tapX=x;tapY=y;tapRelease=true;});}
    public void click(int x,int y){queueEvent(()->{pointerMission(x,y,0,true);tapX=x;tapY=y;tapRelease=true;});}
    public void camera(int action,float x,float y){control(action,x,y);}
   });
@@ -103,10 +99,10 @@ public final class MissionActivity extends Activity {
    int action=event.getActionMasked();float offsetX=(width-640*scale)/2,offsetY=(height-480*scale)/2;
    float x=(event.getX()-offsetX)/scale,y=(event.getY()-offsetY)/scale;
    if(action==MotionEvent.ACTION_CANCEL){touch.cancel();return true;}
-   if(action==MotionEvent.ACTION_DOWN){touch.down(x,y);return true;}
+   if(action==MotionEvent.ACTION_DOWN){touch.down(x,y,event.getEventTime());return true;}
    if(action==MotionEvent.ACTION_POINTER_UP){touch.pairEnd();return true;}
-   if(event.getPointerCount()>=2){touch.pair(event.getPointerId(0),(event.getX(0)-offsetX)/scale,(event.getY(0)-offsetY)/scale,event.getPointerId(1),(event.getX(1)-offsetX)/scale,(event.getY(1)-offsetY)/scale);return true;}
-   if(action==MotionEvent.ACTION_UP)touch.up(x,y);else if(action==MotionEvent.ACTION_MOVE)touch.move(x,y);return true;
+   if(event.getPointerCount()>=2){int n=event.getPointerCount();int[] ids=new int[n];float[] xs=new float[n],ys=new float[n];for(int i=0;i<n;i++){ids[i]=event.getPointerId(i);xs[i]=(event.getX(i)-offsetX)/scale;ys[i]=(event.getY(i)-offsetY)/scale;}touch.fingers(ids,xs,ys);return true;}
+   if(action==MotionEvent.ACTION_UP)touch.up(x,y,event.getEventTime());else if(action==MotionEvent.ACTION_MOVE)touch.move(x,y);return true;
   }
  }
 }
