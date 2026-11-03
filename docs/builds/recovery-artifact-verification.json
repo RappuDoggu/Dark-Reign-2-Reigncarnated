@@ -1,0 +1,15 @@
+{
+  "Reigncarnated-Recovery-Baseline.apk": {
+    "sha256": "7bf124c34a16c1fffb0e5b7a471ff6842afbb4169c9cf394b1b1d722f3e58543",
+    "source_revision": "ccb309fd4560c64b1b119c1b714c6659f247b2a2",
+    "size_bytes": 9004089,
+    "verified": "receipt/native hashes; ZIP integrity; ARM64-only ELF; 16 KiB LOAD alignment; notices/build-only assets"
+  },
+  "Reigncarnated-Recovery-DrawDiagnostics.apk": {
+    "sha256": "8121616b20cbc37b653066ea6eca1cd5cdf371e2b9acc3e015c1c3a03bba2dd6",
+    "source_revision": "7ef3fc093ca3710a80573e3a19a7bdff2c338a7b",
+    "size_bytes": 9020473,
+    "verified": "receipt/native hashes; ZIP integrity; ARM64-only ELF; 16 KiB LOAD alignment; notices/build-only assets"
+  },
+  "same_signer": true
+}

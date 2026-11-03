@@ -208,3 +208,28 @@ No device or owned mission data is available in this session. FPS, rejected
 mission draws and invalid live TL vertices have not been reproduced. Future
 delivered APKs must embed their exact source revision, ship build instructions
 and update this record. Keep signing material and proprietary assets private.
+
+## Delivered recovery artifacts
+
+- Streaming baseline: source `ccb309fd4560c64b1b119c1b714c6659f247b2a2`,
+  `Reigncarnated-Recovery-Baseline.apk`, SHA-256
+  `7bf124c34a16c1fffb0e5b7a471ff6842afbb4169c9cf394b1b1d722f3e58543`.
+- Draw diagnostics/validation: source `7ef3fc093ca3710a80573e3a19a7bdff2c338a7b`,
+  `Reigncarnated-Recovery-DrawDiagnostics.apk`, SHA-256
+  `8121616b20cbc37b653066ea6eca1cd5cdf371e2b9acc3e015c1c3a03bba2dd6`.
+  This also resets telemetry snapshots when the menu renderer is recreated,
+  preventing counter underflow after context loss.
+
+Both APKs pass signature and ZIP alignment checks, source/native hash receipt
+verification, ARM64-only ELF/16 KiB alignment checks, restricted JNI export checks,
+and notice/build-only asset checks. They use the same private recovery signer;
+version 14 updates version 13 under the separate recovery app ID. Signing keys
+remain outside Git. Machine-readable receipts are in `docs/builds/`.
+
+On the device, import owned data, use Fast stream first, play the mission and
+share a full report plus explicit frame capture from Debug tools. Compare the
+baseline only if needed to isolate a regression. Use synchronized mode as a
+controlled diagnostic comparison, not as an assumed performance fix. A fresh
+report must include the rejected draw arguments before implementing new draw
+semantics. FPS, audible music/intro and desktop-fidelity claims remain pending
+that device validation.
