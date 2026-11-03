@@ -1,5 +1,18 @@
 # Recovery without the original desktop
 
+## Current native recovery source (version 17)
+
+The current build source is `b7020a4fab62e54cbd226dbde4da835bed26c97a` on
+`recovery/native-arm64-v012`. The downloadable
+`Reigncarnated-Complete-Source-v17-b7020a4.zip` contains a Git bundle of that
+branch (including subsequent build-record documentation), the verified pinned
+upstream archive and FFmpeg n6.1.1 source. Its README and SHA256 manifest describe
+restoration; the adjacent `.sha256` verifies the complete ZIP. Signing keys,
+owned game data, SDK/NDK binaries and generated build outputs are excluded.
+Follow `docs/RECOVERY_BUILD.md` at the APK's embedded source revision to rebuild.
+The receipt is `docs/builds/match-menus-v17.json`. Older Library links below
+describe previous inputs and do not identify the current build source.
+
 Verified 2026-10-26. The installation archive and exact upstream source snapshot
 are saved in the owner's private ChatGPT Library. They are not GitHub Git blobs.
 Project tooling, adapters, tests and analysis remain on GitHub branch

@@ -1,0 +1,16 @@
+{
+  "source_revision": "b7020a4fab62e54cbd226dbde4da835bed26c97a",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "faa1dd0ab6117829eb3404607613c12af5d12e5ca3e50685187aa8c35e7a1ba6",
+    "libreign_menu.so": "14ecd78a9c63336dedc63d1a9af05932de1734630b01ed9825d7c84ce22f2961"
+  },
+  "recovery_identity": true,
+  "apk_sha256": "65c0dcefd907fc6feaf2a55dbf59cabbdb78086a99dbc7f60342f3371c2d7014"
+}
