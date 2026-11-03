@@ -507,3 +507,12 @@ libraries build/link and all Java compiles with SDK 35. The pinned 1,791-file
 source check passes. The original simulation, ABI defines and fenced streaming
 are unchanged. No v19 device test/FPS measurement has occurred; zoom invariance,
 physical gesture feel, building placement and menu navigation need phone testing.
+
+Version 19 artifact: `Reigncarnated-PanDoubleTap-v19.apk`, source
+`69040f46848c13ec6d9c6106614a733bcd3ca204`, SHA-256
+`23cc0b939ef1c83fa0a813f15a6cabe41c0827ef90e1f35a0cf2e1feefdf252d`.
+APK ZIP, signatures, alignment, ARM64/16 KiB ELF loads and source/build/progress
+receipts pass. Both native hashes match the rebuilt libraries; the new navigation
+JNI methods are present and the stale native 0.5 version label is absent. Manifest
+version is 0.15-pan-double-tap (code 19). The recovery signer matches v18. This
+artifact needs phone validation; the source branch remains the primary backup.
