@@ -588,3 +588,12 @@ unresolved symbols using NDK 27.2.12479018 and unchanged original-engine object
 selection/ABI flags. The menu native library is byte-identical to v20; 10 Hz
 simulation, renderer/streaming and controls are unchanged. Export Save and actual
 game-data restore need phone validation; no new FPS claim is made.
+
+Version 21 artifact: `Reigncarnated-DataBundle-v21.apk`, source
+`2f56830ae1e30a1c2e31076ffb3212181eb8ea73`, SHA-256
+`9cdeb2d7f1c67ff4d1cc40a8e637e7c34460551acf42b93ff3fd52530083ff7e`.
+APK ZIP checks, signature, recovery package/version 21, 16 KiB alignment and
+ARM64 ELF loads pass. Embedded source/build/progress receipts match the committed
+source. Menu native hash and recovery signer match v20. The mission library
+contains only the resource-reference changes described above. Export on an
+actual Android document provider still needs device validation.
