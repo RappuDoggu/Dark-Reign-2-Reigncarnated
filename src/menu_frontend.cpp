@@ -75,7 +75,7 @@ namespace {
 bool runtimeOwned=false;
 thread_local std::function<void(const std::string &)> *hostCommand=nullptr;
 void requestHost(const std::string &action){if(!hostCommand)throw std::runtime_error("Menu host not bound");(*hostCommand)(action);}
-void runCodeCommand(U32){const char *name=nullptr;if(Console::ArgCount()!=2||!Console::GetArgString(1,name))throw std::invalid_argument("Expected one run code");requestHost(name);}
+void runCodeCommand(U32 id){if(id!=Crc::CalcStr("sys.runcode"))return;const char *name=nullptr;if(Console::ArgCount()!=2||!Console::GetArgString(1,name))throw std::invalid_argument("Expected one run code");requestHost(name);}
 void instantCommand(U32 id){
  const char *target=nullptr;
  if(id!=Crc::CalcStr("gamegod.verify")||Console::ArgCount()!=2||!Console::GetArgString(1,target)||(std::string(target)!="Shell::Main.InstantAction"&&std::string(target)!="Shell::Main.Campaigns"))throw std::invalid_argument("Unsupported shell host command");
@@ -167,9 +167,11 @@ struct MenuFrontend::Impl {
   IFace::RegisterControlClass("SliderThumb",sliderThumb);
 
    IFace::NativeRegisterSubstitution();substitutionRegistered=true;register_interface_commands();register_standalone_launch_commands();
-   VarSys::RegisterHandler("sys",runCodeCommand,VarSys::NOTIFY);
+   // Only commands notify these handlers. Display/flow variables must not
+   // inherit command notifications when changed without console arguments.
+   VarSys::RegisterHandler("sys",runCodeCommand);
    VarSys::CreateCmd("sys.runcode",VarSys::NOTIFY);
-   VarSys::RegisterHandler("gamegod",instantCommand,VarSys::NOTIFY);VarSys::CreateCmd("gamegod.verify",VarSys::NOTIFY);
+   VarSys::RegisterHandler("gamegod",instantCommand);VarSys::CreateCmd("gamegod.verify",VarSys::NOTIFY);
    VarSys::CreateString("sys.buildtype","Release");
    VarSys::CreateString("sys.buildver","Reigncarnated native");
    VarSys::CreateString("gamegod.flow.state","");

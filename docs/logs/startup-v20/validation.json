@@ -1,0 +1,17 @@
+{
+  "device_error": "Native startup failed: Expected one run code",
+  "host_reproduction_before_fix": "Expected one run code",
+  "before_fix_exit_code": 1,
+  "host_tests_passed": 66,
+  "menu_runtime_checks": 34,
+  "native_menu_rebuilt": true,
+  "mission_library_unchanged_from_v19": true,
+  "android_executed": false,
+  "simulation_hz": 10,
+  "device_checks_pending": [
+    "startup/version label",
+    "v19 pan without zoom creep",
+    "double taps and three-finger building rotation",
+    "Instant Action entry and return"
+  ]
+}

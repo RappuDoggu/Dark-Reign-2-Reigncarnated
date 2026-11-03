@@ -219,3 +219,19 @@ also takes the APK version. Source/build/progress receipts stay embedded. Verify
 the visible APK 19 label, repeated panning over varied terrain without zoom creep,
 double-tap actions, three-finger building rotation, Instant Action entry and
 Cancel/Back, and pause/resume on the phone.
+
+## Startup notification correction (version 20)
+
+Install the v20 recovery APK over v19 to retain imported data. Version 19's
+`Expected one run code` startup failure came from updating the version display:
+the whole `sys` scope inherited NOTIFY and sent the string update to the run-code
+command handler. Command notifications now belong only to explicit commands;
+the handler also verifies the command identity before reading console arguments.
+The same scope correction applies to gamegod display/flow variables. Real
+run-code commands still require exactly one argument.
+
+The startup fixture now sets the APK label and opens the shell preview in the
+same order as native State initialization. Both malformed command checks remain
+enabled. Only the menu native library changes; the v19 mission native library,
+touch bindings, camera pan correction, engine ABI and simulation are retained.
+The packager recompiles Java and embeds current source/build/progress receipts.

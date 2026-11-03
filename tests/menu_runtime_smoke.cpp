@@ -10,6 +10,8 @@ int main(){try{
   std::string text;
   if(name=="english.cfg")text="DataBase(){}";
   else if(name=="show.cfg")text="Cmd(\"iface.activate DlgLogin\");";
+  else if(name=="missing-runcode.cfg")text="Cmd(\"sys.runcode\");";
+  else if(name=="extra-runcode.cfg")text="Cmd(\"sys.runcode shell extra\");";
   else if(name=="runcode_main_login.cfg")text=R"(
 ConfigureInterface(){CreateFont("System"){File("fixture.fff");}CreateFont("WindowTitle"){File("fixture.fff");}}
 CreateControl("Backdrop","Window"){Size(640,480);CreateControl("HideLogin","Button"){Pos(400,300);Size(100,40);Text("AB");OnEvent("Button::Notify::Pressed"){Deactivate("|DlgLogin");}}}
@@ -22,6 +24,8 @@ Cmd("iface.activate Backdrop");Cmd("iface.activate DlgLogin");Cmd("multiplayer.l
  auto root=std::filesystem::temp_directory_path()/("reign-menu-smoke-"+std::to_string(reign::monotonic_ns()));
  struct Cleanup{std::filesystem::path p;~Cleanup(){std::filesystem::remove_all(p);}} cleanup{root};
  for(unsigned pass=0;pass<2;++pass){reign::MenuFrontend menu(loader,root,640,480);
+  menu.take_action();menu.set_build_version("Reigncarnated 0.15.1-startup-fix (APK 20)");
+  check(menu.take_action().empty());
   for(unsigned i=0;i<3;++i){auto report=menu.draw([](const auto &){},[](const auto &,const auto &){},i*16,16);check(report.login_active&&report.backdrop_active&&report.geometry_batches>0);}
   if(!pass){auto point=menu.control_center("DlgLogin.CreatePilot");menu.pointer_move(point[0],point[1]);menu.pointer_button(true,point[0],point[1]);menu.pointer_button(false,point[0],point[1]);}
   check(menu.profile_name()=="AB");
@@ -56,6 +60,16 @@ CreateControl("Shell::Main","Window"){Size(640,480);
   menu.set_effect_volume(.37f);check(menu.effect_volume()==.37f);
   click("Shell::Main.Logout");check(menu.profile_name().empty()&&menu.control_active("DlgLogin")&&!menu.control_active("Shell::Main"));
   menu.login_selected_profile();check(menu.control_active("Shell::Main")&&menu.effect_volume()==.37f);menu.close();
+ }
+ // Native State startup sets the APK version before opening the shell preview.
+ {reign::MenuFrontend menu(withShell,root,640,480);
+  menu.take_action();menu.set_build_version("Reigncarnated 0.15.1-startup-fix (APK 20)");
+  menu.open_shell_preview();check(menu.control_active("Shell::Main")&&menu.take_action().empty());
+  for(auto file:{"missing-runcode.cfg","extra-runcode.cfg"}){
+   bool rejected=false;try{menu.execute_config(file);}catch(const std::invalid_argument &e){rejected=std::string(e.what())=="Expected one run code";}check(rejected);
+  }
+  menu.set_build_version("Reigncarnated version updated again");check(menu.take_action().empty());
+  check(menu.draw([](const auto &){},[](const auto &,const auto &){},0,0).geometry_batches>0);
  }
  std::cout<<"Persistent original menu/profile ownership, frame exception recovery and reopen: PASS ("<<checks<<" checks)\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

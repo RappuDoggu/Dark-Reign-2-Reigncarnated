@@ -516,3 +516,27 @@ receipts pass. Both native hashes match the rebuilt libraries; the new navigatio
 JNI methods are present and the stale native 0.5 version label is absent. Manifest
 version is 0.15-pan-double-tap (code 19). The recovery signer matches v18. This
 artifact needs phone validation; the source branch remains the primary backup.
+
+## v20 startup regression fix
+
+The owner supplied a v19 screenshot showing `Native startup failed: Expected one
+run code`. The failure is reproduced on the host by calling set_build_version
+immediately after constructing MenuFrontend, matching native State startup.
+The previous host suite omitted this newly added version-label call.
+
+Original VarSys inherits a scope's NOTIFY flag into direct child variables.
+Registering the entire sys scope with NOTIFY caused sys.buildver's SetStr to
+invoke runCodeCommand without console arguments. The updated frontend registers
+sys and gamegod handlers without broad scope notification, retains NOTIFY on the
+actual commands, and checks sys.runcode's identity before parsing arguments.
+No command argument validation is bypassed.
+
+The before-fix test fails with the exact device message. The repaired menu runtime
+test passes 34 checks, including version assignment, opening the original shell
+preview, repeated version changes, invalid run-code argument rejection, existing
+navigation, rendering and profile reopen. All 66 sanitizer host tests pass and
+the ARM64 menu library rebuilds. The mission library and Java controls retain
+their v19 source/behavior. SDK 35/NDK 27.2.12479018, original ABI flags, fenced
+streaming and 10 Hz simulation are unchanged. Phone startup and the v19 gesture/
+transition changes still require device validation. No reimport is required for
+this code fix; the APK retains the recovery identity and signer.
