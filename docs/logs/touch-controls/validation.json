@@ -1,0 +1,18 @@
+{
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "source_files_verified": 1791,
+  "tree_sha256": "13bc6a7028f64297118b8f1238261873aa0fe1f7cc74f28eca24c31a6b362724",
+  "gesture_host_checks": 30,
+  "foundation_tests": 10,
+  "menu_native_unchanged_from_v17": true,
+  "android_simulation_hz": 10,
+  "controller_changes": false,
+  "android_executed": false,
+  "device_checks_pending": [
+    "twist direction and zoom invariance",
+    "building preview, rotation and left-click confirmation",
+    "deselect/cancel",
+    "ordinary tap/box selection and pan",
+    "performance"
+  ]
+}

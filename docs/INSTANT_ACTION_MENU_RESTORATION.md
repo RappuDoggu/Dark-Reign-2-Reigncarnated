@@ -58,7 +58,14 @@ also replaces an equal-priority voice. Do not claim it caused the device report
 without evidence. Preserve voice ownership, looping and the original 10 Hz
 simulation while checking audio changes.
 
-## Control choices awaiting the owner
+## Control choices
+
+The owner subsequently chose a minimal immediate scope: two-finger map rotation
+without zoom, building rotation while selecting/placing, left click and quick
+deselect. Controller changes are explicitly deferred. Version 18 implements that
+scope; see `CONTROLS_BACKLOG.md` for usage and remaining device checks. The broader
+questions below remain unselected, rather than authorizing a controller scheme
+or StarCraft gameplay changes.
 
 Questions presented:
 

@@ -20,11 +20,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p evidence build-java
-          javac --release 8 -d build-java android/menu/org/reigncarnated/menu/DataFolderImporter.java android/menu/org/reigncarnated/menu/ZipGameSource.java android/menu/org/reigncarnated/menu/FrameTiming.java tests/DataFolderImporterTest.java tests/ZipGameSourceTest.java tests/MusicImportTest.java android/menu/org/reigncarnated/menu/DiagnosticSweep.java android/menu/org/reigncarnated/menu/DiagnosticZip.java tests/DiagnosticSweepTest.java
+          javac --release 8 -d build-java android/menu/org/reigncarnated/menu/DataFolderImporter.java android/menu/org/reigncarnated/menu/ZipGameSource.java android/menu/org/reigncarnated/menu/FrameTiming.java tests/DataFolderImporterTest.java tests/ZipGameSourceTest.java tests/MusicImportTest.java android/menu/org/reigncarnated/menu/DiagnosticSweep.java android/menu/org/reigncarnated/menu/DiagnosticZip.java tests/DiagnosticSweepTest.java android/menu/org/reigncarnated/menu/MissionTouch.java tests/MissionTouchTest.java
           java -cp build-java org.reigncarnated.menu.DataFolderImporterTest | tee evidence/data-folder-import.log
           java -cp build-java org.reigncarnated.menu.ZipGameSourceTest | tee evidence/zip-import.log
           java -cp build-java org.reigncarnated.menu.MusicImportTest | tee evidence/music-import.log
           java -cp build-java org.reigncarnated.menu.DiagnosticSweepTest | tee evidence/diagnostic-sweep.log
+          java -cp build-java org.reigncarnated.menu.MissionTouchTest | tee evidence/mission-touch.log
       - name: Fetch reviewed upstream separately
         run: bash tools/fetch_upstream.sh "$RUNNER_TEMP/dr2-upstream"
       - name: Compile and test original primitives and platform services

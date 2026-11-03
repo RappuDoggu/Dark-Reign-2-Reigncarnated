@@ -1,0 +1,5 @@
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+Mission touch: taps, drag, aim/click, rotation both ways, angle wrap, pinch without zoom, pan lock, pointer changes and cancel PASS (30 checks)

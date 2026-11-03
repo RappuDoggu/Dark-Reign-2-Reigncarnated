@@ -37,6 +37,7 @@
 #include <filesystem>
 #include <chrono>
 #include <sstream>
+#include <locale>
 
 #include "light_priv.h"
 #include "mesh.h"
@@ -143,15 +144,18 @@ MissionApp::MissionApp(const std::string &installation,const std::string &writab
  try{impl->Start(installation,writable,mission,renderer,present,context,options);}catch(...){if(impl->owns)enginePoisoned=true;throw;}
 }
 MissionApp::~MissionApp()=default;
-std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *session=CurrentOfflineSession())out<<"mission="<<session->mission<<" campaign="<<session->campaign<<" opponents="<<session->opponents<<" seed="<<session->seed<<" difficulty="<<(session->difficulty.empty()?"mission default":session->difficulty)<<"\n";out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(InSimulation())for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay())out<<"\nplayable team="<<team->GetName()<<" ai="<<team->IsAI()<<" strategic="<<(team->GetStrategicObject()?"set":"none")<<" personality="<<team->GetPersonality();if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}return out.str();}
+std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *session=CurrentOfflineSession())out<<"mission="<<session->mission<<" campaign="<<session->campaign<<" opponents="<<session->opponents<<" seed="<<session->seed<<" difficulty="<<(session->difficulty.empty()?"mission default":session->difficulty)<<"\n";out<<"placing="<<Placing()<<" camera="<<(Viewer::GetCurrent()?Viewer::GetCurrent()->GetName():"none")<<"\n";out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(InSimulation())for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay())out<<"\nplayable team="<<team->GetName()<<" ai="<<team->IsAI()<<" strategic="<<(team->GetStrategicObject()?"set":"none")<<" personality="<<team->GetPersonality();if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}return out.str();}
 void MissionApp::Close(){impl->Stop();}
 void MissionApp::Control(unsigned action,float x,float y){
  if(!InSimulation())throw std::logic_error("Mission is still loading");
  if(!std::isfinite(x)||!std::isfinite(y))throw std::invalid_argument("Invalid camera gesture");
- if(action==1)Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr("de::deselect"),0,0);
+ if(action==1){Client::Events::TriggerClientMode(Client::CM_NONE);Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr("de::deselect"),0,0);}
  else if(action==2||action==3)Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr(action==2?"de::prevdir":"de::nextdir"),0,0);
  else if(action==4)QueueWheel(S32(std::clamp(x,-120.f,120.f)));
  else if(action==5){auto *camera=Viewer::GetCurrent();if(!camera)throw std::logic_error("No active viewer");auto matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();Vector position=camera->GetPosition()+right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->Set(position,camera->GetOrienation(),0);}
+ // Standard::Circle rotates yaw around its map pivot without invoking Swoop/zoom.
+ // Screen clockwise map rotation uses the opposite camera yaw.
+ else if(action==6){auto *camera=Viewer::GetCurrent();if(!camera||Crc::CalcStr(camera->GetName())!=Crc::CalcStr("Standard"))throw std::logic_error("Map rotation requires the Standard game camera");std::ostringstream command;command.imbue(std::locale::classic());command<<"camera.rotateby "<<-std::clamp(x,-90.f,90.f);Console::ProcessCmd(command.str().c_str());}
  else throw std::invalid_argument("Unknown mission control");
 }
 void MissionApp::Frame(){if(impl->closed)throw std::logic_error("Mission runtime is closed");if(BeginNativeFrame()){Game::RC::Process();Sound::Poll();}}
@@ -163,5 +167,6 @@ void MissionApp::SetActive(bool active){
  SetFrameActive(active?TRUE:FALSE,Clock::Time::Ms());impl->active=active;
 }
 bool MissionApp::InSimulation() const{return !impl->closed&&Game::RC::In("Sim");}
+bool MissionApp::Placing() const{return InSimulation()&&Client::data.clientMode==Client::CM_CONSTRUCT;}
 std::uint32_t MissionApp::SimulationCycles() const{return impl->closed?0:GameTime::SimCycle();}
 }

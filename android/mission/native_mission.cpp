@@ -79,3 +79,5 @@ extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity
 extern "C" JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MissionActivity_abandonMission(JNIEnv *,jclass,jlong handle){if(handle)state(handle).renderer->abandon_context();}
 
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_controlMission(JNIEnv *env,jclass,jlong handle,jint action,jfloat x,jfloat y){try{state(handle).app->Control(unsigned(action),x,y);return nullptr;}catch(const std::exception&e){return env->NewStringUTF(e.what());}}
+
+extern "C" JNIEXPORT jboolean JNICALL Java_org_reigncarnated_menu_MissionActivity_placingMission(JNIEnv *,jclass,jlong handle){return handle&&state(handle).app->Placing();}

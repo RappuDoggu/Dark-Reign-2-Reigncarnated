@@ -424,3 +424,33 @@ Control preferences have been asked explicitly and are pending. See
 `INSTANT_ACTION_MENU_RESTORATION.md` for source boundaries, option coverage and
 the audio investigation; no new menu implementation or audio fix is claimed by
 this feedback checkpoint.
+
+## Requested touch controls (version 18)
+
+The owner narrowed immediate controls to map rotation, building rotation during
+selection/placement, left click and quick deselect, with controller work deferred.
+Two-finger twisting now generates an original `camera.rotateby` command in the
+opposite camera-yaw direction so the map follows the screen twist. The original
+Standard camera's Circle path retains pitch/height and does not invoke Swoop.
+Other camera types fail visibly instead of ignoring rotation. Two-finger input
+classifies rotation or pan, locks its choice until lifted, and never sends wheel
+events. Zoom is available only through separate buttons.
+
+The fixed toolbar exposes Left click and Deselect; its scrollable portion exposes
+building direction arrows, Camera and Debug. A JNI query detects the original
+CM_CONSTRUCT placement mode. In that mode, touch aims the preview, building arrows
+change the original placement direction, and Left click confirms. Deselect exits
+forced order/placement mode and clears selection. Ordinary taps and box selection
+are retained. Controller changes have not been made. The full original Instant
+Action menu and attack-sound investigation remain open work.
+
+Validation: 30 host gesture checks cover tap/drag, preview aim/explicit click,
+both twist directions, angle wrapping, pinch without zoom, gesture lock, pointer
+replacement, cancellation and placement-mode transitions. All 10 foundation tests
+pass, including original input/frame clock/PCM checks. Java compiles against SDK
+35 and the ARM64 mission library links with zero unresolved symbols. The menu
+target requires no rebuild and retains the v17 native library. The pinned source
+check and ABI/simulation settings are unchanged. The 66 host frontend tests were
+not repeated for this touch/mission-only change. Device behavior and performance
+of v18 still need validation. The all-in-one diagnostic ZIP remains available;
+mission reports now identify active camera and placement state.

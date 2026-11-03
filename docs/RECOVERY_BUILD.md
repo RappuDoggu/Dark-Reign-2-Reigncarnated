@@ -164,3 +164,29 @@ For an incremental rebuild from the verified v16 object set, recompile original
 report to `link_mission_android.py` using a second `--objects` argument. Rebuild
 both native libraries and repackage all Java together; the mission JNI launch
 signature changed. Do not package a v17 Java/native mixture.
+
+## Touch rotation and placement (version 18)
+
+Twist two fingers to rotate the map; dragging them together pans. The gesture
+locks to rotation or pan until lifted and never generates wheel/zoom input.
+Use **Camera → Zoom +/−** separately. After selecting a building, ordinary
+touches aim its preview; **Build ↶/↷** rotates and **Left click** places it at the
+world cursor. **Deselect** cancels placement and clears selection. Normal taps
+outside placement still left-click, and one-finger drags retain box selection.
+Controller changes are deferred. The original 10 Hz simulation and fenced
+streaming path remain unchanged. Original full menu flow and the reported attack
+sound issue remain tracked separately.
+
+Rebuild the mission library and all Java together for the new placement-status
+JNI method. The menu native source is unchanged from v17. The full builder above
+also produces this version. The host touch test has no Android dependencies:
+
+```sh
+javac --release 8 -d "$work/java" \
+  android/menu/org/reigncarnated/menu/MissionTouch.java tests/MissionTouchTest.java
+java -cp "$work/java" org.reigncarnated.menu.MissionTouchTest
+```
+
+Verify twisting in both directions at a fixed zoom, building preview rotation
+before confirmation, quick cancel, ordinary selection and two-finger pan on the
+device. A host gesture test cannot establish on-device camera/placement behavior.

@@ -22,6 +22,7 @@ public:
  void SetActive(bool);
  void Close();
  bool InSimulation() const;
+ bool Placing() const;
  std::uint32_t SimulationCycles() const;
 };
 }
