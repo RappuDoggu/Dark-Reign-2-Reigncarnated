@@ -1,0 +1,56 @@
+{
+  "zip_sha256": "75edf2e2ee9c8eae46ae330f9fe547b2a41d0f98c68cd188856fbd9f079de93f",
+  "current_source": "4c843a4f6ecb6ab03fdd2b116d3bb2dc6c5dc4e1",
+  "current_screen": "mission",
+  "historical_embedded_menu_source": "2a3098a189d5b9271e0f865c2720848f00b792ce",
+  "modes": {
+    "fast": {
+      "timing_and_performance": [
+        "native wall time: n=241 mean=7.541 p95=8.681 max=12.143 ms",
+        "callback interval: n=240 mean=8.317 p95=9.351 max=19.170 ms",
+        "Capture readbacks occur after measured native work; callback intervals include those stalls. Not GPU elapsed time.",
+        "Mission 120.1 FPS | Native 7.7 ms (max 11.5)",
+        "134 draws/frame | 1 uploads/s (0.00 MiB/s)",
+        "Engine 2.7 ms | present submit 5.0 ms",
+        "Geometry upload 0.246485 ms | Draw submit 0.315879 ms",
+        "0.299975 MiB geometry/frame | 1.000000 stream renewals/frame",
+        "Engine 7.67 ms | HUD 0.58 ms | Objects 0.716 ms | Sky 0.0666 ms | ",
+        "simulation cycles=1174 display team=set",
+        "Camera position 438.927 0.224751 63.5591 front -0.541675 -0.642787 0.541676 display layers=7",
+        "Stream mode append-only unsynchronized | fence-protected banks=4 pool waits=0"
+      ],
+      "journal_rejections_in_report": 0,
+      "banks": 4,
+      "pool_waits": 0,
+      "simulation_cycles": 1174
+    },
+    "synchronized": {
+      "timing_and_performance": [
+        "native wall time: n=28 mean=71.610 p95=87.554 max=89.431 ms",
+        "callback interval: n=27 mean=72.866 p95=88.546 max=90.281 ms",
+        "Capture readbacks occur after measured native work; callback intervals include those stalls. Not GPU elapsed time.",
+        "Mission 13.7 FPS | Native 71.3 ms (max 87.6)",
+        "125 draws/frame | 0 uploads/s (0.00 MiB/s)",
+        "Engine 71.1 ms | present submit 0.2 ms",
+        "Geometry upload 66.295414 ms | Draw submit 1.408496 ms",
+        "0.289421 MiB geometry/frame | 0.928571 stream renewals/frame",
+        "Engine 71.3 ms | HUD 47.5 ms | Objects 2.2 ms | Sky 0.0765 ms | ",
+        "simulation cycles=1195 display team=set",
+        "Camera position 438.927 0.224751 63.5591 front -0.541675 -0.642787 0.541676 display layers=7",
+        "Stream mode synchronized (diagnostic) | fence-protected banks=4 pool waits=0"
+      ],
+      "journal_rejections_in_report": 0,
+      "banks": 4,
+      "pool_waits": 0,
+      "simulation_cycles": 1195
+    }
+  },
+  "rollover_results_fast_then_synchronized": [
+    "PASS",
+    "PASS",
+    "PASS",
+    "PASS",
+    "PASS",
+    "PASS"
+  ]
+}

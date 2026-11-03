@@ -313,3 +313,32 @@ and matching v15 recovery signer checks pass. It updates the recovery app with
 imported data retained. The all-in-one diagnostic collector remains available;
 its next fast rollover result on Adreno is the acceptance gate, alongside visible
 flicker and normal fast-mode performance. Host tests cannot close that gate.
+
+## v16 mission device result
+
+Received `Reigncarnated-diagnostics11.zip`, SHA-256
+`75edf2e2ee9c8eae46ae330f9fe547b2a41d0f98c68cd188856fbd9f079de93f`.
+ZIP integrity passed. Current mission source and native-library hashes match
+the v16 receipt (`4c843a4f6ecb6ab03fdd2b116d3bb2dc6c5dc4e1`).
+
+- All three fast and three synchronized rollover checks now pass on the device.
+  The fast-mode device pixel-test failure observed in v15 is resolved in this run.
+- Fast mission: 120.1 FPS, 7.541 ms mean native wall time, 8.681 ms p95,
+  134 draws/frame; four physical stream banks and zero pool exhaustion waits.
+- Synchronized mission: 13.7 FPS, 71.610 ms mean native wall time. Keep fast mode
+  as the normal path; synchronized mode remains a slower diagnostic comparison.
+- Current per-mode native journals contain no rejection/error sites. This does
+  not prove the earlier referenced-invalid-vertex scenario is eliminated.
+- Simulation cycles progress from 1174 to 1195 across the comparison, consistent
+  with the original 10 Hz clock. All three fast PNGs show consistent major scene
+  geometry; animated units/effects and resources change between captures. Static
+  images cannot establish absence of flicker during continuous play or desktop
+  fidelity. Await the owner's visual observation.
+
+The nested prior menu archive identifies v15 (`2a3098a...`), not v16. Its old
+fast rollover failures are historical, rather than failures in this mission run.
+A new v16 menu collection is still needed to verify pillar appearance and menu
+stability before moving to campaigns, cutscenes and options. No additional
+renderer changes or new APK are justified by this successful mission collection
+alone. Current testing APK remains v16. Raw device logs/images stay outside Git;
+a source-verified measurement summary is retained under `docs/logs/fenced-stream`.
