@@ -406,3 +406,21 @@ ZIP/signature/alignment checks pass, including ARM64/16 KiB ELF load alignment,
 matching v16 signer and embedded source, instructions, progress and native hashes.
 The APK retains imported data on update. Remote recovery source and a complete
 source ZIP are preserved separately from private keys and owned game assets.
+
+## v17 owner feedback and next menu/control work
+
+The owner reports that the pillar artifacts are removed and the AI starts
+correctly. These are device observations, not new cloud measurements; no new FPS
+measurement or campaign result accompanies this report. Some unit attack effects
+are inaudible. The source ZIP download still fails for the owner; they have
+deferred that issue. Preserve the remote recovery branch and avoid relying on
+the ZIP as the sole backup.
+
+The requested next work is the full original Instant Action selection flow,
+including transitions from the main menu, and more intuitive phone/controller
+controls informed by RTS selection and command patterns. The v17 Android dialog
+is an interim chooser and does not satisfy the original full setup flow.
+Control preferences have been asked explicitly and are pending. See
+`INSTANT_ACTION_MENU_RESTORATION.md` for source boundaries, option coverage and
+the audio investigation; no new menu implementation or audio fix is claimed by
+this feedback checkpoint.
