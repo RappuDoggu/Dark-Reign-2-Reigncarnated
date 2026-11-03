@@ -65,6 +65,7 @@ namespace Sight {class Map;}
 #include <functional>
 namespace Vid {namespace Command {void InitMesh();void DoneMesh();}}
 #include "runtime_setup_native.h"
+#include "resource_links_native.h"
 namespace NativeEngine {
 namespace {bool engineActive=false,enginePoisoned=false,clockReady=false;
 void Require(bool ok,const char *what){if(!ok)throw std::runtime_error(what);}
@@ -91,12 +92,7 @@ struct MissionApp::Impl {
   Require(std::filesystem::exists(pack),"Missing owned base.zwp");
   std::filesystem::create_directories(work);auto previous=std::filesystem::current_path();
   engineActive=true;owns=true;Defer([previous]{std::filesystem::current_path(previous);});
-  for(const char *name:{"missions","worlds","sides","mods","library","movies","data"})if(std::filesystem::exists(root/name)&&!std::filesystem::exists(work/name))std::filesystem::create_directory_symlink(root/name,work/name);
-  if(!std::filesystem::exists(work/"packs")){
-   std::filesystem::create_directory(work/"packs");
-   if(std::filesystem::is_directory(root/"packs"))for(const auto &entry:std::filesystem::directory_iterator(root/"packs"))std::filesystem::create_symlink(entry.path(),work/"packs"/entry.path().filename());
-  }
-  if(!std::filesystem::exists(work/"packs/base.zwp"))std::filesystem::create_symlink(pack,work/"packs/base.zwp");
+  PrepareResourceLinks(root,work,pack);
   std::filesystem::current_path(work);
   if(!clockReady){Clock::Time::Init();clockReady=true;}
   TrackSys::Init();Defer([]{TrackSys::Done();});

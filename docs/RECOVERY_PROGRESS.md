@@ -548,3 +548,43 @@ ZIP, signature, alignment, ARM64/16 KiB ELF loads and embedded source/build/
 progress receipts pass. Manifest code is 20. The mission native hash is identical
 to v19 and the signer matches for an update retaining imported data. Phone startup
 is pending; this release fixes the reproduced notification regression.
+
+## v21 single game-data backup and restore
+
+The owner confirmed v20 is functional for testing, then requested one ZIP with
+all required game data because separate imports lose music or Sprawl. No owned
+installation is materialized in this workspace: the earlier attached v06 game
+archive exceeds the executor download tool's 32 MiB transfer limit. A new game
+ZIP cannot honestly be supplied here from the source/relink archive. Instead,
+v21 exports the installation and selected music already present on the phone.
+The game data stays private and is not put in Git or the APK.
+
+Report / data now has Export complete game-data ZIP and Save ZIP. The exported
+canonical paths round-trip through the actual ZIP importer, preserving Sprawl,
+base/shell, side packs, maps, mods, library files and selected separate music.
+Required packs/entries and music are checked; missing assets stop export by
+name. Available campaign/movie/world files are included, but unavailable assets
+are not invented. Each file has a SHA-256/length manifest, and the APK source
+receipt is included. ZIP CRC verification precedes atomic private publication.
+Cancellation/failure keeps a prior output. Profiles/saves/signing keys are absent.
+The Android document picker lets the owner save the ZIP without a cloud upload.
+
+A source inspection found two related re-import bugs. Selecting a new data
+snapshot could leave music preferences referencing a removed old snapshot;
+imports now select new music or retain valid existing music and its directory.
+Mission resource links previously kept the first imported path indefinitely;
+they now refresh to the current snapshot, remove stale optional pack links and
+repair dangling links. Real runtime files/directories are protected by preflight,
+and profile/saves are never removed. The resource-link test deletes the first
+snapshot and verifies the second's world/base/map bytes remain readable.
+
+All 67 sanitizer host tests pass, including the new filesystem restore test.
+Leak detection is disabled under the workspace ptrace sandbox as documented;
+ASan/UBSan remain enabled. Java import/export tests pass: data folders 28 checks,
+ZIP sources 12, music 15,
+diagnostics 21, controls 31, and the new bundle round-trip/error tests 26. All
+Android Java compiles with SDK 35. The ARM64 mission library relinks without
+unresolved symbols using NDK 27.2.12479018 and unchanged original-engine object
+selection/ABI flags. The menu native library is byte-identical to v20; 10 Hz
+simulation, renderer/streaming and controls are unchanged. Export Save and actual
+game-data restore need phone validation; no new FPS claim is made.

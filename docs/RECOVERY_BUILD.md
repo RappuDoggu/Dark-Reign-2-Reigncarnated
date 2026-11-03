@@ -56,9 +56,9 @@ ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
   ctest --test-dir "$work/engine-host" --output-on-failure
 mkdir -p "$work/java"
 javac --release 8 -d "$work/java" \
-  android/menu/org/reigncarnated/menu/{DataFolderImporter,ZipGameSource,FrameTiming}.java \
-  tests/{DataFolderImporterTest,ZipGameSourceTest,MusicImportTest}.java
-for test in DataFolderImporterTest ZipGameSourceTest MusicImportTest; do
+  android/menu/org/reigncarnated/menu/{DataFolderImporter,ZipGameSource,FrameTiming,GameDataZip}.java \
+  tests/{DataFolderImporterTest,ZipGameSourceTest,MusicImportTest,GameDataZipTest}.java
+for test in DataFolderImporterTest ZipGameSourceTest MusicImportTest GameDataZipTest; do
   java -cp "$work/java" org.reigncarnated.menu.$test || exit 1
 done
 python3 tools/build_performance_candidate.py \
@@ -235,3 +235,44 @@ same order as native State initialization. Both malformed command checks remain
 enabled. Only the menu native library changes; the v19 mission native library,
 touch bindings, camera pan correction, engine ABI and simulation are retained.
 The packager recompiles Java and embeds current source/build/progress receipts.
+
+## Single game-data ZIP and safe restore (version 21)
+
+Install v21 over v20 with the same recovery identity/signer; keep app data.
+Open **Report / data → Export complete game-data ZIP**, then **Save ZIP** and
+choose a location. This creates `Reigncarnated-Complete-Game-Data.zip` privately
+on the device. Select this ZIP alone for future **Select game data ZIP(s)**
+imports. The archive contains game data, not the APK or source code.
+
+The exporter combines the current imported runtime snapshot with the active
+music snapshot, including separately imported music. It restores the canonical
+`packs/base.zwp` and `missions/system/shell.zwp` paths. It validates Sprawl,
+base/shell and JDA/Sprawler client packs, startup config, multiplayer group/maps,
+mods and at least one supported music track before saving. All available runtime
+folders are copied; missing campaigns, worlds, movies or tracks cannot be
+reconstructed from an installation that lacks them. A missing required asset
+causes a named error instead of an incomplete backup. Import missing music with
+**Report / data → Import music ZIP**, then retry export.
+
+A sorted file manifest records SHA-256 and byte counts. The APK source receipt
+is included as `apk-source.json`. ZIP CRCs are reread before publication. Export
+cancellation/failure preserves a previous completed cache file; the Save dialog
+writes the checked ZIP to the chosen destination. Profiles, saves, diagnostics,
+credentials and signing keys are excluded. Keep owned game archives private.
+Allow space for the cached ZIP and its saved copy; restoring also needs a new
+isolated installation snapshot while the previous import remains intact.
+
+Data re-import now selects music from the new ZIP when supplied, otherwise keeps
+valid existing music. Cleanup preserves its referenced snapshot. Mission startup
+refreshes resource symlinks to the current import, including dangling links and
+base/patch packs, so deleting an obsolete import cannot leave Sprawl/maps mounted
+from the old directory. Preflight refuses to replace real runtime files/folders;
+profiles are untouched. The filesystem regression test exercises actual restore
+links after deleting the prior snapshot.
+
+Rebuild/relink the mission adapter and recompile/package Java for v21. The menu
+native library and original engine object selection remain v20/v19 respectively;
+there is no original-engine unit, ABI, timing, renderer or gesture change. The
+full builder above also includes the header-only resource-link helper. Host tests
+verify fixture ZIP round trips and runtime filesystem behavior. Creating/saving
+a ZIP through Android's document picker still requires phone validation.
