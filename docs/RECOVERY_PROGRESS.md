@@ -782,3 +782,12 @@ org.reigncarnated.instantcity identity, retaining that app's data. Source revisi
 build instructions and this record are embedded. Signing keys, owned packs and
 reference screenshots remain outside Git and the APK. Retail campaign loading,
 fog/lighting appearance and phone performance remain explicit acceptance checks.
+
+
+APK 23 artifact: `Reigncarnated-Original-Menus-Options-v23.apk`, source
+`17c61ca85c0d3234895cb79f23e71e204c27c3b8`, SHA-256
+`5e2336da039c13f122a9d62fddcfa83033f65b5061a9595697430843187fd487`.
+APK CRC/signature, same signer as APK 22, embedded source/docs/native hashes,
+ARM64 16 KiB ELF loads and ZIP alignment, static libc++ and absence of owned
+packs/private keys pass independent verification. The unchanged signed APK is
+mirrored under builds/v0.17 for the direct HTTPS download needed by mobile Codex.
