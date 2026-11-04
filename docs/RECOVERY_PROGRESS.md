@@ -702,3 +702,13 @@ compatible test updates. This is not an in-place update signed with the old key.
 Every delivered APK retains source revision, native hashes, build instructions
 and this progress record. Campaign UI/story flow and remaining attack-sound
 investigation are unchanged by this Instant Action candidate.
+
+Version 22 artifact: `Reigncarnated-Instant-City-v22.apk`, source
+`a9f19789b2734e6bf6afa40bb294381620105807`, SHA-256
+`70354a70d008e1b0a14d9389eaabbcc24d6ed9b29c2003749a6e12f15973f061`.
+The owner selected a separate test app. Signature, ZIP CRC, 16 KiB ZIP alignment,
+ARM64 ELF loads/static libc++, version code 22, explicit application identity,
+new JNI exports and embedded source/build/progress receipts pass verification.
+The private test signer has a separate owner-downloadable backup outside Git.
+Source/data-package changes are preserved on the recovery branch. Device menu,
+mission launch, pause/resume and FPS remain acceptance checks.

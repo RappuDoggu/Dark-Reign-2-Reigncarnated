@@ -1,0 +1,34 @@
+{
+  "source_revision": "a9f19789b2734e6bf6afa40bb294381620105807",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated IA City Test",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "f05362184575dfdd4c262984d562dda9d459dcc3113f75a4d0086d746fbe8635",
+    "libreign_menu.so": "a91a7bf811ca28293f5f9f7d4dd217988fc21fd7a5cad2d48f13d26034bd5b35"
+  },
+  "recovery_identity": true,
+  "apk_sha256": "70354a70d008e1b0a14d9389eaabbcc24d6ed9b29c2003749a6e12f15973f061",
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "validation": {
+    "apk_zip_crc": true,
+    "signature": true,
+    "zip_alignment_16k": true,
+    "arm64_elf_loads_16k": true,
+    "static_libcxx": true,
+    "embedded_source_build_progress_match": true,
+    "host_sanitizer_tests": 68,
+    "java_checks": 133,
+    "menu_runtime_checks": 49,
+    "navigation_checks_with_reference": 30,
+    "visual_city_setup_and_context_recreation": true,
+    "android_device_executed": false
+  },
+  "side_by_side_install": true
+}
