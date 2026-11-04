@@ -47,7 +47,7 @@ public:
  HRESULT GetCaps(D3DDEVICEDESC7 *out)override{
   if(!out)return Reject(__func__,__LINE__,E_INVALIDARG);*out={};out->dwMaxTextureWidth=out->dwMaxTextureHeight=2048;
   out->wMaxTextureBlendStages=out->wMaxSimultaneousTextures=1;
-  out->dpcTriCaps.dwTextureFilterCaps=D3DPTFILTERCAPS_MINFPOINT|D3DPTFILTERCAPS_MINFLINEAR|D3DPTFILTERCAPS_MAGFPOINT|D3DPTFILTERCAPS_MAGFLINEAR;
+  out->dpcTriCaps.dwTextureFilterCaps=D3DPTFILTERCAPS_MINFPOINT|D3DPTFILTERCAPS_MINFLINEAR|D3DPTFILTERCAPS_MAGFPOINT|D3DPTFILTERCAPS_MAGFLINEAR|D3DPTFILTERCAPS_MIPFPOINT|D3DPTFILTERCAPS_MIPFLINEAR;
   return S_OK;
  }
  HRESULT EnumTextureFormats(LPD3DENUMPIXELFORMATSCALLBACK cb,void *context)override{
@@ -78,7 +78,7 @@ public:
    auto found=textures.find(surface);
    if(found==textures.end()){
     DDSURFACEDESC2 desc{};desc.dwSize=sizeof(desc);if(FAILED(surface->GetSurfaceDesc(&desc)))return Reject(__func__,__LINE__,E_FAIL);
-    const std::uint64_t bytes=std::uint64_t(desc.dwWidth)*desc.dwHeight*4;
+    std::uint64_t bytes=0;for(DWORD w=desc.dwWidth,h=desc.dwHeight;;w=std::max(1u,w/2),h=std::max(1u,h/2)){bytes+=std::uint64_t(w)*h*4;if(w==1&&h==1)break;}
     auto image=std::make_unique<SurfaceTexture>(surface);
     // Bound retained CPU surface references and GPU storage. LRU entries own a
     // surface reference, preventing stale pointer reuse after bitmap deletion.
@@ -104,7 +104,7 @@ public:
    case D3DTSS_COLORARG1:*out=color1;break;case D3DTSS_COLORARG2:*out=color2;break;
    case D3DTSS_ALPHAARG1:*out=alpha1;break;case D3DTSS_ALPHAARG2:*out=alpha2;break;
    case D3DTSS_MINFILTER:*out=minFilter;break;case D3DTSS_MAGFILTER:*out=magFilter;break;
-   case D3DTSS_MIPFILTER:*out=D3DTFP_NONE;break;
+   case D3DTSS_MIPFILTER:*out=state.mip_filter==reign::MipFilter::none?D3DTFP_NONE:state.mip_filter==reign::MipFilter::point?D3DTFP_POINT:D3DTFP_LINEAR;break;
    case D3DTSS_ADDRESS:*out=state.address==reign::TextureAddress::wrap?D3DTADDRESS_WRAP:state.address==reign::TextureAddress::mirror?D3DTADDRESS_MIRROR:D3DTADDRESS_CLAMP;break;
    default:return Reject(__func__,__LINE__,E_NOTIMPL);
   }return S_OK;
@@ -151,7 +151,7 @@ public:
     if(type==D3DTSS_COLORARG1)color1=value;else if(type==D3DTSS_COLORARG2)color2=value;else if(type==D3DTSS_ALPHAARG1)alpha1=value;else alpha2=value;return S_OK;
    case D3DTSS_MINFILTER:if(value!=D3DTFN_POINT&&value!=D3DTFN_LINEAR)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);minFilter=value;return S_OK;
    case D3DTSS_MAGFILTER:if(value!=D3DTFG_POINT&&value!=D3DTFG_LINEAR)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);magFilter=value;return S_OK;
-   case D3DTSS_MIPFILTER:return value==D3DTFP_NONE?S_OK:E_NOTIMPL;
+   case D3DTSS_MIPFILTER:if(value!=D3DTFP_NONE&&value!=D3DTFP_POINT&&value!=D3DTFP_LINEAR)return Reject(__func__,__LINE__,E_NOTIMPL,DWORD(type),value);state.mip_filter=value==D3DTFP_NONE?reign::MipFilter::none:value==D3DTFP_POINT?reign::MipFilter::point:reign::MipFilter::linear;return S_OK;
    case D3DTSS_ADDRESS:
     if(value==D3DTADDRESS_WRAP)state.address=reign::TextureAddress::wrap;
     else if(value==D3DTADDRESS_CLAMP)state.address=reign::TextureAddress::clamp;

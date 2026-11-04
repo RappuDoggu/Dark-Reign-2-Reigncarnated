@@ -102,18 +102,23 @@ struct Presentation {reign::LegacyGles *renderer;unsigned calls=0;};
 bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.renderer->present();++p.calls;return true;}
 #include "mission_app.h"
 #include "input_native.h"
+#include "multiplayer_data.h"
+#include "player.h"
 namespace Client {UnitObj *FirstSelected();}
 int main(int argc,char **argv){try{
- if(argc!=2)throw std::runtime_error("Provide owned base.zwp");
+ if(argc<2||argc>5)throw std::runtime_error("Provide installation [mission [group [campaign]]]");
+ const std::string selectedMission=argc>2?argv[2]:"2crazed";NativeEngine::MissionOptions options;if(argc>3)options.group=argv[3];options.campaign=argc>4&&std::string(argv[4])=="campaign";
  auto argument=std::filesystem::path(argv[1]);auto root=std::filesystem::is_directory(argument)?argument:argument.parent_path().parent_path();
  auto work=std::filesystem::temp_directory_path()/("reign-app-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
  Context context;reign::LegacyGles renderer(resolve);Presentation presentation{&renderer};
  for(unsigned pass=0;pass<2;++pass){
-  NativeEngine::MissionApp app(root.string(),work.string(),"2crazed",renderer,present,&presentation);
-  bool rejected=false;try{NativeEngine::MissionApp duplicate(root.string(),work.string(),"2crazed",renderer,present,&presentation);}catch(const std::logic_error &){rejected=true;}check(rejected);
+  NativeEngine::MissionApp app(root.string(),work.string(),selectedMission,renderer,present,&presentation,options);
+  if(options.campaign)check(!MultiPlayer::Data::HaveData()&&Difficulty::GetApplyEnemy());
+  bool rejected=false;try{NativeEngine::MissionApp duplicate(root.string(),work.string(),selectedMission,renderer,present,&presentation,options);}catch(const std::logic_error &){rejected=true;}check(rejected);
   for(unsigned frame=0;frame<(pass?64u:128u);++frame){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));}
   check(app.InSimulation()&&app.SimulationCycles()>0);
-  if(pass==0){
+  if(options.campaign)check(Player::GetCurrentPlayer()&&Player::GetCurrentPlayer()->GetTeam()->IsDefaultClient());
+  if(pass==0&&argc==2){
    auto *unit=Team::GetDisplayTeam()->GetUnitObjects().GetHead();check(unit);
    Vector point=unit->Position();point.y+=3;F32 rhw;Vid::ProjectFromWorld(point,rhw);
    std::cerr<<"Picking starting rig at "<<point.x<<","<<point.y<<"\n";
@@ -135,6 +140,7 @@ int main(int argc,char **argv){try{
   app.SetActive(true);for(unsigned frame=0;frame<20;++frame){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));}
   check(app.SimulationCycles()>before);
   std::cerr<<"Application lifecycle pass "<<pass<<" cycles "<<app.SimulationCycles()<<" presented "<<presentation.calls<<"\n";
+  std::cerr<<app.Diagnostics()<<"\n"<<renderer.diagnostics()<<"\n";
  if(const char *capture=std::getenv("REIGN_CAPTURE_PATH")){
   std::vector<std::uint8_t> image(W*H*4);renderer.read_presented_rgba(W,H,image.data());
   std::ofstream file(capture,std::ios::binary);file<<"P6\n"<<W<<" "<<H<<"\n255\n";

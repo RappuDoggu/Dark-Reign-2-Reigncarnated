@@ -152,7 +152,7 @@ struct ShellScene::Impl {
      }
     }
    }
-   reign::DrawState state;state.depth_test=true;state.depth_write=true;state.filtered=true;state.texture_op=reign::TextureOp::modulate_rgba;state.fog=true;for(int i=0;i<3;i++)state.fog_rgb[i]=light.fog[i];
+   reign::DrawState state;state.depth_test=true;state.depth_write=true;state.filtered=true;state.mip_filter=MipFilter::linear;state.texture_op=reign::TextureOp::modulate_rgba;state.fog=true;for(int i=0;i<3;i++)state.fog_rgb[i]=light.fog[i];
    unsigned triangles=0;for(unsigned i=0;i<batches.size();++i){auto &b=batches[i];if(b.vertices.empty())continue;state.texture=textures[i];renderer.draw_clip(W,H,b.vertices.data(),b.vertices.size(),b.indices.data(),b.indices.size(),state);triangles+=b.indices.size()/3;}
 
    std::vector<reign::GodPoseFrame> poses(placements.size());std::vector<unsigned> poseStatus(placements.size());

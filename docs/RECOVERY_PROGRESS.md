@@ -720,3 +720,65 @@ verified APK 22 (unchanged SHA-256 70354a70d008e1b0a14d9389eaabbcc24d6ed9b29c200
 is mirrored under builds/v0.16 for a normal HTTPS GitHub download. This is delivery
 of the already-authorized test APK, not a new build. Game data and the private
 signer/backup remain outside the public repository.
+
+
+## APK 23 original offline menus, Android options and campaign loading path
+
+The owner confirms APK 22 runs, reports campaign loading stalls and green/dark
+mission rendering, and requests original Instant Action menus, Android options
+and maximum graphics. No new screenshot or device ZIP accompanied this report.
+The complete owned campaign ZIP is still not materialized in this cloud machine.
+
+Production Instant Action now imports the original GameSetup::Instant,
+GameConfigPlayers, GameConfigMission and GameConfigMenu layout with original
+skins, localization and Map/Back/Launch icons. The offline adapter connects the
+existing map/one-AI/difficulty/seed options, loads original preview metadata and
+terrain.bmp when present, and validates starting-team capacity. Unsupported
+team/alliance/multiple-AI and advanced host options remain explicitly pending on
+screen. This is not a claim of complete original network/lobby parity.
+
+The original Options button now opens working Android music/effects volume, pan
+speed, brightness, keep-awake and performance-overlay settings, also available
+in missions. Values persist and reach the actual audio/window/control services.
+The High graphics preset retains unreduced 32-bit textures, full meshes and
+original detail factors. GLES now implements real point/linear mip filtering,
+lazy retained mip chains, invalidation after updates and accurate cache bounds.
+The city terrain/models also use trilinear filtering. The 640 x 480 compatibility
+viewport and unsupported MSAA/stencil-reflection/multitexture boundary are stated
+in RECOVERY_BUILD.md. No new phone FPS claim is made.
+
+Source tracing found campaigns were classified as having offline Instant Action
+session data. Campaigns now enter the original single-player load branch, keeping
+the mission's default client/scripted teams, original seed and campaign enemy
+difficulty policy. A synthetic campaign grouping of the reference map passes
+loading, simulation, default-client selection, pause/resume and cleanup twice.
+This is a structural campaign-path regression check; the reported retail mission
+stall, cinematics and full story progression are not verified by that fixture.
+
+Loading status now remains until simulation starts. A thread-safe bounded stage
+journal can prepare a diagnostic ZIP without waiting for the render queue; the
+original loader subsystem and calls are recorded. A blocked native call can
+still block Android surface/picker transitions, so this is observability, not an
+unsafe thread-abort mechanism. The fog comparison changes distance fog only;
+original sight/shroud and mission lighting stay intact. Runtime reports include
+ambient/fog colors and shroud state. The reference map's intentionally colored
+lighting is not evidence that the owner's affected map is visually correct.
+
+Validation: 68 host tests and 11 engine-foundation tests pass, including real
+GLES minification/update pixels and concurrent loading journal checks. Java
+compilation with SDK 35 and 133 importer/music/export/diagnostic/touch checks
+pass. The imported original Instant Action GPU probe passes Map/Done/Launch/Back
+and exact image equality after context recreation. The reference Instant Action
+mission and synthetic campaign path each pass load/simulation/pause/resume/close
+twice on the host; the real Vid attachment/GLES/detach check also passes twice.
+All 603 selected original units compile for ARM64 and host; the three changed
+session/video units are rebuilt as explicit overrides. Both ARM64 libraries are
+rebuilt and linked without unresolved symbols. Pinned upstream verification,
+SDK 35, NDK 27.2.12479018, FFmpeg n6.1.1, ABI flags, original 10 Hz simulation,
+existing touch gestures and fenced unsynchronized geometry streaming remain.
+
+The delivered test update uses APK 22's private signer and
+org.reigncarnated.instantcity identity, retaining that app's data. Source revision,
+build instructions and this record are embedded. Signing keys, owned packs and
+reference screenshots remain outside Git and the APK. Retail campaign loading,
+fog/lighting appearance and phone performance remain explicit acceptance checks.

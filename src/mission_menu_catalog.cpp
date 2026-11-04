@@ -1,6 +1,8 @@
 #include "reign/mission_menu_catalog.hpp"
 #include "reign/config.hpp"
 #include "reign/platform.hpp"
+#include "reign/archive.hpp"
+#include "reign/mission_fs.hpp"
 #include <algorithm>
 #include <set>
 #include <cctype>
@@ -24,5 +26,11 @@ std::vector<MenuMission> menu_missions(const std::filesystem::path &root,bool ca
   else for(const auto &name:available)add(name);
  }
  return result;
+}
+ConfigLoader menu_mission_loader(const std::filesystem::path &root,const MenuMission &map){
+ if(!simple(map.name)||map.group.rfind("missions/",0)!=0||!simple(map.group.substr(9)))throw std::invalid_argument("Invalid menu mission resource request");
+ std::filesystem::path directory,pack;mission_fs::with_root(root,[&]{directory=mission_fs::resolve_path(map.group+"/"+map.name);pack=mission_fs::resolve_path(map.group+"/"+map.name+".zwp");});
+ if(std::filesystem::is_directory(directory))return [directory](const std::string &name){std::vector<std::uint8_t> bytes;mission_fs::with_root(directory,[&]{auto file=mission_fs::resolve_path(name);if(!std::filesystem::is_regular_file(file))throw FileSys::FileNotFound(name);bytes=read_asset(directory,std::filesystem::relative(file,directory));});return bytes;};
+ auto archive=std::make_shared<Archive>(pack);return [archive](const std::string &name){if(!archive->find(name))throw FileSys::FileNotFound(name);return archive->read(name);};
 }
 }

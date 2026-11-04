@@ -24,10 +24,10 @@ void InitializeVideoVariables(){
   VarSys::CreateFloat("vid.faroverride",0,VarSys::DEFAULT,&Vid::Var::farOverride)->SetFloatRange(0.0F,800.0F);
   VarSys::CreateFloat("vid.fogdepth",Vid::renderState.fogDepth,VarSys::DEFAULT,&Vid::Var::fogDepth)->SetFloatRange(0.0F,800.0F);
   VarSys::CreateFloat("vid.farplane",800.0F,VarSys::DEFAULT,&Vid::Var::farPlane)->SetFloatRange(0.0F,800.0F);
-  VarSys::CreateInteger("vid.filter",0,VarSys::DEFAULT,&Vid::Var::varFilter);
-  VarSys::CreateInteger("vid.mipmap",0,VarSys::DEFAULT,&Vid::Var::varMipmap);
-  VarSys::CreateInteger("vid.mipfilter",0,VarSys::DEFAULT,&Vid::Var::varMipfilter);
-  VarSys::CreateInteger("vid.fog",0,VarSys::DEFAULT,&Vid::Var::varFog);
+  VarSys::CreateInteger("vid.filter",1,VarSys::DEFAULT,&Vid::Var::varFilter);
+  VarSys::CreateInteger("vid.mipmap",1,VarSys::DEFAULT,&Vid::Var::varMipmap);
+  VarSys::CreateInteger("vid.mipfilter",1,VarSys::DEFAULT,&Vid::Var::varMipfilter);
+  VarSys::CreateInteger("vid.fog",Vid::renderState.status.fog,VarSys::DEFAULT,&Vid::Var::varFog);
   VarSys::CreateInteger("vid.wireframe",0,VarSys::DEFAULT,&Vid::Var::varWire);
   VarSys::CreateInteger("vid.flat",0,VarSys::DEFAULT,&Vid::Var::varFlat);
   VarSys::CreateInteger("vid.specular",Vid::renderState.status.specular,VarSys::DEFAULT,&Vid::Var::varSpecular);
@@ -151,8 +151,12 @@ HRESULT AttachVideo(IDirect3DDevice7 *next, IDirectDrawSurface7 *target,
   for (const auto &format : formats.values) if (format.dwRGBBitCount == 32) driver.tex32 = TRUE;
   driver.drivers[0].SetDesc(&deviceCaps.deviceGUID, "Native backend", deviceCaps);
   caps.ClearData(); driver.drivers[0].SetCaps();
-  // The GLES surface adapter uploads one mip level and advertises no mip filtering.
-  renderState.status.filter &= filterFILTER;
+  // CPU surfaces retain their original top level. GLES derives and retains the
+  // complete mip chain lazily; no unsupported DirectDraw attachment is requested.
+  renderState.status.filter = filterFILTER;
+  if(deviceCaps.dpcTriCaps.dwTextureFilterCaps & (D3DPTFILTERCAPS_MIPFPOINT|D3DPTFILTERCAPS_MIPFLINEAR))renderState.status.filter |= filterMIPMAP;
+  if(deviceCaps.dpcTriCaps.dwTextureFilterCaps & D3DPTFILTERCAPS_MIPFLINEAR)renderState.status.filter |= filterMIPFILTER;
+  renderState.status.tex32 = caps.tex32;
   auto &mode = driver.vidModes[0]; mode.desc = desc;
   mode.bpp = desc.ddpfPixelFormat.dwRGBBitCount;
   mode.rect.Set(0, 0, desc.dwWidth, desc.dwHeight);

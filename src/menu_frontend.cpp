@@ -11,6 +11,8 @@
 #include "reign/save_load_services.hpp"
 #include "reign/sound_settings.hpp"
 #include "reign/campaign_selection.hpp"
+#include "reign/instant_setup_layout.hpp"
+#include "game_preview.h"
 #include "reign/command_scopes.hpp"
 #include "reign/interface_events.hpp"
 #include "reign/frontend_frame.hpp"
@@ -67,6 +69,7 @@ IControl *listSlider(U32,IControl *p,U32){return new ICListSlider(p);}
 IControl *button(U32,IControl *p,U32){return new ICButton(p);}
 IControl *label(U32,IControl *p,U32){return new ICStatic(p);}
 IControl *window(U32,IControl *p,U32){return new ICWindow(p);}
+IControl *windowTitle(U32,IControl *p,U32){return new ICWindowTitle(p);}
 IControl *message(U32,IControl *p,U32){return new MsgBoxWindow(p);}
 std::string filename(const std::string &path){auto at=path.find_last_of("/\\");return at==std::string::npos?path:path.substr(at+1);}
 }
@@ -79,7 +82,7 @@ class InstantSetupWindow final:public ICWindow {
 public:explicit InstantSetupWindow(IControl *p):ICWindow(p){}
  U32 HandleEvent(Event &e)override{
   if(e.type==IFace::EventID()&&e.subType==IFace::NOTIFY){
-   for(const auto &entry:{std::pair<const char *,const char *>{"NativeSetup::AI","setup-ai"},{"NativeSetup::Difficulty","setup-difficulty"},{"NativeSetup::Back","setup-back"},{"NativeSetup::Launch","setup-launch"}})
+   for(const auto &entry:{std::pair<const char *,const char *>{"NativeSetup::AI","setup-ai"},{"NativeSetup::Difficulty","setup-difficulty"},{"NativeSetup::Back","setup-back"},{"NativeSetup::Launch","setup-launch"},{"NativeSetup::Map","setup-map"},{"NativeSetup::MapDone","setup-map-done"}})
     if(e.iface.p1==Crc::CalcStr(entry.first)){requestHost(entry.second);return TRUE;}
   }
   return ICWindow::HandleEvent(e);
@@ -145,6 +148,9 @@ struct MenuFrontend::Impl {
  std::unique_ptr<ICRoot> root;
  std::vector<MenuMission> instantMaps;
  std::vector<std::string> instantDifficulties;
+ std::function<ConfigLoader(const MenuMission &)> missionLoader;
+ std::unique_ptr<Game::Preview> instantPreview;
+ unsigned previewMap=~0u;
  unsigned instantOpponents=0,instantDifficulty=0;
  bool closed=false,substitutionRegistered=false;
  std::string pending,action;
@@ -168,6 +174,7 @@ struct MenuFrontend::Impl {
   try{run([&]{config.initialize_language();root=std::make_unique<ICRoot>();root->SetName("Root");auto &state=iface_event_detail::state();state.root=root.get();state.treeReady=TRUE;
   IFace::RegisterControlClass("Button",button);IFace::RegisterControlClass("Static",label);IFace::RegisterControlClass("Window",window);IFace::RegisterControlClass("MessageBoxWindow",message);
   IFace::RegisterControlClass("Native::InstantSetup",instantSetupWindow);
+  IFace::RegisterControlClass("WindowTitle",windowTitle);
   IFace::RegisterControlClass("Listbox",listbox);IFace::RegisterControlClass("Slider",slider);IFace::RegisterControlClass("ListSlider",listSlider);
   IFace::RegisterControlClass("Menu",menu);
   IFace::RegisterControlClass("Edit",edit);IFace::RegisterControlClass("TabGroup",tabgroup);IFace::RegisterControlClass("TipWindow",tip);IFace::RegisterControlClass("ConsoleEdit",consoleEdit);
@@ -243,21 +250,37 @@ struct MenuFrontend::Impl {
   }else if(next=="login"){
    User::Logout();auto *shell=IFace::FindByName("Shell::Main",root.get());if(shell)shell->Deactivate();
    IFace::NativeClearRouting();IFace::FindByName("DlgLogin",root.get())->Activate();action="Select a profile to log in.";
-  }else if(next=="setup-ai"){instantOpponents=1-instantOpponents;setup_labels();}
-  else if(next=="setup-difficulty"){instantDifficulty=(instantDifficulty+1)%instantDifficulties.size();setup_labels();}
+  }else if(next=="setup-ai"){if(missionLoader&&!instantOpponents&&instantPreview&&instantPreview->GetTeams()<2)throw std::runtime_error("Selected map has no second playable starting team");instantOpponents=1-instantOpponents;setup_labels();}
+  else if(next=="setup-difficulty"){instantDifficulty=(instantDifficulty+1)%instantDifficulties.size();setup_labels();if(missionLoader){previewMap=~0u;refresh_preview();}}
+  else if(next=="setup-map")control("GameConfigHostOptions")->Activate();
+  else if(next=="setup-map-done"){refresh_preview();control("GameConfigHostOptions")->Deactivate();IFace::NativeClearRouting();}
   else if(next=="setup-back")action="@instant-back";
   else if(next=="setup-launch"){selection();action="@instant-launch";}
   else if(next=="quit"||next=="options"||next=="instant"||next=="campaign")action="@"+next;
   else throw std::runtime_error("Run code not implemented: "+next);
  }
- IControl *control(const char *name){auto *c=IFace::FindByName(name,root.get());if(!c)throw std::runtime_error(std::string("Missing setup control: ")+name);return c;}
+ std::string control_name(const std::string &name){if(!missionLoader)return name;for(const auto &entry:{std::pair<const char *,const char *>{"Maps","GameConfigHostOptions.Maps"},{"Opponents","GameSetup::Instant.GameConfigPlayers.AddAi"},{"Difficulty","GameSetup::Instant.GameConfigPlayers.Difficulty"},{"Seed","GameSetup::Instant.GameConfigPlayers.Seed"},{"Launch","GameSetup::Instant.GameConfigMenu.Launch"},{"Back","GameSetup::Instant.GameConfigMenu.Back"}}){auto prefix=std::string("GameSetup::Instant.")+entry.first;if(name==prefix||name.rfind(prefix+".",0)==0)return entry.second+name.substr(prefix.size());}return name;}
+ IControl *control(const char *name){auto path=control_name(name);auto *c=IFace::FindByName(path.c_str(),root.get());if(!c)throw std::runtime_error(std::string("Missing setup control: ")+path);return c;}
  void setup_labels(){
-  control("GameSetup::Instant.Opponents")->SetTextString(Utils::Ansi2Unicode(instantOpponents?"One AI opponent":"Practice: no opponent"),TRUE);
+  control("GameSetup::Instant.Opponents")->SetTextString(Utils::Ansi2Unicode(missionLoader?(instantOpponents?"Remove AI":"Add AI"):(instantOpponents?"One AI opponent":"Practice: no opponent")),TRUE);
+  if(missionLoader)control("GameSetup::Instant.GameConfigPlayers.Opponent")->SetTextString(Utils::Ansi2Unicode(instantOpponents?"Computer opponent":"Practice: no opponent"),TRUE);
   const auto &name=instantDifficulties.at(instantDifficulty);auto label=std::string("Difficulty: ")+(name.empty()?"Mission default":name);
   control("GameSetup::Instant.Difficulty")->SetTextString(Utils::Ansi2Unicode(label.c_str()),TRUE);
  }
+ void refresh_preview(){
+  if(!missionLoader)return;
+  auto *map=VarSys::FindVarItem("gamegod.instant.map");if(!map)throw std::logic_error("Map selection variable is missing");unsigned index=selectionNumber(std::string(map->Str()),unsigned(instantMaps.size()-1),"Map selection");if(index==previewMap)return;
+  const auto selected=instantMaps.at(index);CampaignSelectionServices services;services.open_mission=[&](const std::string &,const std::string &){return missionLoader(selected);};services.default_side=[]{return "jda";};
+  std::unique_ptr<Game::Preview> preview;services.run([&]{preview=std::make_unique<Game::Preview>(selected.group.c_str(),selected.name.c_str());});
+  if(instantOpponents&&preview->GetTeams()<2)throw std::runtime_error("Selected map has fewer than two playable starting teams. Remove the AI or choose another map.");
+  auto *image=control("GameSetup::Instant.GameConfigMission.Preview");image->SetImage(nullptr);instantPreview=std::move(preview);if(auto *bitmap=instantPreview->GetTerrainTexture()){TextureInfo texture(bitmap,TextureInfo::TM_CENTRED);image->SetImage(&texture);}
+  auto set=[&](const char *child,const std::string &text){control((std::string("GameSetup::Instant.GameConfigMission.Info.")+child).c_str())->SetTextString(Utils::Ansi2Unicode(text.c_str()),TRUE);};
+  set("MissionName",selected.name);set("MissionSize",std::to_string(instantPreview->GetSize())+" cells / "+std::to_string(instantPreview->GetTeams())+" starting teams");
+  set("RuleSet",std::string("Rules: ")+(instantPreview->GetRuleSet().str[0]?instantPreview->GetRuleSet().str:"mission default"));set("StartingResource","Credits: mission default");set("UnitLimit","Unit limit: mission default");set("Placement","Placement: original starting teams");set("Difficulty",instantDifficulties.at(instantDifficulty).empty()?"Difficulty: mission default":instantDifficulties.at(instantDifficulty));set("ResourceType","Resources: mission default");set("Filtering","Original mission rules");previewMap=index;
+ }
  InstantSetupSelection selection(){
   if(instantMaps.empty()||instantDifficulties.empty())throw std::logic_error("Instant Action setup was not prepared");
+  refresh_preview();
   // Original ICEdit buffers text until Enter/focus loss. Commit it before
   // validation so clicking Launch never uses the previously saved seed.
   auto *edit=control("GameSetup::Instant.Seed");if(edit->IsActive()){Event enter{};enter.type=IFace::EventID();enter.subType=IFace::NOTIFY;enter.iface.p1=ICEditMsg::Enter;edit->HandleEvent(enter);}
@@ -268,6 +291,10 @@ struct MenuFrontend::Impl {
  }
  void create_setup(){
   if(IFace::FindByName("GameSetup::Instant",root.get()))return;
+  if(missionLoader){
+   auto cfg=original_instant_layout(loader);FileSys::Session files([&](const std::string &name){if(name=="native-original-instant.cfg")return std::vector<std::uint8_t>(cfg.begin(),cfg.end());return loader(name);});PTree tree;if(!tree.AddFile("native-original-instant.cfg"))throw std::runtime_error("Cannot construct original Instant Action controls");
+   auto *global=tree.GetGlobalScope();global->InitIterators();while(auto *scope=global->NextFunction()){if(scope->NameCrc()==Crc::CalcStr("ConfigureInterface"))IFace::ConfigureNative(scope);else if(scope->NameCrc()==Crc::CalcStr("CreateControl"))IFace::CreateNativeRootControl(scope);else throw std::runtime_error("Unsupported native setup root scope");}return;
+  }
   // Use the original control renderer, input, fonts and theme. Only options
   // already applied by the native offline session are exposed here.
   static const std::string cfg=R"(
@@ -294,7 +321,7 @@ CreateControl("GameSetup::Instant","Native::InstantSetup"){
  }
  void destroy_tree(){
   if(!root)return;
-  run([&]{if(root->IsActive())root->Deactivate();IFace::NativeClearRouting();if(substitutionRegistered){IFace::NativeUnregisterSubstitution();substitutionRegistered=false;}root.reset();events.process();auto &s=iface_event_detail::state();s.root=nullptr;s.treeReady=FALSE;});
+  run([&]{if(root->IsActive())root->Deactivate();IFace::NativeClearRouting();if(substitutionRegistered){IFace::NativeUnregisterSubstitution();substitutionRegistered=false;}root.reset();instantPreview.reset();events.process();auto &s=iface_event_detail::state();s.root=nullptr;s.treeReady=FALSE;});
  }
  ~Impl(){destroy_tree();}
  IControl *login(){auto *result=IFace::FindByName("DlgLogin",root.get());if(!result||!result->IsActive())throw std::runtime_error("Original Login control is not active");return result;}
@@ -310,7 +337,7 @@ MenuFrameReport MenuFrontend::draw(const GeometrySink &geometry,const FontSink &
   auto paint=impl_->root->GetPaintInfo();FrontendDraw::run_batches([&]{impl_->root->Draw(paint);},[&](const FrontendBatch &batch){++impl_->report.geometry_batches;geometry(batch);});
  });return impl_->report;
 }
-std::array<int,2> MenuFrontend::control_center(const std::string &name){if(impl_->closed)throw std::logic_error("Menu closed");std::array<int,2> result{};impl_->run([&]{auto *c=IFace::FindByName(name.c_str(),impl_->root.get());if(!c||!c->IsActive())throw std::runtime_error("Control not active: "+name);auto p=c->GetScreenPos();auto size=c->GetSize();result={p.x+size.x/2,p.y+size.y/2};});return result;}
+std::array<int,2> MenuFrontend::control_center(const std::string &name){if(impl_->closed)throw std::logic_error("Menu closed");std::array<int,2> result{};impl_->run([&]{auto *c=IFace::FindByName(impl_->control_name(name).c_str(),impl_->root.get());if(!c||!c->IsActive())throw std::runtime_error("Control not active: "+name);auto p=c->GetScreenPos();auto size=c->GetSize();result={p.x+size.x/2,p.y+size.y/2};});return result;}
 std::string MenuFrontend::profile_name(){if(impl_->closed)throw std::logic_error("Menu closed");std::string name;impl_->run([&]{if(User::LoggedIn())name=User::GetName();});return name;}
 bool MenuFrontend::control_active(const std::string &name){if(impl_->closed)return false;bool result=false;impl_->run([&]{auto *control=IFace::FindByName(name.c_str(),impl_->root.get());result=control&&control->IsActive();});return result;}
 void MenuFrontend::text(const std::string &ascii){if(impl_->closed)throw std::logic_error("Menu closed");for(unsigned char c:ascii)if(c<32||c>126)throw std::invalid_argument("Initial profile text supports printable ASCII only");impl_->run([&]{for(unsigned char c:ascii){if(!impl_->input.character(c))throw std::runtime_error("Menu input queue full");impl_->events.process();impl_->finish_input();}});}
@@ -324,6 +351,7 @@ std::string MenuFrontend::take_action(){auto result=std::move(impl_->action);imp
 float MenuFrontend::effect_volume()const{return impl_->audio.digital_volume;}
 void MenuFrontend::set_effect_volume(float v){if(!std::isfinite(v)||v<0||v>1)throw std::invalid_argument("Invalid volume");impl_->run([&]{impl_->audio.digital_volume=v;if(User::LoggedIn()&&!User::Save())throw std::runtime_error("Could not save volume");});}
 void MenuFrontend::set_build_version(const std::string &version){if(version.empty()||version.size()>128)throw std::invalid_argument("Invalid APK version label");impl_->run([&]{VarSys::FindVarItem("sys.buildver")->SetStr(version.c_str());});}
+void MenuFrontend::use_original_instant_setup(std::function<ConfigLoader(const MenuMission &)> loader){if(!loader||impl_->closed)throw std::invalid_argument("Missing original setup mission loader");impl_->missionLoader=std::move(loader);}
 void MenuFrontend::prepare_instant_setup(const std::vector<MenuMission> &maps,const std::vector<std::string> &difficulties,unsigned map,unsigned opponents,unsigned difficulty,unsigned seed){
  if(impl_->closed)throw std::logic_error("Menu closed");
  if(maps.empty())throw std::runtime_error("No Instant Action maps were found. Import the complete missions folder.");
@@ -334,14 +362,14 @@ void MenuFrontend::prepare_instant_setup(const std::vector<MenuMission> &maps,co
   if(!VarSys::FindVarItem("gamegod.instant.seed"))VarSys::CreateString("gamegod.instant.seed","1");
   const auto index=std::min<unsigned>(map,maps.size()-1);
   VarSys::FindVarItem("gamegod.instant.map")->SetStr(std::to_string(index).c_str());VarSys::FindVarItem("gamegod.instant.seed")->SetStr(std::to_string(seed).c_str());
-  impl_->create_setup();auto *list=dynamic_cast<ICListBox *>(impl_->control("GameSetup::Instant.Maps"));if(!list)throw std::runtime_error("Invalid map list control");
+  impl_->previewMap=~0u;impl_->create_setup();auto *list=dynamic_cast<ICListBox *>(impl_->control("GameSetup::Instant.Maps"));if(!list)throw std::runtime_error("Invalid map list control");
   list->DeleteAllItems();for(unsigned i=0;i<maps.size();++i){auto label=std::filesystem::path(maps[i].group).filename().string()+" / "+maps[i].name;list->AddTextItem(std::to_string(i).c_str(),Utils::Ansi2Unicode(label.c_str()));}
-  list->SetSelectedItem(index,TRUE,FALSE);impl_->setup_labels();
+  list->SetSelectedItem(index,TRUE,FALSE);impl_->setup_labels();impl_->refresh_preview();
  });
 }
-void MenuFrontend::hide_shell_controls(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{for(auto *name:{"Shell::Main","GameSetup::Instant"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();IFace::NativeClearRouting();});}
+void MenuFrontend::hide_shell_controls(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{for(auto *name:{"Shell::Main","GameSetup::Instant","GameConfigHostOptions"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();IFace::NativeClearRouting();});}
 void MenuFrontend::show_instant_setup(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{if(impl_->instantMaps.empty())throw std::logic_error("Instant Action setup is empty");impl_->control("Shell::Main")->Deactivate();impl_->control("GameSetup::Instant")->Activate();IFace::NativeClearRouting();});}
-void MenuFrontend::show_main(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{if(auto *c=IFace::FindByName("GameSetup::Instant",impl_->root.get()))c->Deactivate();impl_->control("Shell::Main")->Activate();IFace::NativeClearRouting();});}
+void MenuFrontend::show_main(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{for(auto *name:{"GameSetup::Instant","GameConfigHostOptions"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();impl_->control("Shell::Main")->Activate();IFace::NativeClearRouting();});}
 InstantSetupSelection MenuFrontend::instant_selection(){if(impl_->closed)throw std::logic_error("Menu closed");InstantSetupSelection result;impl_->run([&]{result=impl_->selection();});return result;}
 bool MenuFrontend::text_input_active(){if(impl_->closed)return false;bool result=false;impl_->run([&]{result=dynamic_cast<ICEdit *>(IFace::GetFocus())!=nullptr;});return result;}
 void MenuFrontend::open_shell_preview(){

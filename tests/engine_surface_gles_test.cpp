@@ -132,7 +132,10 @@ int main(){try{
   }
   check(device->SetRenderState(D3DRENDERSTATE_ANTIALIAS,1)==E_NOTIMPL);
   check(device->SetTexture(1,surface)==E_NOTIMPL);check(device->SetTexture(0,surface)==S_OK);
-  check(device->SetTextureStageState(0,D3DTSS_MIPFILTER,D3DTFP_LINEAR)==E_NOTIMPL);
+  check(device->SetTextureStageState(0,D3DTSS_MIPFILTER,D3DTFP_LINEAR)==S_OK);
+  check(device->GetTextureStageState(0,D3DTSS_MIPFILTER,&queried)==S_OK&&queried==D3DTFP_LINEAR);
+  check(device->SetTextureStageState(0,D3DTSS_MIPFILTER,99)==E_NOTIMPL);
+  check(device->GetTextureStageState(0,D3DTSS_MIPFILTER,&queried)==S_OK&&queried==D3DTFP_LINEAR);
   check(device->SetTextureStageState(0,D3DTSS_MINFILTER,D3DTFN_LINEAR)==S_OK);
   check(device->SetTextureStageState(0,D3DTSS_MAGFILTER,D3DTFG_LINEAR)==S_OK);
   check(device->SetTextureStageState(0,D3DTSS_ADDRESS,D3DTADDRESS_WRAP)==S_OK);

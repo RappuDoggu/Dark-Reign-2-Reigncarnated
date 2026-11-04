@@ -9,6 +9,7 @@
 #include <cstring>
 #include <chrono>
 #include <sstream>
+#include <unordered_set>
 #include "reign/native_diagnostics.hpp"
 namespace reign {
 #define REIGN_GL(X) \
@@ -24,7 +25,7 @@ namespace reign {
  X(EnableVertexAttribArray,PFNGLENABLEVERTEXATTRIBARRAYPROC) X(VertexAttribPointer,PFNGLVERTEXATTRIBPOINTERPROC) \
  X(GenTextures,PFNGLGENTEXTURESPROC) X(BindTexture,PFNGLBINDTEXTUREPROC) X(TexParameteri,PFNGLTEXPARAMETERIPROC) \
  X(TexImage2D,PFNGLTEXIMAGE2DPROC) X(TexSubImage2D,PFNGLTEXSUBIMAGE2DPROC) X(GenSamplers,PFNGLGENSAMPLERSPROC) X(BindSampler,PFNGLBINDSAMPLERPROC) X(SamplerParameteri,PFNGLSAMPLERPARAMETERIPROC) X(DeleteSamplers,PFNGLDELETESAMPLERSPROC) X(DeleteTextures,PFNGLDELETETEXTURESPROC) X(ActiveTexture,PFNGLACTIVETEXTUREPROC) \
- X(Viewport,PFNGLVIEWPORTPROC) X(Enable,PFNGLENABLEPROC) X(Disable,PFNGLDISABLEPROC) X(DepthMask,PFNGLDEPTHMASKPROC) \
+ X(GenerateMipmap,PFNGLGENERATEMIPMAPPROC) X(Viewport,PFNGLVIEWPORTPROC) X(Enable,PFNGLENABLEPROC) X(Disable,PFNGLDISABLEPROC) X(DepthMask,PFNGLDEPTHMASKPROC) \
  X(DepthFunc,PFNGLDEPTHFUNCPROC) X(BlendFunc,PFNGLBLENDFUNCPROC) X(ClearColor,PFNGLCLEARCOLORPROC) \
  X(ClearDepthf,PFNGLCLEARDEPTHFPROC) X(Clear,PFNGLCLEARPROC) X(DrawElements,PFNGLDRAWELEMENTSPROC) \
  X(GenFramebuffers,PFNGLGENFRAMEBUFFERSPROC) X(DeleteFramebuffers,PFNGLDELETEFRAMEBUFFERSPROC) X(BindFramebuffer,PFNGLBINDFRAMEBUFFERPROC) \
@@ -55,7 +56,8 @@ struct LegacyGles::Impl {
  }
  unsigned width=0,height=0;
  LegacyGles::Statistics stats;
- GLuint samplers[6]={},boundTexture=0;
+ GLuint samplers[18]={},boundTexture=0;
+ std::unordered_set<GLuint> mipmaps;
  DrawState previous;
  bool stateValid=false,previousHomogeneous=false,newStream=true;
  bool synchronized=false,auditArmed=false,auditing=false;unsigned auditCount=0;std::string audit;
@@ -92,7 +94,7 @@ struct LegacyGles::Impl {
   if(!ok){char log[4096];GetShaderInfoLog(s,sizeof(log),nullptr,log);DeleteShader(s);throw std::runtime_error(log);}return s;
  }
  GLint uniform(const char *name){return GetUniformLocation(program,name);}
- ~Impl(){DeleteSamplers(6,samplers);if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);if(white)DeleteTextures(1,&white);for(auto &b:banks){if(b.fence)DeleteSync(b.fence);DeleteBuffers(1,&b.vertex);DeleteBuffers(1,&b.index);}if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
+ ~Impl(){DeleteSamplers(18,samplers);if(fbo)DeleteFramebuffers(1,&fbo);if(color)DeleteTextures(1,&color);if(depth)DeleteRenderbuffers(1,&depth);if(white)DeleteTextures(1,&white);for(auto &b:banks){if(b.fence)DeleteSync(b.fence);DeleteBuffers(1,&b.vertex);DeleteBuffers(1,&b.index);}if(vao)DeleteVertexArrays(1,&vao);if(program)DeleteProgram(program);}
 };
 LegacyGles::LegacyGles(Resolver resolver):impl_(std::make_unique<Impl>(resolver)){
  auto &g=*impl_;
@@ -166,9 +168,9 @@ void main(){
  g.uFog=g.uniform("fog_enabled");g.uSpecular=g.uniform("specular_enabled");g.uFogRgb=g.uniform("fog_rgb");g.uAlpha=g.uniform("alpha_test");g.uAlphaRef=g.uniform("alpha_reference");g.uImage=g.uniform("image");
  g.GenVertexArrays(1,&g.vao);
  g.BindVertexArray(g.vao);for(unsigned i=0;i<4;++i)g.EnableVertexAttribArray(i);
- g.GenSamplers(6,g.samplers);
+ g.GenSamplers(18,g.samplers);
  const GLint modes[]={GL_CLAMP_TO_EDGE,GL_REPEAT,GL_MIRRORED_REPEAT};
- for(unsigned i=0;i<6;++i){g.SamplerParameteri(g.samplers[i],GL_TEXTURE_MIN_FILTER,i>=3?GL_LINEAR:GL_NEAREST);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_MAG_FILTER,i>=3?GL_LINEAR:GL_NEAREST);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_WRAP_S,modes[i%3]);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_WRAP_T,modes[i%3]);}
+ for(unsigned i=0;i<18;++i){bool filtered=i%6>=3;unsigned mip=i/6;GLint min=mip==0?(filtered?GL_LINEAR:GL_NEAREST):mip==1?(filtered?GL_LINEAR_MIPMAP_NEAREST:GL_NEAREST_MIPMAP_NEAREST):(filtered?GL_LINEAR_MIPMAP_LINEAR:GL_NEAREST_MIPMAP_LINEAR);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_MIN_FILTER,min);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_MAG_FILTER,filtered?GL_LINEAR:GL_NEAREST);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_WRAP_S,modes[i%3]);g.SamplerParameteri(g.samplers[i],GL_TEXTURE_WRAP_T,modes[i%3]);}
  const std::uint8_t white[]={255,255,255,255};g.white=texture_rgba(1,1,white);g.check();
 }
 LegacyGles::~LegacyGles()=default;
@@ -189,11 +191,11 @@ std::string LegacyGles::diagnostics()const{return std::string("Stream mode ")+(i
 void LegacyGles::update_texture_rgba(unsigned id,unsigned width,unsigned height,const std::uint8_t *data){
  if(!id||!width||!height||width>16384||height>16384||!data)throw std::invalid_argument("Invalid texture update");
  auto &g=*impl_;g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,id);g.PixelStorei(GL_UNPACK_ALIGNMENT,1);
- g.TexSubImage2D(GL_TEXTURE_2D,0,0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,data);g.boundTexture=0;
+ g.TexSubImage2D(GL_TEXTURE_2D,0,0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,data);g.mipmaps.erase(id);g.boundTexture=0;
  ++g.stats.texture_uploads;g.stats.texture_bytes+=std::uint64_t(width)*height*4;g.check();
 }
-void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.banks.clear();g.hasBank=false;g.newStream=true;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0;for(auto &sampler:g.samplers)sampler=0;g.stateValid=false;g.boundTexture=0; }
-void LegacyGles::delete_texture(unsigned id){if(id){impl_->DeleteTextures(1,&id);if(impl_->boundTexture==id)impl_->boundTexture=0;}}
+void LegacyGles::abandon_context() noexcept { auto &g=*impl_;g.banks.clear();g.mipmaps.clear();g.hasBank=false;g.newStream=true;g.program=g.vao=g.vbo=g.ibo=g.white=g.fbo=g.color=g.depth=0;g.width=g.height=0;for(auto &sampler:g.samplers)sampler=0;g.stateValid=false;g.boundTexture=0; }
+void LegacyGles::delete_texture(unsigned id){if(id){impl_->mipmaps.erase(id);impl_->DeleteTextures(1,&id);if(impl_->boundTexture==id)impl_->boundTexture=0;}}
 void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
  clear_buffers(w,h,true,true,r,g,b,a,1);
 }
@@ -221,7 +223,7 @@ void LegacyGles::draw_clip(unsigned w,unsigned h,const LegacyClip *vertices,std:
 }
 void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state,bool homogeneous,bool lines){
  if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%(lines?2:3)||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL indexed batch");
- if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
+ if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.mip_filter)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
  auto &g=*impl_;g.target(w,h);const bool first=!g.stateValid;const auto &old=g.previous;
  if(first){g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);g.DepthFunc(GL_LEQUAL);g.UseProgram(g.program);g.Uniform1i(g.uImage,0);g.ActiveTexture(GL_TEXTURE0);g.BindVertexArray(g.vao);}
@@ -246,7 +248,8 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
  if(first||old.alpha_reference!=state.alpha_reference)g.Uniform1f(g.uAlphaRef,state.alpha_reference);
  const GLuint tex=state.texture?state.texture:g.white;
  if(first||g.boundTexture!=tex){g.BindTexture(GL_TEXTURE_2D,tex);g.boundTexture=tex;}
- if(first||old.filtered!=state.filtered||old.address!=state.address)g.BindSampler(0,g.samplers[(state.filtered?3:0)+static_cast<unsigned>(state.address)]);
+ if(state.mip_filter!=MipFilter::none&&g.mipmaps.insert(tex).second)g.GenerateMipmap(GL_TEXTURE_2D);
+ if(first||old.filtered!=state.filtered||old.address!=state.address||old.mip_filter!=state.mip_filter)g.BindSampler(0,g.samplers[6*static_cast<unsigned>(state.mip_filter)+(state.filtered?3:0)+static_cast<unsigned>(state.address)]);
  const auto uploadStart=std::chrono::steady_clock::now();
  const std::size_t vb=count*sizeof(LegacyTL),ib=index_count*sizeof(std::uint16_t);
  if(g.auditArmed){g.auditArmed=false;g.auditing=true;g.auditCount=0;g.audit="Explicit geometry audit (first 96 draws):\n";}

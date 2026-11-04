@@ -41,6 +41,7 @@ public:
  // Opens the imported shell without a login prompt or static backdrop.
  // Camera/control navigation is driven by the native host.
  void open_shell_preview();
+ void use_original_instant_setup(std::function<ConfigLoader(const MenuMission &)>);
  void prepare_instant_setup(const std::vector<MenuMission> &,const std::vector<std::string> &,unsigned map,unsigned opponents,unsigned difficulty,unsigned seed);
  void show_instant_setup();
  void hide_shell_controls();

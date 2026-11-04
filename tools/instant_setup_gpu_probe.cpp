@@ -34,7 +34,7 @@ int main(int argc,char **argv){try{
  // The reduced reference archive has compressed PCM unsupported by MenuAudio.
  // This probe validates pixels/control routing only; production audio is unchanged.
  std::cout<<"Visual-only probe: no audio decoding or playback validation\n";
- reign::MenuFrontend menu(loader,root,W,H,[](const std::string &){return [](float){};});menu.open_shell_preview();
+ reign::MenuFrontend menu(loader,root,W,H,[](const std::string &){return [](float){};});menu.use_original_instant_setup([&](const reign::MenuMission &map){return reign::menu_mission_loader(data,map);});menu.open_shell_preview();
  auto maps=reign::menu_missions(data,false);if(maps.empty())throw std::runtime_error("Reference installation has no Instant Action maps");
  auto objectives=reign::parse_config(loader,"objectives_cineractives.cfg");std::vector<std::uint8_t> previous,pixels(W*H*4);
  for(unsigned generation=0;generation<2;++generation){
@@ -51,6 +51,8 @@ int main(int argc,char **argv){try{
   }
   if(generation&&pixels!=previous)throw std::runtime_error("Instant setup differs after GPU context recreation");previous=pixels;
   auto click=[&](const std::string &name){auto p=menu.control_center(name);menu.pointer_move(p[0],p[1]);menu.pointer_button(true,p[0],p[1]);menu.pointer_button(false,p[0],p[1]);};
+  click("GameSetup::Instant.GameConfigMenu.Map");if(!menu.control_active("GameConfigHostOptions"))throw std::runtime_error("Original Map button did not open map chooser");
+  click("GameConfigHostOptions.Done");if(menu.control_active("GameConfigHostOptions"))throw std::runtime_error("Map chooser did not close");
   click("GameSetup::Instant.Launch");if(menu.take_action()!="@instant-launch"||menu.instant_selection().opponents!=1||menu.instant_selection().seed!=123)throw std::runtime_error("Native setup launch did not preserve selected options");
   click("GameSetup::Instant.Back");if(menu.take_action()!="@instant-back")throw std::runtime_error("Native setup Back action missing");
   scene.select_camera(nav.return_main(11),11);menu.hide_shell_controls();if(nav.advance(13)!=reign::ShellMenuNavigation::Event::ShowMain)throw std::runtime_error("Original return event missing");menu.show_main();if(!menu.control_active("Shell::Main")||menu.control_active("GameSetup::Instant"))throw std::runtime_error("Main menu not restored");

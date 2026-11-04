@@ -64,7 +64,7 @@ done
 python3 tools/build_performance_candidate.py \
   --upstream "$work/upstream" --sdk "$work/sdk" \
   --ffmpeg "$work/ffmpeg/android/install" \
-  --base-apk /private/path/to/verified-v07-or-v12.apk \
+  --base-apk builds/v0.7/Reigncarnated-Performance-v07.apk \
   --output "$work/candidate" --jobs 4 --new-recovery-key
 ```
 
@@ -349,3 +349,73 @@ change production audio behavior. The probe tests activation before camera
 completion, real rendered controls, Launch/Back and identical pixels after GPU
 context recreation. Phone touch feel, actual mission launch, Android pause/
 resume and FPS still require device testing. No new FPS measurement is claimed.
+
+
+## APK 23: original offline layout, Android options and High graphics
+
+Build from the committed recovery source. The tracked v07 APK above is the
+checksum-verified public packaging base; both native libraries and all Java are
+rebuilt. Its old native performance is not reused. To update the APK 22 test app
+and retain its imported data, reuse its private signer and explicit identity:
+
+```sh
+python3 tools/build_performance_candidate.py \
+  --upstream "$work/upstream" --sdk "$work/sdk" \
+  --ffmpeg "$work/ffmpeg/android/install" \
+  --base-apk builds/v0.7/Reigncarnated-Performance-v07.apk \
+  --output "$work/v23" --jobs 4 \
+  --signing-key /private/path/to/apk22.keystore \
+  --application-id org.reigncarnated.instantcity \
+  --app-label "Reigncarnated IA City Test" \
+  --output-name Reigncarnated-Original-Menus-Options-v23.apk
+```
+
+The Instant Action screen imports the original offline lobby's windows and
+Map/Back/Launch icons. Map opens the grouped map chooser; Done refreshes the
+original preview metadata/bitmap. Add/Remove AI, difficulty and seed feed the
+native offline session. Multiple AI/team/alliance editing and advanced rule
+controls remain pending and are marked on screen. See
+INSTANT_ACTION_MENU_RESTORATION.md for the adaptation boundary.
+
+The original Options button opens Android settings: music and effects volume,
+map pan speed, display brightness, keep-awake and FPS overlay. The same settings
+are available from the mission toolbar and persist across launches. Brightness
+uses Android's display setting; it does not rewrite mission lighting or shroud.
+Two-finger pan, three-finger building rotation and double-tap clicks are retained;
+controller changes remain deferred.
+
+Graphics use the original High performance factors, unreduced 32-bit textures,
+full meshes, animation interpolation, multiweight, overlays and environment
+mapping. The GLES adapter now supports point/linear mip filtering and lazily
+retains derived mip chains; updating a texture invalidates its derived levels.
+The bounded texture cache accounts for these levels. Geometry streaming remains
+append-only, unsynchronized and protected by fences. The compatibility viewport
+is still 640 x 480. MSAA, stencil reflections and single-pass multitexturing are
+not implemented or advertised as enabled. This is maximum supported quality,
+not a claim that every desktop graphics feature has been ported. Measure phone
+FPS after updating; the new quality settings have no on-device benchmark yet.
+
+Campaign launches take the original single-player branch, preserving default
+client/scripted teams and the original campaign random seed. Enemy difficulty
+uses the original campaign policy, including its default setting. A synthetic
+campaign grouping of the reference map validates this branch's load, simulation,
+pause/resume and cleanup; it does not validate the retail campaign missions,
+cinematics or story transitions.
+
+Loading status stays visible until simulation actually starts. Tap it, or choose
+Debug while loading, to prepare a bounded ZIP with the last subsystem and stage
+history without queueing work on the GL thread. A truly blocked native call may
+still prevent Android's surface pause/document picker from completing; the ZIP
+is written to the app's diagnostics cache before the save/share dialog opens.
+After a process restart a menu collection can include that previous mission ZIP.
+The application does not abandon or kill an active engine load from another
+thread. Normal simulation keeps the original 10 Hz clock.
+
+For the green fog/dark lighting report, collect the mission ZIP with the problem
+visible. Reports include the imported runtime ambient/fog colors and shroud
+state. Debug's **Compare distance fog (keeps fog of war)** toggles distance fog
+only; collect again for comparison. It does not reveal hidden terrain or enemies.
+The available reference map has deliberately colored lighting, so its appearance
+cannot establish the correct lighting of the owner's affected map. No neutral
+color override is applied. Campaign loading and affected-map visual correctness
+remain device acceptance checks.

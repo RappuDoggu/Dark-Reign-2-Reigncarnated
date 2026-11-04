@@ -14,6 +14,28 @@ widget, preview or advanced team/host option. The sections below document the
 v19-v21 problem, the confirmed source sequence and the remaining restoration work.
 See RECOVERY_BUILD.md and RECOVERY_PROGRESS.md for validation and test identity.
 
+## Version 23 original offline layout
+
+The Android host now imports `GameSetup::Instant`, `GameConfigPlayers`,
+`GameConfigMission` and `GameConfigMenu` from the owner's configuration. Original
+window placement, skins, localization, Map/Back/Launch icons and city transitions
+are retained. A native offline adapter binds the Commander/one-AI rows,
+difficulty, seed, grouped map list, original preview metadata and `terrain.bmp`
+when available. Map selection refreshes the preview and validates playable teams
+before launch. Missing required layout definitions fail explicitly.
+
+This restores the original lobby layout for the supported offline match options;
+it is not the complete Windows host/network controller. Multiple AI players,
+side/color/start-location editing, alliances and advanced rule overrides remain
+pending and are identified on the setup screen. They are not presented as values
+the engine will silently ignore. The v22 recovery panel remains a fixture path
+for isolated control tests; production explicitly requires the original layout.
+
+The real reference-pack GPU probe now exercises original Map, chooser Done,
+Launch and Back controls and verifies identical pixels across GPU recreation.
+The reference pack lacks a preview bitmap for its small test map, so that visual
+probe does not establish preview availability in the owner's larger installation.
+
 ## Current implementation and device feedback
 
 Version 19 introduced a transition, but chose Main::Exit on entry and Main::Enter

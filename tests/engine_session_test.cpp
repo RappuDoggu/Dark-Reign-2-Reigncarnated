@@ -68,6 +68,7 @@ int main(){try{
  try{MultiPlayer::Load(&saved);}catch(const std::runtime_error &){rejected=true;}
  check(rejected&&MultiPlayer::Data::HaveData());
  NativeEngine::EndOfflineSession();check(!MultiPlayer::IsHost()&&!MultiPlayer::Data::HaveData());
+ NativeEngine::BeginOfflineSession("story","Commander",true);check(NativeEngine::CurrentOfflineSession()->campaign&&!MultiPlayer::Data::HaveData()&&!MultiPlayer::Data::Online());NativeEngine::EndOfflineSession();
  check(MultiPlayer::Network::GetPlayers().GetCount()==0);
  bool inactive=false;try{MultiPlayer::SetReady();}catch(const std::logic_error &){inactive=true;}check(inactive);
  // data intentionally remains populated: destructor must own its cleanup.

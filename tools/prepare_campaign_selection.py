@@ -17,10 +17,15 @@ def prepare(upstream,output):
  output.mkdir(parents=True,exist_ok=True)
  header=texts['coregame/game_preview.h'].replace('#include "bitmap.h"','#include "reign/frontend_bitmap.hpp"').replace('#include "gameconstants.h"','')
  header=header.replace('    Bitmap *terrain;','    Bitmap *terrain;\n    std::unique_ptr<Bitmap> terrainOwner;')
+ header=header.replace('Preview(const Missions::Mission *mission);', 'Preview(const Missions::Mission *mission);\n    Preview(const char *group, const char *map);')
  (output/'game_preview.h').write_text('#include "catalog_types.hpp"\n'+header)
  source=texts['coregame/game_preview.cpp']
  signatures=['  Preview::TeamInfo::TeamInfo(', '  Preview::Preview(', '  Preview::~Preview()', '  void Preview::LoadTextures()', '  void Preview::ReleaseTextures()', '  void Preview::ReloadTextures()', '  const Missions::Mission * Preview::GetMission()', '  Preview::TeamInfo *Preview::FindTeamId(']
  body='\n'.join(extract(source,sig) for sig in signatures)
+ body=body.replace('Preview::Preview(const Missions::Mission *missionIn)', 'Preview::Preview(const char *group, const char *map)')
+ start=body.index('    if (missionIn)');end=body.index('    // Open mission stream',start)
+ body=body[:start]+'    name = map;\n    path = group;\n\n'+body[end:]
+ body+='\n  Preview::Preview(const Missions::Mission *mission) : Preview(mission ? mission->GetGroup().GetPath().str : "", mission ? mission->GetName().str : "") {}\n'
  body=body.replace('Sides::GetSide().GetName().str','reign::preview_detail::default_side()').replace('FILENAME_MISSION_CONFIG','"game.cfg"')
  body=body.replace('    terrain(NULL),','    terrain(NULL),\n    size(0),')
  body=body.replace('const char *oldStream = OpenMissionStream();','auto missionResources = reign::preview_detail::open(path.str, name.str);')

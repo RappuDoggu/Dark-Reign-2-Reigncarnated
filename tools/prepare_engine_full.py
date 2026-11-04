@@ -316,7 +316,7 @@ text=text.replace('U8 *data = new U8[length];','auto data = std::make_unique<U8[
 source.write_text('#include <memory>\n#include <stdexcept>\n'+text)
 source=out/'multiplayer/multiplayer_data.cpp';text=source.read_text()
 functions=['    void Save(','    void Load(','    Bool HaveData()','    Bool Get(','    void LocalClear(','    void LocalFlush()']
-text=text.replace('return (data.IsEmpty() ? FALSE : TRUE);','return (NativeEngine::CurrentOfflineSession() || !data.IsEmpty()) ? TRUE : FALSE;')
+text=text.replace('return (data.IsEmpty() ? FALSE : TRUE);','const auto *session = NativeEngine::CurrentOfflineSession();\n      return ((session && !session->campaign) || !data.IsEmpty()) ? TRUE : FALSE;')
 source.write_text('#include "session_native.h"\n#include "multiplayer_data.h"\n#include "styxnet_data.h"\nnamespace MultiPlayer { namespace Data {\nstatic StyxNet::Data data;\n'+''.join(original_function(text,s) for s in functions)+'}}\n')
 
 
@@ -397,6 +397,13 @@ void InitNativeVariables() {
 '''
 source.write_text(text)
 source=out/'coregame/game_config.cpp';text=source.read_text().replace('          GameGod::Loader::Advance();','          LOG_DIAG(("Mission config: %s",sScope->NameStr()));\n          GameGod::Loader::Advance();');source.write_text(text)
+# Export original loader stages independently of the GL thread, including the
+# exact call entered before a failure/stall. Keep all original load ordering.
+source=out/'game/gamegod.cpp';text=source.read_text().replace('      current = 0;\n      total = items;', '      NativeEngine::missionLoadStatus.Update(std::string("Loading: ") + name);\n      current = 0;\n      total = items;');source.write_text('#include "load_status.h"\n'+text)
+source=out/'coregame/game_rc.cpp';text=source.read_text()
+for call in ['PreOpenMission("interface_game_load.cfg");','MultiPlayer::SetupPreMission();','MultiPlayer::SetupMission();','OpenMission();','MultiPlayer::SetupPostMission();','Client::Init();','AI::InitSimulation();','Client::Prepare();']:
+ text=text.replace('        '+call, '        NativeEngine::missionLoadStatus.Update("'+call.replace('"','\\"')+'");\n        '+call)
+source.write_text('#include "load_status.h"\n'+text)
 # Auto MRM is off by default. Use explicit graphics budgets rather than the
 # obsolete x86 MHz heuristic; these variables remain user/config adjustable.
 patch('graphics/vid_cmd_mesh.cpp',[('U32 low  = Hardware::CPU::GetSpeed() * 10;','U32 low = 10000; // Native default graphics triangle budget'),('U32 high = low + Hardware::CPU::GetSpeed();','U32 high = 11000;')])

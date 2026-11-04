@@ -15,6 +15,7 @@ final class RenderMetrics {
   label.setOnClickListener(v->Diagnostics.share(owner,latest,null));
  }
  String latest(){return latest;}
+ void visible(boolean show){label.setVisibility(show?android.view.View.VISIBLE:android.view.View.GONE);}
  void reset(){timing.reset();}
  void frame(long start,long end,Supplier<String> details){
   if(!timing.frame(start,end))return;

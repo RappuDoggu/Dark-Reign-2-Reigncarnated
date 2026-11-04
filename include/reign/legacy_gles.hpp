@@ -23,12 +23,14 @@ enum class TextureOp { diffuse, modulate_rgba, modulate_rgb_texture_alpha, decal
 enum class Blend { opaque, alpha, additive, custom };
 enum class BlendFactor : unsigned { zero=1,one,source_color,inverse_source_color,source_alpha,inverse_source_alpha,destination_alpha,inverse_destination_alpha,destination_color,inverse_destination_color,source_alpha_saturate };
 enum class TextureAddress { clamp, wrap, mirror };
+enum class MipFilter { none, point, linear };
 struct DrawState {
  TextureOp texture_op=TextureOp::diffuse;
  Blend blend=Blend::opaque;
  BlendFactor source_factor=BlendFactor::source_alpha,destination_factor=BlendFactor::inverse_source_alpha;
  TextureAddress address=TextureAddress::clamp;
  bool filtered=false;
+ MipFilter mip_filter=MipFilter::none;
  bool dither=true;
  bool perspective=true;
  bool depth_test=false,depth_write=false,fog=false,alpha_test=false,specular=false;

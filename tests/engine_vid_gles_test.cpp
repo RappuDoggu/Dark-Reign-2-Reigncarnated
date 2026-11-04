@@ -49,7 +49,7 @@ int main(){try{
   struct Resources {bool active=true;~Resources(){if(active){Material::Manager::Done();Bitmap::Manager::Done();}}} resources;
   check(Vid::isStatus.initialized);
   check(Vid::device&&Vid::backBmp.GetSurface()&&Vid::viewRect.Width()==W);
-  check(Vid::Config::TrilinearOff());
+  check(!Vid::Config::TrilinearOff());
   Vid::InitResources(TRUE);
   check(Material::Manager::GetMaterial()!=nullptr);
   check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);

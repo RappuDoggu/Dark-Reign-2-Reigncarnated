@@ -27,6 +27,13 @@ std::string renderer_checks(LegacyGles &renderer){
   state.texture_op=TextureOp::texture;state.address=mesh_address(0);renderer.clear(W,H,0,0,0);draw(tiled,state);check(pixel(20,8,255,0,0)&&pixel(28,8,0,255,0),"GOD default wrap repeats UVs beyond one");
   state.address=mesh_address(1u<<14);renderer.clear(W,H,0,0,0);draw(tiled,state);check(pixel(20,8,0,255,0)&&pixel(28,8,255,0,0),"GOD mirror address flag");
   state.address=mesh_address(2u<<14);renderer.clear(W,H,0,0,0);draw(tiled,state);check(pixel(20,8,0,255,0)&&pixel(28,8,0,255,0),"GOD explicit clamp address flag");
+  // Minify a one-texel black/white checker to its averaged mip. Updating the
+  // retained top level must invalidate derived mips without another upload.
+  std::vector<std::uint8_t> checker(64*64*4,255);for(unsigned y=0;y<64;++y)for(unsigned x=0;x<64;++x)for(unsigned c=0;c<3;++c)checker[(y*64+x)*4+c]=(x+y)%2?255:0;
+  auto mipTexture=renderer.texture_rgba(64,64,checker.data());auto minified=white;for(auto &v:minified){v.u*=8;v.v*=8;}
+  state={};state.texture=mipTexture;state.texture_op=TextureOp::texture;state.filtered=true;state.address=TextureAddress::wrap;state.mip_filter=MipFilter::linear;
+  renderer.clear(W,H,0,0,0);draw(minified,state);check(pixel(16,16,128,128,128),"Trilinear minification averages retained mip chain");
+  for(unsigned i=0;i<64*64;++i){checker[i*4]=255;checker[i*4+1]=checker[i*4+2]=0;}renderer.update_texture_rgba(mipTexture,64,64,checker.data());renderer.clear(W,H,0,0,0);draw(minified,state);check(pixel(16,16,255,0,0),"Retained texture updates invalidate derived mip levels");renderer.delete_texture(mipTexture);
   state={};state.blend=reign::Blend::alpha;auto alpha=quad(0x80ff0000);renderer.clear(W,H,0,0,1);draw(alpha,state);check(pixel(16,16,128,0,127),"Source-alpha blending");
   state.alpha_test=true;state.alpha_reference=.75f;renderer.clear(W,H,0,0,1);draw(alpha,state);check(pixel(16,16,0,0,255),"Alpha reference discard");
   state={};state.depth_test=true;state.depth_write=true;auto near=quad(0xffff0000,.2f),far=quad(0xff0000ff,.8f);renderer.clear(W,H,0,0,0);draw(near,state);draw(far,state);check(pixel(16,16,255,0,0),"Zero-to-one depth mapping and occlusion");

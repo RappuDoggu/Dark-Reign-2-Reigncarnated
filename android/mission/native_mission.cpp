@@ -1,6 +1,7 @@
 #include "mission_app.h"
 #include "input_native.h"
 #include "audio_android.h"
+#include "load_status.h"
 #include "reign/legacy_gles.hpp"
 #include <jni.h>
 #include <EGL/egl.h>
@@ -14,8 +15,9 @@
 #include <string>
 #include <chrono>
 #include <cstdio>
+#include <cmath>
 namespace NativeEngine {void SetRenderLayers(unsigned);unsigned RenderLayers();}
-namespace Sound {namespace Digital {void Claim(unsigned,unsigned);}}
+namespace Sound {namespace Digital {void Claim(unsigned,unsigned);void SetVolume(float);}}
 namespace {
 std::string lastError;
 void *resolve(const char *name){return reinterpret_cast<void *>(eglGetProcAddress(name));}
@@ -42,10 +44,12 @@ struct State {
  ~State(){if(audio)audio->Stop();app.reset();audio.reset();renderer.reset();}
 };
 State &state(jlong handle){if(!handle)throw std::runtime_error("Mission is not initialized");return *reinterpret_cast<State *>(handle);}
-jstring failed(JNIEnv *env,const std::exception &e){lastError=e.what();__android_log_print(ANDROID_LOG_ERROR,"ReignMission","%s",lastError.c_str());return env->NewStringUTF(lastError.c_str());}
+jstring failed(JNIEnv *env,const std::exception &e){lastError=e.what();NativeEngine::missionLoadStatus.Update("Native error: "+lastError);__android_log_print(ANDROID_LOG_ERROR,"ReignMission","%s",lastError.c_str());return env->NewStringUTF(lastError.c_str());}
 }
 extern "C" {
-JNIEXPORT jlong JNICALL Java_org_reigncarnated_menu_MissionActivity_openMission(JNIEnv *env,jclass,jstring root,jstring work,jstring group,jstring mission,jboolean campaign,jint opponents,jint seed,jstring difficulty){try{lastError.clear();NativeEngine::MissionOptions options;options.group=utf(env,group);options.campaign=campaign;options.opponents=unsigned(opponents);options.seed=unsigned(seed);options.difficulty=utf(env,difficulty);return reinterpret_cast<jlong>(new State(utf(env,root),utf(env,work),utf(env,mission),options));}catch(const std::exception &e){failed(env,e);return 0;}}
+JNIEXPORT jlong JNICALL Java_org_reigncarnated_menu_MissionActivity_openMission(JNIEnv *env,jclass,jstring root,jstring work,jstring group,jstring mission,jboolean campaign,jint opponents,jint seed,jstring difficulty){NativeEngine::missionLoadStatus.Reset();try{lastError.clear();NativeEngine::MissionOptions options;options.group=utf(env,group);options.campaign=campaign;options.opponents=unsigned(opponents);options.seed=unsigned(seed);options.difficulty=utf(env,difficulty);return reinterpret_cast<jlong>(new State(utf(env,root),utf(env,work),utf(env,mission),options));}catch(const std::exception &e){NativeEngine::missionLoadStatus.Update(std::string("Startup failed: ")+e.what());failed(env,e);return 0;}}
+JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_loadingMission(JNIEnv *env,jclass){return env->NewStringUTF(NativeEngine::missionLoadStatus.Report().c_str());}
+JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_effectsMission(JNIEnv *env,jclass,jlong handle,jfloat volume){try{state(handle);if(!std::isfinite(volume)||volume<0||volume>1)throw std::invalid_argument("Invalid effects volume");Sound::Digital::SetVolume(volume);return nullptr;}catch(const std::exception &e){return failed(env,e);}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_missionError(JNIEnv *env,jclass){return env->NewStringUTF(lastError.c_str());}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_frameMission(JNIEnv *env,jclass,jlong handle,jint width,jint height){try{auto &s=state(handle);if(width<=0||height<=0)return nullptr;s.width=unsigned(width);s.height=unsigned(height);s.presented=false;auto start=std::chrono::steady_clock::now();{reign::FrameSpan span("Engine");s.app->Frame();}if(!s.presented)s.Present();s.frameMillis+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();++s.frames;return nullptr;}catch(const std::exception &e){return failed(env,e);}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_performanceMission(JNIEnv *env,jclass,jlong handle){try{
@@ -66,6 +70,7 @@ extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity
  else if(action==2||action==3){s.renderer->synchronized_stream(action==3);report="Stream mode changed";}
  else if(action>=8&&action<=10){NativeEngine::SetRenderLayers(NativeEngine::RenderLayers()^(1u<<(action-8)));report="Render layer mask="+std::to_string(NativeEngine::RenderLayers());}
  else if(action==4){s.renderer->arm_audit();report="Next frame audit armed";}
+ else if(action==11){s.app->Control(6);report=s.app->Diagnostics();}
  else throw std::invalid_argument("Unknown renderer debug action");
  report+="\n"+s.renderer->diagnostics();return env->NewStringUTF(report.c_str());
  }catch(const std::exception &e){return env->NewStringUTF(e.what());}}

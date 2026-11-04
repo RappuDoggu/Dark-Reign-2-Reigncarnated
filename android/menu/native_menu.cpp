@@ -71,7 +71,7 @@ struct State {
   auto loader=[this](const std::string &name){auto at=name.find_last_of("/\\");auto key=at==std::string::npos?name:name.substr(at+1);if(shell&&shell->find(key))return shell->read(key);if(!archive.find(key))throw FileSys::FileNotFound(key);return archive.read(key);};
   navigation=std::make_unique<reign::ShellMenuNavigation>(reign::parse_config(loader,"objectives_cineractives.cfg"));
   audio=std::make_unique<reign::MenuAudio>(loader,std::filesystem::path(profiles).parent_path()/"menu-audio");
-  menu=std::make_unique<reign::MenuFrontend>(loader,profiles,640,480,[this](const std::string &name){return audio->load(name);});menu->set_build_version(version);menu->open_shell_preview();reset(false);
+  menu=std::make_unique<reign::MenuFrontend>(loader,profiles,640,480,[this](const std::string &name){return audio->load(name);});menu->use_original_instant_setup([this](const reign::MenuMission &map){return reign::menu_mission_loader(dataPath,map);});menu->set_build_version(version);menu->open_shell_preview();reset(false);
 #ifdef REIGN_BINK
  nextMovie();
 #endif
@@ -130,6 +130,7 @@ JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_drawNative(JN
  if(event==reign::ShellMenuNavigation::Event::ShowMain){s.menu->show_main();reign::nativeDiagnostics.record("Shell::Main activated after Instant Action return");}
  if(s.navigation->main_ready(s.scene->camera_finished(s.seconds()))||(s.navigation->page()==reign::ShellMenuNavigation::Page::Instant||s.navigation->page()==reign::ShellMenuNavigation::Page::Launching))s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms-s.startMs),step);s.scene->finish_frame(float(ms-s.startMs)/1000.f);{reign::FrameSpan span("Present");s.presenter->present(width,height);}return event==reign::ShellMenuNavigation::Event::ShowInstant?env->NewStringUTF("@instant-open"):event==reign::ShellMenuNavigation::Event::ShowMain?env->NewStringUTF("@main-open"):nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_inputNative(JNIEnv *env,jobject,jlong h,jint kind,jint x,jint y,jstring text){try{auto &s=state(h);
+ if(kind==5){s.menu->set_effect_volume(x/100.0f);return nullptr;}
 #ifdef REIGN_BINK
  if(s.movie){if(kind==1&&x>=0&&x<640&&y>=0&&y<480)s.skipArmedMovie=s.movieIndex;
  if(kind==4||(kind==2&&s.skipArmedMovie==s.movieIndex&&x>=0&&x<640&&y>=0&&y<480)){reign::nativeDiagnostics.record("Intro explicitly skipped clip "+std::to_string(s.movieIndex));s.nextMovie();}if(kind==2)s.skipArmedMovie=0;return nullptr;}
