@@ -8,6 +8,9 @@ namespace NativeEngine {
 class AndroidAudioOutput {
  std::shared_ptr<AudioMixer> mixer;
  AAudioStream *stream=nullptr;
+ std::atomic<int> lastError{0};
+ std::atomic<unsigned> errors{0};
+ unsigned actualRate=0,attempts=0;
 public:
  explicit AndroidAudioOutput(std::shared_ptr<AudioMixer>);
  ~AndroidAudioOutput();
@@ -15,5 +18,6 @@ public:
  AndroidAudioOutput &operator=(const AndroidAudioOutput &)=delete;
  bool Start();
  void Stop() noexcept;
+ std::string Diagnostics()const;
 };
 }

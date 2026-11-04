@@ -419,3 +419,82 @@ The available reference map has deliberately colored lighting, so its appearance
 cannot establish the correct lighting of the owner's affected map. No neutral
 color override is applied. Campaign loading and affected-map visual correctness
 remain device acceptance checks.
+
+
+## APK 24: left-mouse touch, combat audio and campaign crash capture
+
+Use the same prerequisite versions and pinned upstream verification above. This
+full build recompiles all 603 selected original units with optimization and debug
+information. The unstripped mission ELF stays in the external build directory for
+private crash symbolication; only stripped libraries enter the APK. Preserve that
+ELF alongside the build receipt. No signing key or owned game pack enters Git.
+
+```sh
+python3 tools/build_performance_candidate.py \
+  --upstream "$work/upstream" --sdk "$work/sdk" \
+  --ffmpeg "$work/ffmpeg/android/install" \
+  --base-apk builds/v0.7/Reigncarnated-Performance-v07.apk \
+  --output "$work/v24" --jobs 4 \
+  --signing-key /private/path/to/apk22.keystore \
+  --application-id org.reigncarnated.instantcity \
+  --app-label "Reigncarnated IA City Test" \
+  --output-name Reigncarnated-Touch-Combat-Audio-v24.apk
+```
+
+This updates the APK 22/23 test app and retains its imported data when signed
+with the same private key. The menu reports version 24 through the embedded
+receipt/Android package version. Original Instant Action layout changes are
+deferred at the owner's request. Controller support remains deferred.
+
+| Gesture | Result |
+| --- | --- |
+| One-finger tap | Original left click: select, issue orders, activate controls |
+| One-finger drag | Hold original left mouse to select units |
+| Stationary hold, 450 ms | One click on a build control or placement confirmation |
+| Tap/drag while placing | Aim preview; hold to confirm |
+| Two-finger drag | Pan only; no pinch zoom or twist |
+| Three-finger tap while placing | Rotate building one clockwise step |
+| Deselect / Build arrows | Cancel selection/placement; either rotation direction |
+
+Hold never repeats. Moving cancels the hold for that contact. Three-finger
+rotation requires a brief stationary tap, with no preceding pan. Multitouch,
+cancellation and pause release any held mouse button. The original engine still
+runs at 10 Hz; original ABI defines and optimized flags, maximum supported
+quality and fenced append-only unsynchronized geometry streaming are unchanged.
+
+Combat effects now detach destroyed Effect owners while their already-started
+PCM finishes. This restores the original engine's lifetime policy; explicit stop
+still stops looping sounds. Voice stealing requires a strictly lower priority.
+AAudio accepts the negotiated stereo float sample rate, retries disconnected
+output outside its callback, and reports stream/mixer/resource counters. The
+original GameSound::Poll path runs once per engine frame. These fix a reproduced
+premature sound cutoff and add observability; audible retail combat on Android
+still requires the owner's check.
+
+MissionActivity runs in a private :mission process to contain native faults.
+Menu/mission settings transfer as typed snapshots on launch and normal return;
+settings changed only in a mission that crashes may not return to menu settings.
+The original campaign single-player loading branch remains. Stage boundaries
+flush to private mission-runtime/loading-last.log before original subsystem calls.
+This improves crash evidence; the retail campaign crash is not yet reproduced or
+claimed fixed. Java compilation and host tests do not establish Android process
+lifecycle correctness.
+
+After a campaign crash, reopen/return to the main menu, then choose Report/data
+and Collect diagnostics ZIP. The export includes last-mission-loading.log,
+mission-process.log and up to three bounded crashes/*.trace files when Android
+provides them (API 30+ historical exit information; native traces depend on OS).
+The stage log also works on older supported devices. Collect a second report
+with missing combat sounds after attacking/being hit: mixer and per-resource
+request/start/missing/decode/suppression counts distinguish missing data from
+output failure. These private reports remain outside the public source/APK.
+
+Validation for this revision: 12 engine foundation tests; 150 Java checks,
+including 48 touch checks; an original Effect/FileSys authored-WAV integration
+fixture proving attack/impact survival after destruction and explicit loop stop;
+AAudio API fixture for negotiated rate, disconnect/reopen and failure paths;
+reference Instant Action and synthetic campaign load/simulation/pause/resume/
+shutdown twice. The campaign fixture uses a reference map, not retail story data.
+All 603 original ARM64 units rebuilt; original and adapter addresses resolve to
+source lines in the private unstripped ELF. No phone FPS, retail campaign crash
+fix or device audio result is claimed by these host checks.

@@ -791,3 +791,59 @@ APK CRC/signature, same signer as APK 22, embedded source/docs/native hashes,
 ARM64 16 KiB ELF loads and ZIP alignment, static libc++ and absence of owned
 packs/private keys pass independent verification. The unchanged signed APK is
 mirrored under builds/v0.17 for the direct HTTPS download needed by mobile Codex.
+
+
+## APK 24: restored touch and combat sound lifetime; campaign crash evidence
+
+The owner reports campaign-load crashes and missing attack/hit sounds, requests
+single-finger left-mouse clicks/drag selection, hold-to-build confirmation and
+three-finger tap rotation, and defers further Instant Action layout work. No new
+crash report or retail campaign archive was supplied with this request.
+
+A reproduced native audio regression cut playback in Effect::~Effect, whereas
+the original engine permits already-started samples to outlive transient FX.
+Destruction now detaches the owner and preserves PCM playback; explicit stop
+continues to stop loops. An integration fixture uses real original Effect,
+FileSys, DTrack/Reaper and authored WAVs to verify attack/impact playback after
+owner destruction, reused addresses, missing resources and explicit loop stop.
+Voice stealing also restores the original strictly-lower-priority rule.
+AAudio now handles negotiated output rate and reconnects after disconnection
+outside its callback. Bounded resource, mixer and driver diagnostics distinguish
+missing/failed/suppressed effects from silent output. GameSound::Poll matches
+the original frame loop. Actual phone combat audio remains an acceptance check.
+
+Touch now sends original held left mouse for one-finger drag, single-tap clicks,
+and one stationary 450 ms hold click for build selection/placement. Placement
+short taps only aim. Three-finger tap rotates a building once; two fingers pan
+only. Cancellation/multitouch/pause release held input, holds do not repeat and
+neither pinch zoom nor swipe rotation is introduced. Controller changes and
+Instant Action layout adjustment remain deferred.
+
+The retail campaign fault remains unconfirmed. MissionActivity now runs in a
+private :mission process to contain a native crash and preserve the menu process.
+Typed settings snapshots transfer on launch/normal return, avoiding unsupported
+SharedPreferences multiprocess caching. New internal loader boundaries flush to
+a bounded private disk journal so an abrupt process death preserves its last
+stage. The menu collects the mission log and own-app Android historical crash/
+ANR traces where provided by the OS. These changes improve containment and
+post-crash evidence; they do not establish a campaign crash fix or Android
+lifecycle validation. A report after the next retail crash is still needed.
+
+Validation: all 12 engine foundation tests and 150 Java checks pass; 48 cover
+mouse/hold/multitouch state transitions. The real original-class sound fixture
+passes, as does the AAudio boundary fixture (44.1 kHz, disconnect/reopen, invalid
+format/start failures). Journal tests prove a child-process abrupt exit retains
+its last stage and bounded logs. Reference Instant Action and a synthetic
+campaign group each pass load/simulation/pause/resume/shutdown twice. They do
+not cover retail story scripts or actual Android hardware. SDK 35 Java compiles;
+all 603 original ARM64 units rebuild with -O2 -g and original ABI flags. The
+private unstripped ELF resolves original Game::OpenMission and adapter Frame
+addresses to source lines; APK libraries remain stripped.
+
+SDK 35, NDK 27.2.12479018, FFmpeg n6.1.1 and the 1,791-file pinned upstream check
+remain. The original 10 Hz simulation, supported High graphics and fenced
+append-only unsynchronized geometry stream are unchanged. No new phone FPS
+measurement is claimed. Version 24 uses APK 22/23's private signer and test
+identity, retaining imported data; keys, game packs, crash traces and symbols
+stay outside public Git/APK. Reproduction and post-crash export instructions
+are in RECOVERY_BUILD.md; exact source revision and records are embedded.

@@ -324,7 +324,13 @@ source.write_text('#include "session_native.h"\n#include "multiplayer_data.h"\n#
 (out/'3rdparty/mss.h').write_text('#pragma once\n#include "miles_native.h"\n')
 patch('sound/sound.cpp', [(r'      AIL_set_redist_directory("library\\mss");','      // Native audio has no external redistributable directory.'),('      AIL_startup();','      // Android output is opened explicitly by the application.'),('      AIL_shutdown();','      // Output lifetime belongs to the native application.'),('return (AIL_last_error());','return (NativeEngine::DigitalLastError());')])
 patch('sound/sound_digital_reserved.cpp', [('AIL_set_sample_file(handle, d->GetMemoryPtr(), 0)','NativeSetSampleFile(handle, d->GetMemoryPtr(), d->Size())')])
-patch('sound/sound_digital_effect.cpp', [('    Effect::~Effect()\n    {','    Effect::~Effect()\n    {\n      if (Sound::Initialized()) Output::StopByEffect(this);')])
+source=out/'sound/sound_digital_effect.cpp';text=source.read_text().replace('    Effect::~Effect()\n    {','    Effect::~Effect()\n    {\n      if (Sound::Initialized()) NativeEngine::GetDigitalMixer()->ReleaseEffect(this);')
+text=text.replace('        valid = (U8)((record.Alive() && record->valid) ? TRUE : FALSE);','        valid = (U8)((record.Alive() && record->valid) ? TRUE : FALSE);\n        if (!valid) NativeEngine::NoteAudio(name, NativeEngine::AudioEvent::missing);')
+at=text.index('      // Can we play this effect',text.index('    Bool Effect::Play2D('))
+text=text[:at]+'''      NativeEngine::NoteAudio(record.Alive() ? record->Name() : "[unknown]", NativeEngine::AudioEvent::requested);
+      if (!Valid() || Disabled() || !Claimed2D()) NativeEngine::NoteAudio(record.Alive() ? record->Name() : "[unknown]", NativeEngine::AudioEvent::suppressed);
+'''+text[at:]
+source.write_text('#include "audio_native.h"\n#include "audio_status.h"\n'+text)
 (out/'sound/sound_digital.cpp').write_text('#include "sound_native.inc"\n')
 # Explicit local-only session target. Multiplayer saves fail before changing
 # state; transport, lobby and remote players are not represented as working.
@@ -404,6 +410,17 @@ source=out/'coregame/game_rc.cpp';text=source.read_text()
 for call in ['PreOpenMission("interface_game_load.cfg");','MultiPlayer::SetupPreMission();','MultiPlayer::SetupMission();','OpenMission();','MultiPlayer::SetupPostMission();','Client::Init();','AI::InitSimulation();','Client::Prepare();']:
  text=text.replace('        '+call, '        NativeEngine::missionLoadStatus.Update("'+call.replace('"','\\"')+'");\n        '+call)
 source.write_text('#include "load_status.h"\n'+text)
+# Persist boundaries inside real mission loading; a fatal native fault may not
+# return to JNI or the Android render queue. Do not alter any original ordering.
+for name,calls in {
+ 'coregame/coregame.cpp':['FX::PostLoad();','WorldCtrl::CreateWorld();','Sight::Init(Common::InStudio());','ConnectedRegion::Init();','WorldLoad::LoadObjectFile(Game::FILENAME_MISSION_OBJECTS);','MapObjCtrl::PostLoad();','UnitObjCtrl::PostLoad();','Sight::NotifyPostMissionLoad();'],
+ 'coregame/game.cpp':['CoreGame::Init();','Team::PostLoadAll();','Player::PostLoadAll();','AI::ConfigPostLoad();','Sight::UpdateDisplay(Team::GetDisplayTeam(), TRUE);']
+}.items():
+ source=out/name;text=source.read_text()
+ for call in calls:
+  if call not in text:raise ValueError('Missing campaign loading boundary: '+call)
+  text=text.replace(call,'NativeEngine::missionLoadStatus.Update("'+call.replace('"','\\"')+'");\n    '+call)
+ source.write_text('#include "load_status.h"\n'+text)
 # Auto MRM is off by default. Use explicit graphics budgets rather than the
 # obsolete x86 MHz heuristic; these variables remain user/config adjustable.
 patch('graphics/vid_cmd_mesh.cpp',[('U32 low  = Hardware::CPU::GetSpeed() * 10;','U32 low = 10000; // Native default graphics triangle budget'),('U32 high = low + Hardware::CPU::GetSpeed();','U32 high = 11000;')])

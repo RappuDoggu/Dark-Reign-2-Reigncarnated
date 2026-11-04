@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstring>
 #include <stdexcept>
+#include <sstream>
 namespace NativeEngine {
 std::shared_ptr<const AudioClip> DecodeWave(const void *input,std::size_t size){
  if(!input||size<12||size>64*1024*1024)throw std::invalid_argument("Invalid WAV size");
@@ -34,17 +35,19 @@ std::shared_ptr<const AudioClip> DecodeWave(const void *input,std::size_t size){
 }
 AudioMixer::AudioMixer(unsigned n):voices(n){if(!n||n>256)throw std::invalid_argument("Invalid audio voice capacity");}
 std::uint64_t AudioMixer::Play(std::shared_ptr<const AudioClip> clip,float gain,int pan,int loops,float priority,std::uint32_t owner,const void *effect,const void *record){
- if(!OutputRunning()||!clip||clip->rate<8000||clip->rate>96000||clip->stereo.empty()||clip->stereo.size()%2||loops<0||!std::isfinite(gain)||!std::isfinite(priority))return 0;
  std::lock_guard<std::mutex> lock(mutex);
+ ++counters.requests;if(!OutputRunning()){++counters.output_off;return 0;}
+ if(!clip||clip->rate<8000||clip->rate>96000||clip->stereo.empty()||clip->stereo.size()%2||loops<0||!std::isfinite(gain)||!std::isfinite(priority)){++counters.invalid;return 0;}
  auto slot=std::find_if(voices.begin(),voices.end(),[](const Voice &v){return !v.id;});
  if(owner){for(auto &v:voices)if(v.id&&v.owner==owner){v.id=0;if(slot==voices.end())slot=&v-&voices[0]+voices.begin();}}
- if(slot==voices.end()){slot=std::min_element(voices.begin(),voices.end(),[](const auto&a,const auto&b){return a.priority<b.priority;});if(slot->priority>priority)return 0;}
+ if(slot==voices.end()){slot=std::min_element(voices.begin(),voices.end(),[](const auto&a,const auto&b){return a.priority<b.priority;});if(slot->priority>=priority){++counters.priority_rejected;return 0;}}
  if(++serial==0)++serial;
- *slot=Voice{std::move(clip),serial,0,loops,std::clamp(gain,0.f,1.f),priority,std::clamp(pan,0,127),owner,effect,record};return serial;
+ *slot=Voice{std::move(clip),serial,0,loops,std::clamp(gain,0.f,1.f),priority,std::clamp(pan,0,127),owner,effect,record};++counters.started;return serial;
 }
 void AudioMixer::Render(float *out,std::size_t frames,unsigned rate)noexcept{
  if(!out||frames>65536)return;std::fill(out,out+frames*2,0.f);if(rate<8000||rate>192000||!OutputRunning())return;
  std::lock_guard<std::mutex> lock(mutex);
+ ++counters.callbacks;counters.frames+=frames;
  for(auto &v:voices)if(v.id){
   const auto count=v.clip->stereo.size()/2;
   if(v.denominator!=rate){v.position=v.position*rate/v.denominator;v.denominator=rate;}
@@ -60,12 +63,13 @@ void AudioMixer::Render(float *out,std::size_t frames,unsigned rate)noexcept{
   // Publish completion even when the last sample exactly fills this callback.
   while(v.id&&v.position>=limit){v.position-=limit;if(v.loops>0&&--v.loops==0)v.id=0;}
  }
- for(std::size_t i=0;i<frames*2;++i)out[i]=std::clamp(out[i],-1.f,1.f);
+ float peak=0;for(std::size_t i=0;i<frames*2;++i){out[i]=std::clamp(out[i],-1.f,1.f);peak=std::max(peak,std::abs(out[i]));}counters.peak=std::max(counters.peak,peak);if(peak>0.0001f)++counters.audible_callbacks;
 }
 bool AudioMixer::Playing(std::uint64_t id){std::lock_guard<std::mutex> l(mutex);return id&&std::any_of(voices.begin(),voices.end(),[&](const Voice&v){return v.id==id;});}
 void AudioMixer::Stop(std::uint64_t id){std::lock_guard<std::mutex> l(mutex);for(auto&v:voices)if(v.id==id)v.id=0;}
 void AudioMixer::StopAll(){std::lock_guard<std::mutex> l(mutex);for(auto&v:voices)v.id=0;}
 void AudioMixer::StopEffect(const void *p){std::lock_guard<std::mutex> l(mutex);for(auto&v:voices)if(v.effect==p)v.id=0;}
+void AudioMixer::ReleaseEffect(const void *p){if(!p)return;std::lock_guard<std::mutex> l(mutex);for(auto &v:voices)if(v.id&&v.effect==p){v.effect=nullptr;++counters.released_effects;}}
 void AudioMixer::StopRecord(const void *p){std::lock_guard<std::mutex> l(mutex);for(auto&v:voices)if(v.record==p)v.id=0;}
 void AudioMixer::StopOwner(std::uint32_t p){std::lock_guard<std::mutex> l(mutex);for(auto&v:voices)if(v.owner==p)v.id=0;}
 bool AudioMixer::EffectPlaying(const void*p){std::lock_guard<std::mutex> l(mutex);return std::any_of(voices.begin(),voices.end(),[&](const Voice&v){return v.id&&v.effect==p;});}
@@ -73,5 +77,6 @@ bool AudioMixer::RecordPlaying(const void*p){std::lock_guard<std::mutex> l(mutex
 bool AudioMixer::UpdateEffect(const void*p,float gain,int pan,float priority){if(!std::isfinite(gain)||!std::isfinite(priority))return false;std::lock_guard<std::mutex> l(mutex);bool hit=false;for(auto&v:voices)if(v.id&&v.effect==p){v.volume=std::clamp(gain,0.f,1.f);v.pan=std::clamp(pan,0,127);v.priority=priority;hit=true;}return hit;}
 void AudioMixer::SetVolume(float v){std::lock_guard<std::mutex> l(mutex);volume=std::isfinite(v)?std::clamp(v,0.f,1.f):0.f;}
 float AudioMixer::Volume(){std::lock_guard<std::mutex> l(mutex);return volume;}
+std::string AudioMixer::Diagnostics(){std::lock_guard<std::mutex> l(mutex);std::ostringstream out;out<<"PCM output="<<OutputRunning()<<" volume="<<volume<<" active="<<std::count_if(voices.begin(),voices.end(),[](const auto &v){return v.id!=0;})<<"/"<<voices.size()<<" requests="<<counters.requests<<" started="<<counters.started<<" output-off="<<counters.output_off<<" invalid="<<counters.invalid<<" priority-rejected="<<counters.priority_rejected<<" detached-effects="<<counters.released_effects<<" callbacks="<<counters.callbacks<<" frames="<<counters.frames<<" audible-callbacks="<<counters.audible_callbacks<<" peak="<<counters.peak;return out.str();}
 std::shared_ptr<AudioMixer> GetDigitalMixer(){static auto mixer=std::make_shared<AudioMixer>();return mixer;}
 }

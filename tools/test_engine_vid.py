@@ -14,7 +14,7 @@ p.add_argument('--objects',type=Path,action='append',required=True)
 p.add_argument('--test-arg',action='append',default=[])
 p.add_argument('--khronos-headers',type=Path)
 p.add_argument('--ffmpeg-root',type=Path,required=True)
-p.add_argument('--test-source',default='engine_vid_test.cpp',choices=['engine_vid_test.cpp','engine_session_test.cpp','engine_sound_test.cpp','engine_vid_gles_test.cpp','engine_graphics_startup_test.cpp','engine_mission_boot_test.cpp','engine_simulation_test.cpp','engine_app_test.cpp'])
+p.add_argument('--test-source',default='engine_vid_test.cpp',choices=['engine_vid_test.cpp','engine_session_test.cpp','engine_sound_test.cpp','engine_sound_lifetime_test.cpp','engine_vid_gles_test.cpp','engine_graphics_startup_test.cpp','engine_mission_boot_test.cpp','engine_simulation_test.cpp','engine_app_test.cpp'])
 a=p.parse_args();repo=Path(__file__).resolve().parents[1];a.output.mkdir(parents=True,exist_ok=True)
 objects={};compile_command=None
 for directory in a.objects:

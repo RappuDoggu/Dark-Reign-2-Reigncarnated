@@ -2,6 +2,7 @@
 // Effect, Record and Reserved implementations still own their engine behavior.
 #include "sound_private.h"
 #include "audio_native.h"
+#include "audio_status.h"
 #include "music_native.h"
 #include <chrono>
 #include <algorithm>
@@ -9,12 +10,16 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <array>
+#include <sstream>
 namespace {
 std::string audioError;
 bool digitalInitialized=false,digitalDisabled=false;
 unsigned voiceLimit=0;
 std::map<Sound::Digital::Record *,std::shared_ptr<const NativeEngine::AudioClip>> clips;
 std::map<std::string,std::unique_ptr<Sound::Digital::Effect>> streams;
+struct ResourceAudio {std::string name;std::array<std::uint64_t,6> counts{};std::uint64_t used=0;};
+std::array<ResourceAudio,64> audioResources;std::uint64_t audioTick=0,audioEvicted=0;
 std::shared_ptr<const NativeEngine::AudioClip> loadClip(FileSys::FastFind *file){
  if(!file||!file->StreamAlive())throw std::runtime_error("Audio resource stream is no longer available");
  auto data=std::unique_ptr<FileSys::DataFile,void(*)(FileSys::DataFile*)>(FileSys::Open(file),FileSys::Close);
@@ -22,7 +27,11 @@ std::shared_ptr<const NativeEngine::AudioClip> loadClip(FileSys::FastFind *file)
  return NativeEngine::DecodeWave(data->GetMemoryPtr(),data->Size());
 }
 }
-namespace NativeEngine {const char *DigitalLastError(){return audioError.c_str();}}
+namespace NativeEngine {
+const char *DigitalLastError(){return audioError.c_str();}
+void NoteAudio(const char *name,AudioEvent event){std::string resource=name?name:"[unknown]";if(resource.size()>192)resource.resize(192);auto slot=std::find_if(audioResources.begin(),audioResources.end(),[&](const auto &row){return row.name==resource;});if(slot==audioResources.end()){slot=std::min_element(audioResources.begin(),audioResources.end(),[](const auto &a,const auto &b){return a.used<b.used;});if(slot->used)++audioEvicted;*slot={resource,{},0};}++slot->counts[unsigned(event)];slot->used=++audioTick;}
+std::string DigitalDiagnostics(){std::ostringstream out;out<<GetDigitalMixer()->Diagnostics()<<"\nDigital initialized="<<digitalInitialized<<" disabled="<<digitalDisabled<<" claimed="<<voiceLimit<<" cached="<<clips.size()<<" last-error="<<audioError<<"\nRecent resource requests/started/missing/decode-failed/suppressed/repeat (evicted="<<audioEvicted<<"):\n";for(const auto &row:audioResources)if(row.used){out<<row.name;for(auto count:row.counts)out<<' '<<count;out<<'\n';}return out.str();}
+}
 struct NativeSample {NativeEngine::AudioMixer *mixer;std::shared_ptr<const NativeEngine::AudioClip> clip;std::uint64_t id=0;float volume=1;};
 HSAMPLE AIL_allocate_sample_handle(HDIGDRIVER mixer){if(!mixer)return nullptr;try{return new NativeSample{mixer};}catch(...){return nullptr;}}
 void AIL_end_sample(HSAMPLE s){if(s){s->mixer->Stop(s->id);s->id=0;}}
@@ -58,10 +67,11 @@ Bool Play2D(Effect *effect,Record *record,S32 volume,U32 owner,F32 priority,S32 
   auto found=clips.find(record);
   if(found==clips.end())found=clips.emplace(record,loadClip(record->fastFind)).first;
   const auto now=U32(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
-  if(record->lastUse&&U32(now-U32(record->lastUse))<MIN_REPEATTIME)return FALSE;
-  if(!NativeEngine::GetDigitalMixer()->Play(found->second,volume/127.f,pan,loops,priority,owner,effect,record))return FALSE;
+  if(record->lastUse&&U32(now-U32(record->lastUse))<MIN_REPEATTIME){NativeEngine::NoteAudio(record->Name(),NativeEngine::AudioEvent::repeat);return FALSE;}
+  if(!NativeEngine::GetDigitalMixer()->Play(found->second,volume/127.f,pan,loops,priority,owner,effect,record)){NativeEngine::NoteAudio(record->Name(),NativeEngine::AudioEvent::suppressed);return FALSE;}
+  NativeEngine::NoteAudio(record->Name(),NativeEngine::AudioEvent::started);
   record->lastUse=S32(now);return TRUE;
- }catch(const std::exception &e){audioError=e.what();return FALSE;}
+ }catch(const std::exception &e){audioError=e.what();NativeEngine::NoteAudio(record->Name(),NativeEngine::AudioEvent::decode_failed);return FALSE;}
 }
 Bool UpdateEffect2D(Effect *effect,S32 pan,F32 priority,S32 volume){return NativeEngine::GetDigitalMixer()->UpdateEffect(effect,volume/127.f,pan,priority);}
 Bool EffectPlaying(Effect *effect){return NativeEngine::GetDigitalMixer()->EffectPlaying(effect);}

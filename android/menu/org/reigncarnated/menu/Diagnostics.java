@@ -14,14 +14,34 @@ final class Diagnostics {
  private static final ArrayDeque<String> events=new ArrayDeque<>();
  private static final ThreadPoolExecutor writer=new ThreadPoolExecutor(1,1,0,TimeUnit.SECONDS,new ArrayBlockingQueue<>(64),r->{Thread t=new Thread(r,"ReignDiagnosticWriter");t.setDaemon(true);return t;},(r,e)->{dropped.incrementAndGet();Log.w("ReignDiag","Diagnostic writer queue full");});
  private static File session;private static String build="unknown source revision";private static boolean initialized;
- static synchronized void init(Context c){if(initialized)return;initialized=true;session=new File(c.getFilesDir(),"session.log");
+ static synchronized void init(Context c){if(initialized)return;initialized=true;session=new File(c.getFilesDir(),c.getClass().getSimpleName().equals("MissionActivity")?"session-mission.log":"session.log");
   try(InputStream in=c.getAssets().open("build/source.json")){ByteArrayOutputStream b=new ByteArrayOutputStream();byte[] buf=new byte[4096];int n;while((n=in.read(buf))>0&&b.size()<16384)b.write(buf,0,n);build=b.toString("UTF-8");}catch(IOException e){Log.w("ReignDiag","No build receipt",e);}
   try(RandomAccessFile f=new RandomAccessFile(session,"r")){int size=(int)Math.min(16384,f.length());f.seek(f.length()-size);byte[] tail=new byte[size];f.readFully(tail);previousTail=new String(tail,"UTF-8");}catch(IOException ignored){}
-  if(android.os.Build.VERSION.SDK_INT>=30){android.app.ActivityManager am=(android.app.ActivityManager)c.getSystemService(Context.ACTIVITY_SERVICE);try{for(android.app.ApplicationExitInfo exit:am.getHistoricalProcessExitReasons(c.getPackageName(),0,3))event("Previous process exit: reason="+exit.getReason()+" timestamp="+exit.getTimestamp()+" description="+exit.getDescription());}catch(RuntimeException e){Log.w("ReignDiag","Exit reasons unavailable",e);}}
+  captureExits(c);
   Thread.UncaughtExceptionHandler prior=Thread.getDefaultUncaughtExceptionHandler();Thread.setDefaultUncaughtExceptionHandler((thread,error)->{String text="Uncaught "+thread.getName()+": "+Log.getStackTraceString(error);append(text);if(prior!=null)prior.uncaughtException(thread,error);});event("Session start "+android.os.Build.MODEL+" API "+android.os.Build.VERSION.SDK_INT);
  }
  static void event(String text){if(text==null)return;if(text.length()>4096)text=text.substring(0,4096);String line=System.currentTimeMillis()+" "+text; synchronized(Diagnostics.class){while(events.size()>=96)events.removeFirst();events.addLast(line);}Log.i("ReignDiag",line);final String saved=line;writer.execute(()->append(saved));}
- private static synchronized void append(String line){if(session==null)return;try{if(session.length()>512*1024){File old=new File(session.getParentFile(),"session.previous.log");if(old.exists()&&!old.delete())return;if(!session.renameTo(old))return;}try(FileOutputStream f=new FileOutputStream(session,true)){f.write((line+"\n").getBytes("UTF-8"));}}catch(IOException e){Log.w("ReignDiag","Cannot save session",e);}}
+ private static synchronized void append(String line){if(session==null)return;try{if(session.length()>512*1024){File old=new File(session.getParentFile(),session.getName()+".previous");if(old.exists()&&!old.delete())return;if(!session.renameTo(old))return;}try(FileOutputStream f=new FileOutputStream(session,true)){f.write((line+"\n").getBytes("UTF-8"));}}catch(IOException e){Log.w("ReignDiag","Cannot save session",e);}}
+ private static final java.util.concurrent.atomic.AtomicBoolean exitsBusy=new java.util.concurrent.atomic.AtomicBoolean();
+ private static final Set<String> seenExits=Collections.synchronizedSet(new HashSet<>());
+ static void captureExits(Context context){
+  if(android.os.Build.VERSION.SDK_INT<30||!exitsBusy.compareAndSet(false,true))return;final Context c=context.getApplicationContext();
+  new Thread(()->{try{
+   android.app.ActivityManager am=(android.app.ActivityManager)c.getSystemService(Context.ACTIVITY_SERVICE);File dir=new File(c.getFilesDir(),"crash-traces");
+   for(android.app.ApplicationExitInfo exit:am.getHistoricalProcessExitReasons(c.getPackageName(),0,3)){
+    String id=exit.getTimestamp()+"-"+exit.getPid();if(!seenExits.add(id))continue;if(seenExits.size()>64){seenExits.clear();seenExits.add(id);}
+    event("Previous process exit: process="+exit.getProcessName()+" reason="+exit.getReason()+" status="+exit.getStatus()+" timestamp="+exit.getTimestamp()+" description="+exit.getDescription());
+    int reason=exit.getReason();if(reason!=android.app.ApplicationExitInfo.REASON_CRASH_NATIVE&&reason!=android.app.ApplicationExitInfo.REASON_CRASH&&reason!=android.app.ApplicationExitInfo.REASON_ANR)continue;
+    if(!dir.isDirectory()&&!dir.mkdirs())throw new IOException("Cannot create private crash-trace directory");File target=new File(dir,"exit-"+id+".trace");if(target.isFile())continue;File temporary=new File(dir,"exit-"+id+".tmp");
+    try(InputStream in=exit.getTraceInputStream()){
+     if(in==null){event("No platform trace available for "+id);continue;}try(FileOutputStream out=new FileOutputStream(temporary)){byte[] b=new byte[8192];int total=0,n;while(total<262144&&(n=in.read(b,0,Math.min(b.length,262144-total)))!=-1){out.write(b,0,n);total+=n;}event("Captured bounded platform crash trace "+id+" bytes="+total);}
+     if(!temporary.renameTo(target))throw new IOException("Cannot publish private crash trace");
+    }catch(IOException|RuntimeException e){temporary.delete();event("Crash trace unavailable: "+e);}
+   }
+   File[] traces=dir.listFiles((d,n)->n.matches("exit-[0-9]+-[0-9]+\\.trace"));if(traces!=null){Arrays.sort(traces,(a,b)->Long.compare(b.lastModified(),a.lastModified()));for(int i=3;i<traces.length;i++)traces[i].delete();}
+  }catch(IOException|RuntimeException e){event("Exit diagnostics unavailable: "+e);}finally{exitsBusy.set(false);}},"ReignExitTrace").start();
+ }
+ private static void addTail(Map<String,byte[]> entries,String name,File file,int limit)throws IOException{if(!file.isFile())return;try(RandomAccessFile in=new RandomAccessFile(file,"r")){int size=(int)Math.min(limit,in.length());in.seek(in.length()-size);byte[] bytes=new byte[size];in.readFully(bytes);entries.put(name,bytes);}}
  static synchronized String report(String latest){StringBuilder b=new StringBuilder("Reigncarnated recovery\n").append(build).append('\n').append(latest).append("\nPrevious tail:\n").append(previousTail).append("\nDropped writer tasks=").append(dropped.get()).append("\nSession events:\n");for(String e:events)b.append(e).append('\n');return b.toString();}
  static void share(Activity a,String latest,int[] pixels){final String text=report(latest);writer.execute(()->{try{
   File dir=new File(a.getCacheDir(),"diagnostic-share");if(!dir.isDirectory()&&!dir.mkdirs())throw new IOException("Cannot create diagnostic share");
@@ -36,6 +56,9 @@ final class Diagnostics {
   final String sessionReport=report("Collection timestamp="+System.currentTimeMillis());
   new Thread(()->{try{
    Map<String,byte[]> entries=new LinkedHashMap<>();entries.put("session.txt",sessionReport.getBytes("UTF-8"));entries.put("source.json",build.getBytes("UTF-8"));
+   addTail(entries,"last-mission-loading.log",new File(a.getFilesDir(),"mission-runtime/loading-last.log"),100*1024);
+   addTail(entries,"mission-process.log",new File(a.getFilesDir(),"session-mission.log"),256*1024);
+   File[] traces=new File(a.getFilesDir(),"crash-traces").listFiles((d,n)->n.matches("exit-[0-9]+-[0-9]+\\.trace"));if(traces!=null){Arrays.sort(traces,(x,y)->Long.compare(y.lastModified(),x.lastModified()));for(int i=0;i<Math.min(3,traces.length);i++)addTail(entries,"crashes/"+traces[i].getName(),traces[i],262144);}
    for(Map.Entry<String,String> entry:reports.entrySet())entries.put(entry.getKey(),entry.getValue().getBytes("UTF-8"));
    for(Map.Entry<String,int[]> entry:pictures.entrySet()){Bitmap bitmap=Bitmap.createBitmap(entry.getValue(),640,480,Bitmap.Config.ARGB_8888);try(ByteArrayOutputStream bytes=new ByteArrayOutputStream()){if(!bitmap.compress(Bitmap.CompressFormat.PNG,100,bytes))throw new IOException("Cannot encode frame");entries.put(entry.getKey(),bytes.toByteArray());}finally{bitmap.recycle();}}
    synchronized(Diagnostics.class){if(session!=null&&session.isFile())try(RandomAccessFile f=new RandomAccessFile(session,"r")){int size=(int)Math.min(512*1024,f.length());f.seek(f.length()-size);byte[] tail=new byte[size];f.readFully(tail);entries.put("session-tail.log",tail);}}

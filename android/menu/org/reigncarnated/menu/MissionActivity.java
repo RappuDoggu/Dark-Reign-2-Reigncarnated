@@ -41,7 +41,7 @@ public final class MissionActivity extends Activity {
   Button button=new Button(this);button.setText(label);button.setMinHeight(dp(48));button.setTooltipText(hint);button.setOnClickListener(v->action.run());return button;
  }
  @Override public void onCreate(Bundle state){
-  super.onCreate(state);Diagnostics.init(this);getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);getWindow().getDecorView().setSystemUiVisibility(5894);
+  super.onCreate(state);AndroidOptions.importFrom(this,getIntent());Diagnostics.init(this);getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);getWindow().getDecorView().setSystemUiVisibility(5894);
   FrameLayout root=new FrameLayout(this);view=new MissionView();root.addView(view);
   status=new TextView(this);status.setTextColor(0xffffffff);status.setBackgroundColor(0xc0000000);status.setText("Loading "+intentValue("mission","2crazed")+"…");root.addView(status,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
   status.setOnClickListener(v->shareLoadingReport());
@@ -54,14 +54,14 @@ public final class MissionActivity extends Activity {
   cameraTools.setVisibility(View.GONE);FrameLayout.LayoutParams cameraPosition=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.CENTER_HORIZONTAL);cameraPosition.topMargin=dp(80);root.addView(cameraTools,cameraPosition);
   LinearLayout toolbar=new LinearLayout(this);toolbar.setBackgroundColor(0xc0182418);
   toolbar.addView(actionButton("Left click","Click at the world cursor; confirms the building preview",()->view.touch.click()));
-  toolbar.addView(actionButton("Deselect","Clear selection and cancel building placement",()->{view.touch.cancel();view.control(1,0,0);}));
+  toolbar.addView(actionButton("Deselect","Clear selection and cancel building placement",()->{view.cancelTouch();view.control(1,0,0);}));
   HorizontalScrollView scroll=new HorizontalScrollView(this);scroll.setHorizontalScrollBarEnabled(false);LinearLayout more=new LinearLayout(this);
   more.addView(actionButton("Build ↶","Rotate the selected building preview counterclockwise",()->view.control(2,0,0)));
   more.addView(actionButton("Build ↷","Rotate the selected building preview clockwise",()->view.control(3,0,0)));
-  more.addView(actionButton("Camera","Two fingers pan the map only. Three fingers swipe left/right to rotate a building.",()->cameraTools.setVisibility(cameraTools.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE)));
+  more.addView(actionButton("Camera","Two fingers pan the map only. Three-finger tap rotates the building preview.",()->cameraTools.setVisibility(cameraTools.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE)));
   more.addView(actionButton("Debug","Collect or share diagnostics",this::showDebugTools));scroll.addView(more);toolbar.addView(scroll,new LinearLayout.LayoutParams(0,-2,1));root.addView(toolbar,new FrameLayout.LayoutParams(-1,-2,Gravity.TOP));
   more.addView(actionButton("Options","Audio, display and touch options",()->AndroidOptions.show(this,()->{AndroidOptions.applyWindow(this,metrics);if(music!=null)music.setMusicVolume(AndroidOptions.music(this)/100f);view.queueEvent(()->{if(view.handle!=0){String error=effectsMission(view.handle,AndroidOptions.effects(this));if(error!=null)report(error);}});})));
-  placementHint=new TextView(this);placementHint.setText("Double-tap to click • Two fingers pan • Three fingers swipe to rotate building • Deselect cancels");placementHint.setTextColor(0xffffffff);placementHint.setBackgroundColor(0xc0000000);placementHint.setVisibility(View.GONE);FrameLayout.LayoutParams hintPosition=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);hintPosition.topMargin=dp(52);root.addView(placementHint,hintPosition);
+  placementHint=new TextView(this);placementHint.setText("Tap to left-click • Drag to select • Hold to build/place • Three-finger tap rotates");placementHint.setTextColor(0xffffffff);placementHint.setBackgroundColor(0xc0000000);placementHint.setVisibility(View.GONE);FrameLayout.LayoutParams hintPosition=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);hintPosition.topMargin=dp(52);root.addView(placementHint,hintPosition);
   metrics=new RenderMetrics(this,root,"Mission");setContentView(root);
  }
  private void showDebugTools(){
@@ -76,8 +76,9 @@ public final class MissionActivity extends Activity {
  private void report(String text){runOnUiThread(()->{status.setText(text);status.setVisibility(View.VISIBLE);});}
  @Override protected void onResume(){super.onResume();Diagnostics.event("Mission resume");metrics.reset();AndroidOptions.applyWindow(this,metrics);resumed=true;loadingHandler.removeCallbacks(loadingPoll);loadingHandler.postDelayed(loadingPoll,500);
   music=new MenuAudioPlayer(this,Diagnostics::event);music.setMusicVolume(AndroidOptions.music(this)/100f);String musicRoot=getIntent().getStringExtra("musicRoot");if(musicRoot!=null)music.playPlaylist(DataFolderImporter.playlist(new File(musicRoot)));if(view!=null){view.onResume();view.queueEvent(()->{if(view.handle!=0){String error=activeMission(view.handle,true);if(error!=null)report(error);}});}}
- @Override protected void onPause(){Diagnostics.event("Mission pause");loadingHandler.removeCallbacks(loadingPoll);if(music!=null){music.close();music=null;}resumed=false;if(view!=null){view.touch.cancel();view.queueEvent(()->{view.tapRelease=false;if(view.sweep!=null)view.sweep.cancel();if(view.handle!=0){if(isFinishing()){closeMission(view.handle);view.handle=0;}else {String error=activeMission(view.handle,false);if(error!=null)report(error);}}});view.onPause();}super.onPause();}
+ @Override protected void onPause(){Diagnostics.event("Mission pause");loadingHandler.removeCallbacks(loadingPoll);if(music!=null){music.close();music=null;}resumed=false;if(view!=null){view.cancelTouch();view.queueEvent(()->{view.tapRelease=false;if(view.sweep!=null)view.sweep.cancel();if(isFinishing()){if(view.handle!=0){closeMission(view.handle);view.handle=0;}}else if(view.handle!=0){String error=activeMission(view.handle,false);if(error!=null)report(error);}});view.onPause();}super.onPause();}
  @Override protected void onDestroy(){if(view!=null)view.queueEvent(()->{if(view.handle!=0){closeMission(view.handle);view.handle=0;}});super.onDestroy();}
+ @Override public void onBackPressed(){android.content.Intent result=new android.content.Intent();AndroidOptions.exportTo(this,result);setResult(RESULT_OK,result);super.onBackPressed();}
  @Override protected void onActivityResult(int request,int result,android.content.Intent data){super.onActivityResult(request,result,data);Diagnostics.saveResult(this,request,result,data);}
  private void collectDiagnostics(){
   android.widget.Toast.makeText(this,"Collecting fast/synchronized frames and GPU checks. Keep this screen open until the ZIP share dialog appears.",android.widget.Toast.LENGTH_LONG).show();
@@ -89,14 +90,19 @@ public final class MissionActivity extends Activity {
  }
  private final class MissionView extends GLSurfaceView implements GLSurfaceView.Renderer {
   DiagnosticSweep sweep;
+  final android.os.Handler holdHandler=new android.os.Handler(android.os.Looper.getMainLooper());
+  void cancelTouch(){holdHandler.removeCallbacks(holdCheck);touch.cancel();}
   long handle;int width,height;boolean failed,ready,tapRelease,placing;int tapX,tapY;
   final MissionTouch touch=new MissionTouch(new MissionTouch.Sink(){
    public void move(int x,int y){queueEvent(()->pointerMission(x,y,-1,false));}
-   public void click(int x,int y){queueEvent(()->{pointerMission(x,y,0,true);tapX=x;tapY=y;tapRelease=true;});}
-   public void camera(int action,float x,float y){float speed=AndroidOptions.pan(MissionActivity.this);control(action,x*speed,y*speed);}
+   public void press(int x,int y){queueEvent(()->{if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}pointerMission(x,y,0,true);});}
+   public void release(int x,int y){queueEvent(()->pointerMission(x,y,0,false));}
+   public void click(int x,int y){queueEvent(()->{if(tapRelease)pointerMission(tapX,tapY,0,false);pointerMission(x,y,0,true);tapX=x;tapY=y;tapRelease=true;});}
+   public void camera(int action,float x,float y){if(action==2||action==3)performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);float speed=AndroidOptions.pan(MissionActivity.this);control(action,x*speed,y*speed);}
   });
+  final Runnable holdCheck=()->{if(resumed&&touch.hold(android.os.SystemClock.uptimeMillis()))performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);};
   MissionView(){super(MissionActivity.this);setEGLContextClientVersion(3);setPreserveEGLContextOnPause(true);setEGLConfigChooser(8,8,8,8,16,0);setRenderer(this);}
-  public void onSurfaceCreated(GL10 gl,EGLConfig config){if(sweep!=null){sweep.cancel();sweep=null;}Diagnostics.event("Mission GPU: "+gl.glGetString(GL10.GL_RENDERER)+" | "+gl.glGetString(GL10.GL_VERSION));if(handle!=0){abandonMission(handle);closeMission(handle);handle=0;report("Graphics context restored; restarting test mission…");}failed=ready=placing=tapRelease=simulationReady=false;runOnUiThread(()->{touch.cancel();touch.aim(false);placementHint.setVisibility(View.GONE);});}
+  public void onSurfaceCreated(GL10 gl,EGLConfig config){if(sweep!=null){sweep.cancel();sweep=null;}Diagnostics.event("Mission GPU: "+gl.glGetString(GL10.GL_RENDERER)+" | "+gl.glGetString(GL10.GL_VERSION));if(handle!=0){abandonMission(handle);closeMission(handle);handle=0;report("Graphics context restored; restarting test mission…");}failed=ready=placing=tapRelease=simulationReady=false;runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);});}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;}
   public void onDrawFrame(GL10 gl){if(!resumed||failed||width<=0||height<=0)return;
    if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),getIntent().getBooleanExtra("campaign",false),getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
@@ -105,13 +111,13 @@ public final class MissionActivity extends Activity {
   void control(int action,float x,float y){queueEvent(()->{if(handle!=0){String error=controlMission(handle,action,x,y);if(error!=null){Diagnostics.event(error);runOnUiThread(()->Toast.makeText(MissionActivity.this,error,Toast.LENGTH_SHORT).show());}}});}
   @Override public boolean onTouchEvent(MotionEvent event){
    float scale=Math.min(width/640f,height/480f);if(scale<=0)return true;
+   if(!simulationReady){cancelTouch();return true;}
    int action=event.getActionMasked();float offsetX=(width-640*scale)/2,offsetY=(height-480*scale)/2;
    float x=(event.getX()-offsetX)/scale,y=(event.getY()-offsetY)/scale;
-   if(action==MotionEvent.ACTION_CANCEL){touch.cancel();return true;}
-   if(action==MotionEvent.ACTION_DOWN){touch.down(x,y,event.getEventTime());return true;}
-   if(action==MotionEvent.ACTION_POINTER_UP){touch.pairEnd();return true;}
-   if(event.getPointerCount()>=2){int n=event.getPointerCount();int[] ids=new int[n];float[] xs=new float[n],ys=new float[n];for(int i=0;i<n;i++){ids[i]=event.getPointerId(i);xs[i]=(event.getX(i)-offsetX)/scale;ys[i]=(event.getY(i)-offsetY)/scale;}touch.fingers(ids,xs,ys);return true;}
-   if(action==MotionEvent.ACTION_UP)touch.up(x,y,event.getEventTime());else if(action==MotionEvent.ACTION_MOVE)touch.move(x,y);return true;
+   if(action==MotionEvent.ACTION_CANCEL){cancelTouch();return true;}
+   if(action==MotionEvent.ACTION_DOWN){holdHandler.removeCallbacks(holdCheck);touch.down(x,y,event.getEventTime());holdHandler.postDelayed(holdCheck,MissionTouch.HOLD_MS);return true;}
+   if(event.getPointerCount()>=2){holdHandler.removeCallbacks(holdCheck);int n=event.getPointerCount();int[] ids=new int[n];float[] xs=new float[n],ys=new float[n];for(int i=0;i<n;i++){ids[i]=event.getPointerId(i);xs[i]=(event.getX(i)-offsetX)/scale;ys[i]=(event.getY(i)-offsetY)/scale;}touch.fingers(ids,xs,ys,event.getEventTime());if(action==MotionEvent.ACTION_POINTER_UP)touch.pairEnd(event.getEventTime());return true;}
+   if(action==MotionEvent.ACTION_UP){holdHandler.removeCallbacks(holdCheck);touch.up(x,y,event.getEventTime());}else if(action==MotionEvent.ACTION_MOVE)touch.move(x,y);return true;
   }
  }
 }

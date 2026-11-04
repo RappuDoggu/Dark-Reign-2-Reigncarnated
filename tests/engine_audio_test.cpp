@@ -17,6 +17,14 @@ int main(){try{
  mixer.StopOwner(77);check(!mixer.Playing(id));
  auto a=mixer.Play(clip,1,64,0,2),b=mixer.Play(clip,1,64,0,3);check(a&&b&&!mixer.Play(clip,1,64,1,1));
  auto c=mixer.Play(clip,1,64,1,4);check(c&&!mixer.Playing(a)&&mixer.Playing(b));
+ check(!mixer.Play(clip,1,64,1,3)); // Equal priority cannot steal the remaining lower-priority voice.
+ mixer.StopAll();
+ int effectStorage=0;
+ auto shot=mixer.Play(clip,1,64,1,1,0,&effectStorage);check(shot&&mixer.EffectPlaying(&effectStorage));
+ mixer.ReleaseEffect(&effectStorage);check(mixer.Playing(shot)&&!mixer.EffectPlaying(&effectStorage));
+ // Reusing an effect's address must neither attach to nor stop the old sample.
+ mixer.StopEffect(&effectStorage);check(mixer.Playing(shot));mixer.Render(output,24);check(output[0]>.9f&&!mixer.Playing(shot));
+ auto loop=mixer.Play(clip,1,64,0,1,0,&effectStorage);check(loop);mixer.StopEffect(&effectStorage);check(!mixer.Playing(loop));
  mixer.StopAll();mixer.SetVolume(0.5f);id=mixer.Play(clip,1,64,1);mixer.Render(output,24);check(std::abs(output[0]-clip->stereo[0]*0.5f)<0.00001f);
  mixer.SetOutputRunning(false);mixer.Render(output,24);for(auto s:output)check(s==0);
  bool rejected=false;bytes[40]=250;try{DecodeWave(bytes.data(),bytes.size());}catch(const std::invalid_argument &){rejected=true;}check(rejected);

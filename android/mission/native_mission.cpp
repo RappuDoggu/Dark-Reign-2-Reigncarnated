@@ -32,13 +32,14 @@ struct State {
  double frameMillis=0,presentMillis=0;
  reign::LegacyGles::Statistics previousStats;
  std::chrono::steady_clock::time_point sampleTime=std::chrono::steady_clock::now();
+ std::chrono::steady_clock::time_point audioAttempt=sampleTime;
  void Present(){auto start=std::chrono::steady_clock::now();renderer->present_to(width,height);presentMillis+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();presented=true;}
  static bool present(void *value){static_cast<State *>(value)->Present();return true;}
  State(const std::string &root,const std::string &work,const std::string &mission,const NativeEngine::MissionOptions &options){
   NativeEngine::SetRenderLayers(7);renderer=std::make_unique<reign::LegacyGles>(resolve);
   app=std::make_unique<NativeEngine::MissionApp>(root,work,mission,*renderer,present,this,options);
   audio=std::make_unique<NativeEngine::AndroidAudioOutput>(NativeEngine::GetDigitalMixer());
-  Sound::Digital::Claim(32,32);
+  Sound::Digital::Claim(32,0); // The active original SoundFX path uses 2D pan/attenuation.
   if(!audio->Start())__android_log_print(ANDROID_LOG_WARN,"ReignMission","Audio output unavailable; running muted");
  }
  ~State(){if(audio)audio->Stop();app.reset();audio.reset();renderer.reset();}
@@ -51,7 +52,7 @@ JNIEXPORT jlong JNICALL Java_org_reigncarnated_menu_MissionActivity_openMission(
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_loadingMission(JNIEnv *env,jclass){return env->NewStringUTF(NativeEngine::missionLoadStatus.Report().c_str());}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_effectsMission(JNIEnv *env,jclass,jlong handle,jfloat volume){try{state(handle);if(!std::isfinite(volume)||volume<0||volume>1)throw std::invalid_argument("Invalid effects volume");Sound::Digital::SetVolume(volume);return nullptr;}catch(const std::exception &e){return failed(env,e);}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_missionError(JNIEnv *env,jclass){return env->NewStringUTF(lastError.c_str());}
-JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_frameMission(JNIEnv *env,jclass,jlong handle,jint width,jint height){try{auto &s=state(handle);if(width<=0||height<=0)return nullptr;s.width=unsigned(width);s.height=unsigned(height);s.presented=false;auto start=std::chrono::steady_clock::now();{reign::FrameSpan span("Engine");s.app->Frame();}if(!s.presented)s.Present();s.frameMillis+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();++s.frames;return nullptr;}catch(const std::exception &e){return failed(env,e);}}
+JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_frameMission(JNIEnv *env,jclass,jlong handle,jint width,jint height){try{auto &s=state(handle);if(width<=0||height<=0)return nullptr;s.width=unsigned(width);s.height=unsigned(height);s.presented=false;auto start=std::chrono::steady_clock::now();if(s.audio&&!NativeEngine::GetDigitalMixer()->OutputRunning()&&start-s.audioAttempt>=std::chrono::seconds(1)){s.audioAttempt=start;s.audio->Start();}{reign::FrameSpan span("Engine");s.app->Frame();}if(!s.presented)s.Present();s.frameMillis+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();++s.frames;return nullptr;}catch(const std::exception &e){return failed(env,e);}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_performanceMission(JNIEnv *env,jclass,jlong handle){try{
  auto &s=state(handle);const auto now=std::chrono::steady_clock::now();double seconds=std::chrono::duration<double>(now-s.sampleTime).count();const auto stats=s.renderer->statistics();char report[512];const double count=s.frames?s.frames:1;
  std::snprintf(report,sizeof(report),"%.0f draws/frame | %.0f uploads/s (%.2f MiB/s)\nEngine %.1f ms | present submit %.1f ms",double(stats.draws-s.previousStats.draws)/count,double(stats.texture_uploads-s.previousStats.texture_uploads)/seconds,double(stats.texture_bytes-s.previousStats.texture_bytes)/seconds/1048576.0,(s.frameMillis-s.presentMillis)/count,s.presentMillis/count);
@@ -79,7 +80,7 @@ extern "C" JNIEXPORT jintArray JNICALL Java_org_reigncarnated_menu_MissionActivi
  for(unsigned i=0;i<argb.size();++i)argb[i]=jint((std::uint32_t(rgba[((479-i/640)*640+i%640)*4+3])<<24)|(std::uint32_t(rgba[((479-i/640)*640+i%640)*4])<<16)|(std::uint32_t(rgba[((479-i/640)*640+i%640)*4+1])<<8)|rgba[((479-i/640)*640+i%640)*4+2]);
  auto result=env->NewIntArray(argb.size());if(result)env->SetIntArrayRegion(result,0,argb.size(),argb.data());return result;
  }catch(const std::exception &e){reign::nativeDiagnostics.record(e.what());return nullptr;}}
-extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_diagnosticsMission(JNIEnv *env,jobject,jlong handle){try{auto &s=state(handle);return env->NewStringUTF((s.app->Diagnostics()+" display layers="+std::to_string(NativeEngine::RenderLayers())+"\n"+s.renderer->diagnostics()).c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
+extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_diagnosticsMission(JNIEnv *env,jobject,jlong handle){try{auto &s=state(handle);return env->NewStringUTF((s.app->Diagnostics()+"\n"+(s.audio?s.audio->Diagnostics():"No Android audio output")+" display layers="+std::to_string(NativeEngine::RenderLayers())+"\n"+s.renderer->diagnostics()).c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
 
 extern "C" JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MissionActivity_abandonMission(JNIEnv *,jclass,jlong handle){if(handle)state(handle).renderer->abandon_context();}
 

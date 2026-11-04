@@ -1,6 +1,25 @@
 # Single-screen controls and remaining ideas
 
-## Current controls — version 19
+## Current controls — version 24
+
+- Tap once for the original left click: select, give orders and use the HUD.
+- Drag one finger for original rectangle selection. The left button stays down
+  until release; cancellation or adding fingers releases it once.
+- Hold a stationary finger for 450 ms for one click, including choosing a build
+  command. During building preview, short taps/dragging aim only; hold on the
+  desired location to confirm placement. A held gesture does not repeat.
+- Tap three fingers together to rotate the building preview one step clockwise.
+  Swiping/spreading the three fingers cancels the tap. Build arrows still allow
+  either direction. Rotation preserves the world cursor location.
+- Two fingers pan only. No touch zoom, map rotation or double-tap requirement.
+- Deselect cancels placement and clears selection. Controller work stays deferred.
+
+The hold timer is cancelled on lift, multitouch, pause and context replacement.
+The host gesture checks cover drag button balance, hold timing/repetition,
+placement aiming, three-finger timing/movement/finger identity, pan and accidental
+click suppression. Physical feel and building placement need device validation.
+
+## Version 19 history
 
 - One finger moves/aims the cursor. Double-tap with one finger issues one original
   left click for selection, movement/orders, HUD actions or building placement.

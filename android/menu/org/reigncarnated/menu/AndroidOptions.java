@@ -8,7 +8,9 @@ import android.widget.*;
 
 /** Android settings shared by the shell and mission Activities. */
 final class AndroidOptions {
- static SharedPreferences preferences(Activity a){return a.getSharedPreferences("android-options",0);}
+ static SharedPreferences preferences(Activity a){return a.getSharedPreferences(a instanceof MissionActivity?"android-options-mission":"android-options",0);}
+ static void exportTo(Activity a,android.content.Intent data){SharedPreferences p=preferences(a);for(String key:new String[]{"effects","pan","brightness"})data.putExtra("option."+key,p.getInt(key,key.equals("brightness")?0:100));data.putExtra("option.music",music(a));for(String key:new String[]{"awake","performance"})data.putExtra("option."+key,p.getBoolean(key,true));}
+ static void importFrom(Activity a,android.content.Intent data){if(data==null||!data.hasExtra("option.music"))return;SharedPreferences.Editor e=preferences(a).edit();for(String key:new String[]{"music","effects","pan","brightness"}){int v=data.getIntExtra("option."+key,key.equals("music")?40:key.equals("brightness")?0:100);e.putInt(key,Math.max(key.equals("pan")?10:0,Math.min(key.equals("pan")?200:100,v)));}for(String key:new String[]{"awake","performance"})e.putBoolean(key,data.getBooleanExtra("option."+key,true));e.commit();}
  static int music(Activity a){String legacy=MenuActivity.class.getName(),prefix=a.getPackageName()+".";if(legacy.startsWith(prefix))legacy=legacy.substring(prefix.length());return preferences(a).getInt("music",a.getSharedPreferences(legacy,0).getInt("musicVolume",40));}
  static float effects(Activity a){return preferences(a).getInt("effects",100)/100f;}
  static float pan(Activity a){return preferences(a).getInt("pan",100)/100f;}
@@ -24,7 +26,7 @@ final class AndroidOptions {
  }
  static void show(Activity a,Runnable applied){
   SharedPreferences p=preferences(a);LinearLayout panel=new LinearLayout(a);panel.setOrientation(LinearLayout.VERTICAL);int pad=Math.round(20*a.getResources().getDisplayMetrics().density);panel.setPadding(pad,pad,pad,pad);
-  TextView graphics=new TextView(a);graphics.setText("Graphics: High detail • full meshes • 32-bit textures • trilinear filtering\nTwo fingers pan. Three fingers rotate building previews. Double-tap to click.");panel.addView(graphics);
+  TextView graphics=new TextView(a);graphics.setText("Graphics: High detail • full meshes • 32-bit textures • trilinear filtering\nTap to left-click; drag to select. Hold to build/place. Two fingers pan; three-finger tap rotates buildings.");panel.addView(graphics);
   SeekBar music=slider(a,panel,"Music volume",100,music(a),"Muted"),effects=slider(a,panel,"Sound effects volume",100,p.getInt("effects",100),"Muted"),pan=slider(a,panel,"Map pan speed",200,p.getInt("pan",100),null),brightness=slider(a,panel,"Screen brightness",100,p.getInt("brightness",0),"Use Android setting");
   pan.setMin(10);
   CheckBox awake=new CheckBox(a);awake.setText("Keep screen awake while playing");awake.setChecked(p.getBoolean("awake",true));panel.addView(awake);
