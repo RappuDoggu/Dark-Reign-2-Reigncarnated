@@ -712,3 +712,11 @@ new JNI exports and embedded source/build/progress receipts pass verification.
 The private test signer has a separate owner-downloadable backup outside Git.
 Source/data-package changes are preserved on the recovery branch. Device menu,
 mission launch, pause/resume and FPS remain acceptance checks.
+
+## APK 22 download delivery
+
+The owner's Codex client cannot open the internal workspace APK links. The exact
+verified APK 22 (unchanged SHA-256 70354a70d008e1b0a14d9389eaabbcc24d6ed9b29c2003749a6e12f15973f061)
+is mirrored under builds/v0.16 for a normal HTTPS GitHub download. This is delivery
+of the already-authorized test APK, not a new build. Game data and the private
+signer/backup remain outside the public repository.
