@@ -847,3 +847,13 @@ measurement is claimed. Version 24 uses APK 22/23's private signer and test
 identity, retaining imported data; keys, game packs, crash traces and symbols
 stay outside public Git/APK. Reproduction and post-crash export instructions
 are in RECOVERY_BUILD.md; exact source revision and records are embedded.
+
+
+APK 24 artifact: `Reigncarnated-Touch-Combat-Audio-v24.apk`, source
+`fa43ad3a7fa0fb750ff6a7721dafd5e2a44b766a`, SHA-256
+`7343d4c0f16d3136af49eaee2257727847e94868c6165a53132299c8ef219c84`.
+Independent checks pass: same APK 22/23 signer and identity, version 24/private
+mission process in the compiled manifest, signature, CRC, 16 KiB ZIP/ELF loads,
+static libc++, exact embedded source/docs/native hashes and absence of game packs
+or signing keys. The unchanged signed artifact is mirrored under builds/v0.18.
+The private unstripped ELF is retained outside Git for matching crash addresses.
