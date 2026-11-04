@@ -4,25 +4,55 @@ The owner reports that v17 removes pillar artifacts and starts the original AI.
 The next requested milestone is full Instant Action selection and its original
 main-menu transitions. The existing Android dialog is an interim chooser.
 
-Version 19 connects both Instant Action entry points to imported Main::Exit
-playback and opens the chooser only when it completes. Cancel/Back selects the
-imported Main::Enter path and enables main controls after completion. This uses
-the real bookmark curves and their durations. No Multi/InstantAction bookmark is
-invented. The remaining work includes the full source setup controls, original
-objective/cineractive scheduling and the other options listed below. Device
-validation of v19's transition is pending. The earlier source notes below record
-the pre-v19 gap.
+## Current implementation and device feedback
 
-## Original source boundaries
+Version 19 introduced a transition, but chose Main::Exit on entry and Main::Enter
+on Cancel. Version 20 fixed startup and version 21 fixed backup/re-import paths;
+neither restored the original setup controls. The owner now confirms animation
+plays but Instant Action menus still do not display, and the animation should
+move to a different city location. This is an open implementation gap, not a
+completed menu milestone.
 
-`src/menu_frontend.cpp` currently routes `gamegod.verify
-Shell::Main.InstantAction` directly to `@instant`; Android immediately opens
-`missionOptions(false, ...)`. `ShellScene` currently samples only `Main::Init`
-and `Main::Enter`. The source shell's other camera paths and event completion
-are not yet connected to selection navigation. Do not invent an Instant Action
-bookmark: the recorded original shell inventory contains Multi::Enter,
-Multi::Exit and Multi::Return, but no InstantAction::Enter. Resolve the actual
-release interface/objective event sequence before assigning a camera path.
+`State::beginInstant()` in `android/menu/native_menu.cpp` explicitly selects
+Main::Exit. After the path finishes it switches to Choose and emits
+@instant-ready. The native renderer draws MenuFrontend only in Main, so Choose
+does not display an original setup panel. MenuActivity's only replacement is the
+Android map/AI/difficulty/seed dialog. No GameSetup::Instant activation is wired.
+The reported absence of that interim dialog additionally requires checking the
+ready callback, catalog result/error and Activity lifecycle on the device; the
+animation alone does not prove the catalog or original controls were activated.
+
+## Confirmed original Instant Action sequence
+
+Read the interface/objective scopes from the decoded GitHub microDR2 shell pack,
+without executing its Windows binary or copying owned configuration into Git.
+Its bookmark names agree with all 18 bookmark names previously recorded from
+the owner's full installation. The reduced pack is reference evidence; compare
+with the newly supplied full shell before packaging a change.
+
+- InstantAction verification sends Instant::Enter to Shell::EventHandler.
+- Instant::Enter sets gamegod.flow.state to Instant, hides the previous control,
+  selects GameSetup::Instant as the pending control, starts Cineractive::Multi::Enter
+  and sends GameSetup::Message::Created to the setup control.
+- The objective selects bookmark Multi::Enter at time zero. At 2.0 seconds it
+  sends CineractiveCompleted, whose handler activates the pending setup control.
+  Activation is an objective event; it does not wait for the whole 5-second
+  bookmark to end. The camera continues moving behind the setup controls.
+- Cancel/Back sends Instant::Exit, clears the flow state, selects Shell::Main and
+  starts Cineractive::Multi::Exit. The reference objective activates Main after
+  2.0 seconds while that 4-second camera path can continue.
+- Main::Exit belongs to Quit/Logout. It is the wrong entry path for setup.
+- Returning from a mission is a separate flow: action Return/state Instant uses
+  Main::Enter; action Setup/state Instant uses Multi::Return and recreates setup.
+
+The correction must restore this event/control flow and the real setup controls,
+with explicit support for their commands. Replacing one bookmark name alone
+would leave the original menus missing. Existing shell-camera completion tests
+cover generic path playback; they do not validate objective-driven activation
+or the complete Instant Action screen. Preserve the original 10 Hz simulation,
+ABI configuration, fenced geometry stream and deferred controller scope.
+
+## Remaining original setup bindings
 
 The source setup script is `interface_setup_instant.cfg`; earlier real-data
 inspection recorded that it selects a random mission and adds an AI. The

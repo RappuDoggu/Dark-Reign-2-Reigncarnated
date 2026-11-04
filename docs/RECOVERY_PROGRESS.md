@@ -619,3 +619,36 @@ A full original installation or complete phone export is still required; code
 cannot recreate the missing content. Evidence and hashes are recorded in
 `github-game-release-audit.json`. No APK, engine behavior, ABI, simulation, key
 or game asset was changed or committed during this investigation.
+
+## Instant Action menu and campaign availability review
+
+The owner paused archive-import work while another chat prepares GitHub file
+updates. The current GitHub heads were checked: main 0bc1fe7, development 75e34b9,
+and recovery 37e5202. No new file/data commits were present at review time. None
+of those tracked trees contains campaign ZWP/game data or music. The v0.7 archive
+parts are the previously verified source/relink kit, not an installation.
+The repository's GitHub visibility is public; full game archives must remain in
+a separate private source accessible to the environment, and signing keys must
+remain outside Git.
+
+The owner confirms the animated transition works, but the Instant Action menus
+do not display and the animation should show a different city area. Source review
+confirms the implementation still chooses Main::Exit and stops drawing original
+menu controls in Choose. Only an interim Android chooser is wired. Decoding the
+reference shell configuration establishes the actual Instant::Enter ->
+Cineractive::Multi::Enter -> Multi::Enter -> CineractiveCompleted ->
+GameSetup::Instant activation sequence. Back uses Multi::Exit. The objective
+sends completion at 2 seconds, before either full camera path ends. Main::Exit
+belongs to Quit/Logout. Details and return-from-mission distinctions are recorded
+in INSTANT_ACTION_MENU_RESTORATION.md. This review does not claim a fix or APK.
+
+Campaign enumeration, original mission ordering, progress-based unlocks and
+campaign launch plumbing exist in the recovery source. The earlier full owned
+installation audit found two campaigns and 60 missions across all groups; the
+current GitHub source does not supply those playable campaign files. The decoded
+micro release also has no campaign mission packs. Once the owner pushes the
+private data update, verify missions/jda and missions/sprawler group.cfg files,
+their Campaign/Missions/Add references, each corresponding mission pack and
+required worlds/sides/mods before claiming campaign availability. Campaign story
+flow, cutscenes, completion navigation and full menu integration are unfinished.
+No engine, renderer, simulation, ABI or APK changes were made during this review.
