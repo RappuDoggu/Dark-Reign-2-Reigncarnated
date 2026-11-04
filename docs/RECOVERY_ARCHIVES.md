@@ -18,6 +18,25 @@ are saved in the owner's private ChatGPT Library. They are not GitHub Git blobs.
 Project tooling, adapters, tests and analysis remain on GitHub branch
 `dev/native-arm64-primitives` (implementation 487e3b9, evidence f868754).
 
+## GitHub game release is a reduced installation
+
+Checked the pinned upstream project's `game` release after the cloud workspace
+became available again. Its three assets are microDR2.zip, R4SOURCE.zip and one
+additional multiplayer map. R4SOURCE is source code, with no audio/game packs.
+The micro ZIP wraps a WinUHA self-extracting Windows executable. A source-built
+Linux decoder extracted it without executing the Windows binary; all 37 file
+CRCs passed. It contains 15 ZWP packs, one multiplayer map, no campaign missions
+and no OGG/MP3/WAV music. Base/shell packs are reduced versions and do not match
+the tested installation; Sprawl matches the tested file exactly.
+
+The actual APK Java importer accepts its three scene packs with zero tracks.
+The complete-bundle exporter correctly refuses it for missing music and writes
+no output. This release cannot reconstruct the owner's full single-import ZIP.
+The supplied full installation or an export of the complete installation/music
+already on the owner's phone is still needed. No stripped archive was presented
+as a complete replacement. See [metadata and checksums](github-game-release-audit.json).
+Game data and downloaded extractor/toolchain files remain outside Git.
+
 ## Full supplied installation and game assets
 
 [Dark Reign 2.7z](https://chatgpt.com/library?file_id=libfile_a485ea4680c8819190055acaec63a1ba&account_id=personal)

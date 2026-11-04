@@ -597,3 +597,25 @@ ARM64 ELF loads pass. Embedded source/build/progress receipts match the committe
 source. Menu native hash and recovery signer match v20. The mission library
 contains only the resource-reference changes described above. Export on an
 actual Android document provider still needs device validation.
+
+## GitHub game-data release investigated after workspace recovery
+
+The failed cloud workspace was replaced/restored to the published Phase 0
+snapshot. Re-fetched the verified recovery branch from GitHub; no engine changes
+were reapplied. Investigated the upstream `game` release requested by the owner.
+Both available ZIPs download successfully and pass CRC checks. R4SOURCE contains
+source code only. microDR2 wraps UHA 0.6, decoded using a source-built Linux
+extractor with a checksum-verified Rust toolchain; the Windows EXE was not run.
+All 37 extracted files pass CRC. The 15 game packs pass the existing repository
+metadata inspector. Sprawl matches the owner's tested pack, but base and shell
+are reduced and differ. Only one multiplayer map is present; campaign maps,
+movies and all loose music tracks are absent. No OGG/MP3 tracks occur inside the
+base/shell tables either.
+
+The actual APK importer code, executed on the host, imports all three scene
+packs and reports zero music. The complete-export guard refuses this snapshot
+and leaves no output. No incomplete game ZIP was delivered as a complete one.
+A full original installation or complete phone export is still required; code
+cannot recreate the missing content. Evidence and hashes are recorded in
+`github-game-release-audit.json`. No APK, engine behavior, ABI, simulation, key
+or game asset was changed or committed during this investigation.
