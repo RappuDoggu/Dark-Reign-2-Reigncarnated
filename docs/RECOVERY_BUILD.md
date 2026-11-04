@@ -498,3 +498,44 @@ shutdown twice. The campaign fixture uses a reference map, not retail story data
 All 603 original ARM64 units rebuilt; original and adapter addresses resolve to
 source lines in the private unstripped ELF. No phone FPS, retail campaign crash
 fix or device audio result is claimed by these host checks.
+
+
+## APK 25: campaign filename splitting and first-cycle readiness
+
+Build with the same pinned toolchain and full-builder command from APK 24,
+changing `--output` to `"$work/v25"` and `--output-name` to
+`Reigncarnated-Campaign-Path-v25.apk`. Keep the APK 22/23/24 private signer and
+`org.reigncarnated.instantcity` identity to retain imported data. Both native
+libraries and Java are packaged from this committed source; no game assets or
+signing key are included. Unchanged original engine units may be reused only
+from the verified pinned object receipts. The current artifact reuses the 603
+original units freshly compiled for APK 24, rebuilds the changed I/O foundation
+and mission adapters, and relinks the mission library. The full builder remains
+the clean reproduction path.
+
+`Dir::PathExpand` now implements lexical `_splitpath` semantics: empty optional
+asset names, drive components, case and separators are preserved without OS
+lookup. Empty OS filenames and unmapped drive access remain failures. This fixes
+a reproduced source of the uploaded J01 `Empty engine path` error, while the
+precise retail caller and successful J01 gameplay still need phone testing.
+See [DIAGNOSTICS_REVIEW_V24.md](DIAGNOSTICS_REVIEW_V24.md) for evidence and limits.
+
+Readiness now waits for the first simulation cycle. Startup/frame exceptions
+report FAILED and remain visible; Debug can export a failed-frame ZIP. Explicit
+unsupported operation errors remain reported. The mission ELF has a GNU build
+ID for matching platform traces to private unstripped symbols. Keep that ELF and
+the receipt outside public Git; only stripped libraries enter the APK.
+
+APK 24 touch controls and combat sound lifetime fix are retained. Instant Action
+layout is unchanged. The original 10 Hz simulation, ABI configuration, supported
+High graphics and fenced append-only unsynchronized stream are unchanged. No
+new phone FPS measurement is available.
+
+Validation: 12 engine foundation tests (including lexical path splitting and
+failure after readiness), original bitmap-manager optional-name regression and
+two-pass reference Instant Action/synthetic campaign lifecycle checks under
+ASan/UBSan. The real mission integration loop rejects READY with zero simulation
+cycles. SDK 35 compiles all Android Java; the 48 touch state checks also pass.
+These host checks do not substitute for J01/campaign completion or Android audio.
+After J01 testing, collect diagnostics again; if gameplay runs, collect after
+attacking and receiving damage to exercise actual sound requests.

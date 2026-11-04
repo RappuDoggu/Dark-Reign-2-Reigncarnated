@@ -101,6 +101,7 @@ struct Context {
 struct Presentation {reign::LegacyGles *renderer;unsigned calls=0;};
 bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.renderer->present();++p.calls;return true;}
 #include "mission_app.h"
+#include "load_status.h"
 #include "input_native.h"
 #include "multiplayer_data.h"
 #include "player.h"
@@ -114,8 +115,12 @@ int main(int argc,char **argv){try{
  for(unsigned pass=0;pass<2;++pass){
   NativeEngine::MissionApp app(root.string(),work.string(),selectedMission,renderer,present,&presentation,options);
   if(options.campaign)check(!MultiPlayer::Data::HaveData()&&Difficulty::GetApplyEnemy());
+  // Original optional-texture lookup must return no texture, not throw before
+  // FindCreate can apply its own extension check (retail J01 first-frame failure).
+  check(Bitmap::Manager::Find("")==nullptr);
+  check(Bitmap::Manager::FindCreate(Bitmap::reduceNONE,"")==nullptr);
   bool rejected=false;try{NativeEngine::MissionApp duplicate(root.string(),work.string(),selectedMission,renderer,present,&presentation,options);}catch(const std::logic_error &){rejected=true;}check(rejected);
-  for(unsigned frame=0;frame<(pass?64u:128u);++frame){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));}
+  for(unsigned frame=0;frame<(pass?64u:128u);++frame){app.Frame();if(!app.SimulationCycles())check(NativeEngine::missionLoadStatus.Report().rfind("READY\n",0)!=0);std::this_thread::sleep_for(std::chrono::milliseconds(16));}
   check(app.InSimulation()&&app.SimulationCycles()>0);
   if(options.campaign)check(Player::GetCurrentPlayer()&&Player::GetCurrentPlayer()->GetTeam()->IsDefaultClient());
   if(pass==0&&argc==2){

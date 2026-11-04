@@ -76,7 +76,7 @@ template<class T> void Register(const char *name){IFace::RegisterControlClass(na
 struct MissionApp::Impl {
  std::vector<std::function<void()>> cleanup;
  std::unique_ptr<Camera> camera;
- bool closed=false,active=true,pausedHere=false,owns=false,gameInitialized=false,reportedSimulation=false;
+ bool closed=false,active=true,pausedHere=false,owns=false,gameInitialized=false,reportedSimulation=false,reportedLoaded=false;
  void EndGame(){if(gameInitialized){Game::Done();gameInitialized=false;}}
  void Defer(std::function<void()> fn){cleanup.push_back(std::move(fn));}
  void Stop(){
@@ -161,7 +161,7 @@ void MissionApp::Control(unsigned action,float x,float y){
  else if(action==5){auto *camera=dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent());if(!camera)throw std::logic_error("Map pan requires the Standard game camera");const auto &matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();auto delta=right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->PanNative(delta.x,delta.z);}
  else throw std::invalid_argument("Unknown mission control");
 }
-void MissionApp::Frame(){if(impl->closed)throw std::logic_error("Mission runtime is closed");if(BeginNativeFrame()){Game::RC::Process();GameSound::Poll();if(!impl->reportedSimulation&&InSimulation()){missionLoadStatus.Complete();impl->reportedSimulation=true;}}}
+void MissionApp::Frame(){if(impl->closed)throw std::logic_error("Mission runtime is closed");if(BeginNativeFrame()){Game::RC::Process();GameSound::Poll();if(!impl->reportedLoaded&&InSimulation()){missionLoadStatus.Update("Mission loaded; starting first simulation cycle");impl->reportedLoaded=true;}if(!impl->reportedSimulation&&InSimulation()&&SimulationCycles()>0){missionLoadStatus.Complete();impl->reportedSimulation=true;}}}
 void MissionApp::SetActive(bool active){
  if(impl->closed||impl->active==active)return;
  if(!active){impl->pausedHere=!GameTime::Paused();if(impl->pausedHere)GameTime::Pause(FALSE);}

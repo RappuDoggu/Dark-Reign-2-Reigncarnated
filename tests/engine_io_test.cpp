@@ -59,6 +59,23 @@ int main(int argc,char **argv) {
     Scratch scratch;
     FilePath identifier; Dir::PathMake(identifier,"missions","multiplayer");
     require(std::string(identifier.str)=="missions\\multiplayer","Preserve engine path CRC spelling");
+    // _splitpath is lexical: empty optional texture names are valid, and
+    // splitting must not probe/rename files or reject a DOS drive identifier.
+    FileDrive drive; FileDir dir; FileName name; FileExt ext;
+    const auto split=[&](const char *path,const char *d,const char *folder,const char *base,const char *suffix){
+      Dir::PathExpand(path,drive,dir,name,ext);
+      require(std::string(drive.str)==d&&std::string(dir.str)==folder&&std::string(name.str)==base&&std::string(ext.str)==suffix,"Original lexical _splitpath contract");
+    };
+    split("", "", "", "", "");
+    split("C:\\DR2\\Textures\\Cloud.Day.TGA", "C:", "\\DR2\\Textures\\", "Cloud.Day", ".TGA");
+    split("missions\\jda\\J01.zwp", "", "missions\\jda\\", "J01", ".zwp");
+    split("Q:relative.pic", "Q:", "", "relative", ".pic");
+    split("a.b/Leaf", "", "a.b/", "Leaf", "");
+    split("textures/", "", "textures/", "", "");
+    split(".pic", "", "", "", ".pic");
+    split("asset.", "", "", "asset", ".");
+    rejects([&]{Dir::PathExpand(nullptr,drive,dir,name,ext);},"Reject null split input explicitly");
+    File empty; require(!empty.Open("",File::READ),"Empty OS filename remains invalid");
     auto folder=scratch.path/"MiSsIoNs";
     require(Dir::MakeFull((folder/"nested").c_str()),"Create mission directory");
     auto path=folder/"TeSt.BIN";

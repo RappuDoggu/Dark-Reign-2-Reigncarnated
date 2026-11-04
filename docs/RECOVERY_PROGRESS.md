@@ -857,3 +857,46 @@ mission process in the compiled manifest, signature, CRC, 16 KiB ZIP/ELF loads,
 static libc++, exact embedded source/docs/native hashes and absence of game packs
 or signing keys. The unchanged signed artifact is mirrored under builds/v0.18.
 The private unstripped ELF is retained outside Git for matching crash addresses.
+
+
+## APK 25: uploaded J01 evidence, lexical path fix and truthful readiness
+
+The owner's APK 24 ZIP matches its exact source/native receipt. J01 finishes
+mission setup in about 350 ms, then the first gameplay frame returns `Empty
+engine path`; simulation cycles and effect requests remain zero. AAudio is
+running without callback errors and music plays. This report diagnoses a stopped
+first frame, not missing combat samples in a running battle. Raw device reports
+and platform traces remain private outside Git/APK.
+
+Native `Dir::PathExpand` incorrectly used OS path resolution for the original
+lexical `_splitpath` contract. Empty optional texture names threw before the
+original bitmap manager could handle them. New I/O and original bitmap-manager
+checks fail with the old implementation and pass with lexical splitting. Case,
+separator spelling and DOS drive components are preserved during splitting;
+actual empty OS opens and unmapped drive access still fail. No rendering errors
+or unsupported operations are bypassed. The exact J01 throw-site caller is not
+in the report, so successful retail startup remains a phone acceptance check.
+
+Mission readiness now requires the first nonzero simulation cycle. Fatal JNI
+startup/frame exceptions set FAILED, clear readiness and remain exportable;
+nonfatal operation errors are still explicit. The deterministic GNU mission
+build ID makes future OS crash traces matchable to private unstripped symbols.
+
+The ZIP also contains an older main-process native fault about 65 minutes before
+collection. Its menu build ID matches retained symbols and its stack resolves
+to FileSys::Close/DataFile destruction during nested PTree/BlockFile menu loading.
+It is distinct from the current caught J01 exception; no corruption root cause
+or fix for that historical menu crash is claimed. The capped trace stays private.
+See DIAGNOSTICS_REVIEW_V24.md for the sanitized review and remaining checks.
+
+Validation: 12 ASan/UBSan foundation tests pass. Original bitmap-manager empty
+lookup and reference Instant Action/synthetic campaign paths pass; both paths
+load, simulate, pause/resume and close twice. Zero cycles never reports READY.
+All Android Java compiles against SDK 35 and 48 touch checks pass. The changed
+ARM64 I/O foundation and adapters rebuild; the mission relinks the verified 603
+original APK 24 objects with no unresolved symbols. Upstream source pins, SDK
+35, NDK 27.2.12479018, FFmpeg n6.1.1, original ABI flags/10 Hz simulation and
+fenced append-only unsynchronized geometry remain. APK 24 touch/audio fixes are
+retained and Instant Action layout is unchanged. No new phone FPS, successful
+retail J01 load, campaign completion or device combat-audio result is claimed.
+The test identity/signer are reused, with private keys and owned data excluded.

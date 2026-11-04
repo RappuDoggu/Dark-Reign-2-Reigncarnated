@@ -34,7 +34,7 @@ public final class MissionActivity extends Activity {
  private volatile boolean resumed;
  private volatile boolean simulationReady;
  private final android.os.Handler loadingHandler=new android.os.Handler(android.os.Looper.getMainLooper());
- private final Runnable loadingPoll=new Runnable(){public void run(){if(!resumed||simulationReady)return;String progress=loadingMission();if(progress.startsWith("READY\n")){simulationReady=true;status.setVisibility(View.GONE);}else{String[] lines=progress.split("\n");status.setText("Loading "+intentValue("mission","")+" • "+(lines.length>1?lines[1]:"starting")+"\n"+(lines.length>2?lines[2]:"")+" • Tap for loading report");status.setVisibility(View.VISIBLE);}loadingHandler.postDelayed(this,500);}};
+ private final Runnable loadingPoll=new Runnable(){public void run(){if(!resumed||simulationReady)return;String progress=loadingMission();if(progress.startsWith("FAILED\n")){simulationReady=false;status.setText(progress+"\nTap for diagnostics");status.setVisibility(View.VISIBLE);return;}if(progress.startsWith("READY\n")){simulationReady=true;status.setVisibility(View.GONE);}else{String[] lines=progress.split("\n");status.setText("Loading "+intentValue("mission","")+" • "+(lines.length>1?lines[1]:"starting")+"\n"+(lines.length>2?lines[2]:"")+" • Tap for loading report");status.setVisibility(View.VISIBLE);}loadingHandler.postDelayed(this,500);}};
  private TextView placementHint;
  private int dp(int value){return Math.round(value*getResources().getDisplayMetrics().density);}
  private Button actionButton(String label,String hint,Runnable action){
@@ -65,7 +65,7 @@ public final class MissionActivity extends Activity {
   metrics=new RenderMetrics(this,root,"Mission");setContentView(root);
  }
  private void showDebugTools(){
-  if(!simulationReady){new android.app.AlertDialog.Builder(this).setTitle("Mission loading").setMessage(loadingMission()).setPositiveButton("Save / share diagnostics ZIP",(d,w)->shareLoadingReport()).setNegativeButton("Close",null).show();return;}
+  if(!simulationReady){new android.app.AlertDialog.Builder(this).setTitle(view.failed?"Mission stopped":"Mission loading").setMessage(loadingMission()).setPositiveButton("Save / share diagnostics ZIP",(d,w)->{if(view.failed)collectDiagnostics();else shareLoadingReport();}).setNegativeButton("Close",null).show();return;}
   new android.app.AlertDialog.Builder(this).setItems(new String[]{"Share report","GPU checks","Fast stream","Synchronized stream","Audit next frame","Capture frame and report","Toggle sky","Toggle objects","Toggle HUD","Collect diagnostics ZIP (all in one)","Compare distance fog (keeps fog of war)"},(d,which)->{
    if(which==9){collectDiagnostics();return;}if(which==2||which==3)getSharedPreferences("debug",0).edit().putBoolean("synchronized",which==3).apply();
    view.queueEvent(()->{if(view.handle==0)return;if(which==0||which==5)Diagnostics.share(this,metrics.latest()+"\n"+diagnosticsMission(view.handle),which==5?captureMission(view.handle):null);else Diagnostics.event(debugMission(view.handle,which==10?11:which>=6?which+2:which));});
@@ -92,7 +92,7 @@ public final class MissionActivity extends Activity {
   DiagnosticSweep sweep;
   final android.os.Handler holdHandler=new android.os.Handler(android.os.Looper.getMainLooper());
   void cancelTouch(){holdHandler.removeCallbacks(holdCheck);touch.cancel();}
-  long handle;int width,height;boolean failed,ready,tapRelease,placing;int tapX,tapY;
+  long handle;int width,height;volatile boolean failed;boolean ready,tapRelease,placing;int tapX,tapY;
   final MissionTouch touch=new MissionTouch(new MissionTouch.Sink(){
    public void move(int x,int y){queueEvent(()->pointerMission(x,y,-1,false));}
    public void press(int x,int y){queueEvent(()->{if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}pointerMission(x,y,0,true);});}
@@ -106,7 +106,7 @@ public final class MissionActivity extends Activity {
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;}
   public void onDrawFrame(GL10 gl){if(!resumed||failed||width<=0||height<=0)return;
    if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),getIntent().getBooleanExtra("campaign",false),getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
-   long drawStart=System.nanoTime();String error=frameMission(handle,width,height);boolean nextPlacement=placingMission(handle);if(nextPlacement!=placing){placing=nextPlacement;runOnUiThread(()->{touch.aim(nextPlacement);placementHint.setVisibility(nextPlacement?View.VISIBLE:View.GONE);});}if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}long drawEnd=System.nanoTime();metrics.frame(drawStart,drawEnd,()->performanceMission(handle));if(sweep!=null){if(error!=null)sweep.abort(error);else sweep.frame(drawStart,drawEnd);}if(error!=null){failed=true;report(error);}else if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;runOnUiThread(()->status.setVisibility(View.GONE));}
+   long drawStart=System.nanoTime();String error=frameMission(handle,width,height);boolean nextPlacement=placingMission(handle);if(nextPlacement!=placing){placing=nextPlacement;runOnUiThread(()->{touch.aim(nextPlacement);placementHint.setVisibility(nextPlacement?View.VISIBLE:View.GONE);});}if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}long drawEnd=System.nanoTime();metrics.frame(drawStart,drawEnd,()->performanceMission(handle));if(sweep!=null){if(error!=null)sweep.abort(error);else sweep.frame(drawStart,drawEnd);}if(error!=null){failed=true;simulationReady=false;runOnUiThread(()->cancelTouch());report(error);}else if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;runOnUiThread(()->status.setVisibility(View.GONE));}
   }
   void control(int action,float x,float y){queueEvent(()->{if(handle!=0){String error=controlMission(handle,action,x,y);if(error!=null){Diagnostics.event(error);runOnUiThread(()->Toast.makeText(MissionActivity.this,error,Toast.LENGTH_SHORT).show());}}});}
   @Override public boolean onTouchEvent(MotionEvent event){

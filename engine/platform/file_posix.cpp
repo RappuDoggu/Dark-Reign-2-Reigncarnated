@@ -257,9 +257,24 @@ Bool Dir::PathAbsolute(FilePath &out, const char *p) {
   try { assign(out, fs::absolute(nativePath(p)).lexically_normal()); return TRUE; } catch (...) { return FALSE; }
 }
 void Dir::PathExpand(const char *p, FileDrive &drive, FileDir &dir, FileName &name, FileExt &ext) {
-  auto path = nativePath(p); drive = "";
-  auto parent = path.parent_path().string(); if (!parent.empty()) parent += '/';
-  dir = parent.c_str(); name = path.stem().c_str(); ext = path.extension().c_str();
+  // Original _splitpath is lexical and accepts empty optional asset names.
+  // Do not resolve case, inspect the filesystem, or reject a drive while merely
+  // splitting: OS operations still reject unmapped drives and empty filenames.
+  if (!p) throw std::invalid_argument("Null engine path in PathExpand");
+  const std::string path(p);
+  const std::size_t start = path.size() > 1 && path[1] == ':' ? 2 : 0;
+  const auto slash = path.find_last_of("/\\");
+  const auto leaf = slash == std::string::npos || slash < start ? start : slash + 1;
+  const auto dot = path.find_last_of('.');
+  const auto split = dot != std::string::npos && dot >= leaf ? dot : path.size();
+  const auto copy = [](auto &out, const std::string &value) {
+    if (value.size() >= out.GetSize()) throw std::length_error("Engine path component exceeds capacity");
+    out = value.c_str();
+  };
+  copy(drive, path.substr(0, start));
+  copy(dir, path.substr(start, leaf - start));
+  copy(name, path.substr(leaf, split - leaf));
+  copy(ext, path.substr(split));
 }
 void Dir::PathMake(FilePath &out, const char *drive, const char *dir, const char *name, const char *ext) {
   if (drive && *drive) throw std::invalid_argument("Native engine has no DOS drive letters");
