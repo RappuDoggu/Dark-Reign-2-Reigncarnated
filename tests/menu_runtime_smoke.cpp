@@ -71,5 +71,26 @@ CreateControl("Shell::Main","Window"){Size(640,480);
   menu.set_build_version("Reigncarnated version updated again");check(menu.take_action().empty());
   check(menu.draw([](const auto &){},[](const auto &,const auto &){},0,0).geometry_batches>0);
  }
+ {reign::MenuFrontend menu(withShell,root,640,480);menu.open_shell_preview();menu.take_action();
+  auto click=[&](const std::string &name){auto p=menu.control_center(name);menu.pointer_move(p[0],p[1]);menu.pointer_button(true,p[0],p[1]);menu.pointer_button(false,p[0],p[1]);};
+  std::vector<reign::MenuMission> maps{{"missions/multiplayer","AB"},{"missions/multiplayer","BA"}};
+  menu.prepare_instant_setup(maps,{"","Easy","Hard"},1,0,0,123);menu.show_instant_setup();
+  check(menu.control_active("GameSetup::Instant")&&!menu.control_active("Shell::Main"));
+  auto frame=menu.draw([](const auto &){},[](const auto &,const auto &){},2000,16);check(frame.geometry_batches>0&&frame.font_batches>0);
+  auto selected=menu.instant_selection();check(selected.map_index==1&&selected.map.name=="BA"&&selected.seed==123&&selected.opponents==0);
+  click("GameSetup::Instant.Opponents");click("GameSetup::Instant.Difficulty");
+  selected=menu.instant_selection();check(selected.opponents==1&&selected.difficulty=="Easy"&&selected.difficulty_index==1);
+  click("GameSetup::Instant.Maps.[Container].0");check(menu.instant_selection().map_index==0);
+  click("GameSetup::Instant.Seed");check(menu.text_input_active());
+  auto key=[&](unsigned scan){menu.key(scan,true);menu.key(scan,false);};key(0xc7);for(unsigned i=0;i<3;++i)key(0xd3);menu.text("0");
+  bool rejected=false;try{click("GameSetup::Instant.Launch");}catch(const std::invalid_argument &){rejected=true;}
+  auto invalidAction=menu.take_action();if(!rejected||!invalidAction.empty()){std::cerr<<"Invalid seed rejected="<<rejected<<" action="<<invalidAction;try{std::cerr<<" stored seed="<<menu.instant_selection().seed;}catch(const std::exception &e){std::cerr<<" error="<<e.what();}std::cerr<<'\n';}
+  check(rejected&&menu.control_active("GameSetup::Instant")&&invalidAction.empty());
+  click("GameSetup::Instant.Seed");key(0xc7);key(0xd3);menu.text("42");click("GameSetup::Instant.Launch");
+  check(menu.take_action()=="@instant-launch");selected=menu.instant_selection();check(selected.seed==42&&selected.opponents==1&&selected.map.name=="AB");
+  click("GameSetup::Instant.Back");check(menu.take_action()=="@instant-back");
+  menu.hide_shell_controls();check(!menu.control_active("GameSetup::Instant")&&!menu.control_active("Shell::Main"));menu.show_main();check(menu.control_active("Shell::Main"));
+  for(unsigned i=0;i<3;++i){menu.prepare_instant_setup(maps,{"","Hard"},0,0,0,1);menu.show_instant_setup();menu.draw([](const auto &){},[](const auto &,const auto &){},3000+i*16,16);check(menu.instant_selection().seed==1);menu.show_main();}
+ }
  std::cout<<"Persistent original menu/profile ownership, frame exception recovery and reopen: PASS ("<<checks<<" checks)\n";
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

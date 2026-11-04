@@ -8,6 +8,7 @@ from pathlib import Path
 p=argparse.ArgumentParser(description=__doc__)
 for name in ('upstream','sdk','ffmpeg','base-apk','output'):p.add_argument('--'+name,type=Path,required=True)
 p.add_argument('--new-recovery-key',action='store_true');p.add_argument('--output-name',default='Reigncarnated-Recovery.apk')
+p.add_argument('--application-id');p.add_argument('--app-label')
 p.add_argument('--ndk',type=Path);p.add_argument('--signing-key',type=Path);p.add_argument('--jobs',type=int,default=4)
 a=p.parse_args();repo=Path(__file__).resolve().parents[1];out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
 ndk=(a.ndk or a.sdk/'ndk/27.2.12479018').resolve();staged=out/'staged';original=out/'original';foundation=out/'foundation';menu=out/'menu';package=out/'package'
@@ -24,4 +25,5 @@ run('cmake','--build',menu,'--target','reign_menu','--parallel',a.jobs)
 run(sys.executable,repo/'tools/link_mission_android.py','--staged',staged,'--foundation',foundation,'--ffmpeg',a.ffmpeg.resolve(),'--ndk',ndk,'--objects',original,'--output',package)
 run(ndk/'toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip','--strip-unneeded','-o',package/'libreign_menu.so',menu/'libreign_menu.so')
 signing=['--signing-key',a.signing_key.resolve()] if a.signing_key else ['--new-recovery-key'] if a.new_recovery_key else []
-run(sys.executable,repo/'tools/package_mission_candidate.py','--base-apk',a.base_apk.resolve(),'--native-library',package/'libreign_mission.so','--menu-library',package/'libreign_menu.so','--sdk',a.sdk.resolve(),'--output',package,'--output-name',a.output_name,*signing)
+identity=(['--application-id',a.application_id] if a.application_id else [])+(['--app-label',a.app_label] if a.app_label else [])
+run(sys.executable,repo/'tools/package_mission_candidate.py','--base-apk',a.base_apk.resolve(),'--native-library',package/'libreign_mission.so','--menu-library',package/'libreign_menu.so','--sdk',a.sdk.resolve(),'--output',package,'--output-name',a.output_name,*signing,*identity)

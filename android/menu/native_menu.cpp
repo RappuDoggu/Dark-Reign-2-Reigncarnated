@@ -1,6 +1,7 @@
 #include "reign/menu_frontend.hpp"
 #include "reign/menu_audio.hpp"
 #include "reign/shell_scene.hpp"
+#include "reign/shell_menu_navigation.hpp"
 #ifdef REIGN_BINK
 #include "reign/bink_movie.hpp"
 #endif
@@ -40,18 +41,22 @@ struct State {
 #endif
  reign::LegacyGles::Statistics previousStats;std::chrono::steady_clock::time_point sampleTime=std::chrono::steady_clock::now();
  std::string dataPath,ambientPath;std::filesystem::path progressFile;
- enum Phase {Main,Exit,Choose,Return};Phase phase=Main;
+ std::unique_ptr<reign::ShellMenuNavigation> navigation;
+ unsigned savedMap=0,savedOpponents=0,savedDifficulty=0,savedSeed=1;
  jlong startMs=-1,lastMs=0,frameMs=0,resumeClock=-1;
  float seconds()const{return float(std::max<jlong>(0,frameMs-startMs))/1000.f;}
  void beginInstant(){
 #ifdef REIGN_BINK
   if(movie)throw std::runtime_error("Wait for the introduction to finish");
 #endif
-  if(phase!=Main)throw std::runtime_error("Menu transition already in progress");
-  if(startMs<0||!scene->camera_finished(seconds()))throw std::runtime_error("Wait for the main menu entrance to finish");
-  scene->select_camera("Main::Exit",seconds());phase=Exit;reign::nativeDiagnostics.record("Instant Action: original Main::Exit started");
+  if(startMs<0)throw std::runtime_error("Wait for the main menu entrance to finish");
+  auto maps=reign::menu_missions(dataPath,false);menu->prepare_instant_setup(maps,difficulties(),savedMap,savedOpponents,savedDifficulty,savedSeed);
+  auto path=navigation->begin_instant(seconds(),scene->camera_finished(seconds()));
+  try{scene->select_camera(path,seconds());menu->hide_shell_controls();}catch(...){navigation->reset();menu->show_main();throw;}
+  reign::nativeDiagnostics.record("Instant Action: "+path+" started; waiting for original control activation event");
  }
- void returnMain(){if(phase==Main||phase==Return)return;scene->select_camera("Main::Enter",seconds());phase=Return;reign::nativeDiagnostics.record("Instant Action: original Main::Enter return started");}
+ void returnMain(){auto path=navigation->return_main(seconds());if(path.empty())return;scene->select_camera(path,seconds());menu->hide_shell_controls();reign::nativeDiagnostics.record("Instant Action: "+path+" return started");}
+ std::vector<std::string> difficulties(){auto cfg=reign::parse_config([this](const std::string &name){return archive.read(name);},"difficulty.cfg");std::vector<std::string> names{""};for(const auto &n:cfg)if(n.name=="CreateSetting"&&!n.arguments.empty())names.push_back(std::get<std::string>(n.arguments[0]));return names;}
  reign::Archive archive;
  std::unique_ptr<reign::Archive> shell;
  std::unique_ptr<reign::MenuFrontend> menu;
@@ -64,6 +69,7 @@ struct State {
   char profileId[9];std::snprintf(profileId,sizeof(profileId),"%08X",unsigned(Crc::CalcStr("Commander")));progressFile=std::filesystem::path(profiles).parent_path()/"mission-runtime/users"/profileId/"data.cfg";
   if(!shellPath.empty())shell=std::make_unique<reign::Archive>(shellPath);
   auto loader=[this](const std::string &name){auto at=name.find_last_of("/\\");auto key=at==std::string::npos?name:name.substr(at+1);if(shell&&shell->find(key))return shell->read(key);if(!archive.find(key))throw FileSys::FileNotFound(key);return archive.read(key);};
+  navigation=std::make_unique<reign::ShellMenuNavigation>(reign::parse_config(loader,"objectives_cineractives.cfg"));
   audio=std::make_unique<reign::MenuAudio>(loader,std::filesystem::path(profiles).parent_path()/"menu-audio");
   menu=std::make_unique<reign::MenuFrontend>(loader,profiles,640,480,[this](const std::string &name){return audio->load(name);});menu->set_build_version(version);menu->open_shell_preview();reset(false);
 #ifdef REIGN_BINK
@@ -71,7 +77,7 @@ struct State {
 #endif
  }
  void reset(bool lost){
- phase=Main;previousStats={};sampleTime=std::chrono::steady_clock::now();
+ navigation->reset();if(menu)menu->show_main();previousStats={};sampleTime=std::chrono::steady_clock::now();
 #ifdef REIGN_BINK
  if(movieTexture&&renderer&&!lost)renderer->delete_texture(movieTexture);movieTexture=0;movieFrame=-1;
 #endif
@@ -119,14 +125,23 @@ JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_drawNative(JN
 #ifdef REIGN_BINK
  if(s.drawMovie(ms,width,height))return nullptr;
 #endif
- if(s.startMs<0){s.startMs=ms;s.lastMs=ms;}auto step=static_cast<unsigned>(std::min<jlong>(100,std::max<jlong>(0,ms-s.lastMs)));s.lastMs=ms;s.presenter->begin(640,480);{reign::FrameSpan span("Scene");s.scene->draw(float(ms-s.startMs)/1000.f);}for(auto &sound:s.scene->take_sounds())s.audio->load(sound)(1.f);if(s.phase==State::Return&&s.scene->camera_finished(s.seconds()))s.phase=State::Main;bool ready=s.phase==State::Exit&&s.scene->camera_finished(s.seconds());if(ready){s.phase=State::Choose;reign::nativeDiagnostics.record("Instant Action: exit complete, selection ready");}if(s.phase==State::Main&&s.scene->camera_finished(s.seconds()))s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms-s.startMs),step);s.scene->finish_frame(float(ms-s.startMs)/1000.f);{reign::FrameSpan span("Present");s.presenter->present(width,height);}return ready?env->NewStringUTF("@instant-ready"):nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
+ if(s.startMs<0){s.startMs=ms;s.lastMs=ms;}auto step=static_cast<unsigned>(std::min<jlong>(100,std::max<jlong>(0,ms-s.lastMs)));s.lastMs=ms;s.presenter->begin(640,480);{reign::FrameSpan span("Scene");s.scene->draw(float(ms-s.startMs)/1000.f);}for(auto &sound:s.scene->take_sounds())s.audio->load(sound)(1.f);auto event=s.navigation->advance(s.seconds());
+ if(event==reign::ShellMenuNavigation::Event::ShowInstant){s.menu->show_instant_setup();reign::nativeDiagnostics.record("GameSetup::Instant activated by original CineractiveCompleted schedule");}
+ if(event==reign::ShellMenuNavigation::Event::ShowMain){s.menu->show_main();reign::nativeDiagnostics.record("Shell::Main activated after Instant Action return");}
+ if(s.navigation->main_ready(s.scene->camera_finished(s.seconds()))||(s.navigation->page()==reign::ShellMenuNavigation::Page::Instant||s.navigation->page()==reign::ShellMenuNavigation::Page::Launching))s.menu->draw([&](const auto &b){s.presenter->submit(b);},[&](const auto &f,const auto &b){s.presenter->submit(f,b);},static_cast<unsigned>(ms-s.startMs),step);s.scene->finish_frame(float(ms-s.startMs)/1000.f);{reign::FrameSpan span("Present");s.presenter->present(width,height);}return event==reign::ShellMenuNavigation::Event::ShowInstant?env->NewStringUTF("@instant-open"):event==reign::ShellMenuNavigation::Event::ShowMain?env->NewStringUTF("@main-open"):nullptr;}catch(const std::exception &e){failure(e);if(h && state(h).presenter){try{state(h).presenter->cancel();}catch(...){}}return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_inputNative(JNIEnv *env,jobject,jlong h,jint kind,jint x,jint y,jstring text){try{auto &s=state(h);
 #ifdef REIGN_BINK
  if(s.movie){if(kind==1&&x>=0&&x<640&&y>=0&&y<480)s.skipArmedMovie=s.movieIndex;
  if(kind==4||(kind==2&&s.skipArmedMovie==s.movieIndex&&x>=0&&x<640&&y>=0&&y<480)){reign::nativeDiagnostics.record("Intro explicitly skipped clip "+std::to_string(s.movieIndex));s.nextMovie();}if(kind==2)s.skipArmedMovie=0;return nullptr;}
 #endif
- if(s.phase!=State::Main||s.startMs<0||!s.scene->camera_finished(s.seconds()))return nullptr;
- if(kind==0)s.menu->pointer_move(x,y);else if(kind==1||kind==2)s.menu->pointer_button(kind==1,x,y);else if(kind==3)s.menu->text(utf(env,text));else if(kind==4){s.menu->key(unsigned(x),true);s.menu->key(unsigned(x),false);}else if(kind==5)s.menu->set_effect_volume(x/100.0f);else throw std::invalid_argument("Unknown input action");auto action=s.menu->take_action();if(action=="@instant"){s.beginInstant();action="@instant-started";}return action.empty()?nullptr:env->NewStringUTF(action.c_str());}catch(const std::exception &e){failure(e);return env->NewStringUTF(error.c_str());}}
+ if(s.startMs<0||(!s.navigation->main_ready(s.scene->camera_finished(s.seconds()))&&s.navigation->page()!=reign::ShellMenuNavigation::Page::Instant))return nullptr;
+ if(kind==0)s.menu->pointer_move(x,y);else if(kind==1||kind==2)s.menu->pointer_button(kind==1,x,y);else if(kind==3)s.menu->text(utf(env,text));else if(kind==4){s.menu->key(unsigned(x),true);s.menu->key(unsigned(x),false);}else if(kind==5)s.menu->set_effect_volume(x/100.0f);else throw std::invalid_argument("Unknown input action");auto action=s.menu->take_action();if(action=="@instant"){s.beginInstant();action="@instant-started";}
+ else if(action=="@instant-back"){s.returnMain();action="@instant-returning";}
+ else if(action=="@instant-launch"){
+  auto selection=s.menu->instant_selection();s.navigation->launch();s.savedMap=selection.map_index;s.savedOpponents=selection.opponents;s.savedDifficulty=selection.difficulty_index;s.savedSeed=selection.seed;
+  std::ostringstream out;out<<"@instant-launch\t"<<selection.map.group<<'\t'<<selection.map.name<<'\t'<<selection.opponents<<'\t'<<selection.seed<<'\t'<<selection.difficulty<<'\t'<<selection.map_index<<'\t'<<selection.difficulty_index;action=out.str();
+ }else if(action.empty()&&kind==2&&s.menu->text_input_active())action="@keyboard";
+ return action.empty()?nullptr:env->NewStringUTF(action.c_str());}catch(const std::exception &e){failure(e);return env->NewStringUTF(error.c_str());}}
 JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_ambientNative(JNIEnv *env,jobject,jlong h){return h&&!state(h).ambientPath.empty()?env->NewStringUTF(state(h).ambientPath.c_str()):nullptr;}
 JNIEXPORT jintArray JNICALL Java_org_reigncarnated_menu_MenuActivity_movieInfoNative(JNIEnv *env,jobject,jlong h){jint values[2]={0,0};
 #ifdef REIGN_BINK
@@ -162,7 +177,7 @@ extern "C" JNIEXPORT jintArray JNICALL Java_org_reigncarnated_menu_MenuActivity_
  for(unsigned i=0;i<argb.size();++i)argb[i]=jint((std::uint32_t(rgba[((479-i/640)*640+i%640)*4+3])<<24)|(std::uint32_t(rgba[((479-i/640)*640+i%640)*4])<<16)|(std::uint32_t(rgba[((479-i/640)*640+i%640)*4+1])<<8)|rgba[((479-i/640)*640+i%640)*4+2]);
  auto result=env->NewIntArray(argb.size());if(result)env->SetIntArrayRegion(result,0,argb.size(),argb.data());return result;
  }catch(const std::exception &e){reign::nativeDiagnostics.record(e.what());return nullptr;}}
-extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_diagnosticsNative(JNIEnv *env,jobject,jlong handle){try{auto &s=state(handle);return env->NewStringUTF(("Shell camera="+s.scene->camera_name(s.seconds())+" phase="+std::to_string(s.phase)+"\n"+s.renderer->diagnostics()).c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
+extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_diagnosticsNative(JNIEnv *env,jobject,jlong handle){try{auto &s=state(handle);return env->NewStringUTF(("Shell camera="+s.scene->camera_name(s.seconds())+" phase="+std::to_string(int(s.navigation->page()))+"\n"+s.renderer->diagnostics()).c_str());}catch(const std::exception &e){return env->NewStringUTF(e.what());}}
 
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_performanceNative(JNIEnv *env,jobject,jlong handle){try{
  auto &s=state(handle);auto stats=s.renderer->statistics();auto now=std::chrono::steady_clock::now();double seconds=std::max(0.001,std::chrono::duration<double>(now-s.sampleTime).count());double frames=std::max<std::uint64_t>(1,stats.presents-s.previousStats.presents);
@@ -174,3 +189,7 @@ extern "C" JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MenuActivi
 
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_beginInstantNative(JNIEnv *env,jobject,jlong handle){try{state(handle).beginInstant();return nullptr;}catch(const std::exception &e){failure(e);return env->NewStringUTF(e.what());}}
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_returnMainNative(JNIEnv *env,jobject,jlong handle){try{state(handle).returnMain();return nullptr;}catch(const std::exception &e){failure(e);return env->NewStringUTF(e.what());}}
+
+extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MenuActivity_setInstantOptionsNative(JNIEnv *env,jobject,jlong handle,jint map,jint opponents,jint difficulty,jint seed){try{
+ if(map<0||opponents<0||opponents>1||difficulty<0||seed<=0)throw std::invalid_argument("Invalid saved Instant Action options");auto &s=state(handle);s.savedMap=map;s.savedOpponents=opponents;s.savedDifficulty=difficulty;s.savedSeed=seed;return nullptr;
+}catch(const std::exception &e){failure(e);return env->NewStringUTF(e.what());}}

@@ -652,3 +652,53 @@ their Campaign/Missions/Add references, each corresponding mission pack and
 required worlds/sides/mods before claiming campaign availability. Campaign story
 flow, cutscenes, completion navigation and full menu integration are unfinished.
 No engine, renderer, simulation, ABI or APK changes were made during this review.
+
+## v22 Instant Action city and in-engine recovery setup
+
+The owner authorized an Instant Action fix APK after review of PR #2. Its three
+data-packaging/receipt files are incorporated from 170fb80 without committing
+owned game bytes. The native source now selects the camera and UI activation
+schedule from Cineractive::Multi::Enter and Cineractive::Multi::Exit. Controls
+appear at the imported CineractiveCompleted event (2 seconds in the reference),
+while the longer city path continues. Quit/Logout's Main::Exit is no longer used
+for Instant Action. Back/Android Back return to Main on the source event schedule.
+Invalid/unsupported objective schedules and actions fail explicitly.
+
+The original control renderer now draws GameSetup::Instant as a persistent native
+recovery panel. It uses original listbox/buttons/edit/font/theme/input services
+and a scrollable map list identified by group. Its practice/one-AI, difficulty
+and positive 32-bit seed selections reach the existing native mission launch;
+there is no asynchronous Android Instant Action dialog to lose during lifecycle
+changes. Pending ICEdit text is committed before validation, invalid seeds keep
+the panel open, the numeric keyboard is available, duplicate launches are gated,
+and Back/reset clear stale activation state. The complete original network/lobby
+widgets, previews and advanced team/host options are still not restored; this
+candidate exposes only settings applied by the native mission session.
+
+Java import/export/music/diagnostic/touch checks pass 133 checks, and all Android
+Java compiles with SDK 35. Menu runtime tests pass 49 checks, including actual
+pointer map selection,
+opponent/difficulty changes, seed editing/rejection, Launch, Back and repeated
+panel preparation. Shell navigation tests pass 26 fixture checks and 4 additional
+checks against the decoded reference objectives. All 68 ASan/UBSan host tests
+pass with documented leak-detection disabling under the ptrace sandbox. Software
+GLES renders the city/setup controls, verifies activation before the 5-second
+entry camera ends, exercises Launch/Back and reproduces identical pixels after
+GPU context recreation. This is a visual-only reference probe; production audio
+is unchanged and audible playback has not been revalidated on the phone.
+
+SDK 35, NDK 27.2.12479018, full Java 21, CMake 3.31.6, Ninja 1.11.1.1 and pinned
+FFmpeg n6.1.1 are restored. The 1,791-file upstream check passes; all 603 selected
+original engine translation units compile, and both ARM64 native libraries link
+without unresolved symbols. The old 10 Hz simulation, original ABI configuration,
+controls, rendering operations and fenced stream remain unchanged. No on-device
+FPS/performance result is claimed for v22.
+
+The prior cloud machine's private signing key is absent. The candidate therefore
+uses a new side-by-side test identity, org.reigncarnated.instantcity, to preserve
+the existing recovery installation/data. It needs the verified data ZIP imported
+once in the new app. A private signer backup is kept outside Git/APK for future
+compatible test updates. This is not an in-place update signed with the old key.
+Every delivered APK retains source revision, native hashes, build instructions
+and this progress record. Campaign UI/story flow and remaining attack-sound
+investigation are unchanged by this Instant Action candidate.

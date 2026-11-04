@@ -276,3 +276,76 @@ there is no original-engine unit, ABI, timing, renderer or gesture change. The
 full builder above also includes the header-only resource-link helper. Host tests
 verify fixture ZIP round trips and runtime filesystem behavior. Creating/saving
 a ZIP through Android's document picker still requires phone validation.
+
+## Native Instant Action city/setup screen (version 22)
+
+Both Instant Action entry points now use the source Cineractive::Multi::Enter
+objective. The imported bookmark name and CineractiveCompleted time are read
+from objectives_cineractives.cfg. At that event the in-engine recovery setup
+panel is activated while the city camera can continue moving. Back and Android
+Back use Cineractive::Multi::Exit, with its own imported control-activation time.
+Main::Exit remains reserved for Quit/Logout. Unsupported navigation instructions
+fail explicitly; the code does not invent paths or wait for the whole camera
+curve as a substitute for its control-activation event.
+
+The panel uses original ICWindow/ICListBox/ICButton/ICEdit rendering, fonts,
+theme and input routing. It exposes imported map groups/maps, practice or one
+original AI, imported difficulty settings and a positive 32-bit seed. Launch
+commits pending edit text before validation and sends all selected values to the
+existing native mission session. Map and option preferences persist on launch.
+The seed opens the numeric phone keyboard. Back closes it and returns to Main;
+shortcuts are hidden during setup/transition, and input is gated until activation.
+This replaces the fragile Android Instant Action dialog. It is a recovery panel,
+not the complete original GameSetupBase multiplayer lobby: map preview, multiple
+AI slots, alliances, per-team side/color, and advanced host options remain future
+work. No controls are displayed that save an ignored setting.
+
+The cloud reset removed the earlier private recovery signer. The delivered v22
+candidate therefore uses a separate identity, org.reigncarnated.instantcity,
+labelled Reigncarnated IA City Test. It installs alongside the previous Recovery
+app and cannot read that app's private data. Import the PR #2 verified data ZIP
+once into the new app; keep the existing installation. The new private key must
+be backed up outside Git and reused for later updates of this test identity.
+If the previous recovery key becomes available, the packager can instead use
+--signing-key with --application-id org.reigncarnated.recovery for a compatible
+update, after verifying that key matches the installed app's signer.
+
+For a complete source build, follow the pinned prerequisite/full-builder steps
+above, adding these identity arguments:
+
+```sh
+python3 tools/build_performance_candidate.py \
+  --upstream "$work/upstream" --sdk "$work/sdk" \
+  --ffmpeg "$work/ffmpeg/android/install" \
+  --base-apk /private/path/to/verified-v07-or-v12.apk \
+  --output "$work/v22" --jobs 4 --new-recovery-key \
+  --application-id org.reigncarnated.instantcity \
+  --app-label 'Reigncarnated IA City Test' \
+  --output-name Reigncarnated-Instant-City-v22.apk
+```
+
+The application ID/provider authority and launcher label are included in the
+build receipt. Neither a private key nor game assets enter the APK or source.
+Restore a retained test signer to the same package output before rebuilding.
+The original ABI defines/flags, native API 26, SDK 35, NDK 27.2.12479018, static
+libc++, FFmpeg n6.1.1, 16 KiB alignment, 10 Hz simulation and fenced unsynchronized
+geometry stream are unchanged. The mission engine was rebuilt from all 603 pinned
+source units, not silently borrowed from the old APK.
+
+Validation commands for the new behavior:
+
+```sh
+ASAN_OPTIONS=detect_leaks=0 "$work/host/menu_runtime_smoke"
+ASAN_OPTIONS=detect_leaks=0 "$work/host/shell_menu_navigation_smoke"
+ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
+  "$work/host/instant_setup_gpu_probe" /private/extracted/installation /private/setup.ppm
+```
+
+The optional GPU probe needs real game data. It deliberately validates pixels
+and controls only; audio decoding/playback is not part of this visual probe.
+The upstream micro archive uses compressed audio unsupported by MenuAudio, so
+its visual fixture does not replace validation of the full owned package or
+change production audio behavior. The probe tests activation before camera
+completion, real rendered controls, Launch/Back and identical pixels after GPU
+context recreation. Phone touch feel, actual mission launch, Android pause/
+resume and FPS still require device testing. No new FPS measurement is claimed.

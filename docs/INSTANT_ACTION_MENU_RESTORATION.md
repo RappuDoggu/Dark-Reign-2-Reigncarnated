@@ -4,6 +4,16 @@ The owner reports that v17 removes pillar artifacts and starts the original AI.
 The next requested milestone is full Instant Action selection and its original
 main-menu transitions. The existing Android dialog is an interim chooser.
 
+## Version 22 candidate
+
+Version 22 replaces the Android Instant Action dialog with an in-engine recovery
+setup panel and connects the imported Multi::Enter/Multi::Exit objective events.
+Map, practice/one AI, difficulty and seed selections are applied by the existing
+native mission session. It does not yet recreate every GameSetupBase lobby
+widget, preview or advanced team/host option. The sections below document the
+v19-v21 problem, the confirmed source sequence and the remaining restoration work.
+See RECOVERY_BUILD.md and RECOVERY_PROGRESS.md for validation and test identity.
+
 ## Current implementation and device feedback
 
 Version 19 introduced a transition, but chose Main::Exit on entry and Main::Enter

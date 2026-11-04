@@ -75,6 +75,22 @@ namespace {
 bool runtimeOwned=false;
 thread_local std::function<void(const std::string &)> *hostCommand=nullptr;
 void requestHost(const std::string &action){if(!hostCommand)throw std::runtime_error("Menu host not bound");(*hostCommand)(action);}
+class InstantSetupWindow final:public ICWindow {
+public:explicit InstantSetupWindow(IControl *p):ICWindow(p){}
+ U32 HandleEvent(Event &e)override{
+  if(e.type==IFace::EventID()&&e.subType==IFace::NOTIFY){
+   for(const auto &entry:{std::pair<const char *,const char *>{"NativeSetup::AI","setup-ai"},{"NativeSetup::Difficulty","setup-difficulty"},{"NativeSetup::Back","setup-back"},{"NativeSetup::Launch","setup-launch"}})
+    if(e.iface.p1==Crc::CalcStr(entry.first)){requestHost(entry.second);return TRUE;}
+  }
+  return ICWindow::HandleEvent(e);
+ }
+};
+IControl *instantSetupWindow(U32,IControl *p,U32){return new InstantSetupWindow(p);}
+unsigned selectionNumber(const std::string &s,unsigned maximum,const char *field,bool positive=false){
+ if(s.empty()||s.size()>10)throw std::invalid_argument(std::string("Invalid ")+field);
+ std::uint64_t value=0;for(unsigned char c:s){if(c<'0'||c>'9')throw std::invalid_argument(std::string("Invalid ")+field);value=value*10+c-'0';}
+ if(value>maximum||(positive&&value==0))throw std::invalid_argument(std::string(field)+" is out of range");return unsigned(value);
+}
 void runCodeCommand(U32 id){if(id!=Crc::CalcStr("sys.runcode"))return;const char *name=nullptr;if(Console::ArgCount()!=2||!Console::GetArgString(1,name))throw std::invalid_argument("Expected one run code");requestHost(name);}
 void instantCommand(U32 id){
  const char *target=nullptr;
@@ -127,6 +143,9 @@ struct MenuFrontend::Impl {
  DisabledAudioSettings audio;
  ProfileStorage profiles;
  std::unique_ptr<ICRoot> root;
+ std::vector<MenuMission> instantMaps;
+ std::vector<std::string> instantDifficulties;
+ unsigned instantOpponents=0,instantDifficulty=0;
  bool closed=false,substitutionRegistered=false;
  std::string pending,action;
  std::function<void(const std::string &)> host=[this](const std::string &s){pending=s;};
@@ -148,6 +167,7 @@ struct MenuFrontend::Impl {
   fontBridge.set_frame({{0,0},{int(width),int(height)}},128);frame.set_time({0,0,0});config.register_scopes(scopes);
   try{run([&]{config.initialize_language();root=std::make_unique<ICRoot>();root->SetName("Root");auto &state=iface_event_detail::state();state.root=root.get();state.treeReady=TRUE;
   IFace::RegisterControlClass("Button",button);IFace::RegisterControlClass("Static",label);IFace::RegisterControlClass("Window",window);IFace::RegisterControlClass("MessageBoxWindow",message);
+  IFace::RegisterControlClass("Native::InstantSetup",instantSetupWindow);
   IFace::RegisterControlClass("Listbox",listbox);IFace::RegisterControlClass("Slider",slider);IFace::RegisterControlClass("ListSlider",listSlider);
   IFace::RegisterControlClass("Menu",menu);
   IFace::RegisterControlClass("Edit",edit);IFace::RegisterControlClass("TabGroup",tabgroup);IFace::RegisterControlClass("TipWindow",tip);IFace::RegisterControlClass("ConsoleEdit",consoleEdit);
@@ -223,8 +243,54 @@ struct MenuFrontend::Impl {
   }else if(next=="login"){
    User::Logout();auto *shell=IFace::FindByName("Shell::Main",root.get());if(shell)shell->Deactivate();
    IFace::NativeClearRouting();IFace::FindByName("DlgLogin",root.get())->Activate();action="Select a profile to log in.";
-  }else if(next=="quit"||next=="options"||next=="instant"||next=="campaign")action="@"+next;
+  }else if(next=="setup-ai"){instantOpponents=1-instantOpponents;setup_labels();}
+  else if(next=="setup-difficulty"){instantDifficulty=(instantDifficulty+1)%instantDifficulties.size();setup_labels();}
+  else if(next=="setup-back")action="@instant-back";
+  else if(next=="setup-launch"){selection();action="@instant-launch";}
+  else if(next=="quit"||next=="options"||next=="instant"||next=="campaign")action="@"+next;
   else throw std::runtime_error("Run code not implemented: "+next);
+ }
+ IControl *control(const char *name){auto *c=IFace::FindByName(name,root.get());if(!c)throw std::runtime_error(std::string("Missing setup control: ")+name);return c;}
+ void setup_labels(){
+  control("GameSetup::Instant.Opponents")->SetTextString(Utils::Ansi2Unicode(instantOpponents?"One AI opponent":"Practice: no opponent"),TRUE);
+  const auto &name=instantDifficulties.at(instantDifficulty);auto label=std::string("Difficulty: ")+(name.empty()?"Mission default":name);
+  control("GameSetup::Instant.Difficulty")->SetTextString(Utils::Ansi2Unicode(label.c_str()),TRUE);
+ }
+ InstantSetupSelection selection(){
+  if(instantMaps.empty()||instantDifficulties.empty())throw std::logic_error("Instant Action setup was not prepared");
+  // Original ICEdit buffers text until Enter/focus loss. Commit it before
+  // validation so clicking Launch never uses the previously saved seed.
+  auto *edit=control("GameSetup::Instant.Seed");if(edit->IsActive()){Event enter{};enter.type=IFace::EventID();enter.subType=IFace::NOTIFY;enter.iface.p1=ICEditMsg::Enter;edit->HandleEvent(enter);}
+  auto *map=VarSys::FindVarItem("gamegod.instant.map"),*seed=VarSys::FindVarItem("gamegod.instant.seed");
+  if(!map||!seed)throw std::logic_error("Instant Action variables are missing");
+  unsigned index=selectionNumber(std::string(map->Str()),unsigned(instantMaps.size()-1),"Map selection");
+  return {instantMaps[index],index,instantOpponents,selectionNumber(std::string(seed->Str()),2147483647,"Random seed",true),instantDifficulty,instantDifficulties.at(instantDifficulty)};
+ }
+ void create_setup(){
+  if(IFace::FindByName("GameSetup::Instant",root.get()))return;
+  // Use the original control renderer, input, fonts and theme. Only options
+  // already applied by the native offline session are exposed here.
+  static const std::string cfg=R"(
+CreateControl("GameSetup::Instant","Native::InstantSetup"){
+ Size(640,480);Style("Transparent","NoAutoActivate","!DropShadow");
+ CreateControl("Title","Static"){Pos(42,58);Size(550,32);Font("WindowTitle");Style("Transparent");Text("Instant Action");}
+ CreateControl("MapLabel","Static"){Pos(42,94);Size(310,20);Font("System");Style("Transparent");Text("Map");}
+ CreateControl("Maps","Listbox"){
+  Pos(42,118);Size(318,250);Style("VSlider");UseVar("gamegod.instant.map");
+  ItemConfig(){Font("System");Geometry("AutoSizeY","ParentWidth");Size(0,9);}
+ }
+ CreateControl("OpponentLabel","Static"){Pos(382,94);Size(218,20);Font("System");Style("Transparent");Text("Opponent");}
+ CreateControl("Opponents","Button"){Pos(382,118);Size(218,42);Font("System");TranslateEvent("Button::Notify::Pressed","NativeSetup::AI","<");}
+ CreateControl("Difficulty","Button"){Pos(382,182);Size(218,42);Font("System");TranslateEvent("Button::Notify::Pressed","NativeSetup::Difficulty","<");}
+ CreateControl("SeedLabel","Static"){Pos(382,246);Size(218,20);Font("System");Style("Transparent");Text("Random seed");}
+ CreateControl("Seed","Edit"){Pos(382,272);Size(218,38);Font("System");UseVar("gamegod.instant.seed");}
+ CreateControl("Hint","Static"){Pos(42,380);Size(558,20);Font("System");Style("Transparent");Text("Choose a map and opponent, then launch.");}
+ CreateControl("Back","Button"){Pos(42,414);Size(140,40);Font("System");Text("Back");TranslateEvent("Button::Notify::Pressed","NativeSetup::Back","<");}
+ CreateControl("Launch","Button"){Pos(460,414);Size(140,40);Font("System");Text("Launch");TranslateEvent("Button::Notify::Pressed","NativeSetup::Launch","<");}
+})";
+  FileSys::Session files([this](const std::string &name){if(name=="native-instant-setup.cfg")return std::vector<std::uint8_t>(cfg.begin(),cfg.end());return loader(name);});
+  PTree tree;if(!tree.AddFile("native-instant-setup.cfg"))throw std::runtime_error("Cannot construct native Instant Action controls");
+  IFace::CreateNativeRootControl(tree.GetGlobalScope()->GetFunction("CreateControl"));
  }
  void destroy_tree(){
   if(!root)return;
@@ -258,6 +324,26 @@ std::string MenuFrontend::take_action(){auto result=std::move(impl_->action);imp
 float MenuFrontend::effect_volume()const{return impl_->audio.digital_volume;}
 void MenuFrontend::set_effect_volume(float v){if(!std::isfinite(v)||v<0||v>1)throw std::invalid_argument("Invalid volume");impl_->run([&]{impl_->audio.digital_volume=v;if(User::LoggedIn()&&!User::Save())throw std::runtime_error("Could not save volume");});}
 void MenuFrontend::set_build_version(const std::string &version){if(version.empty()||version.size()>128)throw std::invalid_argument("Invalid APK version label");impl_->run([&]{VarSys::FindVarItem("sys.buildver")->SetStr(version.c_str());});}
+void MenuFrontend::prepare_instant_setup(const std::vector<MenuMission> &maps,const std::vector<std::string> &difficulties,unsigned map,unsigned opponents,unsigned difficulty,unsigned seed){
+ if(impl_->closed)throw std::logic_error("Menu closed");
+ if(maps.empty())throw std::runtime_error("No Instant Action maps were found. Import the complete missions folder.");
+ if(difficulties.empty()||!difficulties.front().empty()||opponents>1||seed==0||seed>2147483647)throw std::invalid_argument("Invalid Instant Action defaults");
+ for(const auto &value:difficulties)if(value.find_first_of("\t\r\n")!=std::string::npos)throw std::invalid_argument("Invalid difficulty name");
+ impl_->run([&]{impl_->instantMaps=maps;impl_->instantDifficulties=difficulties;impl_->instantOpponents=opponents;impl_->instantDifficulty=std::min<unsigned>(difficulty,difficulties.size()-1);
+  if(!VarSys::FindVarItem("gamegod.instant.map"))VarSys::CreateString("gamegod.instant.map","0");
+  if(!VarSys::FindVarItem("gamegod.instant.seed"))VarSys::CreateString("gamegod.instant.seed","1");
+  const auto index=std::min<unsigned>(map,maps.size()-1);
+  VarSys::FindVarItem("gamegod.instant.map")->SetStr(std::to_string(index).c_str());VarSys::FindVarItem("gamegod.instant.seed")->SetStr(std::to_string(seed).c_str());
+  impl_->create_setup();auto *list=dynamic_cast<ICListBox *>(impl_->control("GameSetup::Instant.Maps"));if(!list)throw std::runtime_error("Invalid map list control");
+  list->DeleteAllItems();for(unsigned i=0;i<maps.size();++i){auto label=std::filesystem::path(maps[i].group).filename().string()+" / "+maps[i].name;list->AddTextItem(std::to_string(i).c_str(),Utils::Ansi2Unicode(label.c_str()));}
+  list->SetSelectedItem(index,TRUE,FALSE);impl_->setup_labels();
+ });
+}
+void MenuFrontend::hide_shell_controls(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{for(auto *name:{"Shell::Main","GameSetup::Instant"})if(auto *c=IFace::FindByName(name,impl_->root.get()))c->Deactivate();IFace::NativeClearRouting();});}
+void MenuFrontend::show_instant_setup(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{if(impl_->instantMaps.empty())throw std::logic_error("Instant Action setup is empty");impl_->control("Shell::Main")->Deactivate();impl_->control("GameSetup::Instant")->Activate();IFace::NativeClearRouting();});}
+void MenuFrontend::show_main(){if(impl_->closed)throw std::logic_error("Menu closed");impl_->run([&]{if(auto *c=IFace::FindByName("GameSetup::Instant",impl_->root.get()))c->Deactivate();impl_->control("Shell::Main")->Activate();IFace::NativeClearRouting();});}
+InstantSetupSelection MenuFrontend::instant_selection(){if(impl_->closed)throw std::logic_error("Menu closed");InstantSetupSelection result;impl_->run([&]{result=impl_->selection();});return result;}
+bool MenuFrontend::text_input_active(){if(impl_->closed)return false;bool result=false;impl_->run([&]{result=dynamic_cast<ICEdit *>(IFace::GetFocus())!=nullptr;});return result;}
 void MenuFrontend::open_shell_preview(){
  if(impl_->closed)throw std::logic_error("Menu closed");
  impl_->run([&]{impl_->load_shell();

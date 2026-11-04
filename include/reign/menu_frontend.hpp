@@ -1,5 +1,6 @@
 #pragma once
 #include "reign/config.hpp"
+#include "reign/mission_menu_catalog.hpp"
 #include <filesystem>
 #include <array>
 #include <functional>
@@ -7,6 +8,7 @@
 namespace reign {
 struct FrontendBatch;struct FontBatch;class NativeFont;
 struct MenuFrameReport {unsigned geometry_batches=0,font_batches=0;bool login_active=false,backdrop_active=false;};
+struct InstantSetupSelection {MenuMission map;unsigned map_index=0,opponents=0,seed=1,difficulty_index=0;std::string difficulty;};
 // Owns one persistent original control tree and private player profiles.
 // Serialized, one session at a time. Original shell layout; no game simulation.
 class MenuFrontend {
@@ -36,8 +38,15 @@ public:
  // text-input adapter. Shell transition requires the release shell archive.
  void create_profile(const std::string &);
  void login_selected_profile();
- // Proof-of-concept shell entry: no login, navigation or static backdrop.
+ // Opens the imported shell without a login prompt or static backdrop.
+ // Camera/control navigation is driven by the native host.
  void open_shell_preview();
+ void prepare_instant_setup(const std::vector<MenuMission> &,const std::vector<std::string> &,unsigned map,unsigned opponents,unsigned difficulty,unsigned seed);
+ void show_instant_setup();
+ void hide_shell_controls();
+ void show_main();
+ InstantSetupSelection instant_selection();
+ bool text_input_active();
  void close();
 };
 }
