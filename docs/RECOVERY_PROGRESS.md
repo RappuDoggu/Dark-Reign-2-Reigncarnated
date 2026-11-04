@@ -900,3 +900,14 @@ fenced append-only unsynchronized geometry remain. APK 24 touch/audio fixes are
 retained and Instant Action layout is unchanged. No new phone FPS, successful
 retail J01 load, campaign completion or device combat-audio result is claimed.
 The test identity/signer are reused, with private keys and owned data excluded.
+
+
+APK 25 artifact: `Reigncarnated-Campaign-Path-v25.apk`, source
+`7250200d75073ae0691bda0dbb5d5fc9259647af`, SHA-256
+`41ed2e9c6c310922e6e0e35762e53f07d13c4f990854385c37964fd9b1fafb37`.
+Independent checks pass: same APK 22-24 signer/identity, compiled manifest
+version 25/private mission process, signature, CRC, 16 KiB ZIP/ELF alignment,
+static libc++, exact embedded source/docs/native hashes, matching stripped/
+unstripped mission build ID and exclusion of game data/keys/private traces.
+The unchanged signed artifact is mirrored under builds/v0.19. Source and private
+unstripped symbols are preserved; phone J01/combat acceptance remains outstanding.
