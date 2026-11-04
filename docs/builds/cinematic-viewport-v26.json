@@ -1,0 +1,46 @@
+{
+  "source_revision": "7254c6418b7bdf80575bc8f9d39eb57634a92f38",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated IA City Test",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "a47c4a7c65ec2f08b14970cdeee6162ebce08693a8890ce8fc69e6995d1ae9db",
+    "libreign_menu.so": "4caa8a6a26851539ede4c8722e6deb63293d243a4623179a9ab5cc81ea5a5daf"
+  },
+  "recovery_identity": false,
+  "apk_sha256": "1334c4cd8d09f38aee651c8c9abf85fa7142fa41e57f441fdfa53b86024ca0ab",
+  "apk_bytes": 9340031,
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "elf_build_ids": {
+    "libreign_mission.so": "4aee9cb5a6285c797db25e2531b27579b5ef2fd8",
+    "libreign_menu.so": "08ebe63417c148bdf9b538e1d4702b0b16927d16"
+  },
+  "validation": {
+    "apk_zip_crc": true,
+    "same_signer_as_apk22_through_25": true,
+    "embedded_revision_docs_and_native_hashes": true,
+    "arm64_16k_elf_and_zip_alignment": true,
+    "static_libcxx": true,
+    "host_tests": 68,
+    "engine_foundation_tests": 12,
+    "touch_checks": 48,
+    "sdk35_java_compilation": true,
+    "nonzero_viewport_partial_multi_rect_clear_and_tl_clip_pixels": true,
+    "original_cinematic_timeline_pixels_and_restoration_twice": true,
+    "invalid_varptr_caller_capture_fixture": true,
+    "original_vid_gles_lifecycle_twice": true,
+    "reference_instant_action_lifecycle_twice": true,
+    "synthetic_campaign_lifecycle_twice": true,
+    "owner_reports_instant_action_combat_audio_working": true,
+    "retail_jda_variable_root_cause_fixed": false,
+    "retail_sprawler_black_screen_fixed_on_device": false,
+    "android_auto_mission_report_lifecycle_validated": false,
+    "phone_fps_measured_for_apk26": false
+  }
+}

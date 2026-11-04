@@ -963,3 +963,15 @@ identity retain imported data; keys, game packs, screenshots/traces and private
 symbols stay outside public Git/APK. Sprawler appearance and JDA error resolution
 still need phone testing; neither a retail campaign fix nor a new phone FPS
 result is claimed. DIAGNOSTICS_REVIEW_V25.md records the sanitized evidence.
+
+
+APK 26 artifact: `Reigncarnated-Cinematic-Viewport-v26.apk`, source
+`7254c6418b7bdf80575bc8f9d39eb57634a92f38`, SHA-256
+`1334c4cd8d09f38aee651c8c9abf85fa7142fa41e57f441fdfa53b86024ca0ab`.
+Independent checks pass: same APK 22-25 signer/identity, compiled manifest
+version 26/private mission process, signature/CRC, 16 KiB ZIP/ELF alignment,
+static libc++, exact embedded source/docs/native hashes, matching private symbol
+and stripped mission build IDs, and exclusion of game packs/keys/private traces.
+The unchanged signed artifact is mirrored under builds/v0.20. Retail cinematic
+appearance, JDA caller/root cause and Android automatic report lifecycle remain
+phone acceptance checks; Instant Action combat audio is owner confirmed.
