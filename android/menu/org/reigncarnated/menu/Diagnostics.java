@@ -20,6 +20,14 @@ final class Diagnostics {
   captureExits(c);
   Thread.UncaughtExceptionHandler prior=Thread.getDefaultUncaughtExceptionHandler();Thread.setDefaultUncaughtExceptionHandler((thread,error)->{String text="Uncaught "+thread.getName()+": "+Log.getStackTraceString(error);append(text);if(prior!=null)prior.uncaughtException(thread,error);});event("Session start "+android.os.Build.MODEL+" API "+android.os.Build.VERSION.SDK_INT);
  }
+ static void saveMissionState(Context c,String mission,String report){
+  final String key="Mission="+mission.replace('\n',' ').replace('\r',' ').substring(0,Math.min(mission.length(),256));
+  final String snapshot=key+"\nCollection timestamp="+System.currentTimeMillis()+"\n"+build+"\n"+report;final File target=new File(c.getFilesDir(),"last-mission-report.txt");
+  writer.execute(()->{try{
+   if(target.isFile()){String previous;try(BufferedReader in=new BufferedReader(new InputStreamReader(new FileInputStream(target),"UTF-8"))){previous=in.readLine();}if(!key.equals(previous))java.nio.file.Files.copy(target.toPath(),new File(target.getParentFile(),"previous-mission-report.txt").toPath(),java.nio.file.StandardCopyOption.REPLACE_EXISTING);}
+   byte[] data=snapshot.getBytes("UTF-8");File temporary=new File(target.getParentFile(),"last-mission-report.tmp");try(FileOutputStream out=new FileOutputStream(temporary)){out.write(data,0,Math.min(data.length,128*1024));}if(!temporary.renameTo(target))throw new IOException("Cannot publish private mission report");
+  }catch(IOException e){Log.w("ReignDiag","Cannot persist mission state",e);}});
+ }
  static void event(String text){if(text==null)return;if(text.length()>4096)text=text.substring(0,4096);String line=System.currentTimeMillis()+" "+text; synchronized(Diagnostics.class){while(events.size()>=96)events.removeFirst();events.addLast(line);}Log.i("ReignDiag",line);final String saved=line;writer.execute(()->append(saved));}
  private static synchronized void append(String line){if(session==null)return;try{if(session.length()>512*1024){File old=new File(session.getParentFile(),session.getName()+".previous");if(old.exists()&&!old.delete())return;if(!session.renameTo(old))return;}try(FileOutputStream f=new FileOutputStream(session,true)){f.write((line+"\n").getBytes("UTF-8"));}}catch(IOException e){Log.w("ReignDiag","Cannot save session",e);}}
  private static final java.util.concurrent.atomic.AtomicBoolean exitsBusy=new java.util.concurrent.atomic.AtomicBoolean();
@@ -56,6 +64,8 @@ final class Diagnostics {
   final String sessionReport=report("Collection timestamp="+System.currentTimeMillis());
   new Thread(()->{try{
    Map<String,byte[]> entries=new LinkedHashMap<>();entries.put("session.txt",sessionReport.getBytes("UTF-8"));entries.put("source.json",build.getBytes("UTF-8"));
+   addTail(entries,"last-mission-report.txt",new File(a.getFilesDir(),"last-mission-report.txt"),128*1024);
+   addTail(entries,"previous-mission-report.txt",new File(a.getFilesDir(),"previous-mission-report.txt"),128*1024);
    addTail(entries,"last-mission-loading.log",new File(a.getFilesDir(),"mission-runtime/loading-last.log"),100*1024);
    addTail(entries,"mission-process.log",new File(a.getFilesDir(),"session-mission.log"),256*1024);
    File[] traces=new File(a.getFilesDir(),"crash-traces").listFiles((d,n)->n.matches("exit-[0-9]+-[0-9]+\\.trace"));if(traces!=null){Arrays.sort(traces,(x,y)->Long.compare(y.lastModified(),x.lastModified()));for(int i=0;i<Math.min(3,traces.length);i++)addTail(entries,"crashes/"+traces[i].getName(),traces[i],262144);}

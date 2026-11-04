@@ -23,6 +23,7 @@ class Device final:public UnsupportedDevice {
  std::vector<WORD> alignedIndices,triangles,visible,sequential;
  DWORD width,height;
  bool scene=false;
+ D3DVIEWPORT7 viewport{};
  D3DMATERIAL7 material{};
  reign::DrawState state;
  DWORD colorOp=D3DTOP_MODULATE,alphaOp=D3DTOP_MODULATE;
@@ -34,7 +35,7 @@ class Device final:public UnsupportedDevice {
 
  HRESULT Reject(const char *method,int line,HRESULT hr,DWORD type=0,DWORD value=0){reign::nativeDiagnostics.record(std::string("DX7 ")+method+":"+std::to_string(line)+" rejected "+std::to_string(std::uint32_t(hr))+" type="+std::to_string(type)+" value="+std::to_string(value));return hr;}
 public:
- Device(reign::LegacyGles &r,IDirectDrawSurface7 *t,DWORD w,DWORD h):renderer(r),target(t),width(w),height(h){target->AddRef();}
+ Device(reign::LegacyGles &r,IDirectDrawSurface7 *t,DWORD w,DWORD h):renderer(r),target(t),width(w),height(h){target->AddRef();viewport={0,0,w,h,0,1};}
  ~Device(){textures.clear();target->Release();}
  ULONG AddRef()override{return ++refs;}
  ULONG Release()override{auto remaining=--refs;if(!remaining)delete this;return remaining;}
@@ -57,18 +58,29 @@ public:
   cb(&format,context);return S_OK;
  }
  HRESULT SetViewport(D3DVIEWPORT7 *v)override{
-  if(!v)return Reject(__func__,__LINE__,E_INVALIDARG);
-  return !v->dwX&&!v->dwY&&v->dwWidth==width&&v->dwHeight==height&&v->dvMinZ==0&&v->dvMaxZ==1?S_OK:E_NOTIMPL;
+  if(!v||!v->dwWidth||!v->dwHeight||v->dwX>width||v->dwY>height||v->dwWidth>width-v->dwX||v->dwHeight>height-v->dwY)return Reject(__func__,__LINE__,E_INVALIDARG);
+  if(v->dvMinZ!=0||v->dvMaxZ!=1)return Reject(__func__,__LINE__,E_NOTIMPL);
+  viewport=*v;
+  // TL vertices already contain absolute screen coordinates. Clip to the DX7
+  // viewport without scaling or moving them a second time in the GLES viewport.
+  state.scissor=v->dwX||v->dwY||v->dwWidth!=width||v->dwHeight!=height;
+  state.clip_x=v->dwX;state.clip_y=v->dwY;state.clip_width=v->dwWidth;state.clip_height=v->dwHeight;return S_OK;
  }
- HRESULT GetViewport(D3DVIEWPORT7 *v)override{if(!v)return Reject(__func__,__LINE__,E_INVALIDARG);*v={0,0,width,height,0,1};return S_OK;}
+ HRESULT GetViewport(D3DVIEWPORT7 *v)override{if(!v)return Reject(__func__,__LINE__,E_INVALIDARG);*v=viewport;return S_OK;}
  HRESULT Clear(DWORD count,D3DRECT *rectangles,DWORD flags,D3DCOLOR color,D3DVALUE depth,DWORD)override{
-  if(count){
-   if(!rectangles)return Reject(__func__,__LINE__,E_INVALIDARG);
-   if(count!=1||rectangles[0].x1!=0||rectangles[0].y1!=0||rectangles[0].x2!=LONG(width)||rectangles[0].y2!=LONG(height))return Reject(__func__,__LINE__,E_NOTIMPL);
-  }
-  if(flags&~DWORD(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER))return Reject(__func__,__LINE__,E_NOTIMPL);
+  if(count&&!rectangles)return Reject(__func__,__LINE__,E_INVALIDARG);
+  if(count>256||flags&~DWORD(D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER))return Reject(__func__,__LINE__,E_NOTIMPL);
   if((flags&D3DCLEAR_ZBUFFER)&&(!std::isfinite(depth)||depth<0||depth>1))return Reject(__func__,__LINE__,E_INVALIDARG);
-  try{renderer.clear_buffers(width,height,(flags&D3DCLEAR_TARGET)!=0,(flags&D3DCLEAR_ZBUFFER)!=0,float((color>>16)&255)/255,float((color>>8)&255)/255,float(color&255)/255,float(color>>24)/255,(flags&D3DCLEAR_ZBUFFER)?depth:1);return S_OK;}catch(...){return Reject(__func__,__LINE__,E_FAIL);}
+  for(DWORD i=0;i<count;++i)if(rectangles[i].x1>rectangles[i].x2||rectangles[i].y1>rectangles[i].y2)return Reject(__func__,__LINE__,E_INVALIDARG);
+  try{
+   const LONG x=LONG(viewport.dwX),y=LONG(viewport.dwY),right=x+LONG(viewport.dwWidth),bottom=y+LONG(viewport.dwHeight);
+   for(DWORD i=0;i<(count?count:1);++i){
+    const LONG left=count?std::max(x,rectangles[i].x1):x,top=count?std::max(y,rectangles[i].y1):y;
+    const LONG r=count?std::min(right,rectangles[i].x2):right,b=count?std::min(bottom,rectangles[i].y2):bottom;
+    if(r>left&&b>top)renderer.clear_region(width,height,unsigned(left),unsigned(top),unsigned(r-left),unsigned(b-top),(flags&D3DCLEAR_TARGET)!=0,(flags&D3DCLEAR_ZBUFFER)!=0,float((color>>16)&255)/255,float((color>>8)&255)/255,float(color&255)/255,float(color>>24)/255,(flags&D3DCLEAR_ZBUFFER)?depth:1);
+   }
+   return S_OK;
+  }catch(...){return Reject(__func__,__LINE__,E_FAIL);}
  }
  HRESULT SetTexture(DWORD stage,IDirectDrawSurface7 *surface)override{
   if(stage)return Reject(__func__,__LINE__,E_NOTIMPL);

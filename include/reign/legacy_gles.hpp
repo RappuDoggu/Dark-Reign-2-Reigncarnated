@@ -36,6 +36,8 @@ struct DrawState {
  bool depth_test=false,depth_write=false,fog=false,alpha_test=false,specular=false;
  float alpha_reference=0;
  float fog_rgb[3]={0,0,0};
+ bool scissor=false;
+ unsigned clip_x=0,clip_y=0,clip_width=0,clip_height=0;
  unsigned texture=0;
 };
 class LegacyGles {
@@ -61,6 +63,7 @@ public:
  void abandon_context() noexcept;
  void clear(unsigned width,unsigned height,float r,float g,float b,float a=1);
  void clear_buffers(unsigned width,unsigned height,bool color,bool depth,float r,float g,float b,float a,float depth_value);
+ void clear_region(unsigned width,unsigned height,unsigned x,unsigned y,unsigned region_width,unsigned region_height,bool color,bool depth,float r,float g,float b,float a,float depth_value);
  // Indexed TL triangle and explicit line lists; homogeneous triangles retain GPU clipping.
  // Other FVF layouts/stages are deliberately not silently accepted.
  void draw(unsigned width,unsigned height,const LegacyTL *,std::size_t vertices,

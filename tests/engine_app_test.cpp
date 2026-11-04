@@ -101,6 +101,8 @@ struct Context {
 struct Presentation {reign::LegacyGles *renderer;unsigned calls=0;};
 bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.renderer->present();++p.calls;return true;}
 #include "mission_app.h"
+#include "viewer.h"
+#include "variable_failure.h"
 #include "load_status.h"
 #include "input_native.h"
 #include "multiplayer_data.h"
@@ -139,6 +141,27 @@ int main(int argc,char **argv){try{
    for(unsigned frame=0;frame<96;++frame){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));}
    auto end=moving->Position();float dx=end.x-start.x,dz=end.z-start.z;std::cerr<<"Move-order displacement "<<dx<<","<<dz<<"\n";check(dx*dx+dz*dz>1.0f);
 
+  }
+  if(std::getenv("REIGN_CINEMATIC_FIXTURE")){
+   // Authored fixture: exercise the original timeline, fade, letterbox, input,
+   // shroud and interface restoration without redistributing campaign data.
+   PTree timeline;auto *cin=timeline.GetGlobalScope()->AddFunction("Cineractive");
+   auto *start=cin->AddFunction("At");start->AddArgFPoint(0);
+   for(const char *name:{"DisableIFace","DisableInput","DisableShroud"})start->AddFunction(name)->AddArgInteger(1);
+   auto *letter=start->AddFunction("Letterbox");letter->AddFunction("Direction")->AddArgString("Down");auto *time=letter->AddFunction("Time");time->AddArgFPoint(0.1f);time->AddArgFPoint(1.5f);time->AddArgFPoint(1.7f);
+   auto *fade=start->AddFunction("Fade");fade->AddFunction("Direction")->AddArgString("Down");time=fade->AddFunction("Time");time->AddArgFPoint(0.2f);time->AddArgFPoint(1.7f);time->AddArgFPoint(1.9f);
+   auto *end=cin->AddFunction("At");end->AddArgFPoint(2.0f);end->AddFunction("EndCineractive");
+   Viewer::Action::Execute(Team::GetDisplayTeam(),cin);
+   for(unsigned frame=0;frame<150;++frame){app.Frame();
+    if(frame==45){std::vector<std::uint8_t> image(W*H*4);renderer.read_rgba(W,H,image.data());unsigned visible=0;for(unsigned y=80;y<400;++y)for(unsigned x=0;x<W;++x){auto p=(y*W+x)*4;if(image[p]||image[p+1]||image[p+2])++visible;}check(visible>100);check(!image[0]&&!image[1]&&!image[2]);}
+    std::this_thread::sleep_for(std::chrono::milliseconds(16));}
+   check(renderer.diagnostics().find("DX7 Clear:")==std::string::npos&&renderer.diagnostics().find("DX7 SetViewport:")==std::string::npos);
+   check(!Viewer::Action::IsPlaying());
+   VarInteger unbound;bool rejectedVar=false;try{(void)*unbound;}catch(const std::runtime_error &){rejectedVar=true;}
+   check(rejectedVar&&NativeEngine::LastVariableFailure().find("VarInteger::operator*")!=std::string::npos&&NativeEngine::LastVariableFailure().find("+0x")!=std::string::npos);
+   NativeEngine::LastVariableFailure().clear();
+   check(Vid::Var::Terrain::shroud.Alive()&&*Vid::Var::Terrain::shroud==1);
+   std::cerr<<"Original cineractive timeline, fade/letterbox, shroud/input/HUD restoration passed\n";
   }
   auto before=app.SimulationCycles();NativeEngine::QueueKey(0xc8,TRUE);app.Frame();before=app.SimulationCycles();app.SetActive(false);check(!Input::IsKeyDown(0xc8));
   for(unsigned frame=0;frame<4;++frame)app.Frame();check(app.SimulationCycles()==before);

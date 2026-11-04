@@ -911,3 +911,55 @@ static libc++, exact embedded source/docs/native hashes, matching stripped/
 unstripped mission build ID and exclusion of game data/keys/private traces.
 The unchanged signed artifact is mirrored under builds/v0.19. Source and private
 unstripped symbols are preserved; phone J01/combat acceptance remains outstanding.
+
+
+## APK 26: cinematic rendering gap and current mission diagnostics
+
+The owner confirms Instant Action combat sounds work on the phone. The combat
+sound lifetime fix is therefore device verified at that scope, with remaining
+individual audio assets unclaimed. The owner reports Sprawler intro black with
+in-game cinematic sound, and JDA Chapter 1 followed by an error.
+
+The new menu ZIP matches APK 25 source/native receipts; its nested mission ZIP
+is an older APK 24 collection. The current journal reaches real simulation at
+263 ms, then reports an invalid VarPtr at 3,271 ms after the latest JDA launch.
+The empty-path stop is no longer recorded. There is no current throw-site stack
+or Sprawler native/screenshot collection in the supplied ZIP. Historical crash
+traces are retained separately and not attributed to the current error.
+
+The original cinematic Letterbox issues sub-viewports and partial clears, which
+the adapter previously rejected. Authored original-engine timeline and API
+fixtures reproduce that gap. The adapter now stores viewport state, clips TL
+screen coordinates with GLES scissoring and implements clipped color/depth
+clears and multiple rectangles. Pixels outside the active clear region survive.
+Invalid rectangles and unsupported operations remain explicit failures. Full
+screen rendering keeps its existing transform/clear path; no per-draw GPU query,
+readback, neutral lighting override or stream synchronization is introduced.
+
+The exact JDA variable root cause remains unknown. Invalid VarPtr accesses now
+capture bounded operation/module-relative callers before unwinding, without
+changing object layouts or suppressing exceptions. The journal records original
+cinematic command names/cycles. On frame failure and pause/exit, current native
+mission reports save source/mission/timestamp and camera/cinematic/movie flags,
+render/audio state and caller evidence. Menu export includes the last and
+previous distinct mission report (128 KiB each), avoiding reliance on stale
+manual mission ZIPs when testing both campaigns. Raw reports remain private.
+
+Validation: all 68 host tests and 12 engine foundation tests pass under ASan/
+UBSan with the established sandbox leak-detection setting. Real GLES pixels
+verify nonzero viewport offsets, partial/multiple clears, preserved surrounding
+pixels, TL clipping and full viewport restoration. Original Vid/GLES lifecycle
+passes twice. The authored original cineractive checks nonblack scene and
+letterbox/fade pixels, shroud/input/HUD restoration, timeline completion and
+invalid-variable stack capture. Synthetic campaign and reference Instant Action
+load/simulation/pause/resume/shutdown pass twice each. SDK 35 Java and 48 touch
+checks pass. The 1,791-file pinned source check passes; changed original units,
+foundation/renderer/adapters and both ARM64 native libraries rebuild and relink.
+
+SDK 35, NDK 27.2.12479018, FFmpeg n6.1.1, original ABI flags/10 Hz simulation and
+fenced append-only unsynchronized streaming remain. Touch controls, supported
+High graphics and Instant Action layout are retained. The existing test signer/
+identity retain imported data; keys, game packs, screenshots/traces and private
+symbols stay outside public Git/APK. Sprawler appearance and JDA error resolution
+still need phone testing; neither a retail campaign fix nor a new phone FPS
+result is claimed. DIAGNOSTICS_REVIEW_V25.md records the sanitized evidence.

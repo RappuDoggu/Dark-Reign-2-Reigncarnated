@@ -63,6 +63,7 @@ namespace Sight {class Map;}
 #include "reign/legacy_gles.hpp"
 #include "load_status.h"
 #include "audio_status.h"
+#include "variable_failure.h"
 
 #include <functional>
 namespace Vid {namespace Command {void InitMesh();void DoneMesh();}}
@@ -93,7 +94,7 @@ struct MissionApp::Impl {
   auto pack=std::filesystem::exists(root/"packs/base.zwp")?root/"packs/base.zwp":root/"base.zwp";
   Require(std::filesystem::exists(pack),"Missing owned base.zwp");
   std::filesystem::create_directories(work);auto previous=std::filesystem::current_path();
-  engineActive=true;owns=true;missionLoadStatus.Reset();missionLoadStatus.ConfigureJournal(work/"loading-last.log");missionLoadStatus.Update("Mounting installation and startup configuration");Defer([previous]{std::filesystem::current_path(previous);});
+  engineActive=true;owns=true;LastVariableFailure().clear();missionLoadStatus.Reset();missionLoadStatus.ConfigureJournal(work/"loading-last.log");missionLoadStatus.Update("Mounting installation and startup configuration");Defer([previous]{std::filesystem::current_path(previous);});
   PrepareResourceLinks(root,work,pack);
   std::filesystem::current_path(work);
   if(!clockReady){Clock::Time::Init();clockReady=true;}
@@ -148,9 +149,9 @@ MissionApp::MissionApp(const std::string &installation,const std::string &writab
  try{impl->Start(installation,writable,mission,renderer,present,context,options);}catch(...){if(impl->owns)enginePoisoned=true;throw;}
 }
 MissionApp::~MissionApp()=default;
-std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *session=CurrentOfflineSession())out<<"mission="<<session->mission<<" campaign="<<session->campaign<<" opponents="<<session->opponents<<" seed="<<session->seed<<" difficulty="<<(session->difficulty.empty()?"mission default":session->difficulty)<<"\n";out<<"placing="<<Placing()<<" camera="<<(Viewer::GetCurrent()?Viewer::GetCurrent()->GetName():"none")<<"\n";out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(InSimulation())for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay())out<<"\nplayable team="<<team->GetName()<<" ai="<<team->IsAI()<<" strategic="<<(team->GetStrategicObject()?"set":"none")<<" personality="<<team->GetPersonality();if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}
+std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *session=CurrentOfflineSession())out<<"mission="<<session->mission<<" campaign="<<session->campaign<<" opponents="<<session->opponents<<" seed="<<session->seed<<" difficulty="<<(session->difficulty.empty()?"mission default":session->difficulty)<<"\n";out<<"placing="<<Placing()<<" camera="<<(Viewer::GetCurrent()?Viewer::GetCurrent()->GetName():"none")<<" cinematic="<<Viewer::Action::IsPlaying()<<" movie="<<Viewer::movie<<"\n";out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(InSimulation())for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay())out<<"\nplayable team="<<team->GetName()<<" ai="<<team->IsAI()<<" strategic="<<(team->GetStrategicObject()?"set":"none")<<" personality="<<team->GetPersonality();if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}
  out<<"\nGraphics: high detail, full mesh, 32-bit textures; filters="<<Vid::renderState.status.filter<<" distance fog="<<Vid::renderState.status.fog<<" fog rgb="<<unsigned(Vid::renderState.fogColor.r)<<','<<unsigned(Vid::renderState.fogColor.g)<<','<<unsigned(Vid::renderState.fogColor.b)<<" ambient rgb="<<unsigned(Vid::renderState.ambientColor.r)<<','<<unsigned(Vid::renderState.ambientColor.g)<<','<<unsigned(Vid::renderState.ambientColor.b)<<" terrain shroud="<<(VarSys::FindVarItem("terrain.shroud.active")?VarSys::FindVarItem("terrain.shroud.active")->Integer():-1);
- out<<"\n"<<NativeEngine::DigitalDiagnostics()<<"\n"<<missionLoadStatus.Report();return out.str();}
+ out<<"\nVariable failure (if any):\n"<<LastVariableFailure()<<"\n"<<NativeEngine::DigitalDiagnostics()<<"\n"<<missionLoadStatus.Report();return out.str();}
 void MissionApp::Close(){impl->Stop();}
 void MissionApp::Control(unsigned action,float x,float y){
  if(!InSimulation())throw std::logic_error("Mission is still loading");

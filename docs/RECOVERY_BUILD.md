@@ -539,3 +539,50 @@ cycles. SDK 35 compiles all Android Java; the 48 touch state checks also pass.
 These host checks do not substitute for J01/campaign completion or Android audio.
 After J01 testing, collect diagnostics again; if gameplay runs, collect after
 attacking and receiving damage to exercise actual sound requests.
+
+
+## APK 26: cinematic viewports and current mission evidence
+
+Use the full builder command documented for APK 24, with output `"$work/v26"`
+and `--output-name Reigncarnated-Cinematic-Viewport-v26.apk`. Preserve the existing
+private APK 22-25 signer and `org.reigncarnated.instantcity` application ID. This
+updates that test app while retaining its data. All Java and both native
+libraries are rebuilt from this committed source; the current incremental
+artifact reuses verified original ARM64 objects with explicit rebuilt
+util/varptr.cpp and coregame/viewer_action.cpp overrides. The clean full builder
+rebuilds every selected original unit and verifies upstream hashes first.
+
+The cinematic Letterbox path needs sub-viewports and partial clears. These are
+now real GLES scissor operations: pretransformed TL coordinates remain absolute,
+color/depth clears intersect the active viewport, and pixels outside it survive.
+GetViewport returns stored state. Multiple clear rectangles are supported up to
+256 per call; invalid rectangles, stencil clears and nonstandard depth ranges
+remain explicit failures. No unsupported draw path is silently ignored. Normal
+full-target rendering and its fast clear/stream path are retained.
+
+The JDA report now reaches simulation, then fails on an invalid VarPtr about
+three seconds later. Its actual variable caller was not captured. This build
+records the operation and bounded module-relative caller stack before unwinding,
+plus the last original cinematic command/cycle. It preserves the original error
+and ABI layout. This is evidence gathering, not a confirmed JDA error fix.
+
+Native reports are saved on frame failure and mission pause/exit, with source
+receipt, mission and timestamp. Collecting from the menu includes
+last-mission-report.txt and previous-mission-report.txt (each capped at 128 KiB),
+covering the two most recently saved distinct missions. These reports include
+camera/cinematic/movie flags and audio/render diagnostics. The earlier nested
+manual ZIP remains separately identified by its own source receipt.
+
+Test Sprawler's intro, return to menu, then test JDA Chapter 1. Return and collect
+one menu diagnostics ZIP if either remains wrong; the two automatic reports
+should preserve both sessions. A load that blocks the GL thread cannot save a
+native snapshot; persistent loader stages and available Android crash traces
+remain the fallback. Diagnostics stay private and are not packaged or committed.
+
+The owner's Instant Action combat sounds are device confirmed. Current touch
+controls and menu layout remain unchanged. The original 10 Hz clock, ABI flags,
+supported High graphics and fenced append-only unsynchronized stream remain.
+No new device cinematic/FPS result is claimed. See DIAGNOSTICS_REVIEW_V25.md for
+evidence and limits. Validation includes 68 host tests, 12 foundation tests,
+real viewport/clear/clipping pixels, two-pass original cinematic/reference
+mission lifecycles, SDK 35 Java compilation and 48 touch checks.

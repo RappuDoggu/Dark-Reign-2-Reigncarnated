@@ -30,7 +30,8 @@ struct Context {
  ~Context(){eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);if(context!=EGL_NO_CONTEXT)eglDestroyContext(display,context);if(surface!=EGL_NO_SURFACE)eglDestroySurface(display,surface);if(display!=EGL_NO_DISPLAY)eglTerminate(display);}
 };
 }
-void check(bool b){if(!b)throw std::runtime_error("Original Vid/GLES integration failed");}
+void verify(bool b,int line){if(!b)throw std::runtime_error("Original Vid/GLES integration failed at line "+std::to_string(line));}
+#define check(b) verify((b),__LINE__)
 struct Presentation {reign::LegacyGles *renderer;unsigned calls=0;};
 bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.renderer->present();++p.calls;return true;}
 int main(){try{
@@ -56,6 +57,28 @@ int main(){try{
   check(Vid::device->SetRenderState(D3DRENDERSTATE_CLIPPING,0)==S_OK);
   check(Vid::device->SetRenderState(D3DRENDERSTATE_CLIPPING,1)==S_OK);
   check(Vid::device->SetRenderState(D3DRENDERSTATE_CLIPPING,2)==E_NOTIMPL);
+  // Cinematic viewports preserve absolute TL pixel positions and clip/clear
+  // only their rectangle; untouched pixels must survive outside letterboxing.
+  check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff0000ff,1,0)==S_OK);
+  D3DVIEWPORT7 cinema{4,6,16,10,0,1},queried{};
+  check(Vid::device->SetViewport(&cinema)==S_OK);
+  check(Vid::device->GetViewport(&queried)==S_OK&&queried.dwY==6&&queried.dwHeight==10);
+  check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET,0xffff0000,1,0)==S_OK);
+  std::vector<std::uint8_t> clipped(W*H*4);renderer.read_rgba(W,H,clipped.data());
+  auto pixel=[&](unsigned x,unsigned y,unsigned r,unsigned g,unsigned b){auto at=((H-1-y)*W+x)*4;check(clipped[at]==r&&clipped[at+1]==g&&clipped[at+2]==b);};
+  pixel(5,7,255,0,0);pixel(5,20,0,0,255);pixel(1,1,0,0,255);
+  D3DRECT areas[]={{-5,-5,8,10},{16,10,40,40}};
+  check(Vid::device->Clear(2,areas,D3DCLEAR_TARGET,0xff00ff00,1,0)==S_OK);
+  renderer.read_rgba(W,H,clipped.data());pixel(5,7,0,255,0);pixel(10,11,255,0,0);pixel(18,14,0,255,0);pixel(18,20,0,0,255);
+  D3DVIEWPORT7 invalidViewport=cinema;invalidViewport.dwWidth=W;
+  check(Vid::device->SetViewport(&invalidViewport)==E_INVALIDARG);
+  check(Vid::device->BeginScene()==S_OK);
+  reign::LegacyTL clipQuad[]={{-.5f,-.5f,.5f,1,0xffffff00,0,0,0},{W-.5f,-.5f,.5f,1,0xffffff00,0,0,0},{W-.5f,H-.5f,.5f,1,0xffffff00,0,0,0},{-.5f,H-.5f,.5f,1,0xffffff00,0,0,0}};
+  WORD clipIndices[]={0,1,2,0,2,3};
+  check(Vid::device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,clipQuad,4,clipIndices,6,0)==S_OK);
+  check(Vid::device->EndScene()==S_OK);renderer.read_rgba(W,H,clipped.data());pixel(5,7,255,255,0);pixel(5,20,0,0,255);
+  D3DVIEWPORT7 full{0,0,W,H,0,1};check(Vid::device->SetViewport(&full)==S_OK);
+  check(Vid::device->Clear(0,nullptr,D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,0xff000000,1,0)==S_OK);
   check(Vid::device->BeginScene()==S_OK);
   check(!Vid::SetZWriteState(TRUE));check(Vid::SetZWriteState(FALSE));
   reign::LegacyTL vertices[]={{-.5f,-.5f,.5f,1,0xffff0000,0,0,0},{W-.5f,-.5f,.5f,1,0xffff0000,0,1,0},{W-.5f,H-.5f,.5f,1,0xffff0000,0,1,1},{-.5f,H-.5f,.5f,1,0xffff0000,0,0,1}};

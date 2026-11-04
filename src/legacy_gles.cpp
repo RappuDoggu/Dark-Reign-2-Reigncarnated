@@ -25,7 +25,7 @@ namespace reign {
  X(EnableVertexAttribArray,PFNGLENABLEVERTEXATTRIBARRAYPROC) X(VertexAttribPointer,PFNGLVERTEXATTRIBPOINTERPROC) \
  X(GenTextures,PFNGLGENTEXTURESPROC) X(BindTexture,PFNGLBINDTEXTUREPROC) X(TexParameteri,PFNGLTEXPARAMETERIPROC) \
  X(TexImage2D,PFNGLTEXIMAGE2DPROC) X(TexSubImage2D,PFNGLTEXSUBIMAGE2DPROC) X(GenSamplers,PFNGLGENSAMPLERSPROC) X(BindSampler,PFNGLBINDSAMPLERPROC) X(SamplerParameteri,PFNGLSAMPLERPARAMETERIPROC) X(DeleteSamplers,PFNGLDELETESAMPLERSPROC) X(DeleteTextures,PFNGLDELETETEXTURESPROC) X(ActiveTexture,PFNGLACTIVETEXTUREPROC) \
- X(GenerateMipmap,PFNGLGENERATEMIPMAPPROC) X(Viewport,PFNGLVIEWPORTPROC) X(Enable,PFNGLENABLEPROC) X(Disable,PFNGLDISABLEPROC) X(DepthMask,PFNGLDEPTHMASKPROC) \
+ X(GenerateMipmap,PFNGLGENERATEMIPMAPPROC) X(Viewport,PFNGLVIEWPORTPROC) X(Scissor,PFNGLSCISSORPROC) X(Enable,PFNGLENABLEPROC) X(Disable,PFNGLDISABLEPROC) X(DepthMask,PFNGLDEPTHMASKPROC) \
  X(DepthFunc,PFNGLDEPTHFUNCPROC) X(BlendFunc,PFNGLBLENDFUNCPROC) X(ClearColor,PFNGLCLEARCOLORPROC) \
  X(ClearDepthf,PFNGLCLEARDEPTHFPROC) X(Clear,PFNGLCLEARPROC) X(DrawElements,PFNGLDRAWELEMENTSPROC) \
  X(GenFramebuffers,PFNGLGENFRAMEBUFFERSPROC) X(DeleteFramebuffers,PFNGLDELETEFRAMEBUFFERSPROC) X(BindFramebuffer,PFNGLBINDFRAMEBUFFERPROC) \
@@ -200,8 +200,13 @@ void LegacyGles::clear(unsigned w,unsigned h,float r,float g,float b,float a){
  clear_buffers(w,h,true,true,r,g,b,a,1);
 }
 void LegacyGles::clear_buffers(unsigned w,unsigned h,bool color,bool depth,float r,float g,float b,float a,float depth_value){
+ clear_region(w,h,0,0,w,h,color,depth,r,g,b,a,depth_value);
+}
+void LegacyGles::clear_region(unsigned w,unsigned h,unsigned x,unsigned y,unsigned rw,unsigned rh,bool color,bool depth,float r,float g,float b,float a,float depth_value){
  if(!std::isfinite(depth_value)||depth_value<0||depth_value>1)throw std::invalid_argument("Invalid clear depth");
- auto &gl=*impl_;gl.stateValid=false;gl.target(w,h);gl.Viewport(0,0,w,h);gl.Disable(GL_SCISSOR_TEST);gl.DepthMask(GL_TRUE);
+ if(x>w||y>h||rw>w-x||rh>h-y)throw std::invalid_argument("Invalid clear region");
+ if(!rw||!rh)return;
+ auto &gl=*impl_;gl.stateValid=false;gl.target(w,h);gl.Viewport(0,0,w,h);if(!x&&!y&&rw==w&&rh==h)gl.Disable(GL_SCISSOR_TEST);else{gl.Enable(GL_SCISSOR_TEST);gl.Scissor(x,y,rw,rh);}gl.DepthMask(GL_TRUE);
  gl.ClearColor(r,g,b,a);gl.ClearDepthf(depth_value);
  gl.Clear((color?GL_COLOR_BUFFER_BIT:0)|(depth?GL_DEPTH_BUFFER_BIT:0));gl.check();
 }
@@ -225,10 +230,13 @@ void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size
  if(!w||!h||!vertices||!indices||!count||count>65536||!index_count||index_count%(lines?2:3)||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL indexed batch");
  if(static_cast<unsigned>(state.texture_op)>7 || static_cast<unsigned>(state.blend)>3 || static_cast<unsigned>(state.address)>2 || static_cast<unsigned>(state.mip_filter)>2 || static_cast<unsigned>(state.source_factor)<1 || static_cast<unsigned>(state.source_factor)>11 || static_cast<unsigned>(state.destination_factor)<1 || static_cast<unsigned>(state.destination_factor)>10 || !std::isfinite(state.alpha_reference) || state.alpha_reference<0 || state.alpha_reference>1)throw std::runtime_error("Unsupported legacy render state");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
+ if(state.scissor&&(state.clip_x>w||state.clip_y>h||state.clip_width>w-state.clip_x||state.clip_height>h-state.clip_y))throw std::invalid_argument("Invalid draw clip rectangle");
  auto &g=*impl_;g.target(w,h);const bool first=!g.stateValid;const auto &old=g.previous;
  if(first){g.Viewport(0,0,w,h);g.Disable(GL_CULL_FACE);g.Disable(GL_SCISSOR_TEST);g.DepthFunc(GL_LEQUAL);g.UseProgram(g.program);g.Uniform1i(g.uImage,0);g.ActiveTexture(GL_TEXTURE0);g.BindVertexArray(g.vao);}
  auto toggle=[&](GLenum cap,bool value){if(value)g.Enable(cap);else g.Disable(cap);};
  if(first||old.dither!=state.dither)toggle(GL_DITHER,state.dither);
+ if(first||old.scissor!=state.scissor){if(state.scissor)g.Enable(GL_SCISSOR_TEST);else g.Disable(GL_SCISSOR_TEST);}
+ if(state.scissor&&(first||!old.scissor||old.clip_x!=state.clip_x||old.clip_y!=state.clip_y||old.clip_width!=state.clip_width||old.clip_height!=state.clip_height))g.Scissor(state.clip_x,state.clip_y,state.clip_width,state.clip_height);
  if(first||old.depth_test!=state.depth_test)toggle(GL_DEPTH_TEST,state.depth_test);
  if(first||old.depth_write!=state.depth_write)g.DepthMask(state.depth_write?GL_TRUE:GL_FALSE);
  if(first||old.blend!=state.blend)toggle(GL_BLEND,state.blend!=Blend::opaque);
