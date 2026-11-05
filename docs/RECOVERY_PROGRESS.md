@@ -1028,3 +1028,15 @@ The same private test signer/identity retain imported data. Every APK embeds
 exact source/build/progress receipts; keys, owned packs, raw diagnostics and
 private symbols stay outside public Git/APK. Retail handoff, controls, JDA's
 caller and new phone FPS remain acceptance checks. See DIAGNOSTICS_REVIEW_V26.md.
+
+
+APK 27 artifact: `Reigncarnated-Placement-Campaign-v27.apk`, source
+`99efd4bfd00b6143ef7c9d9562cfb3c6d7313390`, SHA-256
+`c0e76ac0c4e1e09c992a5fe5c3f5051e4c217d9d09d74a833b842d29a948a3af`.
+Independent checks pass: same APK 22-26 signer/identity, version 27/private mission
+process, signature/CRC, 16 KiB ZIP/ELF loads, static libc++, embedded source/docs/
+native hashes, matching stripped/private symbol build IDs, new Java report class/
+JNI exports, and exclusion of game packs/keys/private traces. The unchanged signed
+artifact is mirrored under builds/v0.21. Retail campaign handoff, phone gestures
+and the actual JDA caller remain acceptance work; source and private symbols are
+preserved for the next diagnostic report.
