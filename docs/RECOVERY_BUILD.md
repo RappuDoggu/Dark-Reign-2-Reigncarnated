@@ -50,7 +50,8 @@ ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
   ctest --test-dir "$work/host" --output-on-failure
 cmake -S engine -B "$work/engine-host" -G Ninja \
   -DREIGN_UPSTREAM="$work/upstream" -DREIGN_SANITIZE=ON \
-  -DREIGN_KHRONOS_HEADERS="$work/khronos"
+  -DREIGN_KHRONOS_HEADERS="$work/khronos" \
+  -DREIGN_FFMPEG_ROOT="$work/ffmpeg/host/install"
 cmake --build "$work/engine-host" --parallel 4
 ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
   ctest --test-dir "$work/engine-host" --output-on-failure
@@ -673,3 +674,61 @@ validation remains strict. Placement controls, audio, 10 Hz clock, original flag
 supported High graphics and fenced append-only unsynchronized stream are retained.
 Old protected failures keep their own source/time receipt; do not attribute an
 older APK's saved failure to a later successful session. See DIAGNOSTICS_REVIEW_V27.md.
+
+## APK 29: MP3 mission speech and music suspension
+
+Use the same SDK 35 / NDK 27.2.12479018 / API 26 / ARM64 / static libc++ recipe.
+Rebuild **both** FFmpeg installs with the current script even if older Bink-only
+libraries exist. The n6.1.1 source hash is unchanged. The recipe now enables
+`mp3float`, the `mpegaudio` parser and `mp3` demuxer as well as Bink. Network and
+programs remain disabled. The install contains `reign-codec-recipe.sha256`;
+`setup_local.sh` refreshes stale installs, and the full candidate builder rejects
+an outdated recipe before compiling original sources.
+
+```sh
+bash tools/build_bink_decoder.sh "$work/ffmpeg" host
+bash tools/build_bink_decoder.sh "$work/ffmpeg" android
+# Include REIGN_FFMPEG_ROOT in the engine host configuration for speech tests.
+cmake -S engine -B "$work/engine-host" -G Ninja \
+  -DREIGN_UPSTREAM="$work/upstream" -DREIGN_SANITIZE=ON \
+  -DREIGN_KHRONOS_HEADERS="$work/khronos" \
+  -DREIGN_FFMPEG_ROOT="$work/ffmpeg/host/install"
+cmake --build "$work/engine-host" --parallel 4
+ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
+  ctest --test-dir "$work/engine-host" --output-on-failure
+
+# From a committed, clean source revision, using the private APK22 test signer:
+python3 tools/build_performance_candidate.py \
+  --upstream "$work/upstream" --sdk "$work/sdk" \
+  --ffmpeg "$work/ffmpeg/android/install" \
+  --base-apk builds/v0.7/Reigncarnated-Performance-v07.apk \
+  --output "$work/v29" --output-name Reigncarnated-Cutscene-Audio-v29.apk \
+  --signing-key /private/path/to/recovery-debug.keystore \
+  --application-id org.reigncarnated.instantcity \
+  --app-label 'Reigncarnated IA City Test' --jobs 4
+```
+
+The incremental recovery build uses the APK24 full object baseline, overrides
+from APK26/27/28 and freshly staged `sound/sound_digital.cpp` and
+`sound/sound_digital_reserved.cpp`. Rebuild the engine audio foundation, menu
+library and all direct mission adapters. The full builder above compiles the
+complete inventory from the current staging recipe without cached overrides.
+Keep unstripped native libraries, game data and signing material private.
+
+`tests/fixtures/speech-*.mp3` are authored half-second tones, excluded from the
+APK. `engine_speech_decode_test` validates both sample rates, mono/stereo,
+audible decoded output, completion and invalid input. Link
+`engine_reserved_speech_test.cpp` with `tools/test_engine_vid.py`, using the
+original host objects and `--test-arg "$PWD/tests/fixtures"`, to test the original
+queue under combat channel saturation. Retain the combat lifetime test and the
+cinematic/raw-mesh/navigation fixture from APK28. Compile and run
+`MusicPlaybackPolicyTest.java` with `MusicPlaybackPolicy.java` for asynchronous
+preparation/focus/cinematic/voice/movie/loading/close policy transitions.
+
+On the phone, update the existing **IA City Test** installation. Replay the
+Sprawler opening: check spoken dialogue, quiet background soundtrack throughout
+the scene, and music resuming afterward. Check normal unit responses and combat
+sounds. If a voice is still absent, use **Debug → Collect diagnostics ZIP (all
+in one)** after the scene. Its resource rows now distinguish requested, started,
+missing, decode-failed and suppressed speech. Music block bits are cinematic=1,
+movie=2, reserved voice=4, loading/transition=8; multiple reasons combine.

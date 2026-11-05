@@ -26,6 +26,7 @@ public:
  bool InSimulation() const;
  bool Placing() const;
  bool CanPan() const;
+ unsigned MusicBlockReasons() const;
  std::optional<MissionDestination> TakeNavigation();
  std::uint32_t SimulationCycles() const;
 };

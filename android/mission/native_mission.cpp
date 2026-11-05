@@ -89,6 +89,7 @@ extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity
 extern "C" JNIEXPORT jboolean JNICALL Java_org_reigncarnated_menu_MissionActivity_placingMission(JNIEnv *,jclass,jlong handle){return handle&&state(handle).app->Placing();}
 
 extern "C" JNIEXPORT jboolean JNICALL Java_org_reigncarnated_menu_MissionActivity_panEnabledMission(JNIEnv *,jclass,jlong handle){return handle&&state(handle).app->CanPan()?JNI_TRUE:JNI_FALSE;}
+extern "C" JNIEXPORT jint JNICALL Java_org_reigncarnated_menu_MissionActivity_musicBlockMission(JNIEnv *,jclass,jlong handle){return handle?state(handle).app->MusicBlockReasons():8;}
 extern "C" JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MissionActivity_navigationMission(JNIEnv *env,jclass,jlong handle){
  if(!handle)return nullptr;auto target=state(handle).app->TakeNavigation();if(!target)return nullptr;
  auto type=env->FindClass("java/lang/String");if(!type)return nullptr;auto result=env->NewObjectArray(4,type,nullptr);env->DeleteLocalRef(type);if(!result)return nullptr;

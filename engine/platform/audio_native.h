@@ -9,6 +9,8 @@
 namespace NativeEngine {
 struct AudioClip { unsigned rate=0; std::vector<float> stereo; };
 std::shared_ptr<const AudioClip> DecodeWave(const void *,std::size_t);
+// Memory-only game samples: strict PCM WAV or bounded MPEG Layer III speech.
+std::shared_ptr<const AudioClip> DecodeGameAudio(const void *,std::size_t);
 class AudioMixer {
  struct Voice { std::shared_ptr<const AudioClip> clip; std::uint64_t id=0; std::uint64_t position=0; int loops=1; float volume=1,priority=0; int pan=64; std::uint32_t owner=0; const void *effect=nullptr,*record=nullptr; unsigned denominator=48000; };
  std::mutex mutex;

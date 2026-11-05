@@ -12,6 +12,8 @@
 #include <string>
 #include <array>
 #include <sstream>
+#include <set>
+#include <limits>
 namespace {
 std::string audioError;
 bool digitalInitialized=false,digitalDisabled=false;
@@ -24,23 +26,26 @@ std::shared_ptr<const NativeEngine::AudioClip> loadClip(FileSys::FastFind *file)
  if(!file||!file->StreamAlive())throw std::runtime_error("Audio resource stream is no longer available");
  auto data=std::unique_ptr<FileSys::DataFile,void(*)(FileSys::DataFile*)>(FileSys::Open(file),FileSys::Close);
  if(!data)throw std::runtime_error("Cannot open audio resource");
- return NativeEngine::DecodeWave(data->GetMemoryPtr(),data->Size());
+ return NativeEngine::DecodeGameAudio(data->GetMemoryPtr(),data->Size());
 }
 }
 namespace NativeEngine {
 const char *DigitalLastError(){return audioError.c_str();}
 void NoteAudio(const char *name,AudioEvent event){std::string resource=name?name:"[unknown]";if(resource.size()>192)resource.resize(192);auto slot=std::find_if(audioResources.begin(),audioResources.end(),[&](const auto &row){return row.name==resource;});if(slot==audioResources.end()){slot=std::min_element(audioResources.begin(),audioResources.end(),[](const auto &a,const auto &b){return a.used<b.used;});if(slot->used)++audioEvicted;*slot={resource,{},0};}++slot->counts[unsigned(event)];slot->used=++audioTick;}
-std::string DigitalDiagnostics(){std::ostringstream out;out<<GetDigitalMixer()->Diagnostics()<<"\nDigital initialized="<<digitalInitialized<<" disabled="<<digitalDisabled<<" claimed="<<voiceLimit<<" cached="<<clips.size()<<" last-error="<<audioError<<"\nRecent resource requests/started/missing/decode-failed/suppressed/repeat (evicted="<<audioEvicted<<"):\n";for(const auto &row:audioResources)if(row.used){out<<row.name;for(auto count:row.counts)out<<' '<<count;out<<'\n';}return out.str();}
+std::string DigitalDiagnostics(){std::ostringstream out;out<<GetDigitalMixer()->Diagnostics()<<"\nDigital initialized="<<digitalInitialized<<" disabled="<<digitalDisabled<<" claimed="<<voiceLimit<<" reserved-playing="<<ReservedAudioPlaying()<<" cached="<<clips.size()<<" last-error="<<audioError<<"\nRecent resource requests/started/missing/decode-failed/suppressed/repeat (evicted="<<audioEvicted<<"):\n";for(const auto &row:audioResources)if(row.used){out<<row.name;for(auto count:row.counts)out<<' '<<count;out<<'\n';}return out.str();}
 }
-struct NativeSample {NativeEngine::AudioMixer *mixer;std::shared_ptr<const NativeEngine::AudioClip> clip;std::uint64_t id=0;float volume=1;};
-HSAMPLE AIL_allocate_sample_handle(HDIGDRIVER mixer){if(!mixer)return nullptr;try{return new NativeSample{mixer};}catch(...){return nullptr;}}
+struct NativeSample {NativeEngine::AudioMixer *mixer;std::shared_ptr<const NativeEngine::AudioClip> clip;std::uint64_t id=0;float volume=1;std::string name;};
+namespace {std::set<NativeSample *> reservedSamples;}
+namespace NativeEngine {bool ReservedAudioPlaying(){for(auto s:reservedSamples)if(s->mixer->Playing(s->id))return true;return false;}}
+HSAMPLE AIL_allocate_sample_handle(HDIGDRIVER mixer){if(!mixer)return nullptr;try{auto s=std::make_unique<NativeSample>();s->mixer=mixer;reservedSamples.insert(s.get());return s.release();}catch(...){return nullptr;}}
 void AIL_end_sample(HSAMPLE s){if(s){s->mixer->Stop(s->id);s->id=0;}}
-void AIL_release_sample_handle(HSAMPLE s){if(s){AIL_end_sample(s);delete s;}}
+void AIL_release_sample_handle(HSAMPLE s){if(s){AIL_end_sample(s);reservedSamples.erase(s);delete s;}}
 void AIL_init_sample(HSAMPLE s){if(s){AIL_end_sample(s);s->clip.reset();s->volume=1;}}
-int NativeSetSampleFile(HSAMPLE s,const void *data,unsigned size){if(!s)return 0;try{s->clip=NativeEngine::DecodeWave(data,size);return 1;}catch(const std::exception &e){audioError=e.what();s->clip.reset();return 0;}}
+int NativeSetSampleFile(HSAMPLE s,const void *data,unsigned size,const char *name){if(!s)return 0;s->name=name?name:"[reserved sample]";try{s->clip=NativeEngine::DecodeGameAudio(data,size);return 1;}catch(const std::exception &e){audioError=s->name+": "+e.what();NativeEngine::NoteAudio(s->name.c_str(),NativeEngine::AudioEvent::decode_failed);s->clip.reset();return 0;}}
 int AIL_set_named_sample_file(HSAMPLE s,const char *,const void *data,unsigned size,int){return NativeSetSampleFile(s,data,size);}
 void AIL_set_sample_volume(HSAMPLE s,int volume){if(s)s->volume=std::clamp(volume,0,127)/127.f;}
-void AIL_start_sample(HSAMPLE s){if(s)s->id=s->mixer->Play(s->clip,s->volume,64,1);}
+// Original Reserved voices have dedicated handles, protected from ordinary FX stealing.
+void AIL_start_sample(HSAMPLE s){if(s){s->id=s->mixer->Play(s->clip,s->volume,64,1,std::numeric_limits<float>::max());NativeEngine::NoteAudio(s->name.c_str(),s->id?NativeEngine::AudioEvent::started:NativeEngine::AudioEvent::suppressed);}}
 int AIL_sample_status(HSAMPLE s){return s&&s->mixer->Playing(s->id)?SMP_PLAYING:SMP_DONE;}
 namespace Sound { namespace Digital {
 void Init(){if(digitalInitialized)return;digitalInitialized=true;digitalDisabled=false;voiceLimit=0;Reserved::Init();}

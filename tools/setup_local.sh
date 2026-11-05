@@ -25,8 +25,9 @@ bash "$repo/tools/install_android_sdk.sh" "$work/sdk"
 export ANDROID_SDK_ROOT="$work/sdk"
 export ANDROID_NDK_HOME="$work/sdk/ndk/27.2.12479018"
 python3 "$repo/tools/stage_khronos_headers.py" "$ANDROID_NDK_HOME" "$work/khronos"
+recipe=$(sha256sum "$repo/tools/build_bink_decoder.sh" | cut -d' ' -f1)
 for mode in host android; do
- if [ ! -f "$work/ffmpeg/$mode/install/lib/libavcodec.a" ]; then
+ if [ ! -f "$work/ffmpeg/$mode/install/lib/libavcodec.a" ] || [ "$(cat "$work/ffmpeg/$mode/install/reign-codec-recipe.sha256" 2>/dev/null || true)" != "$recipe" ]; then
   bash "$repo/tools/build_bink_decoder.sh" "$work/ffmpeg" "$mode"
  fi
 done
@@ -46,13 +47,13 @@ cmake -S "$repo" -B "$work/build-host" -G Ninja \
 cmake --build "$work/build-host" --parallel "${REIGN_BUILD_JOBS:-4}"
 ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 ctest --test-dir "$work/build-host" --output-on-failure
 cmake -S "$repo/engine" -B "$work/build-engine-host" -G Ninja \
- -DREIGN_UPSTREAM="$work/upstream" -DREIGN_SANITIZE=ON
+ -DREIGN_UPSTREAM="$work/upstream" -DREIGN_SANITIZE=ON -DREIGN_FFMPEG_ROOT="$work/ffmpeg/host/install"
 cmake --build "$work/build-engine-host" --parallel "${REIGN_BUILD_JOBS:-4}"
 ASAN_OPTIONS=detect_leaks=0 ctest --test-dir "$work/build-engine-host" --output-on-failure
 cmake -S "$repo/engine" -B "$work/build-engine-android" -G Ninja \
  -DREIGN_UPSTREAM="$work/upstream" \
  -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake" \
- -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26
+ -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 -DREIGN_FFMPEG_ROOT="$work/ffmpeg/android/install"
 cmake --build "$work/build-engine-android" --parallel "${REIGN_BUILD_JOBS:-4}"
 printf '\nLocal toolchain and host checks complete.\nLoad your environment with: source %q\n' "$work/env.sh"
 printf 'No mission APK was generated; see docs/INSTANT_ACTION_BRINGUP.md for gameplay status.\n'

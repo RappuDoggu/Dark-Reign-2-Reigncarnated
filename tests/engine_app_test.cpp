@@ -162,14 +162,14 @@ int main(int argc,char **argv){try{
     time=mesh->AddFunction("Time");time->AddArgFPoint(0.1f);time->AddArgFPoint(1.4f);time->AddArgFPoint(1.6f);
    }
    auto *end=cin->AddFunction("At");end->AddArgFPoint(2.0f);end->AddFunction("EndCineractive");
-   Viewer::Action::Execute(Team::GetDisplayTeam(),cin);
+   Viewer::Action::Execute(Team::GetDisplayTeam(),cin);check(app.MusicBlockReasons()&1);
    for(unsigned frame=0;frame<150;++frame){app.Frame();
     if(frame==45){std::vector<std::uint8_t> image(W*H*4);renderer.read_rgba(W,H,image.data());unsigned visible=0;for(unsigned y=80;y<400;++y)for(unsigned x=0;x<W;++x){auto p=(y*W+x)*4;if(image[p]||image[p+1]||image[p+2])++visible;}check(visible>100);check(!image[0]&&!image[1]&&!image[2]);}
     if(frame==55){check(Viewer::SetCurrent("Viewer::Action::Cinematic",TRUE));auto *cinema=dynamic_cast<Viewer::CinemaCam *>(Viewer::GetCurrent());check(cinema);cinema->curveMatrix=Vid::CurCamera().WorldMatrix();check(!app.CanPan());bool locked=false;try{app.Control(5,1,1);}catch(const std::logic_error &){locked=true;}check(locked);}
     std::this_thread::sleep_for(std::chrono::milliseconds(16));}
    check(app.CanPan());app.Control(5,1,1);
    check(renderer.diagnostics().find("DX7 Clear:")==std::string::npos&&renderer.diagnostics().find("DX7 SetViewport:")==std::string::npos);
-   check(!Viewer::Action::IsPlaying());
+   check(!Viewer::Action::IsPlaying());check(!(app.MusicBlockReasons()&1));
    VarInteger unbound;bool rejectedVar=false;try{(void)*unbound;}catch(const std::runtime_error &){rejectedVar=true;}
    check(rejectedVar&&NativeEngine::LastVariableFailure().find("VarInteger::operator*")!=std::string::npos&&NativeEngine::LastVariableFailure().find("+0x")!=std::string::npos);
    NativeEngine::LastVariableFailure().clear();

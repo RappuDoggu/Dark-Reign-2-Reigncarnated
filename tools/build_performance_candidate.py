@@ -3,7 +3,7 @@
 Inputs remain external: pinned upstream, NDK/SDK, minimal Android FFmpeg,
 original private v05 APK, and optional existing candidate test signing key.
 """
-import argparse,shutil,subprocess,sys
+import argparse,hashlib,shutil,subprocess,sys
 from pathlib import Path
 p=argparse.ArgumentParser(description=__doc__)
 for name in ('upstream','sdk','ffmpeg','base-apk','output'):p.add_argument('--'+name,type=Path,required=True)
@@ -15,6 +15,10 @@ ndk=(a.ndk or a.sdk/'ndk/27.2.12479018').resolve();staged=out/'staged';original=
 if repo==out or repo in out.parents:p.error('Use an external output directory')
 if bool(a.signing_key)==bool(a.new_recovery_key):p.error('Select --signing-key or --new-recovery-key explicitly')
 def run(*cmd):subprocess.run([str(v) for v in cmd],check=True)
+recipe=hashlib.sha256((repo/'tools/build_bink_decoder.sh').read_bytes()).hexdigest()
+stamp=a.ffmpeg/'reign-codec-recipe.sha256'
+if not stamp.is_file() or stamp.read_text().strip()!=recipe:
+ p.error('FFmpeg codec recipe is stale: rebuild with tools/build_bink_decoder.sh before building the APK')
 run(sys.executable,repo/'tools/prepare_engine_full.py',a.upstream.resolve(),staged)
 run(sys.executable,repo/'tools/build_engine_gameplay.py',a.upstream.resolve(),staged,original,'--compiler',ndk/'toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang++','--source-list',repo/'cmake/performance-engine-sources.json','--jobs',a.jobs,'--retry-failed')
 common=['-G','Ninja','-DCMAKE_TOOLCHAIN_FILE='+str(ndk/'build/cmake/android.toolchain.cmake'),'-DANDROID_ABI=arm64-v8a','-DANDROID_PLATFORM=26','-DANDROID_STL=c++_static','-DCMAKE_BUILD_TYPE=RelWithDebInfo','-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O2 -g -fno-strict-aliasing -fwrapv','-DCMAKE_POSITION_INDEPENDENT_CODE=ON','-DREIGN_UPSTREAM='+str(a.upstream.resolve()),'-DREIGN_FFMPEG_ROOT='+str(a.ffmpeg.resolve())]

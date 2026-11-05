@@ -1098,3 +1098,50 @@ exclusion of game data/raw models/keys/private traces. The raw-mesh host log
 confirms two uncached loads with no rejected draws. The unchanged signed APK is
 mirrored under builds/v0.22. Retail JDA and later story acceptance remain for the
 owner's phone; source and private symbols are preserved for any further report.
+
+## APK 29: mission speech decoding and soundtrack arbitration
+
+Owner feedback after APK 28: missions now load with cutscenes. The remaining
+reported audio issue is missing Sprawler voices while music continues over the
+scene. This is a device report of mission/cutscene progress; it does not establish
+that either campaign is complete or provide a new phone performance benchmark.
+
+The original Message and unit Response paths submit named Reserved voices.
+Original Reserved supports MP3, but the recovered sample adapter sent every
+resource to the strict PCM WAV decoder. It therefore rejected MP3 speech.
+FFmpeg remains pinned to n6.1.1 with the same verified source archive; its minimal
+LGPL build now also enables `mp3float`, `mpegaudio` parsing and `mp3` demuxing.
+The new decoder reads resource memory only, requires one Layer III audio stream,
+limits input and decoded stereo PCM to 64 MiB each, and validates rate, channels
+and finite samples. PCM WAV keeps its existing strict validation. Compressed WAV
+and other unsupported formats still fail explicitly with named diagnostics.
+No downloaded or owned audio is used as a checked-in test fixture.
+
+Reserved samples retain original queue modes, reset and lifetime behavior. They
+now use protected priority in the shared mixer so ordinary combat effects cannot
+steal their channel. Recent resource diagnostics include Reserved submissions,
+starts, missing files, decoding failures and output suppression; decoder errors
+include the resource name. The reports also show reserved-playing and the native
+music block reasons, making missing imports distinguishable from decode failure.
+
+Android music now starts suspended while loading and pauses at its current track
+position during an original cinematic, Bink movie, reserved voice or campaign
+handoff. It resumes after those conditions clear, subject to audio focus and the
+configured music volume. Both asynchronous preparation and focus-gain callbacks
+honor the same policy. Mission music updates are posted only on changes and tied
+to the current player instance; old callbacks cannot change a replacement player.
+The original 10 Hz simulation, engine ABI, touch controls, render stream,
+retained textures and strict rendering checks are unchanged.
+
+Validation: 13 engine-foundation tests pass, including authored MPEG-1 mono and
+MPEG-2 stereo speech, audible stereo mixer output, completion, malformed data and
+size bounds. An integration test against original Reserved code plays queued
+MP3s while 64 FX channels are saturated, protects speech from higher-priority
+combat FX, advances to the next dialogue, completes and resets, and records a
+named missing resource. Original combat Effect lifetime regression passes.
+The original cinematic/raw-mesh/camera and two-mission handoff fixture passes
+twice under host ASan/UBSan. Touch 55, retained reports 13 and music policy 14
+Java checks pass. Host root regression and final APK checks are recorded in the
+matching delivery receipt. Android speech and music behavior need owner testing;
+the complete retail campaign audio is not available in this workspace. This
+build does not claim to supply missing voice files or fix remaining invalid UVs.

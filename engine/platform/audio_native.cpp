@@ -5,6 +5,22 @@
 #include <stdexcept>
 #include <sstream>
 namespace NativeEngine {
+#ifdef REIGN_MP3_AUDIO
+std::shared_ptr<const AudioClip> DecodeMp3(const void *,std::size_t);
+#endif
+std::shared_ptr<const AudioClip> DecodeGameAudio(const void *input,std::size_t size){
+ if(!input||size<12||size>64*1024*1024)throw std::invalid_argument("Invalid game sample size");
+ const auto *b=static_cast<const std::uint8_t *>(input);
+ if(!std::memcmp(b,"RIFF",4))return DecodeWave(input,size);
+ if(!std::memcmp(b,"ID3",3)||(b[0]==0xff&&(b[1]&0xe6)==0xe2)){
+#ifdef REIGN_MP3_AUDIO
+  return DecodeMp3(input,size);
+#else
+  throw std::runtime_error("MP3 speech decoder is not configured; rebuild with REIGN_FFMPEG_ROOT");
+#endif
+ }
+ throw std::invalid_argument("Unsupported game sample format (expected PCM WAV or MP3)");
+}
 std::shared_ptr<const AudioClip> DecodeWave(const void *input,std::size_t size){
  if(!input||size<12||size>64*1024*1024)throw std::invalid_argument("Invalid WAV size");
  const auto *b=static_cast<const std::uint8_t *>(input);

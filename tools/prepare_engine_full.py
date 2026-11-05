@@ -327,7 +327,15 @@ source.write_text('#include "session_native.h"\n#include "multiplayer_data.h"\n#
 # Preserve original Effect/Record/Reserved policy with bounded native PCM handles.
 (out/'3rdparty/mss.h').write_text('#pragma once\n#include "miles_native.h"\n')
 patch('sound/sound.cpp', [(r'      AIL_set_redist_directory("library\\mss");','      // Native audio has no external redistributable directory.'),('      AIL_startup();','      // Android output is opened explicitly by the application.'),('      AIL_shutdown();','      // Output lifetime belongs to the native application.'),('return (AIL_last_error());','return (NativeEngine::DigitalLastError());')])
-patch('sound/sound_digital_reserved.cpp', [('AIL_set_sample_file(handle, d->GetMemoryPtr(), 0)','NativeSetSampleFile(handle, d->GetMemoryPtr(), d->Size())')])
+source=out/'sound/sound_digital_reserved.cpp';text=source.read_text()
+start=text.index('            // Is this an mp3 stream')
+end=text.index('\n          }',start)
+text=text[:start]+'''            // Decode by the bounded resource bytes; retain the resource name in diagnostics.
+            if (NativeSetSampleFile(handle, d->GetMemoryPtr(), d->Size(), d->Name())) setup = TRUE;
+'''+text[end:]
+text=text.replace('            dataFile = FileSys::Open(file);','            dataFile = FileSys::Open(file);\n            if (!dataFile) NativeEngine::NoteAudio(file, NativeEngine::AudioEvent::missing);')
+text=text.replace('        // Ignore if not initialized or no driver','        NativeEngine::NoteAudio(file, NativeEngine::AudioEvent::requested);\n        if (!initialized || !GetDriver() || Disabled()) NativeEngine::NoteAudio(file, NativeEngine::AudioEvent::suppressed);\n        // Ignore if not initialized or no driver')
+source.write_text('#include "audio_status.h"\n'+text)
 source=out/'sound/sound_digital_effect.cpp';text=source.read_text().replace('    Effect::~Effect()\n    {','    Effect::~Effect()\n    {\n      if (Sound::Initialized()) NativeEngine::GetDigitalMixer()->ReleaseEffect(this);')
 text=text.replace('        valid = (U8)((record.Alive() && record->valid) ? TRUE : FALSE);','        valid = (U8)((record.Alive() && record->valid) ? TRUE : FALSE);\n        if (!valid) NativeEngine::NoteAudio(name, NativeEngine::AudioEvent::missing);')
 at=text.index('      // Can we play this effect',text.index('    Bool Effect::Play2D('))

@@ -3,6 +3,7 @@
 set -euo pipefail
 root=${1:?Usage: build_bink_decoder.sh external-build-root host-or-android}
 mode=${2:?Select host or android}
+recipe=$(sha256sum "$0" | cut -d' ' -f1)
 mkdir -p "$root"
 root=$(cd "$root" && pwd)
 archive="$root/ffmpeg-n6.1.1.tar.gz"
@@ -15,7 +16,7 @@ assert hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest()=='7c1ebea95d815
 PY
 mkdir -p "$root/source" "$root/$mode"
 if [ ! -f "$root/source/configure" ]; then tar -xf "$archive" --strip-components=1 -C "$root/source"; fi
-args=(--prefix="$root/$mode/install" --disable-everything --disable-programs --disable-doc --disable-network --disable-autodetect --enable-pic --enable-decoder=bink,binkaudio_dct,binkaudio_rdft --enable-demuxer=bink --enable-protocol=file --enable-swscale --enable-swresample)
+args=(--prefix="$root/$mode/install" --disable-everything --disable-programs --disable-doc --disable-network --disable-autodetect --enable-pic --enable-decoder=bink,binkaudio_dct,binkaudio_rdft,mp3float --enable-parser=mpegaudio --enable-demuxer=bink,mp3 --enable-protocol=file --enable-swscale --enable-swresample)
 case "$mode" in
  host) args+=(--disable-x86asm);;
  android)
@@ -29,3 +30,4 @@ cd "$root/$mode"
 make -j "${REIGN_BUILD_JOBS:-4}"
 make install
 cp "$root/source/COPYING.LGPLv2.1" install/
+printf '%s\n' "$recipe" > install/reign-codec-recipe.sha256
