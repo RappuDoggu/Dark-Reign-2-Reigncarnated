@@ -65,6 +65,7 @@ namespace Sight {class Map;}
 #include "audio_status.h"
 #include "variable_failure.h"
 #include "mission_route.h"
+#include "reign/host_options.hpp"
 
 #include <functional>
 namespace Vid {namespace Command {void InitMesh();void DoneMesh();}}
@@ -79,6 +80,7 @@ struct MissionApp::Impl {
  std::vector<std::function<void()>> cleanup;
  std::unique_ptr<Camera> camera;
  std::optional<MissionDestination> navigation;
+ reign::HostOptionsRequest optionsRequest;
  bool closed=false,active=true,pausedHere=false,owns=false,gameInitialized=false,reportedSimulation=false,reportedLoaded=false;
  void EndGame(){if(gameInitialized){Game::Done();gameInitialized=false;}}
  void Defer(std::function<void()> fn){cleanup.push_back(std::move(fn));}
@@ -170,6 +172,7 @@ void MissionApp::Control(unsigned action,float x,float y){
  else throw std::invalid_argument("Unknown mission control");
 }
 void MissionApp::Frame(){
+ reign::HostOptionsBinding optionsBinding(impl->optionsRequest);
  if(impl->closed)throw std::logic_error("Mission runtime is closed");if(impl->navigation)return;
  if(BeginNativeFrame()){
   const bool wasCinematic=Viewer::Action::IsPlaying();Game::RC::Process();GameSound::Poll();
@@ -190,6 +193,7 @@ void MissionApp::Frame(){
 }
 bool MissionApp::CanPan()const{return !impl->closed&&!impl->navigation&&InSimulation()&&!Viewer::Action::IsPlaying()&&!Viewer::movie&&dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent());}
 unsigned MissionApp::MusicBlockReasons()const{return (Viewer::Action::IsPlaying()?1u:0u)|(Viewer::movie?2u:0u)|(ReservedAudioPlaying()?4u:0u)|((impl->closed||impl->navigation||!InSimulation())?8u:0u);}
+bool MissionApp::TakeOptionsRequest(){bool request=impl->optionsRequest.take();if(request)missionLoadStatus.Update("Android options requested");return request;}
 std::optional<MissionDestination> MissionApp::TakeNavigation(){auto target=std::move(impl->navigation);impl->navigation.reset();return target;}
 void MissionApp::SetActive(bool active){
  if(impl->closed||impl->active==active)return;

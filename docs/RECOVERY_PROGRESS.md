@@ -1156,3 +1156,63 @@ signer as APK22–28 and verified embedded source/docs, ARM64/static libc++ and
 16 KiB ELF/ZIP alignment. It contains no keys, owned data or test audio fixtures.
 Phone audio and FPS acceptance remain pending. Native build IDs and all check
 results are in `docs/builds/cutscene-audio-v29.json`.
+
+## APK30: shared Android options and offline release acceptance
+
+The new owner ZIP identifies APK28 source `69469fe...`, not APK29. The saved
+Instant Action `2siege` match reaches 6,570 simulation cycles, 119.9 FPS and
+5.3 ms native frame time before opening desktop Video stops it with `Var is not
+an integer`. An original-code host reproduction logs missing
+`vid.dialog.detail.low` and fails in IFaceVar/ICButton activation. The previous
+nested JDA failure has its own older APK27 receipt. See DIAGNOSTICS_REVIEW_V28.md;
+no device logs, traces, captures or game data are committed.
+
+Both the original main-menu Configuration and in-game Options/Escape commands
+now route `Sys::Options` activation to the Android settings dialog. A scoped
+host binding coalesces the request, returns it after native event processing and
+leaves unrelated control activation and strict variable validation intact. The
+Android dialog is the same audio/display/pan UI used by the toolbar, applies to
+the active renderer/audio settings and synchronizes settings through the existing
+mission Activity result. Repeated requests do not stack dialogs; pausing dismisses
+the current dialog. The old desktop Gameplay/Video/Sound/SaveLoad tab dialog is
+replaced, rather than presenting desktop display switching or unsupported saves
+as functional. Android Back returns to the main menu.
+
+A host capture with one real AI additionally exposes three ownership defects:
+random-personality pointer-array deletion, non-virtual destruction of the private
+polymorphic Strategic::Location Base/Offset implementations, and scalar deletion
+of Placement::Manager::ClusterSet's ClusterInfo array. Native staging corrects
+the exact ownership boundaries. Location's public pointer-only layout, existing
+engine ABI/configuration, seeded random choice, simulation and rendering are
+unchanged. ASan allocation/type mismatch checks stay enabled.
+
+Validation includes 68 general host regressions, now 51 menu-runtime checks
+including the original Configuration console command and coalesced host action.
+The real mission Escape request is delivered once without activating desktop
+controls. The campaign/cinematic/raw-mesh/camera/navigation fixture passes twice.
+The owned reference Instant Action capture exercises one strategic AI, selection,
+a movement order, map scrolling and normal shutdown; see the artifact receipt for
+its final ASan result and the 30-second trailer receipt for exact capture data.
+SDK35 Java and native ARM64 link checks pass. APK29 speech/music support, 10 Hz
+simulation, flags, current touch gestures and append-only geometry streaming are
+retained; no APK30 phone performance or complete-campaign claim is made.
+
+`RELEASE_0_1_AND_MULTIPLAYER.md` records the offline release gates. The 31-row
+`CAMPAIGN_ACCEPTANCE.csv` comes from package metadata, not inferred mission
+completion. Continuous campaigns, local save/restore and persistence, opening
+speech acceptance, match result/restart behavior, active-texture NaN UV draws,
+long-session/device/thermal testing and distribution checks remain to close.
+The owner reports that Instant Action appears completable; no attached victory
+receipt establishes that as a controlled acceptance result yet.
+
+The multiplayer review finds original orders, cycle checksums and StyxNet
+client/server code worth preserving. Current sessions still dispatch locally;
+Windows socket/event/thread boundaries, wire layout and determinism require a
+real port and two-peer LAN proof before internet services or PC crossplay claims.
+No transport or online service is enabled by this change.
+
+The requested landscape trailer mockup is a 30-second H.264/AAC edit with real
+host GLES gameplay and authored placeholder audio, clearly labeled work in
+progress/host preview. Its source editor and capture path are reproducible;
+it contains no raw game data or owner diagnostics. The reduced reference data
+has visual limitations, so Android combat footage is the next editorial input.

@@ -24,7 +24,7 @@ final class AndroidOptions {
   slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){public void onProgressChanged(SeekBar s,int v,boolean user){label.setText(title+": "+(v==0&&zero!=null?zero:v+"%"));}public void onStartTrackingTouch(SeekBar s){}public void onStopTrackingTouch(SeekBar s){}});
   label.setText(title+": "+(value==0&&zero!=null?zero:value+"%"));return slider;
  }
- static void show(Activity a,Runnable applied){
+ static AlertDialog show(Activity a,Runnable applied){
   SharedPreferences p=preferences(a);LinearLayout panel=new LinearLayout(a);panel.setOrientation(LinearLayout.VERTICAL);int pad=Math.round(20*a.getResources().getDisplayMetrics().density);panel.setPadding(pad,pad,pad,pad);
   TextView graphics=new TextView(a);graphics.setText("Graphics: High detail • full meshes • 32-bit textures • trilinear filtering\nTap to left-click; drag to select. Hold to choose a building. Placement: tap to anchor, tap to rotate, double-tap to confirm; drag to reposition. Two fingers pan.");panel.addView(graphics);
   SeekBar music=slider(a,panel,"Music volume",100,music(a),"Muted"),effects=slider(a,panel,"Sound effects volume",100,p.getInt("effects",100),"Muted"),pan=slider(a,panel,"Map pan speed",200,p.getInt("pan",100),null),brightness=slider(a,panel,"Screen brightness",100,p.getInt("brightness",0),"Use Android setting");
@@ -32,6 +32,6 @@ final class AndroidOptions {
   CheckBox awake=new CheckBox(a);awake.setText("Keep screen awake while playing");awake.setChecked(p.getBoolean("awake",true));panel.addView(awake);
   CheckBox performance=new CheckBox(a);performance.setText("Show FPS and frame timings");performance.setChecked(p.getBoolean("performance",true));panel.addView(performance);
   ScrollView scroll=new ScrollView(a);scroll.addView(panel);
-  new AlertDialog.Builder(a).setTitle("Android options").setView(scroll).setPositiveButton("Apply",(d,w)->{p.edit().putInt("music",music.getProgress()).putInt("effects",effects.getProgress()).putInt("pan",Math.max(10,pan.getProgress())).putInt("brightness",brightness.getProgress()).putBoolean("awake",awake.isChecked()).putBoolean("performance",performance.isChecked()).apply();applied.run();}).setNegativeButton("Cancel",null).show();
+  AlertDialog dialog=new AlertDialog.Builder(a).setTitle("Android options").setView(scroll).setPositiveButton("Apply",(d,w)->{p.edit().putInt("music",music.getProgress()).putInt("effects",effects.getProgress()).putInt("pan",Math.max(10,pan.getProgress())).putInt("brightness",brightness.getProgress()).putBoolean("awake",awake.isChecked()).putBoolean("performance",performance.isChecked()).apply();applied.run();}).setNegativeButton("Cancel",null).create();dialog.show();return dialog;
  }
 }

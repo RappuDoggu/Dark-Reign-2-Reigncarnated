@@ -73,6 +73,7 @@ IControl *windowTitle(U32,IControl *p,U32){return new ICWindowTitle(p);}
 IControl *message(U32,IControl *p,U32){return new MsgBoxWindow(p);}
 std::string filename(const std::string &path){auto at=path.find_last_of("/\\");return at==std::string::npos?path:path.substr(at+1);}
 }
+#include "reign/host_options.hpp"
 namespace IFace {Bool InputEventHandler(Event &);void NativeUpdateHover(S32,S32);void NativeClearRouting();void NativeRegisterSubstitution();void NativeUnregisterSubstitution();}
 namespace {
 bool runtimeOwned=false;
@@ -154,6 +155,7 @@ struct MenuFrontend::Impl {
  unsigned instantOpponents=0,instantDifficulty=0;
  bool closed=false,substitutionRegistered=false;
  std::string pending,action;
+ HostOptionsRequest optionsRequest;
  std::function<void(const std::string &)> host=[this](const std::string &s){pending=s;};
  Impl(ConfigLoader load,const std::filesystem::path &privatePath,unsigned width,unsigned height,SoundLoader sound)
  :loader(std::move(load)),metrics(width,height),frame(metrics),fonts(loader),
@@ -206,9 +208,11 @@ struct MenuFrontend::Impl {
   });}catch(...){destroy_tree();throw;}
  }
  void run(const std::function<void()> &call){
+  HostOptionsBinding optionsBinding(optionsRequest);
   auto *previous=hostCommand;hostCommand=&host;
   struct Restore{std::function<void(const std::string &)> *p;~Restore(){hostCommand=p;}} restore{previous};
   language.run([&]{cursors.run([&]{events.run([&]{theme.run([&]{frame.run([&]{effects.run([&]{fontBridge.run([&]{textures.run([&]{config.run([&]{keys.run([&]{console.run([&]{profiles.run([&]{input.run(call);});});});});});});});});});});});});
+  if(optionsRequest.take())action="@options";
  }
  // Parse the owner's release configuration, retaining the original main-menu
  // definitions and controls. Mission/cinematic/network UI is deliberately not

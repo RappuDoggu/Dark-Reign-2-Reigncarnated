@@ -36,7 +36,7 @@ def main():
  directories=sorted({str(root/Path(s).parent) for project in projects.values() for s in project['sources']})
  directories += [str(root/'3rdparty'),str(root/'3rdparty/dx7'),str(root/'3rdparty/won')]
  base=[a.compiler,'-O'+a.optimization,'-g','-fno-strict-aliasing','-fwrapv','-fPIC','-fvisibility=hidden','-std=c++17','-DDEVELOPMENT=1','-DNO_ASM_MATH','-DMONO_DISABLED','-ffunction-sections','-fdata-sections','-c']
- for path in [repo/'engine/platform',repo/'engine/platform/dx7']+directories:
+ for path in [repo/'engine/platform',repo/'engine/platform/dx7',repo/'include']+directories:
   base+=['-I',str(path)]
  fingerprint=hashlib.sha256()
  for directory in [root,repo/'engine/platform']:

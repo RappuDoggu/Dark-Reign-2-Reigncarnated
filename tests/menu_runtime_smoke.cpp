@@ -10,6 +10,7 @@ int main(){try{
   std::string text;
   if(name=="english.cfg")text="DataBase(){}";
   else if(name=="show.cfg")text="Cmd(\"iface.activate DlgLogin\");";
+  else if(name=="android-options.cfg")text="Cmd(\"iface.activate Sys::Options\");";
   else if(name=="missing-runcode.cfg")text="Cmd(\"sys.runcode\");";
   else if(name=="extra-runcode.cfg")text="Cmd(\"sys.runcode shell extra\");";
   else if(name=="runcode_main_login.cfg")text=R"(
@@ -43,6 +44,7 @@ Cmd("iface.activate Backdrop");Cmd("iface.activate DlgLogin");Cmd("multiplayer.l
 ConfigureInterface(){DefineControlType("ShellMainSmallButton","Button"){Size(100,30);Font("System");}}
 CreateControl("Shell::Main","Window"){Size(640,480);
  CreateControl("Options","ShellMainSmallButton"){Pos(10,10);TranslateEvent("Button::Notify::Pressed","Options::Enter","|Shell::EventHandler");}
+ CreateControl("Configuration","ShellMainSmallButton"){Pos(200,10);OnEvent("Button::Notify::Pressed"){Cmd("iface.activate Sys::Options");}}
  CreateControl("Logout","ShellMainSmallButton"){Pos(10,60);OnEvent("Button::Notify::Pressed"){Op("gamegod.flow.state","=","Logout");SendNotifyEvent("|Shell::EventHandler","Main::Exit");}}
  CreateControl("Campaigns","ShellMainSmallButton"){Pos(10,110);OnEvent("Button::Notify::Pressed"){Cmd("gamegod.verify Shell::Main.Campaigns");}}
  CreateControl("LoadGame","ShellMainSmallButton"){Pos(10,160);OnEvent("Button::Notify::Pressed"){Cmd("sys.runcode mission");}}
@@ -57,6 +59,8 @@ CreateControl("Shell::Main","Window"){Size(640,480);
   menu.take_action();click("Shell::Main.Campaigns");check(menu.take_action()=="@campaign"&&menu.control_active("Shell::Main"));
   click("Shell::Main.LoadGame");check(menu.take_action().empty()&&menu.control_active("Shell::Main"));
   click("Shell::Main.Options");check(menu.take_action()=="@options");
+  click("Shell::Main.Configuration");check(menu.take_action()=="@options"&&menu.control_active("Shell::Main"));
+  menu.execute_config("android-options.cfg");check(menu.take_action()=="@options"&&menu.take_action().empty());
   menu.set_effect_volume(.37f);check(menu.effect_volume()==.37f);
   click("Shell::Main.Logout");check(menu.profile_name().empty()&&menu.control_active("DlgLogin")&&!menu.control_active("Shell::Main"));
   menu.login_selected_profile();check(menu.control_active("Shell::Main")&&menu.effect_volume()==.37f);menu.close();

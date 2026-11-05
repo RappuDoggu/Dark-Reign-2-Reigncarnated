@@ -732,3 +732,68 @@ sounds. If a voice is still absent, use **Debug → Collect diagnostics ZIP (all
 in one)** after the scene. Its resource rows now distinguish requested, started,
 missing, decode-failed and suppressed speech. Music block bits are cinematic=1,
 movie=2, reserved voice=4, loading/transition=8; multiple reasons combine.
+
+## APK30: Android options entry points and AI ownership
+
+Use the APK29 toolchain, FFmpeg recipe, base APK, private test signer and explicit
+`org.reigncarnated.instantcity` identity. Set the full builder's output to
+`"$work/v30"` and APK name to `Reigncarnated-Android-Options-v30.apk`.
+Commit source before packaging. Retain exact original 10 Hz, API26/SDK35,
+NDK27.2.12479018, ARM64, static libc++, optimized flags and 16 KiB alignment.
+
+Incremental original objects add `interface/iface.cpp`, `game/mods.cpp`,
+`coregame_ai/strategic_location.cpp` and
+`coregame_ai/strategic_placement_manager_clusterinfo.cpp` after APK26–29 overrides
+on the original APK24 baseline. Full fresh builds use the normal current source
+inventory; `build_engine_gameplay.py` now includes the portable `include/` tree.
+Rebuild the root menu with the updated IFace slice, then rebuild the direct
+mission app/JNI adapters and link with both current libraries. The engine
+foundation and FFmpeg audio libraries retain the APK29 recipe.
+
+The portable scoped host request is in `include/reign/host_options.hpp`.
+Both original IFace Activate overloads route only `Sys::Options` while an Android
+host is bound. MenuFrontend emits `@options`; MissionApp queues a one-shot request
+polled after a frame. No missing desktop variable is fabricated, no integer type
+check is disabled, and no success-returning rendering stub is added.
+
+Run the root host suite for main-menu Configuration console/event routing and
+normal interface activation behavior. The mission test's opt-in modes are:
+
+```sh
+# After linking engine_app_test.cpp with all current original host overrides:
+ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
+ REIGN_LEGACY_VIDEO_REPRO=1 "$work/options-probe/engine_app_test" \
+ "$work/owned/DR2" '2 Rush'
+# Expected nonzero: logs missing vid.dialog.detail.low, then Var is not an integer.
+ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
+ REIGN_OPTIONS_FIXTURE=1 "$work/options-probe/engine_app_test" \
+ "$work/owned/DR2" '2 Rush'
+# Expected success twice: Escape delivers Android options once; native dialog inactive.
+```
+
+Retain the authored cinematic, uncached raw-mesh, camera and deferred two-mission
+navigation fixture from APK28; it can run with `REIGN_OPTIONS_FIXTURE=1` as well.
+Allocation/type-mismatch sanitizers must remain enabled for AI lifecycle tests.
+The source changes fix actual new[]/delete and polymorphic destruction failures,
+not simulation behavior or seeded AI choices.
+
+For a private actual-gameplay capture, link the same runner and set
+`REIGN_CAPTURE_VIDEO_DIR="$work/trailer/capture"`. It enables one strategic AI,
+selects the initial rig, submits a movement order and pans the camera while saving
+20 real-time seconds of 15 Hz screenshots with actual timing and cycle counters.
+It never overrides the engine simulation clock. Keep the PPMs, timing and owned
+runtime outside Git; verify clean shutdown. Then create the owner's requested
+landscape mockup using a separate host FFmpeg (libx264/drawtext/AAC), ffprobe and
+DejaVu fonts:
+
+```sh
+python tools/make_trailer_mockup.py --capture "$work/trailer/capture" \
+ --output "$work/trailer/edit" --source-revision "$(git rev-parse HEAD)"
+```
+
+The editor produces a 1280x720, 30-second H.264/AAC MP4, poster and receipt. It
+uses 3-second opening / 20-second capture / 7-second ending with authored pulse
+placeholder audio. Capture metadata explicitly distinguishes host footage from
+phone footage; source receipt and captions must travel with the draft. Asset
+package metadata and the campaign acceptance matrix do not verify campaign wins.
+See `RELEASE_0_1_AND_MULTIPLAYER.md` for the remaining offline and multiplayer gates.

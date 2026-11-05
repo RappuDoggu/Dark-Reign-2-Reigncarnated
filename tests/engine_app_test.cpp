@@ -111,7 +111,7 @@ bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.rend
 namespace Client {UnitObj *FirstSelected();}
 int main(int argc,char **argv){try{
  if(argc<2||argc>5)throw std::runtime_error("Provide installation [mission [group [campaign]]]");
- const std::string selectedMission=argc>2?argv[2]:"2crazed";NativeEngine::MissionOptions options;if(argc>3)options.group=argv[3];options.campaign=argc>4&&std::string(argv[4])=="campaign";
+ const std::string selectedMission=argc>2?argv[2]:"2crazed";NativeEngine::MissionOptions options;if(std::getenv("REIGN_CAPTURE_VIDEO_DIR"))options.opponents=1;if(argc>3)options.group=argv[3];options.campaign=argc>4&&std::string(argv[4])=="campaign";
  auto argument=std::filesystem::path(argv[1]);auto root=std::filesystem::is_directory(argument)?argument:argument.parent_path().parent_path();
  auto work=std::filesystem::temp_directory_path()/("reign-app-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
  Context context;reign::LegacyGles renderer(resolve);Presentation presentation{&renderer};
@@ -126,6 +126,39 @@ int main(int argc,char **argv){try{
   for(unsigned frame=0;frame<(pass?64u:128u);++frame){app.Frame();if(!app.SimulationCycles())check(NativeEngine::missionLoadStatus.Report().rfind("READY\n",0)!=0);std::this_thread::sleep_for(std::chrono::milliseconds(16));}
   check(app.InSimulation()&&app.SimulationCycles()>0);
   if(options.campaign)check(Player::GetCurrentPlayer()&&Player::GetCurrentPlayer()->GetTeam()->IsDefaultClient());
+  if(std::getenv("REIGN_LEGACY_VIDEO_REPRO")){
+   check(IFace::Activate("Sys::Options"));auto *tabs=IFace::FindByName("Sys::Options.Tabs");check(tabs);
+   IFace::SendNotify(tabs,nullptr,Crc::CalcStr("TabGroup::Message::Select"),Crc::CalcStr("Video"));
+   throw std::runtime_error("Legacy video dialog unexpectedly succeeded");
+  }
+  if(std::getenv("REIGN_OPTIONS_FIXTURE")){
+   NativeEngine::QueueKey(1,TRUE);app.Frame();NativeEngine::QueueKey(1,FALSE);
+   for(unsigned f=0;f<12;++f){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));}
+   check(app.TakeOptionsRequest());check(!app.TakeOptionsRequest());
+   auto *legacy=IFace::FindByName("Sys::Options");check(legacy&&!legacy->IsActive());
+   check(app.InSimulation());std::cerr<<"Original Escape options request delivered once to Android without activating desktop Video controls\n";
+  }
+  if(const char *directory=std::getenv("REIGN_CAPTURE_VIDEO_DIR")){
+   std::filesystem::path capture(directory);std::filesystem::create_directories(capture);
+   auto *unit=Team::GetDisplayTeam()->GetUnitObjects().GetHead();check(unit);Vector start=unit->Position();F32 rhw;
+   Vector point=start;point.y+=3;Vid::ProjectFromWorld(point,rhw);
+   NativeEngine::QueuePointer(S32(point.x),S32(point.y),0,TRUE);app.Frame();NativeEngine::QueuePointer(S32(point.x),S32(point.y),0,FALSE);app.Frame();
+   check(Client::FirstSelected());
+   std::ofstream timing(capture/"frames.csv");timing<<"frame,seconds,simulation_cycles\n";
+   const auto begin=std::chrono::steady_clock::now();auto cycle=app.SimulationCycles();unsigned frames=0;bool ordered=false,panStarted=false,panEnded=false;
+   std::vector<std::uint8_t> rgba(W*H*4),rgb(W*H*3);
+   while(true){double elapsed=std::chrono::duration<double>(std::chrono::steady_clock::now()-begin).count();if(elapsed>=20)break;
+    if(elapsed>2&&!ordered){Vector destination=start+Vector(32,0,32);destination.y=Terrain::FindFloor(destination.x,destination.z);Vid::ProjectFromWorld(destination,rhw);NativeEngine::QueuePointer(S32(destination.x),S32(destination.y),0,TRUE);app.Frame();NativeEngine::QueuePointer(S32(destination.x),S32(destination.y),0,FALSE);ordered=true;}
+    if(elapsed>10&&!panStarted){NativeEngine::QueueKey(0xcd,TRUE);panStarted=true;}
+    if(elapsed>12&&!panEnded){NativeEngine::QueueKey(0xcd,FALSE);panEnded=true;}
+    app.Frame();renderer.read_presented_rgba(W,H,rgba.data());
+    for(unsigned y=0;y<H;++y)for(unsigned x=0;x<W;++x)for(unsigned c=0;c<3;++c)rgb[(y*W+x)*3+c]=rgba[((H-1-y)*W+x)*4+c];
+    char name[32];std::snprintf(name,sizeof(name),"frame-%05u.ppm",frames);std::ofstream output(capture/name,std::ios::binary);output<<"P6\n"<<W<<" "<<H<<"\n255\n";output.write(reinterpret_cast<const char *>(rgb.data()),rgb.size());check(bool(output));
+    timing<<frames<<','<<std::chrono::duration<double>(std::chrono::steady_clock::now()-begin).count()<<','<<app.SimulationCycles()<<'\n';++frames;
+    std::this_thread::sleep_until(begin+std::chrono::milliseconds(std::uint64_t(frames)*1000/15));
+   }
+   NativeEngine::QueueKey(0xcd,FALSE);std::ofstream meta(capture/"capture.txt");meta<<"Actual original engine host GLES capture. Source: "<<(std::getenv("REIGN_CAPTURE_SOURCE")?std::getenv("REIGN_CAPTURE_SOURCE"):"working-tree")<<"\nNo phone FPS claim. Original 10 Hz simulation, no time overrides.\nMission="<<selectedMission<<" opponents=1 frames="<<frames<<" cycle_delta="<<app.SimulationCycles()-cycle<<"\n"<<app.Diagnostics();meta.close();timing.flush();app.Close();std::cout<<"Captured "<<frames<<" original-engine gameplay frames\n";return 0;
+  }
   if(pass==0&&argc==2){
    auto *unit=Team::GetDisplayTeam()->GetUnitObjects().GetHead();check(unit);
    Vector point=unit->Position();point.y+=3;F32 rhw;Vid::ProjectFromWorld(point,rhw);

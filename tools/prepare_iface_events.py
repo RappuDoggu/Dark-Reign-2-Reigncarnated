@@ -96,11 +96,15 @@ namespace IFace { Bool IFaceEventHandler(Event &); }
             a=match.start();b=source.index('{',a)+1;depth=1
             while depth:depth+=(source[b]=='{')-(source[b]=='}');b+=1
             body=source[a:b].replace('ASSERT(sysInit);','ASSERT(reign::iface_event_detail::state().treeReady);')
+            if name=='Activate':
+                expression='name' if 'const char *name' in match[0] else 'ctrl ? ctrl->Name() : nullptr'
+                at=body.index('{')+1
+                body=body[:at]+'\n    if (reign::routeHostOptions('+expression+')) return TRUE;'+body[at:]
             fields=['root','overlays','ctrlTypes','systemFlags']
             token=r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\b(?:'+'|'.join(fields)+r')\b'
             body=re.sub(token,lambda m:'reign::iface_event_detail::state().'+m[0] if m[0] in fields else m[0],body)
             factory.append(body)
-    (output/'iface_factory.cpp').write_text('#include "iface_events.hpp"\nnamespace IFace {\n'+'\n\n'.join(factory)+'\n}\n')
+    (output/'iface_factory.cpp').write_text('#include "iface_events.hpp"\n#include "reign/host_options.hpp"\nnamespace IFace {\n'+'\n\n'.join(factory)+'\n}\n')
     command_cases=source[source.index('      case 0x971AD37F:'):source.index('      case 0x7C2B3DA1:')]
     (output/'iface_commands.cpp').write_text('#include "iface_events.hpp"\n#include "console_slice.hpp"\n#define CON_ERR(args) throw std::invalid_argument("Interface command requires control name");\nnamespace IFace { void NativeControlCommand(U32 crc) { switch(crc) {\n'+command_cases+'default: throw std::invalid_argument("Unsupported interface command"); } } }\nnamespace reign { void register_interface_commands() { VarSys::RegisterHandler("iface",IFace::NativeControlCommand,VarSys::NOTIFY); for(auto name:{"iface.activate","iface.deactivate","iface.toggleactive"}) VarSys::CreateCmd(name,VarSys::NOTIFY); } }\n')
     def extract(signature):

@@ -324,6 +324,19 @@ text=text.replace('return (data.IsEmpty() ? FALSE : TRUE);','const auto *session
 source.write_text('#include "session_native.h"\n#include "multiplayer_data.h"\n#include "styxnet_data.h"\nnamespace MultiPlayer { namespace Data {\nstatic StyxNet::Data data;\n'+''.join(original_function(text,s) for s in functions)+'}}\n')
 
 
+# These polymorphic classes are private to this translation unit. Delete through
+# their existing vptr without changing Location's public layout or engine flags.
+patch('coregame_ai/strategic_location.cpp', [
+ ('    virtual void GetPosition(Vector &position, Object *object, Script *script) = 0;',
+  '    virtual void GetPosition(Vector &position, Object *object, Script *script) = 0;\n    virtual ~Base() = default;'),
+ ('    virtual void ModifyPosition(Vector &position, Object *object, Script *script) = 0;',
+  '    virtual void ModifyPosition(Vector &position, Object *object, Script *script) = 0;\n    virtual ~Offset() = default;')])
+
+patch('coregame_ai/strategic_placement_manager_clusterinfo.cpp', [('    delete info;', '    delete[] info;')])
+
+# Random AI personality selection owns an array of pointers, even with one mod.
+patch('game/mods.cpp', [('      delete mods;', '      delete[] mods;')])
+
 # Preserve original Effect/Record/Reserved policy with bounded native PCM handles.
 (out/'3rdparty/mss.h').write_text('#pragma once\n#include "miles_native.h"\n')
 patch('sound/sound.cpp', [(r'      AIL_set_redist_directory("library\\mss");','      // Native audio has no external redistributable directory.'),('      AIL_startup();','      // Android output is opened explicitly by the application.'),('      AIL_shutdown();','      // Output lifetime belongs to the native application.'),('return (AIL_last_error());','return (NativeEngine::DigitalLastError());')])
@@ -383,6 +396,12 @@ patch('util/varitem.cpp',[('delete binary.data;', 'delete[] binary.data;')])
 # Default colors are copied during the next interface startup; clear the owner
 # pointer when disposing its tree to prevent reinitialization reading freed data.
 patch('interface/iface.cpp',[('    stdColorGroups.DisposeAll();','    stdColorGroups.DisposeAll();\n    data.cgDefault = NULL;')])
+source=out/'interface/iface.cpp';text=source.read_text()
+for signature,expression in [('  Bool Activate(const char *name)','name'),('  Bool Activate(IControl *ctrl)','ctrl ? ctrl->Name() : nullptr')]:
+ old=signature+'\n  {'
+ if text.count(old)!=1:raise ValueError('Missing original interface activation boundary: '+signature)
+ text=text.replace(old,old+'\n    if (reign::routeHostOptions('+expression+')) return TRUE;')
+source.write_text('#include "reign/host_options.hpp"\n'+text)
 # Startup tracing identifies the last original subsystem reached on device/host.
 source=out/'coregame/game.cpp';text=source.read_text()
 for call in ['Team::Init();','Environment::Init();','MoveTable::Init();','SidePlacement::Init();','UnitLimits::Init();','TerrainGroup::Init();','AI::Init();','TaskCtrl::Init();','Config::Init();','MissionVar::Init();']:
