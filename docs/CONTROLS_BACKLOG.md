@@ -1,5 +1,31 @@
 # Single-screen controls and remaining ideas
 
+
+## Current touch behavior: APK 27
+
+The owner chose tap anchoring and rotation, with double-tap confirmation.
+Outside placement, single tap remains original left click, one-finger drag holds
+left mouse for selection, and stationary hold selects a build control.
+
+While placing, the first single tap anchors the preview. Later single taps
+rotate one step at the saved cursor position; their rotation waits 300 ms to
+distinguish a double tap. A double tap confirms at that saved position and
+cancels its pending single rotation. Drag deliberately repositions the preview.
+Anchored taps never move the native pointer, including on finger-down. Holding
+while placing no longer confirms. Three-finger rotation is replaced by this
+chosen scheme; three/four fingers do not rotate or confirm. Two-finger pan stays
+available during gameplay, without pinch zoom or twist.
+
+Camera pan is gated while cinematics/mission handoffs own the camera. Ending a
+cinematic restores the default gameplay camera when the current camera is still
+the cinematic one; scripted changes to other cameras are retained. Native input,
+unsupported operation errors and original 10 Hz simulation remain explicit.
+
+55 gesture checks cover the anchored coordinates, single/double discrimination,
+reposition, holds, multitouch, cancellation and ordinary left-mouse input. Phone
+feel still needs the owner's test. The earlier candidate descriptions below are
+history; APK 27 supersedes their placement gestures. Controllers remain deferred.
+
 ## Current controls — version 24
 
 - Tap once for the original left click: select, give orders and use the HUD.

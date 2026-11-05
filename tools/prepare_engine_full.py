@@ -428,6 +428,13 @@ for name,calls in {
   if call not in text:raise ValueError('Missing campaign loading boundary: '+call)
   text=text.replace(call,'NativeEngine::missionLoadStatus.Update("'+call.replace('"','\\"')+'");\n    '+call)
  source.write_text('#include "load_status.h"\n'+text)
+# Preserve original campaign selection/progress logic while routing the desktop
+# outer-loop Mission/Shell requests to the Android owner at a frame boundary.
+source=out/'game/missions.cpp';text=source.read_text()
+for old,new in [('    Main::runCodes.Set("Shell");','    NativeEngine::RequestMissionRoute(NativeEngine::MissionRoute::menu);'),('    Main::runCodes.Set(0xA293FAEB); // "Mission"','    NativeEngine::RequestMissionRoute(NativeEngine::MissionRoute::mission);')]:
+ if text.count(old)!=1:raise ValueError('Missing original mission navigation boundary: '+old)
+ text=text.replace(old,new)
+source.write_text('#include "mission_route.h"\n'+text)
 # Auto MRM is off by default. Use explicit graphics budgets rather than the
 # obsolete x86 MHz heuristic; these variables remain user/config adjustable.
 patch('graphics/vid_cmd_mesh.cpp',[('U32 low  = Hardware::CPU::GetSpeed() * 10;','U32 low = 10000; // Native default graphics triangle budget'),('U32 high = low + Hardware::CPU::GetSpeed();','U32 high = 11000;')])

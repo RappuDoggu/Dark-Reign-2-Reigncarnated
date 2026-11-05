@@ -64,6 +64,7 @@ namespace Sight {class Map;}
 #include "load_status.h"
 #include "audio_status.h"
 #include "variable_failure.h"
+#include "mission_route.h"
 
 #include <functional>
 namespace Vid {namespace Command {void InitMesh();void DoneMesh();}}
@@ -77,6 +78,7 @@ template<class T> void Register(const char *name){IFace::RegisterControlClass(na
 struct MissionApp::Impl {
  std::vector<std::function<void()>> cleanup;
  std::unique_ptr<Camera> camera;
+ std::optional<MissionDestination> navigation;
  bool closed=false,active=true,pausedHere=false,owns=false,gameInitialized=false,reportedSimulation=false,reportedLoaded=false;
  void EndGame(){if(gameInitialized){Game::Done();gameInitialized=false;}}
  void Defer(std::function<void()> fn){cleanup.push_back(std::move(fn));}
@@ -94,7 +96,7 @@ struct MissionApp::Impl {
   auto pack=std::filesystem::exists(root/"packs/base.zwp")?root/"packs/base.zwp":root/"base.zwp";
   Require(std::filesystem::exists(pack),"Missing owned base.zwp");
   std::filesystem::create_directories(work);auto previous=std::filesystem::current_path();
-  engineActive=true;owns=true;LastVariableFailure().clear();missionLoadStatus.Reset();missionLoadStatus.ConfigureJournal(work/"loading-last.log");missionLoadStatus.Update("Mounting installation and startup configuration");Defer([previous]{std::filesystem::current_path(previous);});
+  engineActive=true;owns=true;navigation.reset();MissionRouteRequest()=MissionRoute::none;LastVariableFailure().clear();missionLoadStatus.Reset();missionLoadStatus.ConfigureJournal(work/"loading-last.log");missionLoadStatus.Update("Mounting installation and startup configuration");Defer([previous]{std::filesystem::current_path(previous);});
   PrepareResourceLinks(root,work,pack);
   std::filesystem::current_path(work);
   if(!clockReady){Clock::Time::Init();clockReady=true;}
@@ -159,10 +161,30 @@ void MissionApp::Control(unsigned action,float x,float y){
  if(action==1){Client::Events::TriggerClientMode(Client::CM_NONE);Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr("de::deselect"),0,0);}
  else if(action==2||action==3)Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr(action==2?"de::prevdir":"de::nextdir"),0,0);
  else if(action==6)Vid::SetFogStateI(!Vid::renderState.status.fog); // Distance fog only; sight/shroud remain original.
- else if(action==5){auto *camera=dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent());if(!camera)throw std::logic_error("Map pan requires the Standard game camera");const auto &matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();auto delta=right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->PanNative(delta.x,delta.z);}
+ else if(action==5){if(!CanPan())throw std::logic_error("Map camera controls are locked during this cinematic or transition");auto *camera=dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent());const auto &matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();auto delta=right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->PanNative(delta.x,delta.z);}
  else throw std::invalid_argument("Unknown mission control");
 }
-void MissionApp::Frame(){if(impl->closed)throw std::logic_error("Mission runtime is closed");if(BeginNativeFrame()){Game::RC::Process();GameSound::Poll();if(!impl->reportedLoaded&&InSimulation()){missionLoadStatus.Update("Mission loaded; starting first simulation cycle");impl->reportedLoaded=true;}if(!impl->reportedSimulation&&InSimulation()&&SimulationCycles()>0){missionLoadStatus.Complete();impl->reportedSimulation=true;}}}
+void MissionApp::Frame(){
+ if(impl->closed)throw std::logic_error("Mission runtime is closed");if(impl->navigation)return;
+ if(BeginNativeFrame()){
+  const bool wasCinematic=Viewer::Action::IsPlaying();Game::RC::Process();GameSound::Poll();
+  if(wasCinematic&&!Viewer::Action::IsPlaying()&&!Viewer::movie&&Viewer::GetCurrent()&&std::string(Viewer::GetCurrent()->GetName())=="Viewer::Action::Cinematic"){
+   if(!Viewer::SetCurrent("default",TRUE))throw std::runtime_error("Cannot restore gameplay camera after cinematic");
+   missionLoadStatus.Update("Cinematic ended; gameplay camera restored");
+  }
+  const auto route=MissionRouteRequest();MissionRouteRequest()=MissionRoute::none;
+  if(route==MissionRoute::menu){impl->navigation=MissionDestination{"","",true,false};missionLoadStatus.Update("Returning to main menu");}
+  else if(route==MissionRoute::mission){
+   const auto *selected=Missions::GetSelected();Require(selected!=nullptr,"Mission transition has no selected target");
+   impl->navigation=MissionDestination{selected->GetGroup().GetPath().str,selected->GetName().str,false,Campaigns::Find(selected)!=nullptr};
+   missionLoadStatus.Update("Mission transition requested: "+impl->navigation->group+"/"+impl->navigation->mission);
+  }
+  if(!impl->reportedLoaded&&InSimulation()){missionLoadStatus.Update("Mission loaded; starting first simulation cycle");impl->reportedLoaded=true;}
+  if(!impl->reportedSimulation&&InSimulation()&&SimulationCycles()>0){missionLoadStatus.Complete();impl->reportedSimulation=true;}
+ }
+}
+bool MissionApp::CanPan()const{return !impl->closed&&!impl->navigation&&InSimulation()&&!Viewer::Action::IsPlaying()&&!Viewer::movie&&dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent());}
+std::optional<MissionDestination> MissionApp::TakeNavigation(){auto target=std::move(impl->navigation);impl->navigation.reset();return target;}
 void MissionApp::SetActive(bool active){
  if(impl->closed||impl->active==active)return;
  if(!active){impl->pausedHere=!GameTime::Paused();if(impl->pausedHere)GameTime::Pause(FALSE);}

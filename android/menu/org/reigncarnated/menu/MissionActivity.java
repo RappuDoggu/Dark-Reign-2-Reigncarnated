@@ -14,6 +14,8 @@ public final class MissionActivity extends Activity {
  private static native long openMission(String root,String writable,String group,String mission,boolean campaign,int opponents,int seed,String difficulty);
  private static native String controlMission(long h,int action,float x,float y);
  private static native boolean placingMission(long h);
+ private static native boolean panEnabledMission(long h);
+ private static native String[] navigationMission(long h);
  private static native void abandonMission(long h);
  private static native String missionError();
  private static native String loadingMission();
@@ -29,6 +31,8 @@ public final class MissionActivity extends Activity {
  private static native void pointerMission(int x,int y,int button,boolean down);
  private static native void keyMission(int key,boolean down);
  private static native void closeMission(long handle);
+ private static final class Target {final String group,mission;final boolean campaign;Target(String g,String m,boolean c){group=g;mission=m;campaign=c;}}
+ private volatile Target target;
  private MissionView view;private RenderMetrics metrics;
  private TextView status;
  private volatile boolean resumed;
@@ -41,7 +45,7 @@ public final class MissionActivity extends Activity {
   Button button=new Button(this);button.setText(label);button.setMinHeight(dp(48));button.setTooltipText(hint);button.setOnClickListener(v->action.run());return button;
  }
  @Override public void onCreate(Bundle state){
-  super.onCreate(state);AndroidOptions.importFrom(this,getIntent());Diagnostics.init(this);getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);getWindow().getDecorView().setSystemUiVisibility(5894);
+  super.onCreate(state);target=new Target(intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),getIntent().getBooleanExtra("campaign",false));AndroidOptions.importFrom(this,getIntent());Diagnostics.init(this);getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);getWindow().getDecorView().setSystemUiVisibility(5894);
   FrameLayout root=new FrameLayout(this);view=new MissionView();root.addView(view);
   status=new TextView(this);status.setTextColor(0xffffffff);status.setBackgroundColor(0xc0000000);status.setText("Loading "+intentValue("mission","2crazed")+"…");root.addView(status,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
   status.setOnClickListener(v->shareLoadingReport());
@@ -58,10 +62,10 @@ public final class MissionActivity extends Activity {
   HorizontalScrollView scroll=new HorizontalScrollView(this);scroll.setHorizontalScrollBarEnabled(false);LinearLayout more=new LinearLayout(this);
   more.addView(actionButton("Build ↶","Rotate the selected building preview counterclockwise",()->view.control(2,0,0)));
   more.addView(actionButton("Build ↷","Rotate the selected building preview clockwise",()->view.control(3,0,0)));
-  more.addView(actionButton("Camera","Two fingers pan the map only. Three-finger tap rotates the building preview.",()->cameraTools.setVisibility(cameraTools.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE)));
+  more.addView(actionButton("Camera","Two fingers pan the map only. While placing: tap to anchor/rotate, double-tap to confirm.",()->cameraTools.setVisibility(cameraTools.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE)));
   more.addView(actionButton("Debug","Collect or share diagnostics",this::showDebugTools));scroll.addView(more);toolbar.addView(scroll,new LinearLayout.LayoutParams(0,-2,1));root.addView(toolbar,new FrameLayout.LayoutParams(-1,-2,Gravity.TOP));
   more.addView(actionButton("Options","Audio, display and touch options",()->AndroidOptions.show(this,()->{AndroidOptions.applyWindow(this,metrics);if(music!=null)music.setMusicVolume(AndroidOptions.music(this)/100f);view.queueEvent(()->{if(view.handle!=0){String error=effectsMission(view.handle,AndroidOptions.effects(this));if(error!=null)report(error);}});})));
-  placementHint=new TextView(this);placementHint.setText("Tap to left-click • Drag to select • Hold to build/place • Three-finger tap rotates");placementHint.setTextColor(0xffffffff);placementHint.setBackgroundColor(0xc0000000);placementHint.setVisibility(View.GONE);FrameLayout.LayoutParams hintPosition=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);hintPosition.topMargin=dp(52);root.addView(placementHint,hintPosition);
+  placementHint=new TextView(this);placementHint.setText("Tap to anchor • Tap again to rotate • Double-tap to place • Drag to reposition");placementHint.setTextColor(0xffffffff);placementHint.setBackgroundColor(0xc0000000);placementHint.setVisibility(View.GONE);FrameLayout.LayoutParams hintPosition=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);hintPosition.topMargin=dp(52);root.addView(placementHint,hintPosition);
   metrics=new RenderMetrics(this,root,"Mission");setContentView(root);
  }
  private void showDebugTools(){
@@ -72,7 +76,7 @@ public final class MissionActivity extends Activity {
   }).show();
  }
  private void shareLoadingReport(){java.util.Map<String,String> reports=new java.util.LinkedHashMap<>();reports.put("loading.txt","Mission "+intentValue("group","")+"/"+intentValue("mission","")+"\n"+loadingMission());reports.put("performance.txt",metrics.latest());Diagnostics.shareZip(this,reports,new java.util.LinkedHashMap<>());}
- private String intentValue(String key,String fallback){String value=getIntent().getStringExtra(key);return value==null?fallback:value;}
+ private String intentValue(String key,String fallback){Target current=target;if(current!=null){if(key.equals("group"))return current.group;if(key.equals("mission"))return current.mission;}String value=getIntent().getStringExtra(key);return value==null?fallback:value;}
  private void report(String text){runOnUiThread(()->{status.setText(text);status.setVisibility(View.VISIBLE);});}
  @Override protected void onResume(){super.onResume();Diagnostics.event("Mission resume");metrics.reset();AndroidOptions.applyWindow(this,metrics);resumed=true;loadingHandler.removeCallbacks(loadingPoll);loadingHandler.postDelayed(loadingPoll,500);
   music=new MenuAudioPlayer(this,Diagnostics::event);music.setMusicVolume(AndroidOptions.music(this)/100f);String musicRoot=getIntent().getStringExtra("musicRoot");if(musicRoot!=null)music.playPlaylist(DataFolderImporter.playlist(new File(musicRoot)));if(view!=null){view.onResume();view.queueEvent(()->{if(view.handle!=0){String error=activeMission(view.handle,true);if(error!=null)report(error);}});}}
@@ -91,7 +95,7 @@ public final class MissionActivity extends Activity {
  private final class MissionView extends GLSurfaceView implements GLSurfaceView.Renderer {
   DiagnosticSweep sweep;
   final android.os.Handler holdHandler=new android.os.Handler(android.os.Looper.getMainLooper());
-  void cancelTouch(){holdHandler.removeCallbacks(holdCheck);touch.cancel();}
+  void cancelTouch(){holdHandler.removeCallbacks(holdCheck);holdHandler.removeCallbacks(tapCheck);touch.cancel();}
   long handle;int width,height;volatile boolean failed;boolean ready,tapRelease,placing;int tapX,tapY;
   final MissionTouch touch=new MissionTouch(new MissionTouch.Sink(){
    public void move(int x,int y){queueEvent(()->pointerMission(x,y,-1,false));}
@@ -100,15 +104,23 @@ public final class MissionActivity extends Activity {
    public void click(int x,int y){queueEvent(()->{if(tapRelease)pointerMission(tapX,tapY,0,false);pointerMission(x,y,0,true);tapX=x;tapY=y;tapRelease=true;});}
    public void camera(int action,float x,float y){if(action==2||action==3)performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);float speed=AndroidOptions.pan(MissionActivity.this);control(action,x*speed,y*speed);}
   });
+  final Runnable tapCheck=()->{if(resumed)touch.advance(android.os.SystemClock.uptimeMillis());};
   final Runnable holdCheck=()->{if(resumed&&touch.hold(android.os.SystemClock.uptimeMillis()))performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);};
   MissionView(){super(MissionActivity.this);setEGLContextClientVersion(3);setPreserveEGLContextOnPause(true);setEGLConfigChooser(8,8,8,8,16,0);setRenderer(this);}
   public void onSurfaceCreated(GL10 gl,EGLConfig config){if(sweep!=null){sweep.cancel();sweep=null;}Diagnostics.event("Mission GPU: "+gl.glGetString(GL10.GL_RENDERER)+" | "+gl.glGetString(GL10.GL_VERSION));if(handle!=0){abandonMission(handle);closeMission(handle);handle=0;report("Graphics context restored; restarting test mission…");}failed=ready=placing=tapRelease=simulationReady=false;runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);});}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;}
   public void onDrawFrame(GL10 gl){if(!resumed||failed||width<=0||height<=0)return;
-   if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),getIntent().getBooleanExtra("campaign",false),getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
-   long drawStart=System.nanoTime();String error=frameMission(handle,width,height);boolean nextPlacement=placingMission(handle);if(nextPlacement!=placing){placing=nextPlacement;runOnUiThread(()->{touch.aim(nextPlacement);placementHint.setVisibility(nextPlacement?View.VISIBLE:View.GONE);});}if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}long drawEnd=System.nanoTime();metrics.frame(drawStart,drawEnd,()->performanceMission(handle));if(sweep!=null){if(error!=null)sweep.abort(error);else sweep.frame(drawStart,drawEnd);}if(error!=null){Diagnostics.saveMissionState(MissionActivity.this,intentValue("group","")+"/"+intentValue("mission",""),metrics.latest()+"\n"+diagnosticsMission(handle));failed=true;simulationReady=false;runOnUiThread(()->cancelTouch());report(error);}else if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;runOnUiThread(()->status.setVisibility(View.GONE));}
+   if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),target.campaign,getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
+   long drawStart=System.nanoTime();String error=frameMission(handle,width,height);boolean nextPlacement=placingMission(handle);if(nextPlacement!=placing){placing=nextPlacement;runOnUiThread(()->{touch.aim(nextPlacement);placementHint.setVisibility(nextPlacement?View.VISIBLE:View.GONE);});}if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}long drawEnd=System.nanoTime();metrics.frame(drawStart,drawEnd,()->performanceMission(handle));if(sweep!=null){if(error!=null)sweep.abort(error);else sweep.frame(drawStart,drawEnd);}if(error!=null){Diagnostics.event("Mission frame stopped: "+error);Diagnostics.saveMissionFailure(MissionActivity.this,intentValue("group","")+"/"+intentValue("mission",""),metrics.latest()+"\n"+diagnosticsMission(handle));failed=true;simulationReady=false;runOnUiThread(()->cancelTouch());report(error);}else {String[] route=navigationMission(handle);if(route!=null){
+    Diagnostics.saveMissionState(MissionActivity.this,intentValue("group","")+"/"+intentValue("mission",""),metrics.latest()+"\n"+diagnosticsMission(handle));
+    simulationReady=false;ready=false;
+    if(route[0].equals("menu")){failed=true;runOnUiThread(()->onBackPressed());return;}
+    closeMission(handle);handle=0;placing=tapRelease=false;target=new Target(route[1],route[2],route[3].equals("1"));
+    Diagnostics.event("Campaign handoff to "+route[1]+"/"+route[2]);
+    runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);status.setText("Loading "+route[2]+"…");status.setVisibility(View.VISIBLE);metrics.reset();loadingHandler.removeCallbacks(loadingPoll);loadingHandler.postDelayed(loadingPoll,500);});return;
+   }if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;runOnUiThread(()->status.setVisibility(View.GONE));}}
   }
-  void control(int action,float x,float y){queueEvent(()->{if(handle!=0){String error=controlMission(handle,action,x,y);if(error!=null){Diagnostics.event(error);runOnUiThread(()->Toast.makeText(MissionActivity.this,error,Toast.LENGTH_SHORT).show());}}});}
+  void control(int action,float x,float y){queueEvent(()->{if(handle!=0){if(action==5&&!panEnabledMission(handle))return;String error=controlMission(handle,action,x,y);if(error!=null){Diagnostics.event(error);runOnUiThread(()->Toast.makeText(MissionActivity.this,error,Toast.LENGTH_SHORT).show());}}});}
   @Override public boolean onTouchEvent(MotionEvent event){
    float scale=Math.min(width/640f,height/480f);if(scale<=0)return true;
    if(!simulationReady){cancelTouch();return true;}
@@ -117,7 +129,7 @@ public final class MissionActivity extends Activity {
    if(action==MotionEvent.ACTION_CANCEL){cancelTouch();return true;}
    if(action==MotionEvent.ACTION_DOWN){holdHandler.removeCallbacks(holdCheck);touch.down(x,y,event.getEventTime());holdHandler.postDelayed(holdCheck,MissionTouch.HOLD_MS);return true;}
    if(event.getPointerCount()>=2){holdHandler.removeCallbacks(holdCheck);int n=event.getPointerCount();int[] ids=new int[n];float[] xs=new float[n],ys=new float[n];for(int i=0;i<n;i++){ids[i]=event.getPointerId(i);xs[i]=(event.getX(i)-offsetX)/scale;ys[i]=(event.getY(i)-offsetY)/scale;}touch.fingers(ids,xs,ys,event.getEventTime());if(action==MotionEvent.ACTION_POINTER_UP)touch.pairEnd(event.getEventTime());return true;}
-   if(action==MotionEvent.ACTION_UP){holdHandler.removeCallbacks(holdCheck);touch.up(x,y,event.getEventTime());}else if(action==MotionEvent.ACTION_MOVE)touch.move(x,y);return true;
+   if(action==MotionEvent.ACTION_UP){holdHandler.removeCallbacks(holdCheck);touch.up(x,y,event.getEventTime());holdHandler.removeCallbacks(tapCheck);long deadline=touch.rotationDeadline();if(deadline>0)holdHandler.postAtTime(tapCheck,deadline);}else if(action==MotionEvent.ACTION_MOVE)touch.move(x,y);return true;
   }
  }
 }

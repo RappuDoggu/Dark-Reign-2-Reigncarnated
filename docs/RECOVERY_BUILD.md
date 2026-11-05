@@ -586,3 +586,48 @@ No new device cinematic/FPS result is claimed. See DIAGNOSTICS_REVIEW_V25.md for
 evidence and limits. Validation includes 68 host tests, 12 foundation tests,
 real viewport/clear/clipping pixels, two-pass original cinematic/reference
 mission lifecycles, SDK 35 Java compilation and 48 touch checks.
+
+
+## APK 27: anchored placement and deferred campaign handoff
+
+Use the full builder command from APK 24, changing output to `"$work/v27"` and
+output name to `Reigncarnated-Placement-Campaign-v27.apk`. Retain the APK 22-26
+private signer and `org.reigncarnated.instantcity` identity. Both native libraries
+and all Java are packaged with exact source/native receipts; existing game data
+is retained. The current incremental artifact reuses the unchanged verified APK
+26 menu/renderer, original APK 24 objects and APK 26 overrides, and rebuilds the
+original game/missions.cpp plus mission adapters. The full builder verifies pins
+and cleanly recompiles all selected units; no game assets or keys enter Git/APK.
+
+The owner selected these placement controls: first tap anchors, later single taps
+rotate in place, double-tap confirms. Single rotations wait 300 ms to distinguish
+double tap; double tap confirms at the anchor with no extra rotation. Drag
+repositions. Hold still chooses a building outside placement, but no longer
+confirms while placing. Three-finger rotation is replaced by this scheme.
+Normal single left-click, drag selection and two-finger pan remain. See
+CONTROLS_BACKLOG.md for current behavior and the older gesture history.
+
+An original cinematic that ends while still using its cinematic camera now
+returns to the original default camera, inheriting its view. Pan gestures are
+gated while a cinematic/transition owns the camera. Original campaign Mission/
+Shell requests are delivered after the current frame returns, using original
+NextMission selection and campaign ordering. Android then snapshots/closes the
+old runtime and opens the requested target, or returns to the menu. No resource
+teardown occurs inside a script/simulation tick. No hardcoded intro skip is used.
+
+Reports now preserve last-mission-failure.txt and previous-mission-failure.txt
+separately from successful mission snapshots, 128 KiB each, with mission/source/
+time receipts. Successful Instant Action cannot replace JDA's failure evidence.
+The actual JDA invalid-variable caller was lost from the supplied two-slot APK
+26 report ring; **JDA is not claimed fixed**. Test Sprawler, JDA and controls,
+then collect a new menu ZIP if needed. DIAGNOSTICS_REVIEW_V26.md records the
+current evidence, including unresolved invalid UV draw diagnostics.
+
+Validation: 55 touch checks, 13 retention checks, SDK 35 Java compilation and
+12 foundation tests pass. Authored original cinematic camera/pan restoration
+and a private two-map campaign fixture pass twice: original NextMission target,
+safe close/reload, simulation, final menu route and pause/resume/cleanup. The
+reference Instant Action lifecycle also passes twice. Original 10 Hz/ABI flags,
+supported High graphics and fenced unsynchronized streaming remain. This does
+not establish retail campaign completion, Android handoff lifecycle, phone
+placement feel or a new APK 27 FPS benchmark.

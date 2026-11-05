@@ -87,3 +87,11 @@ extern "C" JNIEXPORT void JNICALL Java_org_reigncarnated_menu_MissionActivity_ab
 extern "C" JNIEXPORT jstring JNICALL Java_org_reigncarnated_menu_MissionActivity_controlMission(JNIEnv *env,jclass,jlong handle,jint action,jfloat x,jfloat y){try{state(handle).app->Control(unsigned(action),x,y);return nullptr;}catch(const std::exception&e){return env->NewStringUTF(e.what());}}
 
 extern "C" JNIEXPORT jboolean JNICALL Java_org_reigncarnated_menu_MissionActivity_placingMission(JNIEnv *,jclass,jlong handle){return handle&&state(handle).app->Placing();}
+
+extern "C" JNIEXPORT jboolean JNICALL Java_org_reigncarnated_menu_MissionActivity_panEnabledMission(JNIEnv *,jclass,jlong handle){return handle&&state(handle).app->CanPan()?JNI_TRUE:JNI_FALSE;}
+extern "C" JNIEXPORT jobjectArray JNICALL Java_org_reigncarnated_menu_MissionActivity_navigationMission(JNIEnv *env,jclass,jlong handle){
+ if(!handle)return nullptr;auto target=state(handle).app->TakeNavigation();if(!target)return nullptr;
+ auto type=env->FindClass("java/lang/String");if(!type)return nullptr;auto result=env->NewObjectArray(4,type,nullptr);env->DeleteLocalRef(type);if(!result)return nullptr;
+ const std::string values[]={target->menu?"menu":"mission",target->group,target->mission,target->campaign?"1":"0"};
+ for(int i=0;i<4;++i){auto value=env->NewStringUTF(values[i].c_str());if(!value)return nullptr;env->SetObjectArrayElement(result,i,value);env->DeleteLocalRef(value);if(env->ExceptionCheck())return nullptr;}return result;
+}

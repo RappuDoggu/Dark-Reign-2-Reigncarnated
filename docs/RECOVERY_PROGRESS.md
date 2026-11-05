@@ -975,3 +975,56 @@ and stripped mission build IDs, and exclusion of game packs/keys/private traces.
 The unchanged signed artifact is mirrored under builds/v0.20. Retail cinematic
 appearance, JDA caller/root cause and Android automatic report lifecycle remain
 phone acceptance checks; Instant Action combat audio is owner confirmed.
+
+
+## APK 27: owner-selected placement and original campaign handoff
+
+The owner reports Sprawler's opening camera now reaches the start, then pan
+complains that it needs Standard camera; JDA still stops in Chapter 1; Instant
+Action works. The private ZIP matches APK 26 receipts. Sprawler EndCineractive
+runs at cycle 945, with cinematic/movie inactive by cycle 1401 but current camera
+still cinematic. Original next-mission requests also had no registered desktop
+outer-loop Mission/Shell consumer in this native runner.
+
+Ending a cinematic now restores the original default camera if its cinematic
+camera still owns the view. Pan is gated while cinematics/handoffs own the camera.
+Original campaign Mission/Shell requests are queued to Android after a whole
+engine frame; original selection, ordering, results/progress and difficulty
+rules remain. Android saves the old state, closes it safely, then opens the
+selected target or returns to menu. No mission name is hardcoded or skipped.
+
+The owner explicitly chose tap-to-anchor, more single taps to rotate and double
+tap to confirm. Rotation/confirmation use the saved cursor position with no
+pointer movement on anchored taps. A 300 ms single-tap delay permits double-tap
+confirmation with no extra rotation. Drag deliberately repositions; hold still
+chooses a build command outside placement. Placement hold confirmation and
+three-finger rotation are superseded. Normal left click/drag and two-finger pan
+without zoom remain; controller work stays deferred.
+
+JDA's report was displaced when the owner tested Sprawler and Instant Action,
+so its exact invalid VarPtr caller remains unavailable. A separate bounded pair
+of failed-mission reports now survives successful missions, retaining source,
+time and caller evidence. No JDA root-cause fix is claimed. The supplied 2siege
+report shows 350 cycles, approximately 120 FPS and audible mixer callbacks,
+consistent with owner-confirmed Instant Action/combat sounds. This is APK 26
+evidence, not a fresh APK 27 benchmark. Invalid UV/NaN draw rejections remain
+explicit and unresolved in Sprawler diagnostics; no rendering validation is
+weakened. Raw reports/traces and game data remain private.
+
+Validation: 55 gesture checks, 13 failure-retention checks and SDK 35 Java pass;
+12 engine foundation tests pass. Original authored cinematic tests lock pan
+while cinematic and restore gameplay pan after it ends. A private two-map
+campaign fixture runs original NextMission selection, deferred target delivery,
+close/load/simulation of that target and final menu route twice. Reference
+Instant Action also loads/simulates/pauses/resumes/closes twice. These are host
+fixtures, not retail story completion or Android lifecycle/gesture acceptance.
+The 1,791-file pinned source check passes, the changed original mission unit and
+ARM64 mission adapters rebuild/relink, and verified unchanged original/menu/
+renderer objects are retained. Source reproduction uses the clean full builder.
+
+SDK 35, NDK 27.2.12479018, FFmpeg n6.1.1, original ABI flags/10 Hz simulation,
+supported High graphics and fenced append-only unsynchronized stream remain.
+The same private test signer/identity retain imported data. Every APK embeds
+exact source/build/progress receipts; keys, owned packs, raw diagnostics and
+private symbols stay outside public Git/APK. Retail handoff, controls, JDA's
+caller and new phone FPS remain acceptance checks. See DIAGNOSTICS_REVIEW_V26.md.

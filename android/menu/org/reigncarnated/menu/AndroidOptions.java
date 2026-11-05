@@ -26,7 +26,7 @@ final class AndroidOptions {
  }
  static void show(Activity a,Runnable applied){
   SharedPreferences p=preferences(a);LinearLayout panel=new LinearLayout(a);panel.setOrientation(LinearLayout.VERTICAL);int pad=Math.round(20*a.getResources().getDisplayMetrics().density);panel.setPadding(pad,pad,pad,pad);
-  TextView graphics=new TextView(a);graphics.setText("Graphics: High detail • full meshes • 32-bit textures • trilinear filtering\nTap to left-click; drag to select. Hold to build/place. Two fingers pan; three-finger tap rotates buildings.");panel.addView(graphics);
+  TextView graphics=new TextView(a);graphics.setText("Graphics: High detail • full meshes • 32-bit textures • trilinear filtering\nTap to left-click; drag to select. Hold to choose a building. Placement: tap to anchor, tap to rotate, double-tap to confirm; drag to reposition. Two fingers pan.");panel.addView(graphics);
   SeekBar music=slider(a,panel,"Music volume",100,music(a),"Muted"),effects=slider(a,panel,"Sound effects volume",100,p.getInt("effects",100),"Muted"),pan=slider(a,panel,"Map pan speed",200,p.getInt("pan",100),null),brightness=slider(a,panel,"Screen brightness",100,p.getInt("brightness",0),"Use Android setting");
   pan.setMin(10);
   CheckBox awake=new CheckBox(a);awake.setText("Keep screen awake while playing");awake.setChecked(p.getBoolean("awake",true));panel.addView(awake);
