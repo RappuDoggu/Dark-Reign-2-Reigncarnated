@@ -11,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 /** Device-validation entry point for the original ARM64 mission engine. */
 public final class MissionActivity extends Activity {
  static {System.loadLibrary("reign_mission");}
- private static native long openMission(String root,String writable,String group,String mission,boolean campaign,int opponents,int seed,String difficulty);
+ private static native long openMission(String root,String writable,String group,String mission,boolean campaign,int opponents,int seed,String difficulty,boolean individualCampaign,int startingResources);
  private static native String controlMission(long h,int action,float x,float y);
  private static native boolean placingMission(long h);
  private static native boolean panEnabledMission(long h);
@@ -35,7 +35,7 @@ public final class MissionActivity extends Activity {
  private static native void pointerMission(int x,int y,int button,boolean down);
  private static native void keyMission(int key,boolean down);
  private static native void closeMission(long handle);
- private static final class Target {final String group,mission;final boolean campaign;Target(String g,String m,boolean c){group=g;mission=m;campaign=c;}}
+ private static final class Target {final String group,mission;final boolean campaign,individual;Target(String g,String m,boolean c,boolean i){group=g;mission=m;campaign=c;individual=i;}}
  private volatile Target target;
  private MissionView view;private RenderMetrics metrics;
  private TextView status;
@@ -49,7 +49,7 @@ public final class MissionActivity extends Activity {
   Button button=new Button(this);button.setText(label);button.setMinHeight(dp(48));button.setTooltipText(hint);button.setOnClickListener(v->action.run());return button;
  }
  @Override public void onCreate(Bundle state){
-  super.onCreate(state);target=new Target(intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),getIntent().getBooleanExtra("campaign",false));AndroidOptions.importFrom(this,getIntent());Diagnostics.init(this);getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);getWindow().getDecorView().setSystemUiVisibility(5894);
+  super.onCreate(state);target=new Target(intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),getIntent().getBooleanExtra("campaign",false),getIntent().getBooleanExtra("individualCampaign",false));AndroidOptions.importFrom(this,getIntent());Diagnostics.init(this);getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);getWindow().getDecorView().setSystemUiVisibility(5894);
   FrameLayout root=new FrameLayout(this);view=new MissionView();root.addView(view);
   status=new TextView(this);status.setTextColor(0xffffffff);status.setBackgroundColor(0xc0000000);status.setText("Loading "+intentValue("mission","2crazed")+"…");root.addView(status,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
   status.setOnClickListener(v->shareLoadingReport());
@@ -116,12 +116,12 @@ public final class MissionActivity extends Activity {
   public void onSurfaceCreated(GL10 gl,EGLConfig config){syncMusic(8);if(sweep!=null){sweep.cancel();sweep=null;}Diagnostics.event("Mission GPU: "+gl.glGetString(GL10.GL_RENDERER)+" | "+gl.glGetString(GL10.GL_VERSION));if(handle!=0){abandonMission(handle);closeMission(handle);handle=0;report("Graphics context restored; restarting test mission…");}failed=ready=placing=tapRelease=simulationReady=false;runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);});}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;}
   public void onDrawFrame(GL10 gl){if(!resumed||failed||width<=0||height<=0)return;
-   if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),target.campaign,getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
+   if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),target.individual?"mission-test-runtime":"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),target.campaign,getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""),target.individual,target.campaign?-1:getIntent().getIntExtra("startingResources",-1));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
    long drawStart=System.nanoTime();String error=frameMission(handle,width,height);syncMusic(error==null?musicBlockMission(handle):8);if(error==null&&optionsMission(handle))runOnUiThread(MissionActivity.this::showOptions);boolean nextPlacement=placingMission(handle);if(nextPlacement!=placing){placing=nextPlacement;runOnUiThread(()->{touch.aim(nextPlacement);placementHint.setVisibility(nextPlacement?View.VISIBLE:View.GONE);});}if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}long drawEnd=System.nanoTime();metrics.frame(drawStart,drawEnd,()->performanceMission(handle));if(sweep!=null){if(error!=null)sweep.abort(error);else sweep.frame(drawStart,drawEnd);}if(error!=null){Diagnostics.event("Mission frame stopped: "+error);Diagnostics.saveMissionFailure(MissionActivity.this,intentValue("group","")+"/"+intentValue("mission",""),metrics.latest()+"\n"+diagnosticsMission(handle));failed=true;simulationReady=false;runOnUiThread(()->cancelTouch());report(error);}else {String[] route=navigationMission(handle);if(route!=null){
     Diagnostics.saveMissionState(MissionActivity.this,intentValue("group","")+"/"+intentValue("mission",""),metrics.latest()+"\n"+diagnosticsMission(handle));
     syncMusic(8);simulationReady=false;ready=false;
     if(route[0].equals("menu")){failed=true;runOnUiThread(()->onBackPressed());return;}
-    closeMission(handle);handle=0;placing=tapRelease=false;target=new Target(route[1],route[2],route[3].equals("1"));
+    closeMission(handle);handle=0;placing=tapRelease=false;target=new Target(route[1],route[2],route[3].equals("1"),false);
     Diagnostics.event("Campaign handoff to "+route[1]+"/"+route[2]);
     runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);status.setText("Loading "+route[2]+"…");status.setVisibility(View.VISIBLE);metrics.reset();loadingHandler.removeCallbacks(loadingPoll);loadingHandler.postDelayed(loadingPoll,500);});return;
    }if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;runOnUiThread(()->status.setVisibility(View.GONE));}}

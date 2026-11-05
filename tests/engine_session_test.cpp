@@ -58,8 +58,11 @@ int main(){try{
  MultiPlayer::SetReady();MultiPlayer::SetDataCrc(0x12345678);
  for(unsigned option=0;option<3;++option){bool invalid=false;try{NativeEngine::BeginOfflineSession("other","Commander",option==0,option==0?1:0,option==1?0:1,option==2?std::string(65,'x'):"");}catch(const std::invalid_argument &){invalid=true;}check(invalid&&NativeEngine::CurrentOfflineSession()->mission=="2crazed"&&MultiPlayer::GetDataCrc()==0x12345678&&MultiPlayer::Network::GetPlayers().GetCount()==1);}
  check(MultiPlayer::IsReady());
+ for(int value:{-2,1000001}){bool invalid=false;try{NativeEngine::BeginOfflineSession("bad","Commander",false,0,1,"",value);}catch(const std::invalid_argument &){invalid=true;}check(invalid&&NativeEngine::CurrentOfflineSession()->mission=="2crazed");}
+ bool campaignResources=false;try{NativeEngine::BeginOfflineSession("bad","Commander",true,0,1,"",12);}catch(const std::invalid_argument &){campaignResources=true;}check(campaignResources&&NativeEngine::CurrentOfflineSession()->mission=="2crazed");
  NativeEngine::BeginOfflineSession("other","Commander",false,1,42,"Hard");
  check(NativeEngine::CurrentOfflineSession()->opponents==1&&NativeEngine::CurrentOfflineSession()->seed==42&&NativeEngine::CurrentOfflineSession()->difficulty=="Hard"&&!MultiPlayer::GetDataCrc()&&!MultiPlayer::IsReady());
+ NativeEngine::BeginOfflineSession("other","Commander",false,1,42,"Hard",44444);check(NativeEngine::CurrentOfflineSession()->startingResources==44444);
  FScope unsupportedSave(nullptr,"Save");bool saveRejected=false;try{MultiPlayer::Save(&unsupportedSave);}catch(const std::runtime_error &){saveRejected=true;}check(saveRejected);
 
  FScope empty(nullptr,"Local");MultiPlayer::Load(&empty);

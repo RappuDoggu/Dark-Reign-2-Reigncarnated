@@ -1232,3 +1232,54 @@ Trailer mockup 01: `Reigncarnated-Trailer-Mockup-01.mp4`, 1,810,753 bytes,
 All video/audio decodes without error; source/capture/placeholder-audio receipt
 and poster accompany the MP4 in `trailers/mockup-01/`. Raw private captures stay
 outside the checkout. This is a draft edit, with no release announcement.
+
+## APK31: all campaign entries and player-only starting resources
+
+The owner requests main-menu access to every campaign mission and cutscene for
+testing, with clear campaign-start versus individual-entry modes. The existing
+catalog exposes only progress-unlocked campaign entries. A separate testing
+catalog now enumerates all original `Campaign/Missions/Add` entries in declaration
+order, without changing that progress-filtered API. It retains missing entries
+with availability flags instead of skipping to another opening. Named intro,
+outro and transition packs are labeled cutscenes; embedded cinematics still run
+as part of their original mission scripts.
+
+Main menu **Campaigns** offers **Start JDA campaign** and **Start Sprawler
+campaign** (or the corresponding imported campaign names), plus **Choose individual
+mission / cutscene (testing)**. A campaign start always uses its original first
+entry and follows the original sequence. The individual picker includes later
+missions and standalone cutscenes without win/unlock requirements, labels each
+entry's faction and type, and disables launch for missing imported data. Its
+explicit testing mode returns to the main menu when the entry requests a mission
+transition. Tests use `mission-test-runtime` instead of `mission-runtime`, so
+individual testing writes separate profile/progress data. Starting a campaign
+continues to use the normal profile; it does not erase existing progress.
+
+The owner chooses **player only** for the Instant Action resource override.
+During native IA selection the **Resources** button opens an Android integer
+editor: blank/map default preserves the map's stockpile, 0 is valid, and accepted
+amounts range from 0 to 1,000,000. The setting persists for subsequent IA launches.
+It is applied once to the local player's team after map/team loading, before the
+first simulation cycle. AI stockpiles and all campaign resource amounts remain
+map/script-defined. Native validation rejects invalid bounds and campaign resource
+overrides before mutating the session. Diagnostics record mode, override and
+current per-team stockpiles. The original simulation remains 10 Hz.
+
+Validation: all 68 general host tests pass. The authored catalog fixture covers
+all 31 declared campaign routes (19 mission entries and 12 standalone named
+cutscene/transition entries), both original openings, order, missing-opening
+handling and duplicate rejection. Java model/input tests pass 16 campaign and
+16 resource checks; retained touch 55, reports 13 and music policy 14 pass. The
+native session-boundary test covers resource validation and rejection without
+replacing the active session. Real IA loading with one original AI is run twice
+per amount: local 44,444 / AI 20,000, local 0 / AI 20,000, and map-default local
+20,000 / AI 20,000, checked before the first simulation cycle. Each run closes
+cleanly with ASan allocation/type checks enabled. The authored cinematic/raw-mesh/
+camera and normal campaign Followup/final-menu route pass twice; individual mode
+returns to menu instead of opening Followup, also twice. SDK35 Java and native
+ARM64 links pass. Complete retail campaign playthroughs and these new menus on a
+phone still require owner acceptance; catalog coverage is not mission completion.
+
+APK29 speech/music, APK30 Android options/AI ownership repairs, original ABI flags,
+retained textures, append-only geometry streaming and current touch controls are
+preserved. No game data, key, device recording or raw diagnostic is included.

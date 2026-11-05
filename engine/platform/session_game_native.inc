@@ -38,5 +38,9 @@ void SetupMission(){
 }
 void SetupPostMission(){
  if(!NativeEngine::CurrentOfflineSession()||!Game::MissionLoaded()||!::Player::GetCurrentPlayer()||!::Player::GetCurrentPlayer()->GetTeam())throw std::logic_error("Local mission/player setup is incomplete");
+ const auto *session=NativeEngine::CurrentOfflineSession();
+ // Apply after the map's teams/resources load and before the first simulation
+ // cycle. Change only the local player's stockpile, preserving every AI team.
+ if(!session->campaign&&session->startingResources>=0)::Player::GetCurrentPlayer()->GetTeam()->SetResourceStore(U32(session->startingResources));
 }
 }

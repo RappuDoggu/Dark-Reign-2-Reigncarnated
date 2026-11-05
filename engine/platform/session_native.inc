@@ -14,11 +14,11 @@ std::map<U32,MultiPlayer::Data::Handler> localHandlers;
 void RequireSession(){if(!offlineSession)throw std::logic_error("No active local session");}
 }
 namespace NativeEngine {
-void BeginOfflineSession(std::string mission,std::string player,bool campaign,unsigned opponents,unsigned seed,std::string difficulty){
+void BeginOfflineSession(std::string mission,std::string player,bool campaign,unsigned opponents,unsigned seed,std::string difficulty,int startingResources){
  if(mission.empty()||mission.size()>255||player.empty()||player.size()>15||mission.find('\0')!=std::string::npos||player.find('\0')!=std::string::npos)throw std::invalid_argument("Invalid local mission/player identity");
  auto nextPlayer=std::make_unique<MultiPlayer::Network::Player>(MultiPlayer::UserName(player.c_str()));
- if(opponents>1||!seed||difficulty.size()>64||(campaign&&opponents))throw std::invalid_argument("Invalid local match options");
- OfflineSessionInfo next{std::move(mission),std::move(player),campaign,opponents,seed,std::move(difficulty)};
+ if(opponents>1||!seed||difficulty.size()>64||(campaign&&opponents)||startingResources < -1||startingResources>1000000||(campaign&&startingResources!=-1))throw std::invalid_argument("Invalid local match options");
+ OfflineSessionInfo next{std::move(mission),std::move(player),campaign,opponents,seed,std::move(difficulty),startingResources};
  MultiPlayer::Data::LocalFlush();MultiPlayer::SetDataCrc(0);offlineSession=std::move(next);
  localPlayers.DisposeAll();localPlayers.Add(nextPlayer->GetId(),nextPlayer.get());nextPlayer.release();localReady=false;
 }

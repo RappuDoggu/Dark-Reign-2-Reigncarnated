@@ -81,6 +81,7 @@ struct MissionApp::Impl {
  std::unique_ptr<Camera> camera;
  std::optional<MissionDestination> navigation;
  reign::HostOptionsRequest optionsRequest;
+ bool individualCampaign=false;
  bool closed=false,active=true,pausedHere=false,owns=false,gameInitialized=false,reportedSimulation=false,reportedLoaded=false;
  void EndGame(){if(gameInitialized){Game::Done();gameInitialized=false;}}
  void Defer(std::function<void()> fn){cleanup.push_back(std::move(fn));}
@@ -91,6 +92,8 @@ struct MissionApp::Impl {
  }
  ~Impl(){try{Stop();}catch(const std::exception &e){std::fprintf(stderr,"Mission shutdown: %s\n",e.what());}}
  void Start(const std::string &installation,const std::string &writable,const std::string &mission,reign::LegacyGles &renderer,PresentVideo present,void *context,const MissionOptions &options){
+  if((options.individualCampaign&&!options.campaign)||options.startingResources < -1||options.startingResources>1000000||(options.campaign&&options.startingResources!=-1))throw std::invalid_argument("Invalid campaign/resource launch options");
+  individualCampaign=options.individualCampaign;
   if(engineActive||enginePoisoned)throw std::logic_error("Original engine is already active or requires a process restart");
   if(!present)throw std::invalid_argument("Missing presentation callback");
   auto root=std::filesystem::canonical(installation);auto work=std::filesystem::absolute(writable);
@@ -148,7 +151,7 @@ struct MissionApp::Impl {
   Mods::Init();Defer([]{Mods::Done();});Sides::Init();Defer([]{Sides::Done();});SaveGame::Init();Defer([]{SaveGame::Done();});GameTime::Init();Defer([]{GameTime::Done();});
   std::string groupPath=options.group;std::replace(groupPath.begin(),groupPath.end(),'/','\\');auto *group=Missions::FindGroup(groupPath.c_str());Require(group!=nullptr,"Selected mission group was not imported");
   auto *selected=group->FindMission(mission.c_str());Require(selected!=nullptr,"Selected mission is missing from the imported group");if(options.campaign&&!Campaigns::Find(selected))throw std::invalid_argument("Selected mission is not part of an imported campaign");if(!options.campaign&&!group->InstantAction())throw std::invalid_argument("Selected group is not available for Instant Action");Missions::SetSelected(selected);
-  BeginOfflineSession(mission,"Commander",options.campaign,options.opponents,options.seed,options.difficulty);Defer([]{EndOfflineSession();});GameGod::Loader::InitNativeVariables();
+  BeginOfflineSession(mission,"Commander",options.campaign,options.opponents,options.seed,options.difficulty,options.startingResources);Defer([]{EndOfflineSession();});GameGod::Loader::InitNativeVariables();
   Orders::Init();Defer([]{Orders::Done();});Sync::Init();Defer([]{Sync::Done();});Demo::Init();Defer([]{Demo::Done();});InitializeRuntimeVariables();
   Defer([this]{EndGame();});
   InitializeFrameClock(Clock::Time::Ms());Game::RC::Init();Defer([]{Game::RC::Clear();Game::RC::Done();});Game::RC::Set("Load");
@@ -158,7 +161,7 @@ MissionApp::MissionApp(const std::string &installation,const std::string &writab
  try{impl->Start(installation,writable,mission,renderer,present,context,options);}catch(...){if(impl->owns)enginePoisoned=true;throw;}
 }
 MissionApp::~MissionApp()=default;
-std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *session=CurrentOfflineSession())out<<"mission="<<session->mission<<" campaign="<<session->campaign<<" opponents="<<session->opponents<<" seed="<<session->seed<<" difficulty="<<(session->difficulty.empty()?"mission default":session->difficulty)<<"\n";out<<"placing="<<Placing()<<" camera="<<(Viewer::GetCurrent()?Viewer::GetCurrent()->GetName():"none")<<" cinematic="<<Viewer::Action::IsPlaying()<<" movie="<<Viewer::movie<<" music-block="<<MusicBlockReasons()<<"\n";out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(InSimulation())for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay())out<<"\nplayable team="<<team->GetName()<<" ai="<<team->IsAI()<<" strategic="<<(team->GetStrategicObject()?"set":"none")<<" personality="<<team->GetPersonality();if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}
+std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *session=CurrentOfflineSession())out<<"mission="<<session->mission<<" campaign="<<session->campaign<<" opponents="<<session->opponents<<" seed="<<session->seed<<" individual-test="<<impl->individualCampaign<<" starting-resources="<<session->startingResources<<" (local player only; -1=map default) difficulty="<<(session->difficulty.empty()?"mission default":session->difficulty)<<"\n";out<<"placing="<<Placing()<<" camera="<<(Viewer::GetCurrent()?Viewer::GetCurrent()->GetName():"none")<<" cinematic="<<Viewer::Action::IsPlaying()<<" movie="<<Viewer::movie<<" music-block="<<MusicBlockReasons()<<"\n";out<<"simulation cycles="<<SimulationCycles()<<" display team="<<(Team::GetDisplayTeam()?"set":"missing");if(InSimulation())for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay())out<<"\nplayable team="<<team->GetName()<<" ai="<<team->IsAI()<<" resources="<<team->GetResourceStore()<<" strategic="<<(team->GetStrategicObject()?"set":"none")<<" personality="<<team->GetPersonality();if(impl->camera){const auto &m=impl->camera->WorldMatrix();out<<"\nCamera position "<<m.posit.x<<' '<<m.posit.y<<' '<<m.posit.z<<" front "<<m.front.x<<' '<<m.front.y<<' '<<m.front.z;}
  out<<"\nGraphics: high detail, full mesh, 32-bit textures; filters="<<Vid::renderState.status.filter<<" distance fog="<<Vid::renderState.status.fog<<" fog rgb="<<unsigned(Vid::renderState.fogColor.r)<<','<<unsigned(Vid::renderState.fogColor.g)<<','<<unsigned(Vid::renderState.fogColor.b)<<" ambient rgb="<<unsigned(Vid::renderState.ambientColor.r)<<','<<unsigned(Vid::renderState.ambientColor.g)<<','<<unsigned(Vid::renderState.ambientColor.b)<<" terrain shroud="<<(VarSys::FindVarItem("terrain.shroud.active")?VarSys::FindVarItem("terrain.shroud.active")->Integer():-1);
  out<<"\nVariable failure (if any):\n"<<LastVariableFailure()<<"\n"<<NativeEngine::DigitalDiagnostics()<<"\n"<<missionLoadStatus.Report();return out.str();}
 void MissionApp::Close(){impl->Stop();}
@@ -181,7 +184,7 @@ void MissionApp::Frame(){
    missionLoadStatus.Update("Cinematic ended; gameplay camera restored");
   }
   const auto route=MissionRouteRequest();MissionRouteRequest()=MissionRoute::none;
-  if(route==MissionRoute::menu){impl->navigation=MissionDestination{"","",true,false};missionLoadStatus.Update("Returning to main menu");}
+  if(route==MissionRoute::menu||(impl->individualCampaign&&route!=MissionRoute::none)){impl->navigation=MissionDestination{"","",true,false};missionLoadStatus.Update("Returning to main menu");}
   else if(route==MissionRoute::mission){
    const auto *selected=Missions::GetSelected();Require(selected!=nullptr,"Mission transition has no selected target");
    impl->navigation=MissionDestination{selected->GetGroup().GetPath().str,selected->GetName().str,false,Campaigns::Find(selected)!=nullptr};

@@ -111,7 +111,7 @@ bool present(void *context){auto &p=*static_cast<Presentation *>(context);p.rend
 namespace Client {UnitObj *FirstSelected();}
 int main(int argc,char **argv){try{
  if(argc<2||argc>5)throw std::runtime_error("Provide installation [mission [group [campaign]]]");
- const std::string selectedMission=argc>2?argv[2]:"2crazed";NativeEngine::MissionOptions options;if(std::getenv("REIGN_CAPTURE_VIDEO_DIR"))options.opponents=1;if(argc>3)options.group=argv[3];options.campaign=argc>4&&std::string(argv[4])=="campaign";
+ const std::string selectedMission=argc>2?argv[2]:"2crazed";NativeEngine::MissionOptions options;if(std::getenv("REIGN_CAPTURE_VIDEO_DIR"))options.opponents=1;if(argc>3)options.group=argv[3];options.campaign=argc>4&&std::string(argv[4])=="campaign";options.individualCampaign=std::getenv("REIGN_INDIVIDUAL_CAMPAIGN_FIXTURE")!=nullptr;if(const char *amount=std::getenv("REIGN_START_RESOURCES_FIXTURE")){options.startingResources=std::stoi(amount);options.opponents=1;}
  auto argument=std::filesystem::path(argv[1]);auto root=std::filesystem::is_directory(argument)?argument:argument.parent_path().parent_path();
  auto work=std::filesystem::temp_directory_path()/("reign-app-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
  Context context;reign::LegacyGles renderer(resolve);Presentation presentation{&renderer};
@@ -123,7 +123,15 @@ int main(int argc,char **argv){try{
   check(Bitmap::Manager::Find("")==nullptr);
   check(Bitmap::Manager::FindCreate(Bitmap::reduceNONE,"")==nullptr);
   bool rejected=false;try{NativeEngine::MissionApp duplicate(root.string(),work.string(),selectedMission,renderer,present,&presentation,options);}catch(const std::logic_error &){rejected=true;}check(rejected);
-  for(unsigned frame=0;frame<(pass?64u:128u);++frame){app.Frame();if(!app.SimulationCycles())check(NativeEngine::missionLoadStatus.Report().rfind("READY\n",0)!=0);std::this_thread::sleep_for(std::chrono::milliseconds(16));}
+  bool resourcesChecked=false;
+  for(unsigned frame=0;frame<(pass?64u:128u);++frame){app.Frame();
+   if(std::getenv("REIGN_START_RESOURCES_FIXTURE")&&!resourcesChecked&&app.InSimulation()){
+    check(app.SimulationCycles()==0);auto *local=Player::GetCurrentPlayer()->GetTeam();check(local&&local->GetResourceStore()==U32(options.startingResources<0?20000:options.startingResources));unsigned aiTeams=0;
+    for(U32 id=0;id<Game::MAX_TEAMS;++id)if(auto *team=Team::Id2Team(id))if(team->IsAvailablePlay()&&team!=local&&team->IsAI()){check(team->GetResourceStore()==20000);++aiTeams;}check(aiTeams==1);resourcesChecked=true;
+    std::cerr<<"Starting resources before first simulation cycle: local="<<local->GetResourceStore()<<" AI=20000 (map default)\n";
+   }
+   if(!app.SimulationCycles())check(NativeEngine::missionLoadStatus.Report().rfind("READY\n",0)!=0);std::this_thread::sleep_for(std::chrono::milliseconds(16));}
+  if(std::getenv("REIGN_START_RESOURCES_FIXTURE"))check(resourcesChecked);
   check(app.InSimulation()&&app.SimulationCycles()>0);
   if(options.campaign)check(Player::GetCurrentPlayer()&&Player::GetCurrentPlayer()->GetTeam()->IsDefaultClient());
   if(std::getenv("REIGN_LEGACY_VIDEO_REPRO")){
@@ -223,7 +231,9 @@ int main(int argc,char **argv){try{
  }
 
   if(std::getenv("REIGN_NAVIGATION_FIXTURE")){
-   Missions::NextMission(TRUE);app.Frame();auto route=app.TakeNavigation();check(route&&!route->menu&&route->campaign&&route->mission=="Followup");check(!app.TakeNavigation());
+   Missions::NextMission(TRUE);app.Frame();auto route=app.TakeNavigation();
+   if(options.individualCampaign){check(route&&route->menu);check(!app.TakeNavigation());app.Close();std::cerr<<"Individual campaign test returns to menu instead of loading Followup\n";continue;}
+   check(route&&!route->menu&&route->campaign&&route->mission=="Followup");check(!app.TakeNavigation());
    auto destination=*route;app.Close();check(!Vid::isStatus.initialized&&!Vid::device);
    auto followOptions=options;followOptions.group=destination.group;followOptions.campaign=destination.campaign;
    NativeEngine::MissionApp follow(root.string(),work.string(),destination.mission,renderer,present,&presentation,followOptions);

@@ -797,3 +797,69 @@ placeholder audio. Capture metadata explicitly distinguishes host footage from
 phone footage; source receipt and captions must travel with the draft. Asset
 package metadata and the campaign acceptance matrix do not verify campaign wins.
 See `RELEASE_0_1_AND_MULTIPLAYER.md` for the remaining offline and multiplayer gates.
+
+## APK31: campaign testing catalog and local starting-resource override
+
+Use the same pinned SDK/NDK/FFmpeg/toolchain and private APK22 test signer. Set the
+full candidate builder's output to `"$work/v31"`, output name to
+`Reigncarnated-Campaign-Testing-v31.apk`, explicit application ID to
+`org.reigncarnated.instantcity` and label to `Reigncarnated IA City Test`.
+Package only after committing source, so embedded source/library hashes and docs
+identify the exact build. Game data remains a separate private import.
+
+The incremental original override after APK26–30 is `multiplayer/multiplayer.cpp`:
+it includes the updated `session_native.inc` and `session_game_native.inc`.
+Rebuild the direct mission app/JNI adapters, menu catalog/frontend and menu JNI,
+then strip/package both current libraries. A full fresh build uses the normal
+source inventory and current staging recipe; no recovered object override is
+needed. The SDK35 Java build includes the new `CampaignSelection.java` and
+`StartingResources.java` automatically. Keep the existing ABI, flags, API26,
+ARM64/static libc++, 16 KiB alignment and original 10 Hz simulation unchanged.
+
+`menu_campaign_testing` returns original ordered campaign targets with type,
+availability and original-opening flags. The old progress-filtered `menu_missions`
+API remains intact. Main-menu starts and individual tests have different buttons,
+launch flags and writable runtimes. Individual tests route subsequent mission
+requests to the menu; ordinary campaigns retain their original deferred handoff.
+Cinematics embedded in a mission execute inside that mission; separate intro,
+transition and outro targets are independently selectable.
+
+Starting resources travel as a signed integer, -1 for map default or 0–1,000,000
+for a player-only override. `SetupPostMission` applies `Team::SetResourceStore`
+only to `Player::GetCurrentPlayer()->GetTeam()` after map loading. No campaign
+resource override is accepted, and no AI team is modified.
+
+Tests:
+
+```sh
+# Normal root suite includes the 31-entry catalog/missing-opening fixture.
+cmake --build "$work/host" --parallel 4
+ASAN_OPTIONS=detect_leaks=0 LIBGL_ALWAYS_SOFTWARE=1 \
+ ctest --test-dir "$work/host" --output-on-failure
+javac --release 8 -d "$work/java" \
+ android/menu/org/reigncarnated/menu/{CampaignSelection,StartingResources}.java \
+ tests/{CampaignSelectionTest,StartingResourcesTest}.java
+java -cp "$work/java" org.reigncarnated.menu.CampaignSelectionTest
+java -cp "$work/java" org.reigncarnated.menu.StartingResourcesTest
+```
+
+Link `engine_app_test.cpp` with current host overrides using
+`tools/test_engine_vid.py` and real owned reference `2 Rush` data. Set
+`REIGN_START_RESOURCES_FIXTURE=44444`, `0`, or `-1` for independent two-pass runs.
+The reference test asserts the local stockpile and the AI's original 20,000
+before any simulation cycle. Its native session test also checks invalid bounds
+and forbidden campaign overrides. No sanitizer checks are disabled.
+
+For the two-map authored campaign fixture, retain the original cinematic, camera,
+uncached raw-mesh and `REIGN_NAVIGATION_FIXTURE=1` checks. Run once normally and
+once with `REIGN_INDIVIDUAL_CAMPAIGN_FIXTURE=1`: normal play must hand off to
+Followup/final menu, individual tests must return to menu without loading Followup.
+These authored fixtures validate routing; they cannot prove the retail objectives,
+cutscenes, dialogue or entire campaigns are completable.
+
+Phone checks: update the existing IA City Test installation; open **Campaigns**,
+verify both original starts and all imported entries in the individual picker.
+Check **Play selected cutscene**, direct late-mission launch and return to menu.
+Test **Instant Action → Resources** with blank, zero and an edited amount; verify
+your starting balance and unchanged AI behavior. Collect diagnostics after any
+failure; they now identify individual-test mode and starting-resource settings.

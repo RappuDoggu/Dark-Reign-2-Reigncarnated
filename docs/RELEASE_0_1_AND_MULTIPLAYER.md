@@ -72,3 +72,17 @@ Any soundtrack bed is authored placeholder audio. Do not claim complete campaign
 multiplayer, shipping availability or device performance in the mockup. Replace
 this footage with representative Android combat/building capture before a public
 launch trailer. Raw map data and device diagnostics stay private.
+
+## APK31 testing access
+
+The main menu now separates **Start campaign** from **Choose individual mission /
+cutscene (testing)**. All 31 declared entries can appear in the testing catalog
+without progression locks; missing imported assets are marked and cannot launch.
+Individual tests use separate progress and return to the menu on mission
+transitions. They must not be counted as evidence that a continuous campaign is
+completable. Keep using CAMPAIGN_ACCEPTANCE.csv for actual playthrough evidence.
+
+Instant Action also offers a player-only starting-resource override for testing,
+including zero or map default. AI stockpiles and campaign resources are unchanged.
+Testing with edited starting resources is useful for investigation; final match
+acceptance should also use the original map defaults.
