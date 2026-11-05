@@ -1293,3 +1293,21 @@ campaign catalog entry point is exported and both current libraries are packaged
 Full validation, exact resource fixture values and acceptance limits are in
 `docs/builds/campaign-testing-v31.json`. No private game data, keys, recordings or
 raw diagnostics enter the source branch or APK.
+
+## Public prerelease readiness review
+
+Reverified GitHub recovery checkpoint `983c52e...`, its source/APK31 and direct
+raw APK HTTP200/9,532,543-byte/SHA-256 match. Remote main `0bc1fe7...` is an ancestor
+of the recovery branch and remains the earlier audit baseline. No v0.0.1/v0.1 tag
+was found by the read-only tag query. GitHub release API access via `gh` returns
+403; no Release entry is created by this check.
+
+The recovery README is refreshed from its outdated v0.5 status. Concrete draft
+notes for proposed **v0.0.1-alpha** identify the existing APK31 candidate and its
+internal Android version, signer continuity, tested behavior and known limits.
+This is not a stable 0.1 declaration. The recorded upstream distribution-authority
+question remains unresolved, and current corresponding FFmpeg source/relink
+release materials still need preparation/verification; the historical v0.5 kit
+cannot be called the APK31 kit. See `docs/releases/v0.0.1-alpha.DRAFT.md`.
+This documentation-only update changes no APK, engine, main branch, tag, published
+Release or cloud-environment configuration.

@@ -2,68 +2,74 @@
 
 Native ARM64 Android source-port work for Dark Reign 2.
 
-## Current checkpoint: native launch APK v0.5
+## Current testing build: APK31
 
-The owner confirmed v0.4 Android execution. v0.5 adds original intros and audio,
-water, sun/moon sprites, smoke/flame/glow/water-drop emitters, rain impacts and
-thunder/lightning to the native shell. ZIP import, host rendering, decoder resume,
-ARM64 compilation and signed APK structure are validated. Device execution of
-v0.5 is pending; desktop 1:1 equivalence is not yet established.
+Active implementation and APKs are on **`recovery/native-arm64-v012`**. The main
+branch remains the older audit baseline. This checkpoint is an offline testing
+build; no 0.1 stable release is declared.
 
-See [v0.5 download and test receipt](docs/NATIVE_LAUNCH_V05.md) and
-[launch implementation and limitations](docs/LAUNCH_PROGRESS.md).
+[**Download APK31 — Campaign Testing (9.5 MB)**](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/983c52e50a05ce4d37433f4eb114d509875b082c/builds/v0.25/Reigncarnated-Campaign-Testing-v31.apk)
 
-## Previous checkpoint: native main-menu proof-of-concept APK v0.4
+- Android package: `org.reigncarnated.instantcity`, **Reigncarnated IA City Test**.
+- Android version: `0.25-campaign-testing`, version code **31**.
+- Source: `e47230ebcb62a75b9d269f87afaaeffdfb1f1cd2`.
+- SHA-256: `f1676ad16b9f0a4ed4cd4998f36ef24c73e0a4ed8eadd59929b4dca7752e5303`.
+- Same private signer as APK22–30: install as an update to retain imported data.
+- APK contains build/source receipts, instructions and progress in `assets/build/`.
+  Signing keys and game data are not bundled; import your legally owned files.
 
-The ARM64 Android proof of concept imports one or more game-data ZIPs and opens
-the original main-menu layout directly over the native 3D shell scene. No login
-is required. The original entrance camera runs, then holds its final view.
-Menu music and effects use the existing Android audio path. Options, logout and
-mission destinations are disabled for this milestone; Quit remains available.
+## Available for testing
 
-Import requires base.zwp, shell.zwp and sprawl.zwp. The previous compact v0.3 ZIP
-may lack the world pack. Full installation ZIPs, enclosing folders and compact
-ZIPs are supported. Music is detected automatically. Files are copied once;
-later launches reuse app storage. Folder import remains available.
+Original menu/city animation, offline Instant Action with one original AI,
+native mission/cinematic execution, combat and unit audio, MP3 mission speech
+support, music suspension during cutscenes/speech, Android settings and touch
+selection/building placement. Original simulation remains 10 Hz.
 
-The scene is an unlit proof of concept: original lighting/material policy,
-sky/water, ambient effects and complete cinematic/object simulation remain.
-This is real scene geometry and original camera math, not video playback.
+**Campaigns** separates original campaign starts from unrestricted individual
+mission/cutscene tests. The catalog supports all declared imported sequence
+entries; the known owned-package metadata lists 31. Missing files are marked.
+Individual tests use separate progress and return to the menu on transitions.
+**Instant Action → Resources** edits only the local player's starting stockpile;
+blank preserves map default and zero is supported. AI starting amounts are unchanged.
 
-The signed APK, ZIP import with actual data, combined scene/UI GLES rendering,
-and 63 host tests are verified. The owner confirmed successful Android execution.
-See [v0.4 installation and validation](docs/NATIVE_MENU_POC_V04.md).
+The owner reports Instant Action appears completable and missions now load with
+cutscenes. Those reports do not establish complete campaign playthroughs. APK31
+host checks include 68 general tests, real player-only resource initialization
+with an AI, original campaign handoff and individual menu-return fixtures.
+Phone acceptance of APK31's new UI remains pending. Detailed evidence and limits:
+[APK31 receipt](docs/builds/campaign-testing-v31.json),
+[build/test notes](builds/v0.25/README.md),
+[recovery progress](docs/RECOVERY_PROGRESS.md).
 
-[Previous model-pose checkpoint](docs/GOD_POSE_PROGRESS.md) •
-[Released v0.3 folder setup](docs/FOLDER_SETUP_V03.md)
+## Proposed public prerelease
 
-[Source and installation recovery](docs/RECOVERY_ARCHIVES.md): neither requires
-the original desktop. Active implementation lives on `dev/native-arm64-primitives`.
-Older documents in `docs/` describe historical checkpoints, not current status.
+**`v0.0.1-alpha`** is the proposed first public testing tag; it has not been
+created or published by this work. See the concrete
+[draft release notes](docs/releases/v0.0.1-alpha.DRAFT.md). APK31's internal Android
+version remains stated above; do not rename it as a stable 0.1 build.
 
-## Build
+Full campaign completion, local save/restore, remaining active-texture NaN UV
+defects, dialogue acceptance and broader device/long-session testing remain open.
+Multiplayer is offline in this build. Follow the
+[release acceptance plan](docs/RELEASE_0_1_AND_MULTIPLAYER.md) and
+[campaign verification matrix](docs/CAMPAIGN_ACCEPTANCE.csv).
 
-Use the pinned upstream snapshot `9ce9da5f21604310a997f0c41e9cd383f5e292c3`
-from https://github.com/grasmanek94/darkreign2 outside this repository.
+The earlier [dependency/provenance audit](docs/DEPENDENCIES.md) records an
+unresolved upstream redistribution-authority question. This checkpoint does not
+resolve it. Public-release preparation also needs current FFmpeg corresponding
+source/relink materials; the historical v0.5 relink packager is not the current
+mission-library release kit. No new public-distribution rights are asserted here.
 
-```sh
-cmake -S . -B build -DREIGN_UPSTREAM=/path/to/upstream -DREIGN_SANITIZE=ON
-cmake --build build --parallel 4
-ASAN_OPTIONS=detect_leaks=0 ctest --test-dir build --output-on-failure
-```
+## Build and provenance
 
-Set ANDROID_SDK_ROOT, ANDROID_NDK_HOME and REIGN_UPSTREAM, then run
-`bash tools/package_menu.sh` for the private menu APK. Keep the private debug
-keystore for subsequent compatible v0.2 updates.
+Use [the reproducible recovery instructions](docs/RECOVERY_BUILD.md): SDK35,
+NDK27.2.12479018, Java17/21, CMake, Ninja, Python and the pinned FFmpeg n6.1.1
+recipe. The pinned original source is fetched separately at
+`9ce9da5f21604310a997f0c41e9cd383f5e292c3` and checked against the repository's
+1,791-file inventory. Preserve API26, ARM64/static libc++, original ABI flags,
+16 KiB native alignment and the 10 Hz simulation.
 
-## Scope and provenance
-
-Preserve original engine behavior while adapting rendering, platform services
-and input. Full mission simulation/rendering, gameplay audio and AYN Thor
-secondary-display integration remain. The working Winlator version is a
-behavioral reference, not native-port completion.
-
-Upstream source, proprietary game assets, signing keys and engine-derived
-binaries stay outside Git. Reviewed stagers generate source overlays from the
-pinned source. Public source availability is not a redistribution license.
-See [porting audit](docs/PORTING_AUDIT.md) and [dependencies](docs/DEPENDENCIES.md).
+Historical v0.3–v0.7 documents and the earlier `dev/native-arm64-primitives`
+checkpoint describe previous milestones. The recovery branch, source receipts
+and current progress record identify the implementation delivered now. Keep
+signing keys, owned asset archives and raw device diagnostics private.
