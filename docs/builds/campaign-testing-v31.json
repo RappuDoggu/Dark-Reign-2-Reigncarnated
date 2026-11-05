@@ -1,0 +1,77 @@
+{
+  "source_revision": "e47230ebcb62a75b9d269f87afaaeffdfb1f1cd2",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated IA City Test",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "223201795338c4d538a38d3a7057223ccaacca3661e76044f0551ab5e47811c2",
+    "libreign_menu.so": "725772b640fdec91002d9f109755f4c36380a3e408470b4057377522635fb69f"
+  },
+  "recovery_identity": false,
+  "apk_sha256": "f1676ad16b9f0a4ed4cd4998f36ef24c73e0a4ed8eadd59929b4dca7752e5303",
+  "apk_bytes": 9532543,
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "elf_build_ids": {
+    "libreign_mission.so": "5b5d0bb0f95d7fdc58f9e6bb58a968d02e89a4c6",
+    "libreign_menu.so": "69a5c1d26389809f2d2a2b7c6ff48a9d1b1fdfdb"
+  },
+  "ffmpeg_codec_recipe_sha256": "58a84c56ac571de138b74904c988c64c2ed5928541891d2b5cc3939e1d58332c",
+  "validation": {
+    "apk_zip_crc": true,
+    "same_signer_as_apk22_through_30": true,
+    "embedded_revision_docs_and_native_hashes": true,
+    "arm64_16k_elf_and_zip_alignment": true,
+    "static_libcxx": true,
+    "general_host_regressions": 68,
+    "touch_checks": 55,
+    "retained_report_checks": 13,
+    "music_policy_checks": 14,
+    "campaign_selection_checks": 16,
+    "starting_resources_input_checks": 16,
+    "sdk35_java_compilation": true,
+    "pinned_1791_upstream_sources_verified": true,
+    "all_declared_campaign_catalog_fixture_entries": 31,
+    "standalone_named_cutscene_transition_fixture_entries": 12,
+    "original_first_entries_preserved": true,
+    "missing_opening_not_replaced_with_later_entry": true,
+    "missing_entries_marked_and_launch_disabled": true,
+    "progress_filtered_catalog_api_preserved": true,
+    "single_entry_transition_to_menu_twice": true,
+    "normal_campaign_followup_and_final_menu_twice": true,
+    "original_cinematic_mesh_camera_fixture_twice": true,
+    "native_resource_validation_preserves_active_session": true,
+    "resource_scope": "local player only",
+    "resource_fixture_before_first_simulation_cycle": [
+      {
+        "setting": 44444,
+        "local": 44444,
+        "ai": 20000,
+        "passes": 2
+      },
+      {
+        "setting": 0,
+        "local": 0,
+        "ai": 20000,
+        "passes": 2
+      },
+      {
+        "setting": -1,
+        "local": 20000,
+        "ai": 20000,
+        "passes": 2
+      }
+    ],
+    "all_ai_resource_fixture_shutdowns_clean_asan": true,
+    "individual_test_runtime_separate_from_normal_campaign_progress": true,
+    "campaign_resources_override_rejected": true,
+    "phone_new_menu_and_resources_verified": false,
+    "complete_retail_campaigns_verified": false,
+    "phone_fps_measured_on_apk31": false
+  }
+}

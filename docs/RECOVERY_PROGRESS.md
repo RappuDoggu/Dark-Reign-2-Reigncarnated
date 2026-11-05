@@ -1283,3 +1283,13 @@ phone still require owner acceptance; catalog coverage is not mission completion
 APK29 speech/music, APK30 Android options/AI ownership repairs, original ABI flags,
 retained textures, append-only geometry streaming and current touch controls are
 preserved. No game data, key, device recording or raw diagnostic is included.
+
+APK31 artifact: `Reigncarnated-Campaign-Testing-v31.apk`, source
+`e47230ebcb62a75b9d269f87afaaeffdfb1f1cd2`, 9,532,543 bytes, SHA-256
+`f1676ad16b9f0a4ed4cd4998f36ef24c73e0a4ed8eadd59929b4dca7752e5303`.
+It has the same signer/application ID as APK22–30 and independently verified
+embedded source/docs, ARM64/static libc++ and 16 KiB ELF/ZIP alignment. The native
+campaign catalog entry point is exported and both current libraries are packaged.
+Full validation, exact resource fixture values and acceptance limits are in
+`docs/builds/campaign-testing-v31.json`. No private game data, keys, recordings or
+raw diagnostics enter the source branch or APK.
