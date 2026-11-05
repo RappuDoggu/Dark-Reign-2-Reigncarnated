@@ -1145,3 +1145,14 @@ Java checks pass. Host root regression and final APK checks are recorded in the
 matching delivery receipt. Android speech and music behavior need owner testing;
 the complete retail campaign audio is not available in this workspace. This
 build does not claim to supply missing voice files or fix remaining invalid UVs.
+
+APK 29 artifact: `Reigncarnated-Cutscene-Audio-v29.apk`, source
+`b2737565d21ec4529736a04b3a3ddc36261e0289`, 9,503,871 bytes, SHA-256
+`4f76e3b9f45eaf53e9a417bfb8c37ea72d41e960a1d22e48ab833728c55716ba`.
+The owner clarified that the missing Sprawler voices are spoken dialogue during
+the opening cutscene. All 68 general host regressions, 13 engine tests, original
+speech queue and combat lifetime integration tests passed. APK29 has the same
+signer as APK22–28 and verified embedded source/docs, ARM64/static libc++ and
+16 KiB ELF/ZIP alignment. It contains no keys, owned data or test audio fixtures.
+Phone audio and FPS acceptance remain pending. Native build IDs and all check
+results are in `docs/builds/cutscene-audio-v29.json`.
