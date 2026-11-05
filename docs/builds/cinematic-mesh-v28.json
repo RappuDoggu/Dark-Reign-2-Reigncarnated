@@ -1,0 +1,46 @@
+{
+  "source_revision": "69469fe5983f2d06ea91faf25db64cf6539532b5",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated IA City Test",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "f256b4ab3b37da65e17f98c04f8fc951caf533e15cf2f77db696d8b4116ad4da",
+    "libreign_menu.so": "4caa8a6a26851539ede4c8722e6deb63293d243a4623179a9ab5cc81ea5a5daf"
+  },
+  "recovery_identity": false,
+  "apk_sha256": "73a8e7b01806d93e23afc7697eb0455dc38f501489ba9eb3d40393fd6b505dd7",
+  "apk_bytes": 9360511,
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "elf_build_ids": {
+    "libreign_mission.so": "f00fcb9c3238a306bc4ab054c4da73302ef66425",
+    "libreign_menu.so": "08ebe63417c148bdf9b538e1d4702b0b16927d16"
+  },
+  "validation": {
+    "apk_zip_crc": true,
+    "same_signer_as_apk22_through_27": true,
+    "embedded_revision_docs_and_native_hashes": true,
+    "arm64_16k_elf_and_zip_alignment": true,
+    "static_libcxx": true,
+    "engine_foundation_tests": 12,
+    "retained_touch_checks": 55,
+    "retained_mission_report_checks": 13,
+    "sdk35_java_compilation": true,
+    "device_jda_stack_symbolicated_to_original_mesh_validation_variables": true,
+    "raw_mesh_array_mismatch_reproduced_and_corrected": true,
+    "raw_mesh_invalid_varptr_reproduced_before_binding_fix": true,
+    "original_uncached_cinematic_text_mesh_path_passes_twice": true,
+    "no_draw_rejections_in_raw_mesh_host_fixture": true,
+    "cinematic_camera_and_campaign_navigation_lifecycle_twice": true,
+    "reference_instant_action_lifecycle_twice": true,
+    "owner_device_report_reaches_sprawler_transition_into_s01_on_apk27": true,
+    "retail_jda_intro_passed_on_apk28_device": false,
+    "remaining_sprawler_invalid_uv_draws_fixed": false,
+    "phone_fps_measured_for_apk28": false
+  }
+}

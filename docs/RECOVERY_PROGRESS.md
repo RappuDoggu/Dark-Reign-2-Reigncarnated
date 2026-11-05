@@ -1086,3 +1086,15 @@ are retained. Signing identity/data are retained, with keys, owned packs, raw
 reports and private symbols excluded from Git/APK. Retest JDA Chapter 1 for phone
 acceptance and any later issue; no new APK 28 phone FPS or complete campaign
 result is claimed. DIAGNOSTICS_REVIEW_V27.md records sanitized evidence.
+
+
+APK 28 artifact: `Reigncarnated-Cinematic-Mesh-v28.apk`, source
+`69469fe5983f2d06ea91faf25db64cf6539532b5`, SHA-256
+`73a8e7b01806d93e23afc7697eb0455dc38f501489ba9eb3d40393fd6b505dd7`.
+Independent checks pass: same APK 22-27 signer/identity, version 28/private mission
+process, signature/CRC, 16 KiB ZIP/ELF alignment, static libc++, exact embedded
+source/docs/native hashes, matching private symbol/stripped build IDs, and
+exclusion of game data/raw models/keys/private traces. The raw-mesh host log
+confirms two uncached loads with no rejected draws. The unchanged signed APK is
+mirrored under builds/v0.22. Retail JDA and later story acceptance remain for the
+owner's phone; source and private symbols are preserved for any further report.
