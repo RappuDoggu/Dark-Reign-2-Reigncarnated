@@ -1216,3 +1216,19 @@ host GLES gameplay and authored placeholder audio, clearly labeled work in
 progress/host preview. Its source editor and capture path are reproducible;
 it contains no raw game data or owner diagnostics. The reduced reference data
 has visual limitations, so Android combat footage is the next editorial input.
+
+APK30 artifact: `Reigncarnated-Android-Options-v30.apk`, source
+`9d4bbe08c9fda6e8cd0a61f2b2e77cebd5e59bb2`, 9,516,159 bytes, SHA-256
+`d1f6898176c40cd7908f151f050f17ce4e05bc0eb2f9e1d9b0ec593dd2206438`.
+The real one-AI run captures 300 frames across 200 additional simulation cycles
+and completes original shutdown with zero open data files and no ASan failure.
+APK identity, signer, source/docs, private-data exclusion, ARM64/static libc++
+and 16 KiB alignment pass independent verification. Receipt:
+`docs/builds/android-options-v30.json`. Phone acceptance remains pending.
+
+Trailer mockup 01: `Reigncarnated-Trailer-Mockup-01.mp4`, 1,810,753 bytes,
+30.000-second container duration, 1280x720 H.264 / stereo AAC, SHA-256
+`51c5e0616ea8b26f99c2d31bb7f8ecb9c9c6315ae890c180ec8a1d6226f34046`.
+All video/audio decodes without error; source/capture/placeholder-audio receipt
+and poster accompany the MP4 in `trailers/mockup-01/`. Raw private captures stay
+outside the checkout. This is a draft edit, with no release announcement.

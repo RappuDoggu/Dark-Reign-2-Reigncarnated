@@ -1,0 +1,37 @@
+{
+  "source_revision": "9d4bbe08c9fda6e8cd0a61f2b2e77cebd5e59bb2",
+  "kind": "draft trailer mockup; not an Android gameplay benchmark",
+  "seconds": 30.0,
+  "resolution": [
+    1280,
+    720
+  ],
+  "capture": "original engine host GLES; private owned 2 Rush reference map; one AI",
+  "captured_frames": 300,
+  "capture_elapsed_seconds": 19.9465,
+  "simulation_cycles_delta": 199,
+  "soundtrack": "authored placeholder pulse; no original audio",
+  "game_data_bundled": false,
+  "public_release_announced": false,
+  "editor_sha256": "dfc32ac0a6e5a100b8b3fddcc9cc8f5dca8134e778d846bf637d5c0b254103c1",
+  "captions": {
+    "intro_kicker": "REAL-TIME STRATEGY / ANDROID",
+    "intro_title": "REIGNCARNATED",
+    "intro_sub": "DARK REIGN II, REAWAKENING",
+    "intro_draft": "TRAILER MOCKUP 01  /  WORK IN PROGRESS",
+    "end_kicker": "DARK REIGN II / ANDROID ARM64",
+    "end_title": "REIGNCARNATED",
+    "end_sub": "THE NEXT CHAPTER IS TAKING SHAPE.",
+    "end_wip": "OFFLINE PROTOTYPE  /  WORK IN PROGRESS",
+    "end_foot": "Draft uses original-engine host capture and authored placeholder audio.",
+    "game_header": "REIGNCARNATED",
+    "game_tag": "WIP",
+    "game_foot": "ACTUAL ENGINE CAPTURE  /  HOST PREVIEW",
+    "game_note": "ANDROID PORT IN DEVELOPMENT",
+    "scout": "SCOUT",
+    "command": "COMMAND",
+    "move": "MOVE"
+  },
+  "sha256": "51c5e0616ea8b26f99c2d31bb7f8ecb9c9c6315ae890c180ec8a1d6226f34046",
+  "bytes": 1810753
+}
