@@ -1040,3 +1040,49 @@ JNI exports, and exclusion of game packs/keys/private traces. The unchanged sign
 artifact is mirrored under builds/v0.21. Retail campaign handoff, phone gestures
 and the actual JDA caller remain acceptance work; source and private symbols are
 preserved for the next diagnostic report.
+
+
+## APK 28: retained JDA stack identifies missing mesh-validation bindings
+
+The new private ZIP matches APK 27 receipts and retains J01's actual failure.
+It reaches simulation cycle 30, then cinematic Mesh construction dereferences
+VarInteger inside original Mesh::Manager::FindRead at meshread.cpp:3007. That
+line reads checkMaxVerts/checkMaxTris for MeshRoot::Check. The native bootstrap
+omitted the original vid.heap.check.verts/tris bindings. They are now created
+with original flags and actual heap sizes after Heap::Init; the original mesh
+and rendering validation remains active. This is a concrete fix for the captured
+failure, rather than a generic catch or fallback.
+
+A new optional integration fixture loads an uncached real text mesh through the
+same original cinematic primitive, copying owned base-pack bytes only inside a
+private temporary runtime. ASan first identifies mismatched new[]/scalar-delete
+cleanup in this previously untested raw loader. Its text/vector/map/index arrays
+now use matching delete[] in success and early-return paths; singly allocated
+feature objects and ABI layouts are unchanged. With cleanup fixed and bindings
+still absent, the test reproduces the device's invalid VarPtr. Binding the two
+variables then passes the raw cinematic load/render/cleanup twice. Allocation
+mismatch detection was kept enabled; only the established sandbox leak setting
+is used.
+
+The Sprawler report now shows Transition into S01, 118 simulation cycles in
+about 12 seconds and 120 FPS at collection. This confirms the original intro
+handoff progressed on the phone; full transition/gameplay is not established.
+Remaining invalid-UV/NaN draw rejections are still explicit. Rejection context
+now states whether texturing was active, to distinguish used/unused channels in
+future diagnostics. No relaxation or claim of a UV fix is made.
+
+Validation: real uncached mesh cinematic, camera restoration, original campaign
+next/followup/final-menu lifecycle and cleanup pass twice; reference Instant
+Action lifecycle passes twice. All 12 foundation tests, 55 retained gesture checks
+and 13 report-retention checks pass. The full 1,791-file pinned source check
+passes, the changed original ARM64 mesh unit and mission adapters rebuild/link,
+and SDK 35 Java compiles during packaging. These authored cinematic/mesh fixtures
+are not claimed to validate the retail J01 story or Android lifecycle.
+
+Original 10 Hz simulation, ABI flags, SDK 35, NDK 27.2.12479018, FFmpeg n6.1.1,
+supported High graphics, audio and fenced append-only unsynchronized stream remain.
+The chosen tap-anchor/rotate/double-tap placement and protected failure records
+are retained. Signing identity/data are retained, with keys, owned packs, raw
+reports and private symbols excluded from Git/APK. Retest JDA Chapter 1 for phone
+acceptance and any later issue; no new APK 28 phone FPS or complete campaign
+result is claimed. DIAGNOSTICS_REVIEW_V27.md records sanitized evidence.

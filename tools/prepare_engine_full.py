@@ -206,6 +206,10 @@ source.write_text(text)
 patch('coregame_interface/common_mapwindow.cpp', [('sizeof VertexTL','sizeof(VertexTL)')])
 patch('graphics/lex.h', [('item->name; list++','item->name; item++'),('stricmp(', 'Utils::Stricmp('),('return _END_OF_FILE;', 'TokenItem *end = tokList; while (end->name) ++end; return end->token;')])
 patch('graphics/meshread.cpp', [('min(', 'Min('), ('Min(srcVI.count, MAXWEIGHTS)', 'Min<U32>(srcVI.count, MAXWEIGHTS)')])
+# The cinematic text-mesh path owns these new[] buffers. Correct both success
+# and early-return cleanup without changing feature objects or engine layouts.
+patch('graphics/meshread.cpp', [(f'delete {name};',f'delete[] {name};') for name in
+ ['istreambuf','vects','mapNewToOldIndex','verttostate','texttostate','mapper']])
 patch('graphics/vid_cmd_dialog.cpp', [('min(', 'Min('),('max(', 'Max(')])
 patch('graphics/vid_cmd.cpp', [('caps.clipGuard ? Vid::Var::clipGuard : FALSE', 'caps.clipGuard ? S32(Vid::Var::clipGuard) : FALSE'),('Color color = Vid::Var::suncolor;', 'Color color{U32(Vid::Var::suncolor)};'),('min(', 'Min('), ('max(', 'Max(')])
 patch('graphics/vid_cmd_mesh.cpp', [('Color color = Var::baseColor;', 'Color color{U32(Var::baseColor)};')])

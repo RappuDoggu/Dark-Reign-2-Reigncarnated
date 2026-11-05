@@ -151,6 +151,16 @@ int main(int argc,char **argv){try{
    for(const char *name:{"DisableIFace","DisableInput","DisableShroud"})start->AddFunction(name)->AddArgInteger(1);
    auto *letter=start->AddFunction("Letterbox");letter->AddFunction("Direction")->AddArgString("Down");auto *time=letter->AddFunction("Time");time->AddArgFPoint(0.1f);time->AddArgFPoint(1.5f);time->AddArgFPoint(1.7f);
    auto *fade=start->AddFunction("Fade");fade->AddFunction("Direction")->AddArgString("Down");time=fade->AddFunction("Time");time->AddArgFPoint(0.2f);time->AddArgFPoint(1.7f);time->AddArgFPoint(1.9f);
+   if(std::getenv("REIGN_MESH_CINEMATIC_FIXTURE")){
+    // Load an uncached real text mesh through the same cinematic primitive as
+    // the J01 stack. Keep all owned bytes in this private temporary runtime.
+    auto *source=FileSys::Open("engine_plane.xsi");check(source&&source->Size()>0);
+    const auto path=work/"recovery_cinematic_mesh.xsi";
+    {std::ofstream out(path,std::ios::binary);out.write(static_cast<const char *>(source->GetMemoryPtr()),source->Size());check(bool(out));}FileSys::Close(source);
+    auto *at=cin->AddFunction("At");at->AddArgFPoint(0.3f);auto *mesh=at->AddFunction("Mesh");mesh->AddFunction("Godfile")->AddArgString(path.c_str());
+    auto *offset=mesh->AddFunction("Offset");offset->AddArgFPoint(0);offset->AddArgFPoint(0);offset->AddArgFPoint(3);
+    time=mesh->AddFunction("Time");time->AddArgFPoint(0.1f);time->AddArgFPoint(1.4f);time->AddArgFPoint(1.6f);
+   }
    auto *end=cin->AddFunction("At");end->AddArgFPoint(2.0f);end->AddFunction("EndCineractive");
    Viewer::Action::Execute(Team::GetDisplayTeam(),cin);
    for(unsigned frame=0;frame<150;++frame){app.Frame();

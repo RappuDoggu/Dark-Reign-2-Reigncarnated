@@ -111,7 +111,12 @@ struct MissionApp::Impl {
   auto *config=configuration.GetGlobalScope()->GetFunction("GameConfig");
   FileSys::ProcessConfigScope(config->GetFunction("ConfigureFileSystem"));MultiLanguage::Configure(config->GetFunction("ConfigureMultiLanguage"));
   missionLoadStatus.Update("Initializing video and textures");InitializeVideoVariables();Vid::Command::InitMesh();Defer([]{Vid::Command::DoneMesh();});
-  Vid::Heap::Init(2048,6144);Defer([]{Vid::Heap::Done();});Vid::InitBuckets();Defer([]{Vid::DoneBuckets();});
+  Vid::Heap::Init(2048,6144);Defer([]{Vid::Heap::Done();});
+  // Original Vid::Command::Init bindings, after the real heap sizes exist.
+  // Raw cinematic text meshes call MeshRoot::Check through these VarPtrs.
+  VarSys::CreateInteger("vid.heap.check.verts",Vid::renderState.maxVerts,VarSys::NOTIFY,&Vid::Var::checkMaxVerts);
+  VarSys::CreateInteger("vid.heap.check.tris",Vid::renderState.maxTris,VarSys::NOTIFY,&Vid::Var::checkMaxTris);
+  Vid::InitBuckets();Defer([]{Vid::DoneBuckets();});
   Require(AttachGlesVideo(renderer,640,480,present,context)==S_OK,"Cannot attach GLES video");Defer([]{DetachVideo();});
   Require(Bitmap::Manager::Init(),"Cannot initialize bitmaps");Defer([]{Bitmap::Manager::Done();});
   Require(Material::Manager::Init(),"Cannot initialize materials");Defer([]{Material::Manager::Done();});

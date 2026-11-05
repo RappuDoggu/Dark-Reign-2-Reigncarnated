@@ -631,3 +631,45 @@ reference Instant Action lifecycle also passes twice. Original 10 Hz/ABI flags,
 supported High graphics and fenced unsynchronized streaming remain. This does
 not establish retail campaign completion, Android handoff lifecycle, phone
 placement feel or a new APK 27 FPS benchmark.
+
+
+## APK 28: JDA cinematic raw-mesh startup fix
+
+Use the same pinned full-builder command from APK 24, changing output to
+`"$work/v28"` and output name to `Reigncarnated-Cinematic-Mesh-v28.apk`. Reuse the
+APK 22-27 private signer and `org.reigncarnated.instantcity` identity to update
+without reimporting data. The current incremental artifact rebuilds the original
+meshread.cpp and mission adapters atop verified original objects/overrides; the
+unchanged menu remains byte-identical. The clean full builder verifies pins and
+recompiles everything. No owned game data, raw diagnostics or key is packaged.
+
+The retained JDA stack identifies the original cinematic text-mesh check reading
+unbound checkMaxVerts/checkMaxTris VarIntegers. Bootstrap now creates the original
+vid.heap.check.verts/tris variables after Heap::Init, with the current real heap
+sizes and original notification flags. MeshRoot::Check and all rendering checks
+remain active. The raw loader's new[] buffers now use matching delete[] cleanup,
+including early-return paths. No object layouts or ABI configuration change.
+
+To exercise the new regression, use the existing original engine-app host test
+with an owned base pack containing engine_plane.xsi and set
+REIGN_CINEMATIC_FIXTURE=1 REIGN_MESH_CINEMATIC_FIXTURE=1. The fixture copies its
+bytes only to the private temporary mission runtime and invokes the original
+cinematic Mesh primitive; it does not publish the asset. For the two-map deferred
+navigation fixture also set REIGN_NAVIGATION_FIXTURE=1, using the private two-map
+campaign group described for APK 27. Source-side reproduction first exposes
+array cleanup mismatches, then the original missing binding; both corrections
+are required for the passing raw-mesh cinematic path.
+
+Validation: real uncached cinematic text-mesh load/render/cleanup twice, original
+camera/pan restoration, next-mission/final-menu routing, reference Instant Action
+lifecycle twice, 12 foundation tests, 55 gesture checks and 13 report checks. SDK
+35 Java compiles during packaging. Sprawler's APK 27 report confirms entry into
+Transition into S01 on the phone, with 120 FPS at that captured point. JDA's
+specific failure is source diagnosed and fixed; full retail intro/campaign and
+APK 28 phone performance remain acceptance checks.
+
+Rejected-draw reports now include textureActive to investigate remaining bad UVs;
+validation remains strict. Placement controls, audio, 10 Hz clock, original flags,
+supported High graphics and fenced append-only unsynchronized stream are retained.
+Old protected failures keep their own source/time receipt; do not attribute an
+older APK's saved failure to a later successful session. See DIAGNOSTICS_REVIEW_V27.md.

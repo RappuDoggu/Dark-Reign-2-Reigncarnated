@@ -209,7 +209,7 @@ public:
  }
  HRESULT DrawIndexedPrimitive(D3DPRIMITIVETYPE kind,DWORD fvf,void *vertices,DWORD count,WORD *indices,DWORD n,DWORD flags)override{
   const DWORD submittedIndices=n;
-  auto reject=[&](HRESULT hr,int line,const char *reason){std::ostringstream out;out<<"DX7 DrawIndexedPrimitive:"<<line<<" hr=0x"<<std::hex<<std::uint32_t(hr)<<" primitive="<<std::dec<<unsigned(kind)<<" FVF=0x"<<std::hex<<fvf<<" flags=0x"<<flags<<std::dec<<" vertices="<<count<<" indices="<<submittedIndices<<" triangleIndices="<<n<<" colorOp="<<colorOp<<" alphaOp="<<alphaOp<<" colorArgs="<<color1<<'/'<<color2<<" alphaArgs="<<alpha1<<'/'<<alpha2<<" filters="<<minFilter<<'/'<<magFilter<<" cull="<<cullMode<<" reason="<<reason;reign::nativeDiagnostics.record(out.str());return hr;};
+  auto reject=[&](HRESULT hr,int line,const char *reason){std::ostringstream out;out<<"DX7 DrawIndexedPrimitive:"<<line<<" hr=0x"<<std::hex<<std::uint32_t(hr)<<" primitive="<<std::dec<<unsigned(kind)<<" FVF=0x"<<std::hex<<fvf<<" flags=0x"<<flags<<std::dec<<" vertices="<<count<<" indices="<<submittedIndices<<" triangleIndices="<<n<<" colorOp="<<colorOp<<" alphaOp="<<alphaOp<<" colorArgs="<<color1<<'/'<<color2<<" alphaArgs="<<alpha1<<'/'<<alpha2<<" filters="<<minFilter<<'/'<<magFilter<<" cull="<<cullMode<<" textureActive="<<(texture&&colorOp!=D3DTOP_DISABLE)<<" reason="<<reason;reign::nativeDiagnostics.record(out.str());return hr;};
 
   const bool lines=kind==D3DPT_LINELIST;
   if(!scene||!vertices||!indices||!count||n<(lines?2u:3u)||n>196608||count>65536)return reject(E_INVALIDARG,__LINE__,"unsupported or invalid draw arguments/state");
