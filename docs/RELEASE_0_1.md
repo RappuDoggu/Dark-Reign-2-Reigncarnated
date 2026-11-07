@@ -1,5 +1,8 @@
 # Reigncarnated 0.1 — native ARM64 Android early access
 
+[Download the published v0.1 prerelease](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1)
+with the signed APK, matching source/relink ZIP, checksums and build receipt.
+
 Reigncarnated brings Dark Reign 2's original engine to Android, with native ARM64
 execution, offline Instant Action, original menu/city animation and touch controls.
 Version **0.1** is an early-access release for testing and feedback. It is not a

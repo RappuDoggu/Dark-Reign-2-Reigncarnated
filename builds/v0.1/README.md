@@ -1,4 +1,4 @@
-# Reigncarnated 0.1 — early-access release candidate
+# Reigncarnated 0.1 — early-access release
 
 Android versionName **0.1**, versionCode **32**, ARM64/API26+/GLES3, target SDK35.
 Package `org.reigncarnated.instantcity`, launcher **Reigncarnated**. Same signer
@@ -29,5 +29,7 @@ acceptance and multiplayer remain open. This is not a complete-game/stable claim
 [Roadmap](../../docs/ROADMAP.md) · [Build](../../docs/RECOVERY_BUILD.md) ·
 [Provenance](../../docs/SOURCE_PROVENANCE.md) · [Audit](../../docs/RELEASE_AUDIT_0_1.md).
 
-A draft GitHub Release and recovery-to-main PR are separate review artifacts.
-Neither publishing the Release nor merging main is implied by these files.
+[Published v0.1 prerelease](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1).
+The recovered implementation and public banner/landing page are merged into main.
+The owner explicitly authorized publication on 2026-11-07; the same four verified
+delivery files are public, with no change to the signed APK or source/relink ZIP.

@@ -2,6 +2,13 @@
 
 Recovery started 2026-11-02 (America/Los_Angeles).
 
+**Current status — 2026-11-07:** the native Android recovery and new public
+README/banner are merged into main. [v0.1 is publicly available](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1)
+as an early-access prerelease with verified APK/source/checksum/receipt downloads.
+The owner explicitly authorized this publication, replacing the earlier hold.
+Earlier entries below retain their historical state; see the final publication
+entry and `docs/builds/release-0.1-github.json` for actual verification.
+
 ## Provenance and scope
 
 - Starting checkpoint: `75e34b99c312238ca9367cb4abdcf579665f40f6`, fetched from
@@ -1400,3 +1407,20 @@ prepared draft. Publication updates the guide links to main and download links
 to the release, retaining an immutable alternate APK link. Runtime code, the
 signed APK and source/relink hashes are unchanged. Actual public release/merge
 and anonymous-download verification are recorded after publication.
+
+Publication completed: PR #3 merged at `eca093e9019d9ffa84f8831ab22d340f77ff7d0b`;
+GitHub also marks PRs #1/#4 merged, preserving the original checkpoint and banner
+history. Tag `v0.1` points to delivery `1b55b7cab7d571421a64fc192bac5b970563a490`.
+The release is public (`draft=false`, `prerelease=true`), published at
+2026-11-07 12:10 PST. All four public release assets were independently downloaded;
+their exact sizes/hashes and checksum manifest pass. All 15 README destinations
+return HTTP200. The live GitHub page has the new tagline and the public SVG
+matches the authored banner exactly. Both integration CI runs pass host and
+Android jobs. Full campaigns, remaining rendering problems, saves and networking
+retain their stated early-access limits.
+
+The About-description/topic update returned HTTP403, "Resource not accessible by
+integration", and remains unapplied. It did not block README/banner publication,
+the source merge or the release. Private signing files and game data were not
+published. Current release, public-download and merge evidence is recorded in
+`docs/builds/release-0.1-github.json`.

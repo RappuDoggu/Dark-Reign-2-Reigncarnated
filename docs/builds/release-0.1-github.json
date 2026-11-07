@@ -25,8 +25,8 @@
       "size": 275
     }
   ],
-  "draft": true,
-  "html_url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/untagged-bfc407c1b0cb1dffc4a3",
+  "draft": false,
+  "html_url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1",
   "id": 437620235,
   "prerelease": true,
   "target_commitish": "1b55b7cab7d571421a64fc192bac5b970563a490",
@@ -37,8 +37,10 @@
   "pull_request": {
     "number": 3,
     "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/pull/3",
-    "draft": true,
-    "base": "main"
+    "draft": false,
+    "base": "main",
+    "state": "MERGED",
+    "merge_commit": "eca093e9019d9ffa84f8831ab22d340f77ff7d0b"
   },
   "asset_attachment_workflow": {
     "run_id": 42381059656,
@@ -58,7 +60,6 @@
       "sha256_verified": true
     }
   },
-  "main_unchanged_revision": "0bc1fe73958107346b399a011d50d4fcaf41de12",
   "private_signing_key_uploaded": false,
   "cloud_environment_settings_changed": false,
   "direct_upload_note": "uploads.github.com returned HTTP401; existing draft assets uploaded with scoped GitHub Actions job token and independently downloaded/verified.",
@@ -78,6 +79,161 @@
         "name": "host",
         "conclusion": "success",
         "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/42381059560/job/128428577270"
+      }
+    ]
+  },
+  "prepublication": {
+    "main_revision": "0bc1fe73958107346b399a011d50d4fcaf41de12",
+    "draft_release_url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/untagged-bfc407c1b0cb1dffc4a3",
+    "pull_request_draft": true
+  },
+  "published_at": "2026-11-07T20:10:53Z",
+  "incorporated_pull_requests": [
+    {
+      "number": 1,
+      "state": "MERGED"
+    },
+    {
+      "number": 4,
+      "state": "MERGED"
+    }
+  ],
+  "publication": {
+    "owner_authorized": true,
+    "supersedes_earlier_do_not_publish": true,
+    "main_merge_revision": "eca093e9019d9ffa84f8831ab22d340f77ff7d0b",
+    "published_at_america_los_angeles": "2026-11-07T12:10:53-08:00",
+    "live_readme_tagline_verified": true,
+    "live_banner_exact_bytes_verified": true,
+    "public_readme_links": [
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/SHA256SUMS.txt",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/build-receipt.json",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/PLAYER_GUIDE.md",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/RECOVERY_BUILD.md",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/RECOVERY_PROGRESS.md",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/RELEASE_0_1.md",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/ROADMAP.md",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/SOURCE_PROVENANCE.md",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/builds/release-0.1-github.json",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/issues",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1-source-relink.zip",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1.apk",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/tree/recovery/native-arm64-v012",
+        "http_status": "200",
+        "exit_code": 0
+      },
+      {
+        "url": "https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/Reigncarnated-0.1.apk",
+        "http_status": "200",
+        "exit_code": 0
+      }
+    ],
+    "public_release_downloads": [
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1.apk",
+        "name": "Reigncarnated-0.1.apk",
+        "http_status": 200,
+        "bytes": 9549153,
+        "sha256": "a3eab898981301def987ab5a9fe736ca2162560e79673520b0a5cac119ccfd97"
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1-source-relink.zip",
+        "name": "Reigncarnated-0.1-source-relink.zip",
+        "http_status": 200,
+        "bytes": 30912974,
+        "sha256": "26ade2fb2b07852339f2912609ebef30e07fb04c1cbf243a2330f3eece181b57"
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/SHA256SUMS.txt",
+        "name": "SHA256SUMS.txt",
+        "http_status": 200,
+        "bytes": 275,
+        "sha256": "d67fe7993745a0849ec93cb1d730dbe2e0b164b777b2097af459da43a31e2eba"
+      },
+      {
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/build-receipt.json",
+        "name": "build-receipt.json",
+        "http_status": 200,
+        "bytes": 2911,
+        "sha256": "e71a1fccf2703dbba283b6120d9f059a71fa581da0e0de38516f779161951b3d"
+      }
+    ],
+    "about_and_topics_update": {
+      "applied": false,
+      "http_status": 403,
+      "message": "Resource not accessible by integration"
+    }
+  },
+  "integration_ci": {
+    "databaseId": 42409292049,
+    "headSha": "ea185e58f302ec3234d12f7363129e22ed8327fd",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/42409292049",
+    "jobs": [
+      {
+        "name": "host",
+        "conclusion": "success",
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/42409292049/job/128513717534"
+      },
+      {
+        "name": "android",
+        "conclusion": "success",
+        "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/42409292049/job/128513717813"
       }
     ]
   }

@@ -1,6 +1,23 @@
 # 0.1 release preparation audit — 2026-11-07
 
-## Repository and API state
+## Published status
+
+The owner explicitly authorized publication on 2026-11-07, superseding the earlier
+do-not-publish instruction. PR #3 merged the recovered implementation and the
+banner/landing-page work into main at `eca093e9019d9ffa84f8831ab22d340f77ff7d0b`.
+PRs #1 and #4 are also marked merged because their commits are included.
+[v0.1 is public](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1)
+as an early-access prerelease. All four public assets were downloaded and match
+the existing hashes; all 15 README destinations return HTTP 200. The live public
+page contains the new tagline and exact SVG banner. Integration CI passes host
+and Android jobs on `ea185e5...`. Signing keys and game packs remain private.
+
+GitHub refused the proposed About-description and topic changes with HTTP403
+"Resource not accessible by integration". The README/banner and release published
+successfully. Detailed public verification is in
+[release-0.1-github.json](builds/release-0.1-github.json).
+
+## Repository and API state at the start of preparation
 
 The restored executor works, the existing private update signer is present, and
 GitHub API reads now succeed. The repository's default/main branch is the older
