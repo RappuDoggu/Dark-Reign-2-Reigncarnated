@@ -1,0 +1,220 @@
+Change Dir: '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+
+Run Clean Command: /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile clean
+/usr/bin/gmake  -f CMakeFiles/Makefile2 clean
+gmake[1]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/Experimental.dir/build.make CMakeFiles/Experimental.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/Experimental.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/Nightly.dir/build.make CMakeFiles/Nightly.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/Nightly.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/Continuous.dir/build.make CMakeFiles/Continuous.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/Continuous.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyMemoryCheck.dir/build.make CMakeFiles/NightlyMemoryCheck.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyMemoryCheck.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyStart.dir/build.make CMakeFiles/NightlyStart.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyStart.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyUpdate.dir/build.make CMakeFiles/NightlyUpdate.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyUpdate.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyConfigure.dir/build.make CMakeFiles/NightlyConfigure.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyConfigure.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyBuild.dir/build.make CMakeFiles/NightlyBuild.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyBuild.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyTest.dir/build.make CMakeFiles/NightlyTest.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyTest.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyCoverage.dir/build.make CMakeFiles/NightlyCoverage.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyCoverage.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlyMemCheck.dir/build.make CMakeFiles/NightlyMemCheck.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlyMemCheck.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/NightlySubmit.dir/build.make CMakeFiles/NightlySubmit.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/NightlySubmit.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalStart.dir/build.make CMakeFiles/ExperimentalStart.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalStart.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalUpdate.dir/build.make CMakeFiles/ExperimentalUpdate.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalUpdate.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalConfigure.dir/build.make CMakeFiles/ExperimentalConfigure.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalConfigure.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalBuild.dir/build.make CMakeFiles/ExperimentalBuild.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalBuild.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalTest.dir/build.make CMakeFiles/ExperimentalTest.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalTest.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalCoverage.dir/build.make CMakeFiles/ExperimentalCoverage.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalCoverage.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalMemCheck.dir/build.make CMakeFiles/ExperimentalMemCheck.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalMemCheck.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ExperimentalSubmit.dir/build.make CMakeFiles/ExperimentalSubmit.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ExperimentalSubmit.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousStart.dir/build.make CMakeFiles/ContinuousStart.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousStart.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousUpdate.dir/build.make CMakeFiles/ContinuousUpdate.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousUpdate.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousConfigure.dir/build.make CMakeFiles/ContinuousConfigure.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousConfigure.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousBuild.dir/build.make CMakeFiles/ContinuousBuild.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousBuild.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousTest.dir/build.make CMakeFiles/ContinuousTest.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousTest.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousCoverage.dir/build.make CMakeFiles/ContinuousCoverage.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousCoverage.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousMemCheck.dir/build.make CMakeFiles/ContinuousMemCheck.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousMemCheck.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/ContinuousSubmit.dir/build.make CMakeFiles/ContinuousSubmit.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/ContinuousSubmit.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_platform.dir/build.make CMakeFiles/reign_platform.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/reign_platform.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/dr2_primitives.dir/build.make CMakeFiles/dr2_primitives.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/dr2_primitives.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_checks.dir/build.make CMakeFiles/reign_checks.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/reign_checks.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/engine_smoke.dir/build.make CMakeFiles/engine_smoke.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/engine_smoke.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/platform_smoke.dir/build.make CMakeFiles/platform_smoke.dir/clean
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/platform_smoke.dir/cmake_clean.cmake
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+gmake[1]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+
+Run Build Command(s): /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -S/workspace/scratch/2e29d93ded9e/reigncarnated -B/workspace/scratch/2e29d93ded9e/reigncarnated/build-host --check-build-system CMakeFiles/Makefile.cmake 0
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_progress_start /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles /workspace/scratch/2e29d93ded9e/reigncarnated/build-host//CMakeFiles/progress.marks
+/usr/bin/gmake  -f CMakeFiles/Makefile2 all
+gmake[1]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_platform.dir/build.make CMakeFiles/reign_platform.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/reign_platform.dir/DependInfo.cmake "--color=" reign_platform
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_platform.dir/build.make CMakeFiles/reign_platform.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[  9%] Building CXX object CMakeFiles/reign_platform.dir/src/platform.cpp.o
+/usr/bin/c++  -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fPIC -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -MD -MT CMakeFiles/reign_platform.dir/src/platform.cpp.o -MF CMakeFiles/reign_platform.dir/src/platform.cpp.o.d -o CMakeFiles/reign_platform.dir/src/platform.cpp.o -c /workspace/scratch/2e29d93ded9e/reigncarnated/src/platform.cpp
+[ 18%] Linking CXX static library libreign_platform.a
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/reign_platform.dir/cmake_clean_target.cmake
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/reign_platform.dir/link.txt --verbose=1
+/usr/bin/ar qc libreign_platform.a CMakeFiles/reign_platform.dir/src/platform.cpp.o
+/usr/bin/ranlib libreign_platform.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 18%] Built target reign_platform
+/usr/bin/gmake  -f CMakeFiles/dr2_primitives.dir/build.make CMakeFiles/dr2_primitives.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/dr2_primitives.dir/DependInfo.cmake "--color=" dr2_primitives
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/dr2_primitives.dir/build.make CMakeFiles/dr2_primitives.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 27%] Building CXX object CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/crc.cpp.o
+/usr/bin/c++  -I/tmp/reign-upstream/system -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fPIC -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -include /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/legacy_types.hpp -funsigned-char -MD -MT CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/crc.cpp.o -MF CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/crc.cpp.o.d -o CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/crc.cpp.o -c /tmp/reign-upstream/system/crc.cpp
+[ 36%] Building CXX object CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/random.cpp.o
+/usr/bin/c++  -I/tmp/reign-upstream/system -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fPIC -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -include /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/legacy_types.hpp -MD -MT CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/random.cpp.o -MF CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/random.cpp.o.d -o CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/random.cpp.o -c /tmp/reign-upstream/system/random.cpp
+[ 45%] Linking CXX static library libdr2_primitives.a
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/dr2_primitives.dir/cmake_clean_target.cmake
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/dr2_primitives.dir/link.txt --verbose=1
+/usr/bin/ar qc libdr2_primitives.a "CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/crc.cpp.o" "CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/random.cpp.o"
+/usr/bin/ranlib libdr2_primitives.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 45%] Built target dr2_primitives
+/usr/bin/gmake  -f CMakeFiles/reign_checks.dir/build.make CMakeFiles/reign_checks.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/reign_checks.dir/DependInfo.cmake "--color=" reign_checks
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/reign_checks.dir/build.make CMakeFiles/reign_checks.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 54%] Building CXX object CMakeFiles/reign_checks.dir/tests/engine_checks.cpp.o
+/usr/bin/c++  -I/tmp/reign-upstream/system -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fPIC -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -MD -MT CMakeFiles/reign_checks.dir/tests/engine_checks.cpp.o -MF CMakeFiles/reign_checks.dir/tests/engine_checks.cpp.o.d -o CMakeFiles/reign_checks.dir/tests/engine_checks.cpp.o -c /workspace/scratch/2e29d93ded9e/reigncarnated/tests/engine_checks.cpp
+[ 63%] Linking CXX static library libreign_checks.a
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -P CMakeFiles/reign_checks.dir/cmake_clean_target.cmake
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/reign_checks.dir/link.txt --verbose=1
+/usr/bin/ar qc libreign_checks.a CMakeFiles/reign_checks.dir/tests/engine_checks.cpp.o
+/usr/bin/ranlib libreign_checks.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 63%] Built target reign_checks
+/usr/bin/gmake  -f CMakeFiles/engine_smoke.dir/build.make CMakeFiles/engine_smoke.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/engine_smoke.dir/DependInfo.cmake "--color=" engine_smoke
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/engine_smoke.dir/build.make CMakeFiles/engine_smoke.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 72%] Building CXX object CMakeFiles/engine_smoke.dir/tests/engine_main.cpp.o
+/usr/bin/c++  -I/tmp/reign-upstream/system -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -MD -MT CMakeFiles/engine_smoke.dir/tests/engine_main.cpp.o -MF CMakeFiles/engine_smoke.dir/tests/engine_main.cpp.o.d -o CMakeFiles/engine_smoke.dir/tests/engine_main.cpp.o -c /workspace/scratch/2e29d93ded9e/reigncarnated/tests/engine_main.cpp
+[ 81%] Linking CXX executable engine_smoke
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/engine_smoke.dir/link.txt --verbose=1
+/usr/bin/c++ -fsanitize=address,undefined -Wl,--dependency-file=CMakeFiles/engine_smoke.dir/link.d CMakeFiles/engine_smoke.dir/tests/engine_main.cpp.o -o engine_smoke  libreign_checks.a libdr2_primitives.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 81%] Built target engine_smoke
+/usr/bin/gmake  -f CMakeFiles/platform_smoke.dir/build.make CMakeFiles/platform_smoke.dir/depend
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+cd /workspace/scratch/2e29d93ded9e/reigncarnated/build-host && /root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles/platform_smoke.dir/DependInfo.cmake "--color=" platform_smoke
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/usr/bin/gmake  -f CMakeFiles/platform_smoke.dir/build.make CMakeFiles/platform_smoke.dir/build
+gmake[2]: Entering directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[ 90%] Building CXX object CMakeFiles/platform_smoke.dir/tests/platform_smoke.cpp.o
+/usr/bin/c++  -I/workspace/scratch/2e29d93ded9e/reigncarnated/include -std=c++17 -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -MD -MT CMakeFiles/platform_smoke.dir/tests/platform_smoke.cpp.o -MF CMakeFiles/platform_smoke.dir/tests/platform_smoke.cpp.o.d -o CMakeFiles/platform_smoke.dir/tests/platform_smoke.cpp.o -c /workspace/scratch/2e29d93ded9e/reigncarnated/tests/platform_smoke.cpp
+[100%] Linking CXX executable platform_smoke
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/platform_smoke.dir/link.txt --verbose=1
+/usr/bin/c++ -fsanitize=address,undefined -Wl,--dependency-file=CMakeFiles/platform_smoke.dir/link.d CMakeFiles/platform_smoke.dir/tests/platform_smoke.cpp.o -o platform_smoke  libreign_platform.a
+gmake[2]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+[100%] Built target platform_smoke
+gmake[1]: Leaving directory '/workspace/scratch/2e29d93ded9e/reigncarnated/build-host'
+/root/.local/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_progress_start /workspace/scratch/2e29d93ded9e/reigncarnated/build-host/CMakeFiles 0
+

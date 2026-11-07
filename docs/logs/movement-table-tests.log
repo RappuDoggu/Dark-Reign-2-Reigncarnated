@@ -1,0 +1,7 @@
+[engine] Parse Callstack:
+[engine] OverSurface("ground", 0.010000)
+[engine] CreateTractionType("wheels")
+[engine] Parse Callstack:
+[engine] OverSurface("ground", 0.010000)
+[engine] CreateTractionType("wheels")
+Original movement defaults, traction config, bounds, capacity and restart: PASS (274 checks)

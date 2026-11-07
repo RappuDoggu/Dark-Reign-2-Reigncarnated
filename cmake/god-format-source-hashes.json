@@ -1,0 +1,14 @@
+{
+  "graphics/meshload.cpp": "6e0c8480540884403da3e1730f6ef4d416ea1dec200c649f2bce4c4eae199c28",
+  "graphics/godfile.cpp": "4e8de319025b57bb85ccfba9600b54397ca818d4d6ffc549231187d3352b7e20",
+  "graphics/godfile.h": "19d8cbb259696d9d98dce21e4e5033eec4083baaf1db6a8e5a446a45d2b8ee04",
+  "graphics/material.cpp": "4951e792d86cf3673f019831e6c2bc7ef7e5baff01a37826c423c1530780e21a",
+  "graphics/bitmap_manager.cpp": "263f70f259ab3a7ba711f014bc5f6a1fd0bea92d65e3c3130edce2f3b589efd0",
+  "graphics/mesh.h": "313e75daa93b8624b785f6a23ac7c29f1f06a44e2730bb8af4ccd6ad45b59cfc",
+  "graphics/Vertex.h": "46ac054661f9829fc26250b20d7bbe07d772d2a6ec2754f0d5fec1c5ae01fc01",
+  "graphics/family.h": "80f3a5d52e77e747828b3f880a4ae8851be822cbdf5eef5dd09677c558c3046a",
+  "util/mathtypes.h": "98840b74597794ae5c23987e302b186e45685a80d16a047dab2f92c328405301",
+  "util/utiltypes.h": "d99680d5b7adfd680e1de0e0591ff4cf2226e8ceeed3ca730859edc882efa887",
+  "graphics/anim.h": "52ccb20b8f277cfdb2f54d0059bccd7edeee152bba3eaa981ab74fee2f58f17c",
+  "graphics/meshmrm.h": "96c5bc09dada7dfe98e3bad4cc4e3442de92a5f82e834196fda6df1804b7f964"
+}

@@ -1,0 +1,43 @@
+{
+  "implementation_commit": "8e73b55c49823e2d3758e8712d731685d3f8687d",
+  "run_id": 40198264863,
+  "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40198264863",
+  "host": {
+    "job_id": 121183725463,
+    "conclusion": "success",
+    "ctest_targets": 26,
+    "control_type_checks": 15,
+    "default_leak_checks": true
+  },
+  "android": {
+    "job_id": 121183725807,
+    "conclusion": "success",
+    "abi": "arm64-v8a",
+    "api": 26,
+    "control_types_compiled": true,
+    "individual_gpu_pass_lines": 102,
+    "original_menu_runtime_verified": false
+  },
+  "artifacts": [
+    {
+      "id": 12600935373,
+      "name": "Reigncarnated-Renderer-Test-v04-arm64",
+      "bytes": 741860,
+      "digest": "sha256:b504c9894fd18d2b5dafe57c0ea0af01304b40a42c2fd6917b44f4d6a6cbb9c7"
+    },
+    {
+      "id": 12600759005,
+      "name": "android-compilation-and-package-logs",
+      "bytes": 9092,
+      "digest": "sha256:cb9b6bf68d4253c3143a432a4f1f130a6e778455993941f01f3840f03f19e3c5"
+    },
+    {
+      "id": 12600499572,
+      "name": "host-compilation-and-test-logs",
+      "bytes": 16428,
+      "digest": "sha256:de4f9dd37a855f26443610b11c14651519f725489c160fc43d509d81f9dc08c9"
+    }
+  ],
+  "rea_provider_verified": false,
+  "standalone_ghidra_verified": true
+}

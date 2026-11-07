@@ -1,0 +1,110 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: native_frontend_support
+ 1/49 Test  #1: native_frontend_support ....................   Passed    0.01 sec
+      Start  2: native_frontend_text
+ 2/49 Test  #2: native_frontend_text .......................   Passed    0.01 sec
+      Start  3: original_object_tracking
+ 3/49 Test  #3: original_object_tracking ...................   Passed    0.03 sec
+      Start  4: original_event_dispatch
+ 4/49 Test  #4: original_event_dispatch ....................   Passed    0.01 sec
+      Start  5: original_native_event_context
+ 5/49 Test  #5: original_native_event_context ..............   Passed    0.01 sec
+      Start  6: original_variable_runtime
+ 6/49 Test  #6: original_variable_runtime ..................   Passed    0.01 sec
+      Start  7: original_runtime_handoff
+ 7/49 Test  #7: original_runtime_handoff ...................   Passed    0.01 sec
+      Start  8: original_control_types
+ 8/49 Test  #8: original_control_types .....................   Passed    0.01 sec
+      Start  9: original_frontend_config
+ 9/49 Test  #9: original_frontend_config ...................   Passed    0.01 sec
+      Start 10: original_interface_events
+10/49 Test #10: original_interface_events ..................   Passed    0.02 sec
+      Start 11: original_interface_registry
+11/49 Test #11: original_interface_registry ................   Passed    0.02 sec
+      Start 12: original_messagebox_events
+12/49 Test #12: original_messagebox_events .................   Passed    0.01 sec
+      Start 13: frontend_font_bridge
+13/49 Test #13: frontend_font_bridge .......................   Passed    0.02 sec
+      Start 14: frontend_frame_bridge
+14/49 Test #14: frontend_frame_bridge ......................   Passed    0.01 sec
+      Start 15: native_frontend_input
+15/49 Test #15: native_frontend_input ......................   Passed    0.01 sec
+      Start 16: original_frontend_theme
+16/49 Test #16: original_frontend_theme ....................   Passed    0.01 sec
+      Start 17: original_frontend_triangle
+17/49 Test #17: original_frontend_triangle .................   Passed    0.01 sec
+      Start 18: original_frontend_quads
+18/49 Test #18: original_frontend_quads ....................   Passed    0.02 sec
+      Start 19: original_frontend_texture_config
+19/49 Test #19: original_frontend_texture_config ...........   Passed    0.02 sec
+      Start 20: original_interface_expressions
+20/49 Test #20: original_interface_expressions .............   Passed    0.01 sec
+      Start 21: original_live_frontend_controls
+21/49 Test #21: original_live_frontend_controls ............   Passed    0.03 sec
+      Start 22: original_frontend_effect_routing
+22/49 Test #22: original_frontend_effect_routing ...........   Passed    0.01 sec
+      Start 23: original_console_dispatch
+23/49 Test #23: original_console_dispatch ..................   Passed    0.03 sec
+      Start 24: original_babel_formatting
+24/49 Test #24: original_babel_formatting ..................   Passed    0.01 sec
+      Start 25: original_language_lookup
+25/49 Test #25: original_language_lookup ...................   Passed    0.01 sec
+      Start 26: original_variable_database
+26/49 Test #26: original_variable_database .................   Passed    0.01 sec
+      Start 27: original_render_buckets
+27/49 Test #27: original_render_buckets ....................   Passed    0.03 sec
+      Start 28: original_bitmap_manager
+28/49 Test #28: original_bitmap_manager ....................   Passed    0.01 sec
+      Start 29: original_bitmap_pixels
+29/49 Test #29: original_bitmap_pixels .....................   Passed    0.02 sec
+      Start 30: bitmap_tga_loading
+30/49 Test #30: bitmap_tga_loading .........................   Passed    0.02 sec
+      Start 31: bitmap_bmp_loading
+31/49 Test #31: bitmap_bmp_loading .........................   Passed    0.02 sec
+      Start 32: original_vid_states
+32/49 Test #32: original_vid_states ........................   Passed    0.01 sec
+      Start 33: original_font_registration
+33/49 Test #33: original_font_registration .................   Passed    0.01 sec
+      Start 34: original_interface_metrics
+34/49 Test #34: original_interface_metrics .................   Passed    0.01 sec
+      Start 35: original_font_atlas_and_draw
+35/49 Test #35: original_font_atlas_and_draw ...............   Passed    0.05 sec
+      Start 36: original_frontend_configuration_dispatch
+36/49 Test #36: original_frontend_configuration_dispatch ...   Passed    0.03 sec
+      Start 37: original_command_scope_dispatch
+37/49 Test #37: original_command_scope_dispatch ............   Passed    0.02 sec
+      Start 38: original_runcodes
+Process not started
+ /workspace/scratch/2e29d93ded9e/reign-work/build-host/runcodes_smoke
+[permission denied]
+38/49 Test #38: original_runcodes ..........................***Not Run   0.00 sec
+      Start 39: original_config_parser
+39/49 Test #39: original_config_parser .....................   Passed    0.02 sec
+      Start 40: original_tokenizer
+40/49 Test #40: original_tokenizer .........................   Passed    0.01 sec
+      Start 41: original_engine_primitives
+41/49 Test #41: original_engine_primitives .................   Passed    0.01 sec
+      Start 42: platform_services
+42/49 Test #42: platform_services ..........................   Passed    0.01 sec
+      Start 43: pack_metadata_inspector
+43/49 Test #43: pack_metadata_inspector ....................   Passed    0.12 sec
+      Start 44: native_archive_reader
+44/49 Test #44: native_archive_reader ......................   Passed    0.05 sec
+      Start 45: make_installation_fixture
+45/49 Test #45: make_installation_fixture ..................   Passed    0.04 sec
+      Start 46: installation_integration
+46/49 Test #46: installation_integration ...................   Passed    0.01 sec
+      Start 47: resource_streams
+47/49 Test #47: resource_streams ...........................   Passed    0.02 sec
+      Start 48: tga_pixels
+48/49 Test #48: tga_pixels .................................   Passed    0.01 sec
+      Start 49: native_bitmap_storage
+49/49 Test #49: native_bitmap_storage ......................   Passed    0.01 sec
+
+98% tests passed, 1 tests failed out of 49
+
+Total Test time (real) =   0.94 sec
+
+The following tests FAILED:
+	 38 - original_runcodes (BAD_COMMAND)
+Errors while running CTest

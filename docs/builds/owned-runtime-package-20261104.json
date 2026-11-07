@@ -1,0 +1,3618 @@
+{
+  "schema": 1,
+  "policy": "first input wins; differing duplicates recorded",
+  "inputs": [
+    {
+      "index": 0,
+      "name": "Dark Reign 2.zip",
+      "sha256": "db6607076104c95a5f3a8132f6ef617c307e3614f1b7a6187fdfcc997196dbf5",
+      "bytes": 411709317
+    },
+    {
+      "index": 1,
+      "name": "missions.zip",
+      "sha256": "b2c01b4c64686228252815c6550f6e78d46911b59691d58e3fa395b3362ad612",
+      "bytes": 233979466
+    }
+  ],
+  "files": [
+    {
+      "path": "library/engine/download.cfg",
+      "bytes": 299,
+      "sha256": "8251355eb1cf65bdecbacfa2000cfd8b80c2d69f28825a475a3dca4ba8a595ed",
+      "input": 0
+    },
+    {
+      "path": "library/engine/engine_pandemic.pic",
+      "bytes": 36369,
+      "sha256": "dd0bbf83a78aeedac70f352b2203184c3b55e48e6015dd2d3a333d960a574bb9",
+      "input": 0
+    },
+    {
+      "path": "library/engine/startup.cfg",
+      "bytes": 1371,
+      "sha256": "ce33632cb7b999e253c98ac8cd97101ee64aa24ca61f597ee501b625b2225caf",
+      "input": 0
+    },
+    {
+      "path": "library/engine/video.cfg",
+      "bytes": 1337,
+      "sha256": "a319d66996aa8f68d1ba2a2cb4e2cb9815b01325a4d20fecfcb297a0fb9803b8",
+      "input": 0
+    },
+    {
+      "path": "library/won/won.cfg",
+      "bytes": 159,
+      "sha256": "dff886c493daa3b63757198f5b27d064c314c66d7e144ba8abeb82d59d76a10f",
+      "input": 0
+    },
+    {
+      "path": "missions/assault/a4assault.zwp",
+      "bytes": 509532,
+      "sha256": "968c2b1910b8cd1eb29c74de22e2853bbd22c51f210503366f1c0240b84f5c13",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/assault/a4seadevil.zwp",
+      "bytes": 387376,
+      "sha256": "5694bd3855636f54628715ba762e7c4f8a6eadc84420270d8aeae53fa3607218",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/assault/group.cfg",
+      "bytes": 228,
+      "sha256": "84bbdc5fb85e902e5919b70e476483a6d8a66930643f95bd9cbfc6b1c1c573a9",
+      "input": 0
+    },
+    {
+      "path": "missions/control/c2control.zwp",
+      "bytes": 300581,
+      "sha256": "cfca3852c41307a290ba1d461b4f8cacd9056b424c2158ae40bc472df59c4deb",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/control/c4siege.zwp",
+      "bytes": 475579,
+      "sha256": "bb8153a37b6aa16a1d8e56c96fa17157891b4df480e87fbde644d7d10cccdc95",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/control/c8snowpass.zwp",
+      "bytes": 630304,
+      "sha256": "3526233531c812cb5cd6e21be810e2434e1accf3308c359e48f94b77c79ec1d8",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/control/group.cfg",
+      "bytes": 228,
+      "sha256": "94da8b8cd4495ba04ad4386e9a314e8072287a84da5196014cd8f1d64bb7a826",
+      "input": 0
+    },
+    {
+      "path": "missions/fenced/f2crazed.zwp",
+      "bytes": 284573,
+      "sha256": "a8e3fa23c7d079ff82eddf53a21e43658c01d1e201c9a6384358aadd9356000c",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/fenced/f4crazed.zwp",
+      "bytes": 367734,
+      "sha256": "1774cbd0f1aa24bc2c7a29c0c3c2b3802e3ecee1e340207e421bbcd15c9a3e37",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/fenced/f4siege.zwp",
+      "bytes": 486146,
+      "sha256": "4cdffcdca0ff564b99b8d07dceb7f43c73dc27f0d0983ddc55f75a54d1dbe47d",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/fenced/group.cfg",
+      "bytes": 244,
+      "sha256": "58314b16e82a3f1e6731b216715aa08ae23d70dc6bb95bd7ee9b6597c9e5b88b",
+      "input": 0
+    },
+    {
+      "path": "missions/jda/group.cfg",
+      "bytes": 461,
+      "sha256": "d7692bbce91f7d5eb3db2d622a07bad359131fa49f3458460b113b795db3cdcf",
+      "input": 0
+    },
+    {
+      "path": "missions/jda/j01.zwp",
+      "bytes": 9647255,
+      "sha256": "99a4d1e3737a761d17d30fe6b5361bbf2f58be15bd32d03d652fa15a6f4681f3",
+      "input": 0,
+      "pack_files": 33
+    },
+    {
+      "path": "missions/jda/j02.zwp",
+      "bytes": 22947977,
+      "sha256": "9f06e5301c8cfc3e562e7e414d0ab42a99bdfcee55ef73df00e2af081014f124",
+      "input": 0,
+      "pack_files": 37
+    },
+    {
+      "path": "missions/jda/j03.zwp",
+      "bytes": 15348715,
+      "sha256": "ae8d69041c9d2d2016c12f9859e3f9f77c8f1e2985dbf75c9024ab952c0d81c9",
+      "input": 0,
+      "pack_files": 48
+    },
+    {
+      "path": "missions/jda/j04.zwp",
+      "bytes": 21322918,
+      "sha256": "060deab2b50161655e01df0870052286165b8919cb03ab29f26ce59ad70d0626",
+      "input": 0,
+      "pack_files": 41
+    },
+    {
+      "path": "missions/jda/j05.zwp",
+      "bytes": 13079366,
+      "sha256": "6c0162e8ffaaec6b5f3b76967b38204191a9a1f0774df027fc285fde9789017e",
+      "input": 0,
+      "pack_files": 28
+    },
+    {
+      "path": "missions/jda/j06.zwp",
+      "bytes": 18901249,
+      "sha256": "381b44da4169876eb2e97163749608c77d5b500c8dbae08753e22a17b43ddbbd",
+      "input": 0,
+      "pack_files": 38
+    },
+    {
+      "path": "missions/jda/j06_intro.zwp",
+      "bytes": 1193287,
+      "sha256": "3e553817e992f43113b82e3a75759e6a0e8fc8cdc79d8d2551ff49fe3e5cfbc0",
+      "input": 0,
+      "pack_files": 22
+    },
+    {
+      "path": "missions/jda/j07.zwp",
+      "bytes": 13413433,
+      "sha256": "f234f56bf2a9a89dd450384674e264180c7bb1a48d5fc7e7b9079d9c7c1500f3",
+      "input": 0,
+      "pack_files": 27
+    },
+    {
+      "path": "missions/jda/j08.zwp",
+      "bytes": 18098757,
+      "sha256": "b1abc42d2e1f94e4108965379e6a8c8676943a5479e5f7c7429634b08c9fc607",
+      "input": 0,
+      "pack_files": 32
+    },
+    {
+      "path": "missions/jda/j09.zwp",
+      "bytes": 15087575,
+      "sha256": "be654889ed62a128e222539f52de0e0f002978c15aca9cf09afef13530ad7920",
+      "input": 0,
+      "pack_files": 35
+    },
+    {
+      "path": "missions/jda/j10.zwp",
+      "bytes": 13236926,
+      "sha256": "c0f47fe06f8b4c6eb6ad404a7802952ee1ae62895fae1db52a13beea55cbc91b",
+      "input": 0,
+      "pack_files": 38
+    },
+    {
+      "path": "missions/koth/group.cfg",
+      "bytes": 225,
+      "sha256": "c97a7a01e4d1703e5106150ef5e20931cfed9b2f5cf268993f85e810bb5908a7",
+      "input": 0
+    },
+    {
+      "path": "missions/koth/k3dr2.zwp",
+      "bytes": 297527,
+      "sha256": "49c5032a227a70432d9ab2f91f85596d82e2cdcaf15b88faf86aed7a4653112e",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/koth/k3spooge.zwp",
+      "bytes": 292116,
+      "sha256": "b183a6e9cd977eb8c6940e83f696c8a1795e238da0f0ac645e7143d25e35b323",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/koth/k4sprawl.zwp",
+      "bytes": 439820,
+      "sha256": "81f9d97cd39f46ff7952f716fc3bef3a5bbe16c3a04f05932294d9bde185f051",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/koth/k6jungle.zwp",
+      "bytes": 635014,
+      "sha256": "2bbeafe6e31f0eeaa44760ef853d04d71ef45644c6ecb3744e00301d2ba99b47",
+      "input": 0,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/! training bads ! level-2.zwp",
+      "bytes": 307755,
+      "sha256": "66be1fe75d562a7337ae43f568a115c7f85137483397009b21507bbfb9daf920",
+      "input": 1,
+      "pack_files": 7
+    },
+    {
+      "path": "missions/multiplayer/! training bads ! level-3.zwp",
+      "bytes": 323971,
+      "sha256": "57f239d1936c15812c8ff1b02db540dc709471f1f29ae7dc72dac4a55fc2e581",
+      "input": 1,
+      "pack_files": 7
+    },
+    {
+      "path": "missions/multiplayer/! training bads ! level-4-a.zwp",
+      "bytes": 372076,
+      "sha256": "b2d06cbe3befcc7efa6ad6fbd63d9b7e8a64d0333ff0f73192eb3c9d5a74b199",
+      "input": 1,
+      "pack_files": 11
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_2v2_training.zwp",
+      "bytes": 436273,
+      "sha256": "79616a339753a7ad7a6a6cebb4de59e1f186bd9c2172a34a1b13fe43f181bf57",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_2v2_training_badlands.zwp",
+      "bytes": 347420,
+      "sha256": "7c69aec844d1fa330e5f1b874ae51721b74cb886db1bb6cd56f18d03e126612b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_2v2_training_bs.zwp",
+      "bytes": 347420,
+      "sha256": "7c69aec844d1fa330e5f1b874ae51721b74cb886db1bb6cd56f18d03e126612b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_2v2_trainingv2.zwp",
+      "bytes": 437148,
+      "sha256": "a361b3999d0f3ef3c294c1e8e62f1ddf3178a03a92a1652ad280d836bc7c5ed1",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_2v2_trainingv3.zwp",
+      "bytes": 451926,
+      "sha256": "a6369cb5888cfe86147581c08c1df1a8e3ce04526f20ea049ce41e680f08d79a",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_2v2_trainingv4.zwp",
+      "bytes": 503699,
+      "sha256": "b5b712478b9e4415419ad71117fa96c771b86e6db102be765970676678550b3b",
+      "input": 1,
+      "pack_files": 15
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_2v2_trainingvf.zwp",
+      "bytes": 449300,
+      "sha256": "b5299ba97d924b81ba1675656cab1660614fa62df9b2368d778c7fad67288cab",
+      "input": 1,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_3v2_training.zwp",
+      "bytes": 486181,
+      "sha256": "3da90899849f3c3b5ca7c729ffcd15dbd08ab18895654bdc7222a6d817698fbb",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_4v2_training_t-bone=).zwp",
+      "bytes": 626518,
+      "sha256": "455ed7641240bcfb94b7b77a97df40da8a8fcb34445af424727e9dae0e7c9293",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_training_v3.zwp",
+      "bytes": 378052,
+      "sha256": "3dd2d1f1ebfa2dcf2064daa7d5eafe3b78a3c168028ad348e7de67ae416e52a9",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/!!!!skulkys_ai_will_pwn_u.zwp",
+      "bytes": 527786,
+      "sha256": "6a4faa1cbadff593b88296515195e1a9bba021030996be5064143ec668e7f839",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/!(6)hindu times v2.zwp",
+      "bytes": 417587,
+      "sha256": "b92f6dda3adcdca116fb593631ba46f9a9045b74abe282c0a0a4c707926d7935",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/!-2-badlands-anti-s-anti-w.zwp",
+      "bytes": 382050,
+      "sha256": "058d501e7662130061ee53c6d7c3cc0393317fde9b3f9907968bfc472e9ac511",
+      "input": 1,
+      "pack_files": 17
+    },
+    {
+      "path": "missions/multiplayer/!-2-badlands-anti-s_w_stats_crash_fiendcheat.zwp",
+      "bytes": 309515,
+      "sha256": "457ac829314744e2cc2fdc8d2b12b51393b9e9aa0bc2859046a08b098e3dd77b",
+      "input": 1,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/multiplayer/!-4-badlands-anti-s-anti-w.zwp",
+      "bytes": 411473,
+      "sha256": "fc52e88ed88d9a3771ada70b72e2010818db37f2dcd07e272853b4c71fb6d296",
+      "input": 1,
+      "pack_files": 17
+    },
+    {
+      "path": "missions/multiplayer/!-4-badlands-anti-s_w_stats_crash_fiendcheat.zwp",
+      "bytes": 329269,
+      "sha256": "968885407f858a1bb7ab5c70aa914ed495f9e79fc9e695b3d40f07b600dc6d26",
+      "input": 1,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/multiplayer/(1) cw-training-1.zwp",
+      "bytes": 270288,
+      "sha256": "dd07b07d19736d4e5618e1b61ae70c628be55302b688e274e8770309d9ef2f23",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2) ! ice !lands]h[.zwp",
+      "bytes": 459991,
+      "sha256": "afbed0974a0c75578c70e0849212c1a9f16f6961422317681821fdbfa91c0e7a",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(2) -ice_war-.zwp",
+      "bytes": 396273,
+      "sha256": "ce4568f05db6dd185a8717d7a7811b966b17fd1601002e172e58b0e7a10306ac",
+      "input": 1,
+      "pack_files": 7
+    },
+    {
+      "path": "missions/multiplayer/(2) badlands-antiskey.zwp",
+      "bytes": 296691,
+      "sha256": "a221cc6e294c29c890f698bcbb1cd12bc321e7501a41bfd1d5138e8fd14bf6ef",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(2) clan wars.zwp",
+      "bytes": 264529,
+      "sha256": "d30c885fa1c0627cb5207777e587d8d28132bd30a9e1ea184bb70c3b65823be9",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2) f\u00f3r\u00e9\u00a7t l\u00e3\u00f1d\u00a7 (destiny).zwp",
+      "bytes": 758196,
+      "sha256": "7afacb56c0908e1523c8a216b4cf1add7a410575d3593b69d81d5a2bdf5fba8b",
+      "input": 1,
+      "pack_files": 21
+    },
+    {
+      "path": "missions/multiplayer/(2) grassland training version 2.zwp",
+      "bytes": 352127,
+      "sha256": "57e47085f99e85562e455535f0bc4e6a2b90c2c6c62c213dc86b4f4d4d632132",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2) grassland training.zwp",
+      "bytes": 403917,
+      "sha256": "fdd1c2a9ce4961782c85fe2f12b35218eda1d701ef34f50725a95db733d1c622",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2) grasslands]h[.zwp",
+      "bytes": 352403,
+      "sha256": "2efa4211ecfc0a88cd6b496ccb8ddf0ec45285902ab8f30ceeb2518896242f34",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2) lot --!!(ekol)!!--.zwp",
+      "bytes": 380264,
+      "sha256": "d0157b23156c38ea3025a02fabae50c6cb235dc7bf36b25239c4e050be373d3a",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2) winterlands.zwp",
+      "bytes": 459934,
+      "sha256": "5419e1b2bd2b0bd4ca982e1ad59cbf09a3a535037e7638149a7ad079af5dd87d",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(2)-death valley.zwp",
+      "bytes": 746270,
+      "sha256": "3c301110de76893d125250369b305b1cc7857e37da34f64bd5b989b2e626eaed",
+      "input": 1,
+      "pack_files": 15
+    },
+    {
+      "path": "missions/multiplayer/(2)-grasslands#2 antiskey.zwp",
+      "bytes": 365740,
+      "sha256": "a2e3e58f184757437719f242cc25ebbf9f731b1cd0903ebe076978b369619e9d",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(2)-grasslands#2 antiskey2.zwp",
+      "bytes": 378633,
+      "sha256": "e61a8084cb7895a4cfa9cd81eaddb46771d4dd6f8237e57aa46b7c045fcae7e6",
+      "input": 1,
+      "pack_files": 9
+    },
+    {
+      "path": "missions/multiplayer/(2-8) t-bone extreme.zwp",
+      "bytes": 450477,
+      "sha256": "1cf92a1199b2050a659e93e2a2ed9ff72b7aede2adedaf93734d620423d443ef",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2v1)-grasslands]h[.zwp",
+      "bytes": 386433,
+      "sha256": "e2f1de87a7df79fc0a20add4a3bb0370f4736d07c104ffca511d90caf9156e8b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(2v2) grasslands.zwp",
+      "bytes": 390258,
+      "sha256": "a66db18dde40a2dc4c9484364a9e221b1f85818e4b62bacec52e8ec550d6012f",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(3) grasslands 2v1.zwp",
+      "bytes": 379979,
+      "sha256": "787abbcf0586012f55bb88ac32586ae0fa1f2ebf14ac923c4f7292f2ed388f0a",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(3) grasslands]h[ (anti-skey).zwp",
+      "bytes": 394070,
+      "sha256": "5a7f2b55ef8d0642ea61de5028f533e83bbdf4990548eb9df635b9f2b28f5f4b",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(3) grasslands]h[.zwp",
+      "bytes": 386433,
+      "sha256": "e0ba637572dbb26ba85546d67b7d31ce7482acb8bc4b3d2338ee2bd9a53187c5",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(4) baadlands (warped).zwp",
+      "bytes": 751246,
+      "sha256": "c15408a9b0692df8379052c1a10d8f23859060c217daea63ecb664bf8d5bbdf0",
+      "input": 1,
+      "pack_files": 79
+    },
+    {
+      "path": "missions/multiplayer/(4) badlands (anti-skey).zwp",
+      "bytes": 316657,
+      "sha256": "debd2d337fa592e1ec5bd8980bb8d0952316b891cb5113ab141e709bc3d991b2",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(4) badlands.zwp",
+      "bytes": 309020,
+      "sha256": "a39c14af5c7063f4bdb1299883df038c493f2045b12809920c19b4b6b9a75015",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(4) clan wars.zwp",
+      "bytes": 455186,
+      "sha256": "ad80a60ad153e2960c17635c19d117be494e7858e0c58d8c400fe3e9a5026498",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(4) close encounters (dr3).zwp",
+      "bytes": 2117937,
+      "sha256": "1b858eee417160fe5295237ccb638503a894df4c0c82a27ee63bc2ad58f7a223",
+      "input": 1,
+      "pack_files": 87
+    },
+    {
+      "path": "missions/multiplayer/(4) close encounters (fun times).zwp",
+      "bytes": 706213,
+      "sha256": "e78dbca74faea71152e031c6f6cda4fa77f640ca2332f9b52b0e520fe0361edf",
+      "input": 1,
+      "pack_files": 46
+    },
+    {
+      "path": "missions/multiplayer/(4) grasslands(badaliie).zwp",
+      "bytes": 381907,
+      "sha256": "2ad64a762dae9ed3e4a017b17646b88694b98cf4564869325a5a706a2ed6d2a4",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(4) grasslands]h[ (anti-skey).zwp",
+      "bytes": 390258,
+      "sha256": "a66db18dde40a2dc4c9484364a9e221b1f85818e4b62bacec52e8ec550d6012f",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(4) grasslands]h[.zwp",
+      "bytes": 382621,
+      "sha256": "75f930c77812c7d1102f10f1969199e13d355e82d50d1679cf24fd4e58a1364b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(4)-badlands-grunts.zwp",
+      "bytes": 324468,
+      "sha256": "d3d8b61a5efc420ee04b7a4f16ebf7c917fde1c67ef7df8f3c3bcb42de11513e",
+      "input": 1,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/multiplayer/(4)-grasslands-noobs-(shimp).zwp",
+      "bytes": 456787,
+      "sha256": "07798c515e422cdd2883e4dc686d29e9cd142eee61e2bbf9cacf070cc5bdcfe6",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(4)-grasslands]h[ (anti-skey).zwp",
+      "bytes": 390258,
+      "sha256": "a66db18dde40a2dc4c9484364a9e221b1f85818e4b62bacec52e8ec550d6012f",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(4)baadlands.zwp",
+      "bytes": 308741,
+      "sha256": "86e9c40e77f9b3b148b0e9f0e2e637ba84b004f3a407f889cbea43c6591616ea",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(4)red planet.zwp",
+      "bytes": 677183,
+      "sha256": "3d69d6bd238b7b338545b51e4c8bfc5fddfb49472dba6ebede8b56f3abadc40e",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(5)-g-badzmix-v3.zwp",
+      "bytes": 350427,
+      "sha256": "d51e4d2ffe24fa4f1a8c1a86d2606a1c5c30ac4b61936ce8509b498173ac67a4",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6) closer encounters (dark reign 3).zwp",
+      "bytes": 2395593,
+      "sha256": "466251a774551b480b413a09cc6fdd250f41154d6f207dd851c846f9994e9c59",
+      "input": 1,
+      "pack_files": 88
+    },
+    {
+      "path": "missions/multiplayer/(6) closer_encounters-(2) (raining bots).zwp",
+      "bytes": 913857,
+      "sha256": "6d70187f8e5bec482ce5988d4c354f23d0887a161dc38d2268c2b4c33dfbd4e4",
+      "input": 1,
+      "pack_files": 20
+    },
+    {
+      "path": "missions/multiplayer/(6) flatlands.zwp",
+      "bytes": 401737,
+      "sha256": "9bfba4468cb7b48b1552461581aa01994daca4984ff05cb8b7564561feeb1158",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6) grasslands(badallie).zwp",
+      "bytes": 383219,
+      "sha256": "1af7db4b87551582a81b58f45119e6dfd7dd9d580b65bc25c7b7ce546fe18394",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6) grasslands]h[(2).zwp",
+      "bytes": 627423,
+      "sha256": "e7e4280ae04a5822041d983e400a021eb29993172becd42c99b68bbe94388180",
+      "input": 1,
+      "pack_files": 9
+    },
+    {
+      "path": "missions/multiplayer/(6) grasslands]h[.zwp",
+      "bytes": 390545,
+      "sha256": "5cbee88a397aa8202aa0fe9e77a569963079842f64204d5002095c9aaaef34ab",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6) grasslands]h[_do0fed.zwp",
+      "bytes": 390545,
+      "sha256": "5cbee88a397aa8202aa0fe9e77a569963079842f64204d5002095c9aaaef34ab",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6) hindu_times.zwp",
+      "bytes": 409173,
+      "sha256": "cb815dff149509ffa32a997b38363d60a0069ed64a0af228fb04fca57ef0ca00",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6) spring defence 5 zm\u00f9rf.zwp",
+      "bytes": 1025090,
+      "sha256": "b7bc456b3e078ae08cbf6bcb2a1d7650eed4bb7725842798767d4a3550ad8b4f",
+      "input": 1,
+      "pack_files": 69
+    },
+    {
+      "path": "missions/multiplayer/(6) tbone-smurfa^fixed (fun times).zwp",
+      "bytes": 907271,
+      "sha256": "105ab9904aa7aa429ecebeaf651484b850718e041ffdeae6a8ec204fda11dae7",
+      "input": 1,
+      "pack_files": 46
+    },
+    {
+      "path": "missions/multiplayer/(6) ~t-bone_vulcanoversion (anti-skey).zwp",
+      "bytes": 675417,
+      "sha256": "c1d9703c349be1f33ea2b0a4dc4124d09f84cb6a81367a470a4c9cf17e24ea8e",
+      "input": 1,
+      "pack_files": 11
+    },
+    {
+      "path": "missions/multiplayer/(6)-badderlands.zwp",
+      "bytes": 413975,
+      "sha256": "c1ff356a48e252de83100de74da47e375ed359ffef65ec4b7c9f9321c7c99788",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6)-close encounters.zwp",
+      "bytes": 387035,
+      "sha256": "4374849f63ab3b46629c2929179a1a61298fd0ed6d29bedc9e34d000d2233979",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6)-grasslands.zwp",
+      "bytes": 390545,
+      "sha256": "d3d398f47247ab85f6f7f4de261db93381569e4d16308b34d64083077be9ce72",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6)-tbone-smurfa^fixed.zwp",
+      "bytes": 489909,
+      "sha256": "2b9cb0299d7e517befa18cd41ae58ad958c7da60fa27b3b4df59c575a3fd3dc5",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(6)-xgo-grasslands.zwp",
+      "bytes": 469948,
+      "sha256": "2c6acde5a66d69ab891c3e3ce13dab5937939d763a926cfe4b99596ed28c6f42",
+      "input": 1,
+      "pack_files": 17
+    },
+    {
+      "path": "missions/multiplayer/(6)springdefence3zm\u00f9rf.zwp",
+      "bytes": 1026614,
+      "sha256": "66486fe62ea12c19627cfa36e5db92abc47ea78d1af27f4c9bd554cb7b6c64bb",
+      "input": 1,
+      "pack_files": 70
+    },
+    {
+      "path": "missions/multiplayer/(6)summerdefence3zm\u00f9rf.zwp",
+      "bytes": 699587,
+      "sha256": "dd44bcbd46b87a37bb7b2551e0bca3381713ed49a4607dea55757d0b0475fca2",
+      "input": 1,
+      "pack_files": 71
+    },
+    {
+      "path": "missions/multiplayer/(7)-goten-3v4-badlands-anti-s.zwp",
+      "bytes": 574556,
+      "sha256": "e8cad121d5f67729f87f418caecfd659a2464c534373a801de1bc955685fef2c",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(7)-goten-3v4-grasslands-anti-s.zwp",
+      "bytes": 721801,
+      "sha256": "ab2e736200e128b9d3255ecc20ef41358a29b16efe344721db1ed34d138b2b67",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/(7)-goten-3v4-grasslands-sv3.zwp",
+      "bytes": 743455,
+      "sha256": "7d5d17994fd28402991ade3433584974cb5ca4f31f4ba6d6a314cbe4e0888cc1",
+      "input": 1,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/multiplayer/(7)-goten-3v4-grasslands.zwp",
+      "bytes": 732746,
+      "sha256": "3c8f373e9b389856a05f926e8f8ebce468f865232134063740e697aa76124a03",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/(8) icey t bone.zwp",
+      "bytes": 594895,
+      "sha256": "aa5d42d9f30106d97180666f5eae1afe4d006942b2346b7ad60b9d2cd111c371",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/(8) icey t-bone [2].zwp",
+      "bytes": 601986,
+      "sha256": "36ece3f7f36972aac59ae26b1783f45af6fb76c669875a211abd7c1f5f4fdbf9",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/(8) t-bone warped.zwp",
+      "bytes": 668086,
+      "sha256": "1f286fb76eb6cf2fa9b376e8b9936c3b4ac2793d505fbf5ebfc307ce80465424",
+      "input": 1,
+      "pack_files": 32
+    },
+    {
+      "path": "missions/multiplayer/(8)-close encounters.zwp",
+      "bytes": 709771,
+      "sha256": "3f14fbbe8dfa4a22b9f5dafdcb48a180322f5e1f681e5a879b740e39753dd832",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(8)-colour encounters.zwp",
+      "bytes": 690982,
+      "sha256": "ebbdea8e48fe095a81b9fc556ff44b943aa52e0191a814f3878f9531ab9711c8",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(8)-colour-encounters-taelonspecial.zwp",
+      "bytes": 1004367,
+      "sha256": "4dfb19eab6cdfb8c6916db66cdb57029b3df4fdfb39a3c34bfd02a3b025e3f94",
+      "input": 1,
+      "pack_files": 22
+    },
+    {
+      "path": "missions/multiplayer/(8)-grasslands smurfas.zwp",
+      "bytes": 598726,
+      "sha256": "a4df3de80a1a0b1d5c8feed137408cdb69250c90bb36e5c8eab3e335c4bfd378",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(8)-kaiotic-3.zwp",
+      "bytes": 512092,
+      "sha256": "d29a0c11b7f90e8cd5d953c5cee1604a6669eacc45e0839f4faf29594a12b540",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(8)-stairwell to hell 2 (water fix).zwp",
+      "bytes": 516125,
+      "sha256": "710098040116efb5d2c5b2d021e1744dfb48a114372d272c656584376dcaa71c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(8)-tbone-rr-smurfa.zwp",
+      "bytes": 494434,
+      "sha256": "0dea7986e5c33a0c334778af7e48fe03226a86dbc5c22df9d2fcd8d0b065939c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(8)-tbone-smurfa^fixed.zwp",
+      "bytes": 501680,
+      "sha256": "a1d6672c36047e5b318d850f16eff35e8c55337dc2b342484ea2be39e5f89b78",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/(8)-xgo-bonelands v2.zwp",
+      "bytes": 558110,
+      "sha256": "d9d2a4ee4c41c73e07455719f2eb204c654217ba7445ef799d13ab8dfea01158",
+      "input": 1,
+      "pack_files": 10
+    },
+    {
+      "path": "missions/multiplayer/(8)-xgo-bonelands.zwp",
+      "bytes": 587611,
+      "sha256": "eace443efd8f1420901e0023561deba2226f69beb7af8bae7f6a98666ab3fe33",
+      "input": 1,
+      "pack_files": 10
+    },
+    {
+      "path": "missions/multiplayer/2 badlands v1.zwp",
+      "bytes": 297720,
+      "sha256": "35b54f195d82ffd03f910cfa3bf2117c23dba0bbc211bfc7cac0682d968e7003",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2 badlands.zwp",
+      "bytes": 296691,
+      "sha256": "527717e63fc9f2dd9b09d7ec19eaea6b3b5738a52a37225b0edd8ea00a57c6ed",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/2 clan wars.zwp",
+      "bytes": 264529,
+      "sha256": "d30c885fa1c0627cb5207777e587d8d28132bd30a9e1ea184bb70c3b65823be9",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2 grasslands 2.zwp",
+      "bytes": 355166,
+      "sha256": "1d6008a7a865613e0805a0bcc7b0026899154495c2794f48873c6dccce781c6a",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2 grasslands 3.zwp",
+      "bytes": 365740,
+      "sha256": "a2e3e58f184757437719f242cc25ebbf9f731b1cd0903ebe076978b369619e9d",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/2 grasslands.zwp",
+      "bytes": 352403,
+      "sha256": "c9e190e41fbfbf9bb78778c04ee98f828a231ef280a43dbcd08cf1df0076ad65",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2 rush game.zwp",
+      "bytes": 73086,
+      "sha256": "99ce23275d61f4994f4f8dffcddff9f294d4400b750fbb1088b4e5d0bc28eea0",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2 small.zwp",
+      "bytes": 790906,
+      "sha256": "b2e478ca043bb447f7b89f6ea53133c24ae274daa966459cfa2a863386fd3b36",
+      "input": 1,
+      "pack_files": 16
+    },
+    {
+      "path": "missions/multiplayer/2-grasslands#2 antiskey.zwp",
+      "bytes": 365740,
+      "sha256": "a2e3e58f184757437719f242cc25ebbf9f731b1cd0903ebe076978b369619e9d",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/2-grasslands.zwp",
+      "bytes": 355166,
+      "sha256": "1d6008a7a865613e0805a0bcc7b0026899154495c2794f48873c6dccce781c6a",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2_badlands-antis-w-v3.zwp",
+      "bytes": 300074,
+      "sha256": "9962c934a73cd6ca54cad2711ded0821615f365cf05be9017804f6acc92668ff",
+      "input": 1,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/multiplayer/2_badlands-antiskey.zwp",
+      "bytes": 296691,
+      "sha256": "527717e63fc9f2dd9b09d7ec19eaea6b3b5738a52a37225b0edd8ea00a57c6ed",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/2crazed.zwp",
+      "bytes": 271730,
+      "sha256": "a3547bad471ce8415afec174307811a1505016a3bad9afc25c3e43f2d483a4e9",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/2hilo.zwp",
+      "bytes": 289101,
+      "sha256": "15800302c222bd9fe902cd95ae634b3bb7090f6fa720716961efbad65ad2a6f9",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/2mountain.zwp",
+      "bytes": 251559,
+      "sha256": "51e4cf170e8b833d585c8e909a2d11366542dac6ce09737277d88d6f9ee9b933",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/2siege.zwp",
+      "bytes": 297315,
+      "sha256": "48a4cd35674e74a2dc9bbc076d190e7e96b96b1e1b45dbb4ba278ca06e7e432e",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/2v1-grasslands]h[.zwp",
+      "bytes": 386433,
+      "sha256": "e2f1de87a7df79fc0a20add4a3bb0370f4736d07c104ffca511d90caf9156e8b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2v3-grasslands.zwp",
+      "bytes": 397436,
+      "sha256": "4b57e2401ee1d35f22447ac8b567af18651f54b76ae519e9b762cbb0e2baf255",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/2v6highlander.zwp",
+      "bytes": 778450,
+      "sha256": "4b7a7cb99b89a416b073638e17b3ee1418eda196b2efa45f4e3cd298ea582215",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/3 grasslands.zwp",
+      "bytes": 386433,
+      "sha256": "e2f1de87a7df79fc0a20add4a3bb0370f4736d07c104ffca511d90caf9156e8b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/3dr2.zwp",
+      "bytes": 297310,
+      "sha256": "0f80b3a3f9d9796ffded7f68f02765c37e0a29c00e1b1a8a9c4fded7a642ae31",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/3spooge.zwp",
+      "bytes": 295035,
+      "sha256": "f728f56df520e2618df04b8188b46dca38ec6679fd977342f7ed5c4b681444e7",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/3v5snowslide.zwp",
+      "bytes": 1242697,
+      "sha256": "88f1e64ecff4583ecb0513614433646a40547309770520378d5b3eeb13fce1b8",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 badlands 2.zwp",
+      "bytes": 308741,
+      "sha256": "86e9c40e77f9b3b148b0e9f0e2e637ba84b004f3a407f889cbea43c6591616ea",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 badlands antisw.zwp",
+      "bytes": 411473,
+      "sha256": "fc52e88ed88d9a3771ada70b72e2010818db37f2dcd07e272853b4c71fb6d296",
+      "input": 1,
+      "pack_files": 17
+    },
+    {
+      "path": "missions/multiplayer/4 badlands-antiskey.zwp",
+      "bytes": 316445,
+      "sha256": "ab0c3a6ef0d5372565a36d5ca0290e7918e06df44b8f23c7e6ba79a6cd5f0bb8",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/4 badlands.zwp",
+      "bytes": 309020,
+      "sha256": "70dca9619c5952e9734c938f05c84176cda79322b7adb263a22048d408e5e573",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 bloodbath.zwp",
+      "bytes": 389161,
+      "sha256": "af5dc2d1e045d59d5ed42ce850578e89b55a10e75678a2a3c17d3c012adb8a1a",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/4 boat wars.zwp",
+      "bytes": 872199,
+      "sha256": "b0c56c9f922a11397e4c49906bea99f3791d4154c971e8911d7c00481e1db8f0",
+      "input": 1,
+      "pack_files": 11
+    },
+    {
+      "path": "missions/multiplayer/4 close encounters 2.zwp",
+      "bytes": 279154,
+      "sha256": "4aaf74e9ad27b2f63188b848ed6a26968492b068e0a8cb9989860a8424c90f02",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 close encounters.zwp",
+      "bytes": 288851,
+      "sha256": "cc1909afc211c2cb17cbe6ff987aace9a79d77098d80365a22d8d266c7a91782",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 crossroads.zwp",
+      "bytes": 483374,
+      "sha256": "f08250b73e7b6d12ad1b5487ad7110b51d59dcd08469aade8296ea675a1968bb",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/4 grasslands castle.zwp",
+      "bytes": 409291,
+      "sha256": "a7c315f263810dcbe02f0994f68e6a0506d327fe345ffa7fb70ff3ced875c935",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 grasslands flooded.zwp",
+      "bytes": 373160,
+      "sha256": "9f5876d553f36f082aeb8778534b368d43ae63da70d5c02717a9886c7ac39eb6",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 grasslands.zwp",
+      "bytes": 382621,
+      "sha256": "7bf379035af5c5c394845d329569e96bc9558617a6169bfea1fc1c7630519e73",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 hexagons.zwp",
+      "bytes": 209889,
+      "sha256": "d2beb35c87ae66a24dd2334c8d0495b6fb0e27d2fe216deca350dfc258d3b108",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4 vs ai defence.zwp",
+      "bytes": 183530,
+      "sha256": "5e6cd14d847fbf04cdca1839a434c47258ced420f30335c425838c33b68487ae",
+      "input": 1,
+      "pack_files": 18
+    },
+    {
+      "path": "missions/multiplayer/4 vs ai.zwp",
+      "bytes": 308076,
+      "sha256": "2dbcbedaa0f3895c11d07130f0d8631d32e4595b6353bbedbf11215ed3a1bba8",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4-grasslands[power].zwp",
+      "bytes": 464287,
+      "sha256": "73d2c4a7d5e4a21cb4f54d28e9028843fdca73ab6187709667ae8f22e847b294",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4-grasslands]h[.zwp",
+      "bytes": 382621,
+      "sha256": "7bf379035af5c5c394845d329569e96bc9558617a6169bfea1fc1c7630519e73",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4_grasslands]h[.zwp",
+      "bytes": 382621,
+      "sha256": "7bf379035af5c5c394845d329569e96bc9558617a6169bfea1fc1c7630519e73",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4badlands-antis-w-v3.zwp",
+      "bytes": 319828,
+      "sha256": "e6710b16a40a7e84c72a2112ed1183946bf64088da58281f3aa14e39efecd56c",
+      "input": 1,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/multiplayer/4badlandssu.zwp",
+      "bytes": 4192275,
+      "sha256": "a341194008c9e705ea5d9d6af6168e3367f9029cd374e3c377228ffc4a5fd273",
+      "input": 1,
+      "pack_files": 156
+    },
+    {
+      "path": "missions/multiplayer/4crazed.zwp",
+      "bytes": 351056,
+      "sha256": "10de7b518baeaa86eced58a3a1da959d6ab1ce9919d6982acb8fe1aff6cfad16",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/4hexagons.zwp",
+      "bytes": 209889,
+      "sha256": "b9179a61e9394691f06a68fd91cddcef20f3c6da0a8c54c8857747ab45774133",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/4octopussy.zwp",
+      "bytes": 348911,
+      "sha256": "d326688ff4d458ce9c3c3bf9101cb7925ee931a42dd44b8788e832463cbeb196",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/4seadevil.zwp",
+      "bytes": 361848,
+      "sha256": "e92b98cfc13fd320dd8f1145c8632f2ecb8a47084e32f73d02e8da00cb6d563b",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/4siege.zwp",
+      "bytes": 473296,
+      "sha256": "83849a0731545bfe3a8366f22328d0b9b4402ec58ec2c9116ca64c66878dd1db",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/5 custom 3v2 antis.zwp",
+      "bytes": 866183,
+      "sha256": "d34e6d55d5524689f4dd630918d6dab930b381cd5b270c620a4d43fe4e07a4f2",
+      "input": 1,
+      "pack_files": 15
+    },
+    {
+      "path": "missions/multiplayer/5outnumbered.zwp",
+      "bytes": 370021,
+      "sha256": "baedfebf8f04ee39f382e96b4634e12b0e82d08073e311fc4f9d5c531ce77ccf",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 badderlands dome.zwp",
+      "bytes": 399251,
+      "sha256": "f1938687cc2af61dcf7bd65702998423067cc28610dad2270ed64f7a33f91231",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 badderlands.zwp",
+      "bytes": 421400,
+      "sha256": "c94b8fd47a5b0fdae18895b2fbfbb924d194e524078311ecfc69293e83700bf2",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/6 close encounters 2.zwp",
+      "bytes": 566789,
+      "sha256": "e5f48d56b10992ff6e07259d8b1f4e5f4ca28d17dba7e3daded9f5a2072f7d82",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/6 close encounters.zwp",
+      "bytes": 699803,
+      "sha256": "f9694821480fb76450b736fb1854ad30d7d8db00783d7fc9ed2d7ec638b5e0f4",
+      "input": 1,
+      "pack_files": 36
+    },
+    {
+      "path": "missions/multiplayer/6 closer encounters.zwp",
+      "bytes": 566789,
+      "sha256": "e5f48d56b10992ff6e07259d8b1f4e5f4ca28d17dba7e3daded9f5a2072f7d82",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/6 grasslands 2.zwp",
+      "bytes": 411683,
+      "sha256": "355339bd7e4c4e7a7470c359ac850dbf5b5e7eb467c460d38c852d0277f70dfd",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 grasslands 3.zwp",
+      "bytes": 627423,
+      "sha256": "e3ed3b66ab947750e74731abaf1273217d0fcd23b4131fbe45dfffe9d36d6aeb",
+      "input": 1,
+      "pack_files": 9
+    },
+    {
+      "path": "missions/multiplayer/6 grasslands tfix.zwp",
+      "bytes": 389988,
+      "sha256": "e1dd516c37e9a0beee109fe2ca4ff54957ef5260de9863b12fc03cdcb507af59",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 grasslands.zwp",
+      "bytes": 390545,
+      "sha256": "d3d398f47247ab85f6f7f4de261db93381569e4d16308b34d64083077be9ce72",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 grasslands]h[.zwp",
+      "bytes": 390545,
+      "sha256": "5cbee88a397aa8202aa0fe9e77a569963079842f64204d5002095c9aaaef34ab",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 hindu times.zwp",
+      "bytes": 409173,
+      "sha256": "cb815dff149509ffa32a997b38363d60a0069ed64a0af228fb04fca57ef0ca00",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 iceland.zwp",
+      "bytes": 417853,
+      "sha256": "609e4c12a88261e6231d083d677a6a0b1db06c66ca70d0b87d33c0c4cc81c49d",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 pentagons.zwp",
+      "bytes": 398438,
+      "sha256": "7cbba717e6814aa8e1cd6abba5bb07e35b4dc40b3c91c0ff1a7ef56609fa0a8d",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 resistance.zwp",
+      "bytes": 449690,
+      "sha256": "ad513946146a68924db29ee7da867d3227efe7765f4fd8aaa99dbe1879c774ac",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6 t-bone vulcano.zwp",
+      "bytes": 667780,
+      "sha256": "94e18944ea13c68793b7c54990270654ee1bfa9e6023f8dd8a34dec707685338",
+      "input": 1,
+      "pack_files": 9
+    },
+    {
+      "path": "missions/multiplayer/6 t-bone.zwp",
+      "bytes": 489909,
+      "sha256": "2b9cb0299d7e517befa18cd41ae58ad958c7da60fa27b3b4df59c575a3fd3dc5",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6-badderlands-antiskey.zwp",
+      "bytes": 421400,
+      "sha256": "c94b8fd47a5b0fdae18895b2fbfbb924d194e524078311ecfc69293e83700bf2",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/6-closer_encounters-(2).zwp",
+      "bytes": 472614,
+      "sha256": "2ede20590ff6d2ee68c3d8d8fbad6d76793a4955b817a44ece8bc284c33f8fa6",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6-grasslands-flooded.zwp",
+      "bytes": 400348,
+      "sha256": "53898a538d30229ddc555042c6bccd65b8caca5f7355f1f5dcfb13bc0a9cf439",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6-grasslands-tfix.zwp",
+      "bytes": 389988,
+      "sha256": "e1dd516c37e9a0beee109fe2ca4ff54957ef5260de9863b12fc03cdcb507af59",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6-grasslands.zwp",
+      "bytes": 390545,
+      "sha256": "d3d398f47247ab85f6f7f4de261db93381569e4d16308b34d64083077be9ce72",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6-grasslands]h[(2).zwp",
+      "bytes": 627423,
+      "sha256": "e3ed3b66ab947750e74731abaf1273217d0fcd23b4131fbe45dfffe9d36d6aeb",
+      "input": 1,
+      "pack_files": 9
+    },
+    {
+      "path": "missions/multiplayer/6-grasslands]h[.zwp",
+      "bytes": 390545,
+      "sha256": "d3d398f47247ab85f6f7f4de261db93381569e4d16308b34d64083077be9ce72",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6_close encounters.zwp",
+      "bytes": 387035,
+      "sha256": "4374849f63ab3b46629c2929179a1a61298fd0ed6d29bedc9e34d000d2233979",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/6city.zwp",
+      "bytes": 857738,
+      "sha256": "cbf411c607bb429c97b7fa85db912d504388e5a7d6192037d6a4395f236ffd85",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/6jungle.zwp",
+      "bytes": 634955,
+      "sha256": "3faa4b2069088fc611b571801ee82e57bdd499b541b389753663b8c25955b67e",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/6sixway.zwp",
+      "bytes": 1014140,
+      "sha256": "f99a6b5a99d05434b5bfbcbeb6a89ef79a4be99e1085df14646cbebe484caebd",
+      "input": 0,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/7 badlands.zwp",
+      "bytes": 567133,
+      "sha256": "7ece5ed12c6c6ecbef9d0a32c88fb32be40c26a07f82607ecd1ceb05f65fde5b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/7 goten-3v4-grasslands-anti-s.zwp",
+      "bytes": 721801,
+      "sha256": "ab2e736200e128b9d3255ecc20ef41358a29b16efe344721db1ed34d138b2b67",
+      "input": 1,
+      "pack_files": 6
+    },
+    {
+      "path": "missions/multiplayer/8 badlands.zwp",
+      "bytes": 544108,
+      "sha256": "5220c32599b35db7255e5c2d887f8240ac915fead74fd7bda17bd383ea39a65d",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 close encounters color.zwp",
+      "bytes": 690982,
+      "sha256": "ebbdea8e48fe095a81b9fc556ff44b943aa52e0191a814f3878f9531ab9711c8",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 close encounters taelonspecial.zwp",
+      "bytes": 1004367,
+      "sha256": "4dfb19eab6cdfb8c6916db66cdb57029b3df4fdfb39a3c34bfd02a3b025e3f94",
+      "input": 1,
+      "pack_files": 22
+    },
+    {
+      "path": "missions/multiplayer/8 close encounters.zwp",
+      "bytes": 709771,
+      "sha256": "3f14fbbe8dfa4a22b9f5dafdcb48a180322f5e1f681e5a879b740e39753dd832",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 grasslands (2).zwp",
+      "bytes": 613502,
+      "sha256": "0745277721d8328f6c66828852809ebb365dba865d627907407ae7dabc300964",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 grasslands.zwp",
+      "bytes": 598726,
+      "sha256": "a4df3de80a1a0b1d5c8feed137408cdb69250c90bb36e5c8eab3e335c4bfd378",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 kaiotic 3 double up.zwp",
+      "bytes": 548732,
+      "sha256": "3a05f5dcee44871e360aca40c6fe48592d00a2702fcb2135e12ee10e84569fc9",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 kaiotic 3.zwp",
+      "bytes": 512092,
+      "sha256": "d29a0c11b7f90e8cd5d953c5cee1604a6669eacc45e0839f4faf29594a12b540",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 pentagons 2.zwp",
+      "bytes": 699228,
+      "sha256": "97ac99a0437b7b969465584277fb694cf4048657dc4c1c0a34907fe49b5be26c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 pentagons 3way.zwp",
+      "bytes": 674839,
+      "sha256": "2ba7a237c37f91274cfb232612178078977e6b0020d0f53cb997d4bb7c2d6d51",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 pentagons washout more taleon.zwp",
+      "bytes": 801756,
+      "sha256": "0334614c54ca0bfcc83c097a9913b2930ea7299d968124d700d3c7ef5067bf05",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 pentagons washout.zwp",
+      "bytes": 643648,
+      "sha256": "8b4ec7212c23abc18fb47f5d5a53dce4959eaede2f76471ad3348d01eeaa53cb",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 pentagons.zwp",
+      "bytes": 643844,
+      "sha256": "19d0b41addedad99359e350e12656fb4f1b8ed4a7fc8c62b9730aab12e07bb50",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 stairway to hell 2.zwp",
+      "bytes": 533375,
+      "sha256": "e5fb916f1d6a7cbc8e38f6e8f549085572d4a4b456b0dc1daf6672a360bf436d",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 stairway to hell waterfix.zwp",
+      "bytes": 516125,
+      "sha256": "710098040116efb5d2c5b2d021e1744dfb48a114372d272c656584376dcaa71c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone desert.zwp",
+      "bytes": 1005439,
+      "sha256": "e3887ed93fe307b8d6d35c0627b6c21b8c4d23bde719cd87b249ad03c52c0afc",
+      "input": 1,
+      "pack_files": 18
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone dome.zwp",
+      "bytes": 584536,
+      "sha256": "4abc78763c831f88c72e1d6f2830b3e0b5918e0cc87d2792ae692d5695b40697",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone hill 2.zwp",
+      "bytes": 501680,
+      "sha256": "a1d6672c36047e5b318d850f16eff35e8c55337dc2b342484ea2be39e5f89b78",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone hill.zwp",
+      "bytes": 454922,
+      "sha256": "9dc5b603566d774793f7c9a972369e21e2c85832a764dca1825245b644bec199",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone holy grounds.zwp",
+      "bytes": 609583,
+      "sha256": "d7205f8377bf802118dd0efae4eb4798a841acfe4d307e755ef2455f45d4402b",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone icey dr3.zwp",
+      "bytes": 594895,
+      "sha256": "5d6447ba339dc600575c0e2413168de58bbc76e52eb9fc680bf51b69a3d70be2",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone lands.zwp",
+      "bytes": 558110,
+      "sha256": "d9d2a4ee4c41c73e07455719f2eb204c654217ba7445ef799d13ab8dfea01158",
+      "input": 1,
+      "pack_files": 10
+    },
+    {
+      "path": "missions/multiplayer/8 t-bone.zwp",
+      "bytes": 494434,
+      "sha256": "0dea7986e5c33a0c334778af7e48fe03226a86dbc5c22df9d2fcd8d0b065939c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8 wishbone 2.zwp",
+      "bytes": 703124,
+      "sha256": "43a60e516f229585cef9809035758808b84af22d2c90e3fa00f767ab8b4085d2",
+      "input": 1,
+      "pack_files": 9
+    },
+    {
+      "path": "missions/multiplayer/8 wishbone inserting.zwp",
+      "bytes": 590489,
+      "sha256": "04b8cbf852cffeb5cb6e9be7613896499c5f888284e5047127372026f822fa9b",
+      "input": 1,
+      "pack_files": 7
+    },
+    {
+      "path": "missions/multiplayer/8 wishbone.zwp",
+      "bytes": 557862,
+      "sha256": "418d52b135a0c3c8acf7c7c38a50896664f72596b726176313fc6b40b26d0aa5",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-badderlands.zwp",
+      "bytes": 544108,
+      "sha256": "5220c32599b35db7255e5c2d887f8240ac915fead74fd7bda17bd383ea39a65d",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-grasslands (2).zwp",
+      "bytes": 613502,
+      "sha256": "0745277721d8328f6c66828852809ebb365dba865d627907407ae7dabc300964",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-grasslands smurfas.zwp",
+      "bytes": 598726,
+      "sha256": "a4df3de80a1a0b1d5c8feed137408cdb69250c90bb36e5c8eab3e335c4bfd378",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-kaiotic-3-double up.zwp",
+      "bytes": 548732,
+      "sha256": "3a05f5dcee44871e360aca40c6fe48592d00a2702fcb2135e12ee10e84569fc9",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-kaiotic-3.zwp",
+      "bytes": 512092,
+      "sha256": "d29a0c11b7f90e8cd5d953c5cee1604a6669eacc45e0839f4faf29594a12b540",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-m\u00f8j\u00f6\u00b2g\u00f8-wishbone2.zwp",
+      "bytes": 703124,
+      "sha256": "43a60e516f229585cef9809035758808b84af22d2c90e3fa00f767ab8b4085d2",
+      "input": 1,
+      "pack_files": 9
+    },
+    {
+      "path": "missions/multiplayer/8-stairwell to hell 2 (water fix).zwp",
+      "bytes": 516125,
+      "sha256": "710098040116efb5d2c5b2d021e1744dfb48a114372d272c656584376dcaa71c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-stairwell to hell-2.zwp",
+      "bytes": 533375,
+      "sha256": "e5fb916f1d6a7cbc8e38f6e8f549085572d4a4b456b0dc1daf6672a360bf436d",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-stairwell to hell.zwp",
+      "bytes": 516233,
+      "sha256": "0a7a91684e5cdbc4b3f2cf424339842b759adbc3f4893867490241d37de9e8d7",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-tbone-rr-smurfa.zwp",
+      "bytes": 494434,
+      "sha256": "0dea7986e5c33a0c334778af7e48fe03226a86dbc5c22df9d2fcd8d0b065939c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8-tbone-smurfa^fixed.zwp",
+      "bytes": 501680,
+      "sha256": "a1d6672c36047e5b318d850f16eff35e8c55337dc2b342484ea2be39e5f89b78",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8_badderlands.zwp",
+      "bytes": 544108,
+      "sha256": "5220c32599b35db7255e5c2d887f8240ac915fead74fd7bda17bd383ea39a65d",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8_close encounters.zwp",
+      "bytes": 709771,
+      "sha256": "3f14fbbe8dfa4a22b9f5dafdcb48a180322f5e1f681e5a879b740e39753dd832",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8_grasslands smurfas.zwp",
+      "bytes": 598726,
+      "sha256": "a4df3de80a1a0b1d5c8feed137408cdb69250c90bb36e5c8eab3e335c4bfd378",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8_grasslands]h[.zwp",
+      "bytes": 598726,
+      "sha256": "a4df3de80a1a0b1d5c8feed137408cdb69250c90bb36e5c8eab3e335c4bfd378",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8_pentagons.zwp",
+      "bytes": 643844,
+      "sha256": "19d0b41addedad99359e350e12656fb4f1b8ed4a7fc8c62b9730aab12e07bb50",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8angelbay.zwp",
+      "bytes": 1620481,
+      "sha256": "b9fd6d914ec6d197d50228291327ccf4f36cd69187e37002788f702b2d29814c",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/8close encounters.zwp",
+      "bytes": 709771,
+      "sha256": "3f14fbbe8dfa4a22b9f5dafdcb48a180322f5e1f681e5a879b740e39753dd832",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8grasslands smurfas.zwp",
+      "bytes": 598726,
+      "sha256": "a4df3de80a1a0b1d5c8feed137408cdb69250c90bb36e5c8eab3e335c4bfd378",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8pentagons.zwp",
+      "bytes": 643844,
+      "sha256": "19d0b41addedad99359e350e12656fb4f1b8ed4a7fc8c62b9730aab12e07bb50",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8pentagons2.zwp",
+      "bytes": 699228,
+      "sha256": "97ac99a0437b7b969465584277fb694cf4048657dc4c1c0a34907fe49b5be26c",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/8snowpass.zwp",
+      "bytes": 630502,
+      "sha256": "26e20dc32a42feb7cadd4527533f0dd8a3b894cfcada0fd409451eeeb7c897e7",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/8warway.zwp",
+      "bytes": 604911,
+      "sha256": "d95039b229a4dd4eee98b34793247dbcf5758a24ba5220c9391c55abbae88e4d",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/multiplayer/group.cfg",
+      "bytes": 249,
+      "sha256": "cee1dfa38642728be4b3a597e8d9724a0737714f372c83f0bc0e1a85f3868786",
+      "input": 0
+    },
+    {
+      "path": "missions/multiplayer/skulkys_ai_2v2_training_bs.zwp",
+      "bytes": 347420,
+      "sha256": "7c69aec844d1fa330e5f1b874ae51721b74cb886db1bb6cd56f18d03e126612b",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/skulkys_ai_2v2_trainingv2.zwp",
+      "bytes": 437148,
+      "sha256": "a361b3999d0f3ef3c294c1e8e62f1ddf3178a03a92a1652ad280d836bc7c5ed1",
+      "input": 1,
+      "pack_files": 4
+    },
+    {
+      "path": "missions/multiplayer/skulkys_ai_2v2_trainingv3.zwp",
+      "bytes": 451926,
+      "sha256": "a6369cb5888cfe86147581c08c1df1a8e3ce04526f20ea049ce41e680f08d79a",
+      "input": 1,
+      "pack_files": 5
+    },
+    {
+      "path": "missions/sprawler/group.cfg",
+      "bytes": 755,
+      "sha256": "f86fdeabead53c428ccda33871b09262861d88e619cf7313b020b194d8e72a02",
+      "input": 0
+    },
+    {
+      "path": "missions/sprawler/outro.zwp",
+      "bytes": 336284,
+      "sha256": "ef28e77156cfe7bebd08a776bfe9c83749a12efd28d07b1a95bf82ea11e52bf7",
+      "input": 0,
+      "pack_files": 8
+    },
+    {
+      "path": "missions/sprawler/s01.zwp",
+      "bytes": 1489051,
+      "sha256": "9eda92d97d300a79fd8048b277ea3a2c1f0f0c2245c8970a2386b9d5a77a6d0d",
+      "input": 0,
+      "pack_files": 29
+    },
+    {
+      "path": "missions/sprawler/s01_intro.zwp",
+      "bytes": 1228169,
+      "sha256": "104d2b0282e15383b097e8fe71c050ae963aa39c4dec8d51057eda623154fdfa",
+      "input": 0,
+      "pack_files": 19
+    },
+    {
+      "path": "missions/sprawler/s02.zwp",
+      "bytes": 1126956,
+      "sha256": "a9db525fd757022716dd848b8ea91a6fa4db2207a581d6d0bc1d048a3cd8d461",
+      "input": 0,
+      "pack_files": 27
+    },
+    {
+      "path": "missions/sprawler/s03.zwp",
+      "bytes": 916376,
+      "sha256": "cddf793237a50c22e81131ba372878a5f279a4614033ab03cddd1e84bef25c9d",
+      "input": 0,
+      "pack_files": 27
+    },
+    {
+      "path": "missions/sprawler/s04.zwp",
+      "bytes": 1542970,
+      "sha256": "3a138b62df15d3ec8454366f20b3c779d60cfa67cd61f6ec75171e4974d0f50d",
+      "input": 0,
+      "pack_files": 27
+    },
+    {
+      "path": "missions/sprawler/s05.zwp",
+      "bytes": 1187347,
+      "sha256": "c7c3af5e8d5fe101a56024bcd9ece5e3f4435bb8c8a7877567db3fe42d1232fa",
+      "input": 0,
+      "pack_files": 27
+    },
+    {
+      "path": "missions/sprawler/s06.zwp",
+      "bytes": 1055278,
+      "sha256": "54e1305c778779aa38850445dc852c14b2b1258f185ab4064bce10648244575f",
+      "input": 0,
+      "pack_files": 23
+    },
+    {
+      "path": "missions/sprawler/s07.zwp",
+      "bytes": 1211824,
+      "sha256": "1be537bc286616b75573ac343340d5b5f8b33dd5f91f21667add33d192b881de",
+      "input": 0,
+      "pack_files": 24
+    },
+    {
+      "path": "missions/sprawler/s08.zwp",
+      "bytes": 1600535,
+      "sha256": "d7e14f3f57ec0141d7b04d4c7ebae2160fcf39f1731a3ca77564246833e30286",
+      "input": 0,
+      "pack_files": 33
+    },
+    {
+      "path": "missions/sprawler/s09.zwp",
+      "bytes": 2558486,
+      "sha256": "b568d74249157d8284e628f559bb6ab236fb6f535fad80dd1a3478b5caa82d02",
+      "input": 0,
+      "pack_files": 41
+    },
+    {
+      "path": "missions/sprawler/transition into s01.zwp",
+      "bytes": 5322570,
+      "sha256": "0c42a1e713ce8d7e1d68023b26382e9677042403434bf4fa31e801b4087e90f3",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s02.zwp",
+      "bytes": 6786371,
+      "sha256": "4ef2fad849fc427e6e32e58f6e64158036b94ccc9c80281d4543fb895d4dc8d4",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s03.zwp",
+      "bytes": 4517707,
+      "sha256": "9920d5d6bd973e3018fa106bc356e54873e42bb36ca5a74300badfd832e41e50",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s04.zwp",
+      "bytes": 7967390,
+      "sha256": "1cba66ba9a824853a76dfc5e86849f9352ac11fd07a0feaa67fd6526d2b333d0",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s05.zwp",
+      "bytes": 4866362,
+      "sha256": "996499d023e40913ca75b471d65f18ad3faef6926a46150d0398fcb7738acbc5",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s06.zwp",
+      "bytes": 7352230,
+      "sha256": "6811d699bb0d07f990acfe53208b501bbc9ad13c5c2ad3c063cf84ff93d14e55",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s07.zwp",
+      "bytes": 4934158,
+      "sha256": "d6fc752c0c69b401b9e617efa1c37b72aa7c910b4f3dbe4e63a1c445a6ef5057",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s08.zwp",
+      "bytes": 1323910,
+      "sha256": "22f6345a33331d0ef5a0655b017bfe923769f1652218ddc0fd00e25adb32f598",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/sprawler/transition into s09.zwp",
+      "bytes": 2535720,
+      "sha256": "38becb255107bab9e75fdf93ab9e1c56a73b1b84020e0214d13ec7d681ffd468",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "missions/system/group.cfg",
+      "bytes": 237,
+      "sha256": "31b3b98416ff6e6d1935fd5fb2e14cb258024e147e3f08aa9f28732584558465",
+      "input": 0
+    },
+    {
+      "path": "missions/system/shell.zwp",
+      "bytes": 17129341,
+      "sha256": "af17926f47bca75247cc85e02d905e369c4f939d52dcef177e7324cc8cf14140",
+      "input": 0,
+      "pack_files": 27
+    },
+    {
+      "path": "mods/personality/aggressive.zwp",
+      "bytes": 7283,
+      "sha256": "a9648124d6346844765285c2d9026d091f89e232b898729c85b8e894a7dd2b55",
+      "input": 0,
+      "pack_files": 2
+    },
+    {
+      "path": "mods/personality/defensive.zwp",
+      "bytes": 7223,
+      "sha256": "94d76ce7bca2ac019dc6b63f2f55f679e205f2ce1c2bbfbda265db5768876cc3",
+      "input": 0,
+      "pack_files": 2
+    },
+    {
+      "path": "mods/ruleset/assault.zwp",
+      "bytes": 1191410,
+      "sha256": "9f7492c789f9daa21688bd002eecec566b660ce24df61920aba9352ac7d3968f",
+      "input": 0,
+      "pack_files": 13
+    },
+    {
+      "path": "mods/ruleset/bloodbath.zwp",
+      "bytes": 2991,
+      "sha256": "d25d2f253bfca9d1241c2beb2331f05d9710e8446176b981fae6ae4930c9cd35",
+      "input": 0,
+      "pack_files": 3
+    },
+    {
+      "path": "mods/ruleset/control.zwp",
+      "bytes": 650241,
+      "sha256": "9456199f81ba2c80c14eaf953f8777e532ad7281ae722c4c796e45687fbbcad7",
+      "input": 0,
+      "pack_files": 5
+    },
+    {
+      "path": "mods/ruleset/deathmatch.zwp",
+      "bytes": 786,
+      "sha256": "aadfd189f4d0aaed0ffd845456122f7034b8a94b95021d9b34ce88a1d54b8c96",
+      "input": 0,
+      "pack_files": 2
+    },
+    {
+      "path": "mods/ruleset/gluttony.zwp",
+      "bytes": 2451,
+      "sha256": "0108cef85741f579a20bc40c377731cd3755c6ce6d9234f1dd40363fcbdbaacb",
+      "input": 0,
+      "pack_files": 3
+    },
+    {
+      "path": "mods/ruleset/koth.zwp",
+      "bytes": 343761,
+      "sha256": "a8a7f305f00af4f635aa695054b2d830b5a238f5c9f745b70174c81bbaea4c98",
+      "input": 0,
+      "pack_files": 6
+    },
+    {
+      "path": "mods/ruleset/protecthq.zwp",
+      "bytes": 3873,
+      "sha256": "3f8b5ec6871d4e6414f152dea6b1663fa71944b3392293e8df554aeaeafa9b9f",
+      "input": 0,
+      "pack_files": 3
+    },
+    {
+      "path": "music/track02.ogg",
+      "bytes": 11333184,
+      "sha256": "b89457d9d77bcc0b67124bafe2497c2b0a39f726e54dad73ef51a49ada281f2c",
+      "input": 0
+    },
+    {
+      "path": "music/track03.ogg",
+      "bytes": 11327103,
+      "sha256": "01708eac10eaf44d799f5bd3bb71f265266c30d013eb22e17b58e9e5bf514c89",
+      "input": 0
+    },
+    {
+      "path": "music/track04.ogg",
+      "bytes": 10974084,
+      "sha256": "76dddd781b8144fe830e45e5660f834b3abe81c479ca19f5f5fbc25009f089b2",
+      "input": 0
+    },
+    {
+      "path": "music/track05.ogg",
+      "bytes": 12123063,
+      "sha256": "050035cc0eb2a5b5fd127821e1461c29886e7cd79c2265698c0c099b5f849bdb",
+      "input": 0
+    },
+    {
+      "path": "music/track06.ogg",
+      "bytes": 11005592,
+      "sha256": "744c46ebe6d9d45e5a4fe55c435c25ccfcf572225732d1c9a28a30f7543c96e8",
+      "input": 0
+    },
+    {
+      "path": "music/track07.ogg",
+      "bytes": 7657606,
+      "sha256": "a32328cae503c2c28820f4953318ab9800f15f7d59363474aaa8d22f4e491d8f",
+      "input": 0
+    },
+    {
+      "path": "music/track08.ogg",
+      "bytes": 11018634,
+      "sha256": "1f1b0b1b39cd5e7d0b9132e2615c6b22b5e6d60fe526fba10243364e93ca5695",
+      "input": 0
+    },
+    {
+      "path": "packs/base.zwp",
+      "bytes": 99711663,
+      "sha256": "f28ea56cecea135ee52c00c5f63fab975dd882778b549fc814954f3cf7d02fe9",
+      "input": 0,
+      "pack_files": 2074
+    },
+    {
+      "path": "sides/client/jda.zwp",
+      "bytes": 5178468,
+      "sha256": "a18b9c093de7401160f5cb8ab24d9d3806ce4f39bbad9a2bcee40a2690fceb2d",
+      "input": 0,
+      "pack_files": 75
+    },
+    {
+      "path": "sides/client/sprawler.zwp",
+      "bytes": 4759562,
+      "sha256": "154577b5b28104a8471d09d3334d84b5e4b0171bfef99fd9e69a7184aa1e0515",
+      "input": 0,
+      "pack_files": 79
+    },
+    {
+      "path": "sides/jda.cfg",
+      "bytes": 2066,
+      "sha256": "f7564d72485b79c9578ecccef1081415828a4057af4589d48d21854d8232aa7d",
+      "input": 0
+    },
+    {
+      "path": "sides/sprawler.cfg",
+      "bytes": 2284,
+      "sha256": "32c24e03baaab8d45de8f6b9c066b3a3e77b887b76c911f0f07b85b9e1d7fa70",
+      "input": 0
+    },
+    {
+      "path": "worlds/deserto.zwp",
+      "bytes": 4654511,
+      "sha256": "682ef111675ef79b547ca9699cf1a2b85a0183005fe659717c9b2f7c3e9f942b",
+      "input": 0,
+      "pack_files": 61
+    },
+    {
+      "path": "worlds/dome.zwp",
+      "bytes": 3059602,
+      "sha256": "28861ab1cc55dd3bcce8591db9b3002a344c85603296e4784f287eac11389e50",
+      "input": 0,
+      "pack_files": 58
+    },
+    {
+      "path": "worlds/gilwoch.zwp",
+      "bytes": 2367259,
+      "sha256": "45e8166b2e93ff4ae5a50fa9a455fd8a52e7c8717d4c299326c2dcdeb450a9c8",
+      "input": 0,
+      "pack_files": 41
+    },
+    {
+      "path": "worlds/jungle.zwp",
+      "bytes": 4281461,
+      "sha256": "f972c087dfac1370801f6f55ed057e6503404a16c679ab36d9e48356f517aeb3",
+      "input": 0,
+      "pack_files": 74
+    },
+    {
+      "path": "worlds/sewer.zwp",
+      "bytes": 3319088,
+      "sha256": "1636800f346e1bf895d05ef2236639f98126fdc8da1c064307ab28b3eddd7d23",
+      "input": 0,
+      "pack_files": 57
+    },
+    {
+      "path": "worlds/sigma.zwp",
+      "bytes": 4029049,
+      "sha256": "06fc04ee8ba9a1bd3284cf37e3a52b9aef56256c28d514faa8abb42d3c3483ea",
+      "input": 0,
+      "pack_files": 78
+    },
+    {
+      "path": "worlds/sprawl.zwp",
+      "bytes": 2547755,
+      "sha256": "06a204042c738203289cd67e7c99d1e75a6da22385e5961e758dbf3d9622d918",
+      "input": 0,
+      "pack_files": 45
+    },
+    {
+      "path": "worlds/wasteland.zwp",
+      "bytes": 214624,
+      "sha256": "9ecbbad84fb31120c74fe3e2f3a0ec0e284f1420f3cf8d3d36ffff77622be18a",
+      "input": 0,
+      "pack_files": 2
+    }
+  ],
+  "conflicts": [
+    {
+      "path": "missions/assault/a4assault.zwp",
+      "selected": {
+        "path": "missions/assault/a4assault.zwp",
+        "bytes": 509532,
+        "sha256": "968c2b1910b8cd1eb29c74de22e2853bbd22c51f210503366f1c0240b84f5c13",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/assault/a4assault.zwp",
+        "bytes": 509532,
+        "sha256": "d339d45706964cb666c08355cbfec9b2475c44d930f9d3ee6681148a12323e27",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/assault/a4seadevil.zwp",
+      "selected": {
+        "path": "missions/assault/a4seadevil.zwp",
+        "bytes": 387376,
+        "sha256": "5694bd3855636f54628715ba762e7c4f8a6eadc84420270d8aeae53fa3607218",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/assault/a4seadevil.zwp",
+        "bytes": 387376,
+        "sha256": "dcd9727b2718a7cda6e5c3216232161675696378b9a4e04ada27351d92e373b9",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/control/c2control.zwp",
+      "selected": {
+        "path": "missions/control/c2control.zwp",
+        "bytes": 300581,
+        "sha256": "cfca3852c41307a290ba1d461b4f8cacd9056b424c2158ae40bc472df59c4deb",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/control/c2control.zwp",
+        "bytes": 300581,
+        "sha256": "b794816a5d10c71843f02ddbb5b697682708554046671b0dd8ffe4c10e190822",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/control/c4siege.zwp",
+      "selected": {
+        "path": "missions/control/c4siege.zwp",
+        "bytes": 475579,
+        "sha256": "bb8153a37b6aa16a1d8e56c96fa17157891b4df480e87fbde644d7d10cccdc95",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/control/c4siege.zwp",
+        "bytes": 475579,
+        "sha256": "882f5ba56b33ec199eb7174488864dee264cf023fd215baff87599571c3b6c16",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/control/c8snowpass.zwp",
+      "selected": {
+        "path": "missions/control/c8snowpass.zwp",
+        "bytes": 630304,
+        "sha256": "3526233531c812cb5cd6e21be810e2434e1accf3308c359e48f94b77c79ec1d8",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/control/c8snowpass.zwp",
+        "bytes": 630304,
+        "sha256": "62e0d7dafa1920418dce77365c446a9e5983c4812f40e4afc00929904079330b",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/fenced/f2crazed.zwp",
+      "selected": {
+        "path": "missions/fenced/f2crazed.zwp",
+        "bytes": 284573,
+        "sha256": "a8e3fa23c7d079ff82eddf53a21e43658c01d1e201c9a6384358aadd9356000c",
+        "input": 0,
+        "pack_files": 5
+      },
+      "other": {
+        "path": "missions/fenced/f2crazed.zwp",
+        "bytes": 284573,
+        "sha256": "2e45fec750c1c58b2af0a3b2949fd6e3d521650a3f775e47dbafd21433d637f1",
+        "input": 1,
+        "pack_files": 5
+      }
+    },
+    {
+      "path": "missions/fenced/f4crazed.zwp",
+      "selected": {
+        "path": "missions/fenced/f4crazed.zwp",
+        "bytes": 367734,
+        "sha256": "1774cbd0f1aa24bc2c7a29c0c3c2b3802e3ecee1e340207e421bbcd15c9a3e37",
+        "input": 0,
+        "pack_files": 5
+      },
+      "other": {
+        "path": "missions/fenced/f4crazed.zwp",
+        "bytes": 367734,
+        "sha256": "2292751ce6966059799368b1514f0df350c2df8f4544c669053e2c8f06e97137",
+        "input": 1,
+        "pack_files": 5
+      }
+    },
+    {
+      "path": "missions/fenced/f4siege.zwp",
+      "selected": {
+        "path": "missions/fenced/f4siege.zwp",
+        "bytes": 486146,
+        "sha256": "4cdffcdca0ff564b99b8d07dceb7f43c73dc27f0d0983ddc55f75a54d1dbe47d",
+        "input": 0,
+        "pack_files": 5
+      },
+      "other": {
+        "path": "missions/fenced/f4siege.zwp",
+        "bytes": 486146,
+        "sha256": "69b0d22dbc118028c395d2f7e208499a6ef20699ea4b1750668c17fbe4eed511",
+        "input": 1,
+        "pack_files": 5
+      }
+    },
+    {
+      "path": "missions/jda/j01.zwp",
+      "selected": {
+        "path": "missions/jda/j01.zwp",
+        "bytes": 9647255,
+        "sha256": "99a4d1e3737a761d17d30fe6b5361bbf2f58be15bd32d03d652fa15a6f4681f3",
+        "input": 0,
+        "pack_files": 33
+      },
+      "other": {
+        "path": "missions/jda/j01.zwp",
+        "bytes": 9647255,
+        "sha256": "17264a2fa992899d2775a317dc30e0673ecb75e3a3e23d1fa29b848c3fcb6852",
+        "input": 1,
+        "pack_files": 33
+      }
+    },
+    {
+      "path": "missions/jda/j02.zwp",
+      "selected": {
+        "path": "missions/jda/j02.zwp",
+        "bytes": 22947977,
+        "sha256": "9f06e5301c8cfc3e562e7e414d0ab42a99bdfcee55ef73df00e2af081014f124",
+        "input": 0,
+        "pack_files": 37
+      },
+      "other": {
+        "path": "missions/jda/j02.zwp",
+        "bytes": 22947821,
+        "sha256": "55819d428cb04b51f1949d4dbfb7ddaa0b6eebf06907fa20ed5d2b591ac8303a",
+        "input": 1,
+        "pack_files": 37
+      }
+    },
+    {
+      "path": "missions/jda/j03.zwp",
+      "selected": {
+        "path": "missions/jda/j03.zwp",
+        "bytes": 15348715,
+        "sha256": "ae8d69041c9d2d2016c12f9859e3f9f77c8f1e2985dbf75c9024ab952c0d81c9",
+        "input": 0,
+        "pack_files": 48
+      },
+      "other": {
+        "path": "missions/jda/j03.zwp",
+        "bytes": 15348715,
+        "sha256": "9903157a7e4a793b5115cc43b5ff2fa0be09be64fa53558df4ae9bfd329db215",
+        "input": 1,
+        "pack_files": 48
+      }
+    },
+    {
+      "path": "missions/jda/j04.zwp",
+      "selected": {
+        "path": "missions/jda/j04.zwp",
+        "bytes": 21322918,
+        "sha256": "060deab2b50161655e01df0870052286165b8919cb03ab29f26ce59ad70d0626",
+        "input": 0,
+        "pack_files": 41
+      },
+      "other": {
+        "path": "missions/jda/j04.zwp",
+        "bytes": 21322918,
+        "sha256": "d81491dced5bc98c4d7cdd85f24cad07560bee880387bf97bad4be9dbc6ebd39",
+        "input": 1,
+        "pack_files": 41
+      }
+    },
+    {
+      "path": "missions/jda/j05.zwp",
+      "selected": {
+        "path": "missions/jda/j05.zwp",
+        "bytes": 13079366,
+        "sha256": "6c0162e8ffaaec6b5f3b76967b38204191a9a1f0774df027fc285fde9789017e",
+        "input": 0,
+        "pack_files": 28
+      },
+      "other": {
+        "path": "missions/jda/j05.zwp",
+        "bytes": 13079366,
+        "sha256": "529ea2354a0724f50523257a684df5d4636fbac26fa9fa6014d1e437de8b5d95",
+        "input": 1,
+        "pack_files": 28
+      }
+    },
+    {
+      "path": "missions/jda/j06.zwp",
+      "selected": {
+        "path": "missions/jda/j06.zwp",
+        "bytes": 18901249,
+        "sha256": "381b44da4169876eb2e97163749608c77d5b500c8dbae08753e22a17b43ddbbd",
+        "input": 0,
+        "pack_files": 38
+      },
+      "other": {
+        "path": "missions/jda/j06.zwp",
+        "bytes": 18901249,
+        "sha256": "d320c59fa290ef88092be2344a5cdd65238d400bf9d6d311a98d2d6e6012eeef",
+        "input": 1,
+        "pack_files": 38
+      }
+    },
+    {
+      "path": "missions/jda/j06_intro.zwp",
+      "selected": {
+        "path": "missions/jda/j06_intro.zwp",
+        "bytes": 1193287,
+        "sha256": "3e553817e992f43113b82e3a75759e6a0e8fc8cdc79d8d2551ff49fe3e5cfbc0",
+        "input": 0,
+        "pack_files": 22
+      },
+      "other": {
+        "path": "missions/jda/j06_intro.zwp",
+        "bytes": 1193284,
+        "sha256": "47ac934b9dd228417b507cc91d8558497a8f7be0dcf846cbd318580c2080163b",
+        "input": 1,
+        "pack_files": 22
+      }
+    },
+    {
+      "path": "missions/jda/j07.zwp",
+      "selected": {
+        "path": "missions/jda/j07.zwp",
+        "bytes": 13413433,
+        "sha256": "f234f56bf2a9a89dd450384674e264180c7bb1a48d5fc7e7b9079d9c7c1500f3",
+        "input": 0,
+        "pack_files": 27
+      },
+      "other": {
+        "path": "missions/jda/j07.zwp",
+        "bytes": 13413433,
+        "sha256": "874987db61e707c15e1e9e1cb16aa1c5de679ef4c959e045cb6fdea06cc73d76",
+        "input": 1,
+        "pack_files": 27
+      }
+    },
+    {
+      "path": "missions/jda/j08.zwp",
+      "selected": {
+        "path": "missions/jda/j08.zwp",
+        "bytes": 18098757,
+        "sha256": "b1abc42d2e1f94e4108965379e6a8c8676943a5479e5f7c7429634b08c9fc607",
+        "input": 0,
+        "pack_files": 32
+      },
+      "other": {
+        "path": "missions/jda/j08.zwp",
+        "bytes": 18098757,
+        "sha256": "03e0eb4b4701767283734f3e4108b0541b1361003b49b5ba7d19b06d4be7c197",
+        "input": 1,
+        "pack_files": 32
+      }
+    },
+    {
+      "path": "missions/jda/j09.zwp",
+      "selected": {
+        "path": "missions/jda/j09.zwp",
+        "bytes": 15087575,
+        "sha256": "be654889ed62a128e222539f52de0e0f002978c15aca9cf09afef13530ad7920",
+        "input": 0,
+        "pack_files": 35
+      },
+      "other": {
+        "path": "missions/jda/j09.zwp",
+        "bytes": 15087575,
+        "sha256": "14a0bc2cd57c81b186174d305ecde6467f6f891c4d7971278c10a14b2ca44c46",
+        "input": 1,
+        "pack_files": 35
+      }
+    },
+    {
+      "path": "missions/jda/j10.zwp",
+      "selected": {
+        "path": "missions/jda/j10.zwp",
+        "bytes": 13236926,
+        "sha256": "c0f47fe06f8b4c6eb6ad404a7802952ee1ae62895fae1db52a13beea55cbc91b",
+        "input": 0,
+        "pack_files": 38
+      },
+      "other": {
+        "path": "missions/jda/j10.zwp",
+        "bytes": 13236926,
+        "sha256": "5f31b7379ff79c7ed270c4c72b6be90c8d201f6d2770478767a8364cb60ae95e",
+        "input": 1,
+        "pack_files": 38
+      }
+    },
+    {
+      "path": "missions/koth/k3dr2.zwp",
+      "selected": {
+        "path": "missions/koth/k3dr2.zwp",
+        "bytes": 297527,
+        "sha256": "49c5032a227a70432d9ab2f91f85596d82e2cdcaf15b88faf86aed7a4653112e",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/koth/k3dr2.zwp",
+        "bytes": 297527,
+        "sha256": "888167ca7d0c4d5f48f73c209c721b0935875976e315afb866a5c783e7748674",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/koth/k3spooge.zwp",
+      "selected": {
+        "path": "missions/koth/k3spooge.zwp",
+        "bytes": 292116,
+        "sha256": "b183a6e9cd977eb8c6940e83f696c8a1795e238da0f0ac645e7143d25e35b323",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/koth/k3spooge.zwp",
+        "bytes": 292116,
+        "sha256": "7e9cb9b6090c9cbdcdb79ee974cf1f1d93d9adc73c44a9e2579d6fbf79c7faab",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/koth/k4sprawl.zwp",
+      "selected": {
+        "path": "missions/koth/k4sprawl.zwp",
+        "bytes": 439820,
+        "sha256": "81f9d97cd39f46ff7952f716fc3bef3a5bbe16c3a04f05932294d9bde185f051",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/koth/k4sprawl.zwp",
+        "bytes": 439820,
+        "sha256": "b1c6d915cea3dbf13f11f8e8fc7cc6281ab54466bbf6c925458a0f16e9d6c5f3",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/koth/k6jungle.zwp",
+      "selected": {
+        "path": "missions/koth/k6jungle.zwp",
+        "bytes": 635014,
+        "sha256": "2bbeafe6e31f0eeaa44760ef853d04d71ef45644c6ecb3744e00301d2ba99b47",
+        "input": 0,
+        "pack_files": 4
+      },
+      "other": {
+        "path": "missions/koth/k6jungle.zwp",
+        "bytes": 635014,
+        "sha256": "5821c37959457553b437318af3a3dd17a703cdb1f0f5e2d68ef44372f9702a0c",
+        "input": 1,
+        "pack_files": 4
+      }
+    },
+    {
+      "path": "missions/sprawler/outro.zwp",
+      "selected": {
+        "path": "missions/sprawler/outro.zwp",
+        "bytes": 336284,
+        "sha256": "ef28e77156cfe7bebd08a776bfe9c83749a12efd28d07b1a95bf82ea11e52bf7",
+        "input": 0,
+        "pack_files": 8
+      },
+      "other": {
+        "path": "missions/sprawler/outro.zwp",
+        "bytes": 336284,
+        "sha256": "ca58b62c7bbe0d0ca22e875aca4346859035eee4d4c955b3658563274f1c1589",
+        "input": 1,
+        "pack_files": 8
+      }
+    },
+    {
+      "path": "missions/sprawler/s01.zwp",
+      "selected": {
+        "path": "missions/sprawler/s01.zwp",
+        "bytes": 1489051,
+        "sha256": "9eda92d97d300a79fd8048b277ea3a2c1f0f0c2245c8970a2386b9d5a77a6d0d",
+        "input": 0,
+        "pack_files": 29
+      },
+      "other": {
+        "path": "missions/sprawler/s01.zwp",
+        "bytes": 1489051,
+        "sha256": "42b4c9e0b06f6a5a55deaec4260e8770429089afe19575bfdfa842e99e69cfb1",
+        "input": 1,
+        "pack_files": 29
+      }
+    },
+    {
+      "path": "missions/sprawler/s01_intro.zwp",
+      "selected": {
+        "path": "missions/sprawler/s01_intro.zwp",
+        "bytes": 1228169,
+        "sha256": "104d2b0282e15383b097e8fe71c050ae963aa39c4dec8d51057eda623154fdfa",
+        "input": 0,
+        "pack_files": 19
+      },
+      "other": {
+        "path": "missions/sprawler/s01_intro.zwp",
+        "bytes": 1228166,
+        "sha256": "abee74e7290b0330a5694f501b36ee7afcbac986f5ac4437c9146291f09f5eb1",
+        "input": 1,
+        "pack_files": 19
+      }
+    },
+    {
+      "path": "missions/sprawler/s02.zwp",
+      "selected": {
+        "path": "missions/sprawler/s02.zwp",
+        "bytes": 1126956,
+        "sha256": "a9db525fd757022716dd848b8ea91a6fa4db2207a581d6d0bc1d048a3cd8d461",
+        "input": 0,
+        "pack_files": 27
+      },
+      "other": {
+        "path": "missions/sprawler/s02.zwp",
+        "bytes": 1126956,
+        "sha256": "9895450717e74f67313c6691bb65f4ef3496198714609c987f19228c6b494754",
+        "input": 1,
+        "pack_files": 27
+      }
+    },
+    {
+      "path": "missions/sprawler/s03.zwp",
+      "selected": {
+        "path": "missions/sprawler/s03.zwp",
+        "bytes": 916376,
+        "sha256": "cddf793237a50c22e81131ba372878a5f279a4614033ab03cddd1e84bef25c9d",
+        "input": 0,
+        "pack_files": 27
+      },
+      "other": {
+        "path": "missions/sprawler/s03.zwp",
+        "bytes": 916376,
+        "sha256": "1c28021c1cce5d910be21943a7be53fb12c06bebf615355d6e0b37e5efd9e20e",
+        "input": 1,
+        "pack_files": 27
+      }
+    },
+    {
+      "path": "missions/sprawler/s04.zwp",
+      "selected": {
+        "path": "missions/sprawler/s04.zwp",
+        "bytes": 1542970,
+        "sha256": "3a138b62df15d3ec8454366f20b3c779d60cfa67cd61f6ec75171e4974d0f50d",
+        "input": 0,
+        "pack_files": 27
+      },
+      "other": {
+        "path": "missions/sprawler/s04.zwp",
+        "bytes": 1542970,
+        "sha256": "99ef2c97927c1a7d891126913b625008f9ae0fc5a47404f424e1464f4f68fa8d",
+        "input": 1,
+        "pack_files": 27
+      }
+    },
+    {
+      "path": "missions/sprawler/s05.zwp",
+      "selected": {
+        "path": "missions/sprawler/s05.zwp",
+        "bytes": 1187347,
+        "sha256": "c7c3af5e8d5fe101a56024bcd9ece5e3f4435bb8c8a7877567db3fe42d1232fa",
+        "input": 0,
+        "pack_files": 27
+      },
+      "other": {
+        "path": "missions/sprawler/s05.zwp",
+        "bytes": 1187347,
+        "sha256": "444f6b48b87c099b452a37ac97e4e929e046afc95cb7e634599ded824b0b0f30",
+        "input": 1,
+        "pack_files": 27
+      }
+    },
+    {
+      "path": "missions/sprawler/s06.zwp",
+      "selected": {
+        "path": "missions/sprawler/s06.zwp",
+        "bytes": 1055278,
+        "sha256": "54e1305c778779aa38850445dc852c14b2b1258f185ab4064bce10648244575f",
+        "input": 0,
+        "pack_files": 23
+      },
+      "other": {
+        "path": "missions/sprawler/s06.zwp",
+        "bytes": 1055278,
+        "sha256": "65a67fb67150a9c28cfcc40dec1f777e237bda6ffb0f19433803890a9c7a620c",
+        "input": 1,
+        "pack_files": 23
+      }
+    },
+    {
+      "path": "missions/sprawler/s07.zwp",
+      "selected": {
+        "path": "missions/sprawler/s07.zwp",
+        "bytes": 1211824,
+        "sha256": "1be537bc286616b75573ac343340d5b5f8b33dd5f91f21667add33d192b881de",
+        "input": 0,
+        "pack_files": 24
+      },
+      "other": {
+        "path": "missions/sprawler/s07.zwp",
+        "bytes": 1211824,
+        "sha256": "9cf99f031b2817cd0767ce8ac8f0e01f9be811d33f8e04d9522b0efcb5f4499f",
+        "input": 1,
+        "pack_files": 24
+      }
+    },
+    {
+      "path": "missions/sprawler/s08.zwp",
+      "selected": {
+        "path": "missions/sprawler/s08.zwp",
+        "bytes": 1600535,
+        "sha256": "d7e14f3f57ec0141d7b04d4c7ebae2160fcf39f1731a3ca77564246833e30286",
+        "input": 0,
+        "pack_files": 33
+      },
+      "other": {
+        "path": "missions/sprawler/s08.zwp",
+        "bytes": 1600535,
+        "sha256": "6e3ea8bfdd5e744ef7955b35cb932a20be8c217ef844144183b1aa4ab06b85e0",
+        "input": 1,
+        "pack_files": 33
+      }
+    },
+    {
+      "path": "missions/sprawler/s09.zwp",
+      "selected": {
+        "path": "missions/sprawler/s09.zwp",
+        "bytes": 2558486,
+        "sha256": "b568d74249157d8284e628f559bb6ab236fb6f535fad80dd1a3478b5caa82d02",
+        "input": 0,
+        "pack_files": 41
+      },
+      "other": {
+        "path": "missions/sprawler/s09.zwp",
+        "bytes": 2558486,
+        "sha256": "b1272a21cc1ddb2ce0ceeafe25a01c8ed08381ab348a9e621b894e870e855378",
+        "input": 1,
+        "pack_files": 41
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s01.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s01.zwp",
+        "bytes": 5322570,
+        "sha256": "0c42a1e713ce8d7e1d68023b26382e9677042403434bf4fa31e801b4087e90f3",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s01.zwp",
+        "bytes": 5322570,
+        "sha256": "5cb7d85389956ed5f1d652adcde5247c03370dd7e1348e2135c012472b2266d9",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s02.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s02.zwp",
+        "bytes": 6786371,
+        "sha256": "4ef2fad849fc427e6e32e58f6e64158036b94ccc9c80281d4543fb895d4dc8d4",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s02.zwp",
+        "bytes": 6786371,
+        "sha256": "f8b82c9b7ae3c3b5ed626e9899800ad6280fa5db29b92a4b140ab23ab8c0c538",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s03.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s03.zwp",
+        "bytes": 4517707,
+        "sha256": "9920d5d6bd973e3018fa106bc356e54873e42bb36ca5a74300badfd832e41e50",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s03.zwp",
+        "bytes": 4517707,
+        "sha256": "50439713a23a4f3171cc73f302c08c6309c7795ffb00d8cd4f6491bd6d320d65",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s04.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s04.zwp",
+        "bytes": 7967390,
+        "sha256": "1cba66ba9a824853a76dfc5e86849f9352ac11fd07a0feaa67fd6526d2b333d0",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s04.zwp",
+        "bytes": 7967390,
+        "sha256": "87450c65adff0abb4ee11f4cd3948c9c1d713bd04e618fb53ca774adf4c2fd02",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s05.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s05.zwp",
+        "bytes": 4866362,
+        "sha256": "996499d023e40913ca75b471d65f18ad3faef6926a46150d0398fcb7738acbc5",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s05.zwp",
+        "bytes": 4866362,
+        "sha256": "7444224ceda728eacd4b82d742c1e1ac1b9f0b757449774ff4943db4e6136ba3",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s06.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s06.zwp",
+        "bytes": 7352230,
+        "sha256": "6811d699bb0d07f990acfe53208b501bbc9ad13c5c2ad3c063cf84ff93d14e55",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s06.zwp",
+        "bytes": 7352230,
+        "sha256": "3a61be6067406b2de4bb6b84d05dafdfaaa6d32176ae8a3f6598f8cf878cd350",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s07.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s07.zwp",
+        "bytes": 4934158,
+        "sha256": "d6fc752c0c69b401b9e617efa1c37b72aa7c910b4f3dbe4e63a1c445a6ef5057",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s07.zwp",
+        "bytes": 4934158,
+        "sha256": "b06b1c7d352950084f4d3f07019bc5b41f6994b11f901aad846967e3015993da",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s08.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s08.zwp",
+        "bytes": 1323910,
+        "sha256": "22f6345a33331d0ef5a0655b017bfe923769f1652218ddc0fd00e25adb32f598",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s08.zwp",
+        "bytes": 1323910,
+        "sha256": "d2fcb13d28069b9f3ffa3e800377f5cd13a6d17cb3390a63600104e0ab36d6c4",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/sprawler/transition into s09.zwp",
+      "selected": {
+        "path": "missions/sprawler/transition into s09.zwp",
+        "bytes": 2535720,
+        "sha256": "38becb255107bab9e75fdf93ab9e1c56a73b1b84020e0214d13ec7d681ffd468",
+        "input": 0,
+        "pack_files": 13
+      },
+      "other": {
+        "path": "missions/sprawler/transition into s09.zwp",
+        "bytes": 2535720,
+        "sha256": "47740090b6af9e38917d3f6764c895016636915e41642f4c5be5d9f463da7ae2",
+        "input": 1,
+        "pack_files": 13
+      }
+    },
+    {
+      "path": "missions/system/shell.zwp",
+      "selected": {
+        "path": "missions/system/shell.zwp",
+        "bytes": 17129341,
+        "sha256": "af17926f47bca75247cc85e02d905e369c4f939d52dcef177e7324cc8cf14140",
+        "input": 0,
+        "pack_files": 27
+      },
+      "other": {
+        "path": "missions/system/shell.zwp",
+        "bytes": 1064019,
+        "sha256": "335c0b478e9f42e81c45fe12971fcededb24cf66079c76d1df17389c4f000c38",
+        "input": 1,
+        "pack_files": 26
+      }
+    }
+  ],
+  "identical_duplicates": [
+    {
+      "path": "missions/assault/group.cfg",
+      "selected": {
+        "path": "missions/assault/group.cfg",
+        "bytes": 228,
+        "sha256": "84bbdc5fb85e902e5919b70e476483a6d8a66930643f95bd9cbfc6b1c1c573a9",
+        "input": 0
+      },
+      "other": {
+        "path": "missions/assault/group.cfg",
+        "bytes": 228,
+        "sha256": "84bbdc5fb85e902e5919b70e476483a6d8a66930643f95bd9cbfc6b1c1c573a9",
+        "input": 1
+      }
+    },
+    {
+      "path": "missions/control/group.cfg",
+      "selected": {
+        "path": "missions/control/group.cfg",
+        "bytes": 228,
+        "sha256": "94da8b8cd4495ba04ad4386e9a314e8072287a84da5196014cd8f1d64bb7a826",
+        "input": 0
+      },
+      "other": {
+        "path": "missions/control/group.cfg",
+        "bytes": 228,
+        "sha256": "94da8b8cd4495ba04ad4386e9a314e8072287a84da5196014cd8f1d64bb7a826",
+        "input": 1
+      }
+    },
+    {
+      "path": "missions/fenced/group.cfg",
+      "selected": {
+        "path": "missions/fenced/group.cfg",
+        "bytes": 244,
+        "sha256": "58314b16e82a3f1e6731b216715aa08ae23d70dc6bb95bd7ee9b6597c9e5b88b",
+        "input": 0
+      },
+      "other": {
+        "path": "missions/fenced/group.cfg",
+        "bytes": 244,
+        "sha256": "58314b16e82a3f1e6731b216715aa08ae23d70dc6bb95bd7ee9b6597c9e5b88b",
+        "input": 1
+      }
+    },
+    {
+      "path": "missions/jda/group.cfg",
+      "selected": {
+        "path": "missions/jda/group.cfg",
+        "bytes": 461,
+        "sha256": "d7692bbce91f7d5eb3db2d622a07bad359131fa49f3458460b113b795db3cdcf",
+        "input": 0
+      },
+      "other": {
+        "path": "missions/jda/group.cfg",
+        "bytes": 461,
+        "sha256": "d7692bbce91f7d5eb3db2d622a07bad359131fa49f3458460b113b795db3cdcf",
+        "input": 1
+      }
+    },
+    {
+      "path": "missions/koth/group.cfg",
+      "selected": {
+        "path": "missions/koth/group.cfg",
+        "bytes": 225,
+        "sha256": "c97a7a01e4d1703e5106150ef5e20931cfed9b2f5cf268993f85e810bb5908a7",
+        "input": 0
+      },
+      "other": {
+        "path": "missions/koth/group.cfg",
+        "bytes": 225,
+        "sha256": "c97a7a01e4d1703e5106150ef5e20931cfed9b2f5cf268993f85e810bb5908a7",
+        "input": 1
+      }
+    },
+    {
+      "path": "missions/sprawler/group.cfg",
+      "selected": {
+        "path": "missions/sprawler/group.cfg",
+        "bytes": 755,
+        "sha256": "f86fdeabead53c428ccda33871b09262861d88e619cf7313b020b194d8e72a02",
+        "input": 0
+      },
+      "other": {
+        "path": "missions/sprawler/group.cfg",
+        "bytes": 755,
+        "sha256": "f86fdeabead53c428ccda33871b09262861d88e619cf7313b020b194d8e72a02",
+        "input": 1
+      }
+    },
+    {
+      "path": "missions/system/group.cfg",
+      "selected": {
+        "path": "missions/system/group.cfg",
+        "bytes": 237,
+        "sha256": "31b3b98416ff6e6d1935fd5fb2e14cb258024e147e3f08aa9f28732584558465",
+        "input": 0
+      },
+      "other": {
+        "path": "missions/system/group.cfg",
+        "bytes": 237,
+        "sha256": "31b3b98416ff6e6d1935fd5fb2e14cb258024e147e3f08aa9f28732584558465",
+        "input": 1
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "input": 1,
+      "path": "missions/multiplayer/!!!!skulkys_4aiv3ai+you_t-bone=).zwp",
+      "reason": "Rejected by existing pack validators: invalid archive name"
+    }
+  ],
+  "ignored": [
+    {
+      "input": 0,
+      "path": "Dark Reign 2/Customer_support.htm"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/EULA.txt"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/GETINFO.DLL"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/Launch Dark Reign 2.lnk"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/Manual.pdf"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/_inmm.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/anet.inf"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/binkw32.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/ddraw.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/dr2.exe"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/dxcfg.exe"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/dxcfg.ini"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/firewall.cmd"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/firewall_u.cmd"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/gog.ico"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/goggame-1207658911.hashdb"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/goggame-1207658911.ico"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/goggame-1207658911.info"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/goggame-1207658911.script"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/goggame-galaxyFileList.ini"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/goglog.ini"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/libogg.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/activision/tools.cat"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/activision/tools.dat"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/dbg/dbghelp.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/dbg/msdbi.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/mss/mp3dec.asi"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/patch/patch.exe"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/patch/patch.ini"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/patch/patchw32.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/library/won/kver.pub"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/libvorbis.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/libvorbisfile.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/license.txt"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/mss32.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/msvcp90.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/msvcr90.dll"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/readme.rtf"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/settings.cfg"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/support.ico"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/unins000.dat"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/unins000.exe"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/unins000.ini"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/unins000.msg"
+    },
+    {
+      "input": 0,
+      "path": "Dark Reign 2/webcache.zip"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Badlands v1.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Badlands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Clan Wars.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Grasslands 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Grasslands 3.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Grasslands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Rush Game.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/2 Small.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/3 Grasslands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Badlands 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Badlands AntiSW.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Badlands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Bloodbath.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Boat Wars.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Close Encounters 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Close Encounters.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Crossroads.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Grasslands Castle.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Grasslands Flooded.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Grasslands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 Hexagons.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 vs AI Defence.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/4 vs AI.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/5 Custom 3v2 AntiS.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Badderlands Dome.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Badderlands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Close Encounters 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Close Encounters.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Grasslands 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Grasslands 3.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Grasslands Tfix.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Grasslands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Hindu Times.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Pentagons.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 Resistance.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 T-Bone Vulcano.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/6 T-Bone.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/7 Badlands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 BadLands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Close Encounters Color.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Close Encounters Taelonspecial.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Close Encounters.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Grasslands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Kaiotic 3 Double Up.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Kaiotic 3.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Pentagons 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Pentagons 3way.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Pentagons Washout More Taleon.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Pentagons Washout.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Pentagons.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Stairway to Hell 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 Stairway to Hell Waterfix.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone Desert.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone Dome.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone Hill 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone Hill.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone Holy Grounds.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone Icey DR3.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone Lands.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 T-Bone.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 WishBone 2.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 WishBone Inserting.zwp.jpg"
+    },
+    {
+      "input": 1,
+      "path": "missions/multiplayer/8 WishBone.zwp.jpg"
+    }
+  ],
+  "campaign_references": [
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J01",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J02",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J03",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J04",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J05",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J06_intro",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J06",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J07",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J08",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J09",
+      "present": true
+    },
+    {
+      "group": "missions/jda/group.cfg",
+      "mission": "J10",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S01_Intro",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S01",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S01",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S02",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S02",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S03",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S03",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S04",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S04",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S05",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S05",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S06",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S06",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S07",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S07",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S08",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S08",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Transition into S09",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "S09",
+      "present": true
+    },
+    {
+      "group": "missions/sprawler/group.cfg",
+      "mission": "Outro",
+      "present": true
+    }
+  ],
+  "runtime_files": 306,
+  "runtime_bytes": 574377162,
+  "music_tracks": 7,
+  "output": {
+    "name": "Reigncarnated-Verified-Game-Data.zip",
+    "bytes": 433896584,
+    "sha256": "dffbc6b2516ff9c7416f9ebf8e0401fb7d41724052addf62d7f050e6635fbf0d"
+  },
+  "verification": {
+    "source_revision": "ff43d5b0f15e42e67f2d0e6d9eddf5b0562517c7",
+    "crc": "All source entries checked; output ZIP reread successfully",
+    "java_import": "PASS: tracks=7 scenePacks=3",
+    "java_export": "PASS: files=306 tracks=7 bytes=574377162",
+    "java_restore": "PASS: required files byte-identical; tracks=7",
+    "campaign_references": 31,
+    "base_movies": [
+      "intro-movie-0.bik",
+      "intro-movie-1.bik",
+      "intro-movie-2.bik",
+      "movie-billboard.bik"
+    ],
+    "private_download": "https://chatgpt.com/library?file_id=libfile_8670c189d0508191a633cae65184cafe&account_id=personal"
+  }
+}

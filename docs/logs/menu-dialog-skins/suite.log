@@ -1,0 +1,81 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: native_frontend_support
+ 1/38 Test  #1: native_frontend_support ..........   Passed    0.00 sec
+      Start  2: native_frontend_text
+ 2/38 Test  #2: native_frontend_text .............   Passed    0.00 sec
+      Start  3: original_object_tracking
+ 3/38 Test  #3: original_object_tracking .........   Passed    0.01 sec
+      Start  4: original_event_dispatch
+ 4/38 Test  #4: original_event_dispatch ..........   Passed    0.01 sec
+      Start  5: original_native_event_context
+ 5/38 Test  #5: original_native_event_context ....   Passed    0.00 sec
+      Start  6: original_variable_runtime
+ 6/38 Test  #6: original_variable_runtime ........   Passed    0.01 sec
+      Start  7: original_runtime_handoff
+ 7/38 Test  #7: original_runtime_handoff .........   Passed    0.00 sec
+      Start  8: original_control_types
+ 8/38 Test  #8: original_control_types ...........   Passed    0.00 sec
+      Start  9: original_frontend_config
+ 9/38 Test  #9: original_frontend_config .........   Passed    0.00 sec
+      Start 10: original_interface_events
+10/38 Test #10: original_interface_events ........   Passed    0.01 sec
+      Start 11: original_interface_registry
+11/38 Test #11: original_interface_registry ......   Passed    0.01 sec
+      Start 12: original_messagebox_events
+12/38 Test #12: original_messagebox_events .......   Passed    0.01 sec
+      Start 13: frontend_font_bridge
+13/38 Test #13: frontend_font_bridge .............   Passed    0.01 sec
+      Start 14: frontend_frame_bridge
+14/38 Test #14: frontend_frame_bridge ............   Passed    0.01 sec
+      Start 15: original_frontend_triangle
+15/38 Test #15: original_frontend_triangle .......   Passed    0.00 sec
+      Start 16: original_frontend_quads
+16/38 Test #16: original_frontend_quads ..........   Passed    0.00 sec
+      Start 17: original_interface_expressions
+17/38 Test #17: original_interface_expressions ...   Passed    0.01 sec
+      Start 18: original_render_buckets
+18/38 Test #18: original_render_buckets ..........   Passed    0.01 sec
+      Start 19: original_bitmap_manager
+19/38 Test #19: original_bitmap_manager ..........   Passed    0.01 sec
+      Start 20: original_bitmap_pixels
+20/38 Test #20: original_bitmap_pixels ...........   Passed    0.01 sec
+      Start 21: bitmap_tga_loading
+21/38 Test #21: bitmap_tga_loading ...............   Passed    0.01 sec
+      Start 22: bitmap_bmp_loading
+22/38 Test #22: bitmap_bmp_loading ...............   Passed    0.01 sec
+      Start 23: original_vid_states
+23/38 Test #23: original_vid_states ..............   Passed    0.00 sec
+      Start 24: original_font_registration
+24/38 Test #24: original_font_registration .......   Passed    0.01 sec
+      Start 25: original_interface_metrics
+25/38 Test #25: original_interface_metrics .......   Passed    0.01 sec
+      Start 26: original_font_atlas_and_draw
+26/38 Test #26: original_font_atlas_and_draw .....   Passed    0.02 sec
+      Start 27: original_runcodes
+27/38 Test #27: original_runcodes ................   Passed    0.01 sec
+      Start 28: original_config_parser
+28/38 Test #28: original_config_parser ...........   Passed    0.01 sec
+      Start 29: original_tokenizer
+29/38 Test #29: original_tokenizer ...............   Passed    0.00 sec
+      Start 30: original_engine_primitives
+30/38 Test #30: original_engine_primitives .......   Passed    0.00 sec
+      Start 31: platform_services
+31/38 Test #31: platform_services ................   Passed    0.01 sec
+      Start 32: pack_metadata_inspector
+32/38 Test #32: pack_metadata_inspector ..........   Passed    0.04 sec
+      Start 33: native_archive_reader
+33/38 Test #33: native_archive_reader ............   Passed    0.02 sec
+      Start 34: make_installation_fixture
+34/38 Test #34: make_installation_fixture ........   Passed    0.02 sec
+      Start 35: installation_integration
+35/38 Test #35: installation_integration .........   Passed    0.01 sec
+      Start 36: resource_streams
+36/38 Test #36: resource_streams .................   Passed    0.01 sec
+      Start 37: tga_pixels
+37/38 Test #37: tga_pixels .......................   Passed    0.00 sec
+      Start 38: native_bitmap_storage
+38/38 Test #38: native_bitmap_storage ............   Passed    0.00 sec
+
+100% tests passed out of 38
+
+Total Test time (real) =   0.34 sec

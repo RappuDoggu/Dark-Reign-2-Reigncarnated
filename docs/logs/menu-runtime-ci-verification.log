@@ -1,0 +1,25 @@
+GitHub provider output — run 40328309171, commit bafbbcb0a55114b0df2f973be7eef15f90653e81
+Host job 121590693070; Android job 121590693637
+
+2026-10-26T13:13:41.6155261Z 40: Persistent original menu/profile ownership, frame exception recovery and reopen: PASS (18 checks)
+2026-10-26T13:13:41.7584848Z 45: Original TBuf checks: PASS (0 failures)
+2026-10-26T13:13:42.0155876Z 100% tests passed, 0 tests failed out of 54
+
+2026-10-26T13:14:26.3424872Z 53: Original UI ordered geometry/font GLES presenter and frame recovery: PASS
+2026-10-26T13:14:26.4305634Z 53: Original UI ordered geometry/font GLES presenter and frame recovery: PASS
+2026-10-26T13:14:26.4967782Z 100% tests passed, 0 tests failed out of 1
+2026-10-26T13:16:03.9497023Z Verifies
+2026-10-26T13:16:03.9498246Z Verified using v1 scheme (JAR signing): false
+2026-10-26T13:16:03.9499246Z Verified using v2 scheme (APK Signature Scheme v2): true
+2026-10-26T13:16:03.9500603Z Verified using v3 scheme (APK Signature Scheme v3): true
+2026-10-26T13:16:03.9501482Z Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+2026-10-26T13:16:03.9504219Z Verified using v4 scheme (APK Signature Scheme v4): false
+2026-10-26T13:16:03.9505112Z Verified for SourceStamp: false
+2026-10-26T13:16:03.9611781Z package: name='org.reigncarnated.menu' versionCode='1' versionName='0.1-login' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+2026-10-26T13:16:03.9618685Z targetSdkVersion:'35'
+2026-10-26T13:16:03.9629728Z native-code: 'arm64-v8a'
+2026-10-26T13:16:03.9981754Z APK ZIP structure and entry checksums: PASS
+2026-10-26T13:16:05.7610715Z Artifact Reigncarnated-Original-Login-v01-private-arm64.zip successfully finalized. Artifact ID 12654770176
+2026-10-26T13:16:05.7614320Z Artifact Reigncarnated-Original-Login-v01-private-arm64 has been successfully uploaded! Final size is 4688059 bytes. Artifact ID is 12654770176
+2026-10-26T13:16:05.7616373Z Artifact download URL: https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40328309171/artifacts/12654770176
+

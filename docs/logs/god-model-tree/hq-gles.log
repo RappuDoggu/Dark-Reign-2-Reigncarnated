@@ -1,0 +1,3 @@
+Context 1 model=spr_hq.god triangles=129 nonblack=21805
+Context 2 model=spr_hq.god triangles=129 nonblack=21805
+PASS: serialized root geometry and base textures through GLES. Diagnostic only: no node transforms, animation, lighting, overlays or original material policy.

@@ -1,0 +1,15 @@
+{
+  "code_commit": "41898b8af98cff073a1f53a77c677188cc90822d",
+  "run_id": 40157490540,
+  "conclusion": "success",
+  "host_job": 121061885763,
+  "android_job": 121061885568,
+  "host_tests": 19,
+  "metric_checks": 33,
+  "gpu_checks_per_context": 42,
+  "contexts": 2,
+  "host_logs_artifact": 12584667237,
+  "android_logs_artifact": 12584757331,
+  "original_only_v04_artifact": 12584812211,
+  "new_original_metrics_android_runtime_tested": false
+}

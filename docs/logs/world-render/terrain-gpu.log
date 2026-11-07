@@ -1,0 +1,7 @@
+Context 1 t=0 triangles=7200 pixels=213978
+Context 1 t=3 triangles=7200 pixels=196477
+Context 1 t=5.5 triangles=7200 pixels=156406
+Context 2 t=0 triangles=7200 pixels=213978
+Context 2 t=3 triangles=7200 pixels=196477
+Context 2 t=5.5 triangles=7200 pixels=156406
+Original camera/terrain/texture GLES integration: PASS. UNLIT BASE-TERRAIN DIAGNOSTIC ONLY; models, overlays, water, lighting and cinematic runtime absent.

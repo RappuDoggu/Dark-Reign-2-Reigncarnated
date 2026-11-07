@@ -1,0 +1,20 @@
+saveload-build.log
+/tmp/reign-upstream-saveload-overlay/game_saveload.cpp:83:31: error: ‘TRANSLATE’ was not declared in this scope
+
+color-controls-build.log
+/tmp/reign-upstream-frontend-overlay/colorbutton.cpp:39:14: error: invalid conversion from ‘Bool’ {aka ‘int’} to ‘IControl*’ [-fpermissive]
+/tmp/reign-upstream-frontend-overlay/coloreditor.cpp:385:13: error: call of overloaded ‘Set(U8, U8, U8, float)’ is ambiguous
+
+settings-full-build.log
+coloreditor.cpp:(.text._ZN8ColorMap8DrawSelfER9PaintInfo+0x797): undefined reference to `CalculateRGB(Color&, int, int, int)'
+/usr/bin/ld: coloreditor.cpp:(.text._ZN8ColorMap8DrawSelfER9PaintInfo+0xa25): undefined reference to `CalculateRGB(Color&, int, int, int)'
+/usr/bin/ld: coloreditor.cpp:(.text._ZN8ColorMap8DrawSelfER9PaintInfo+0xeb5): undefined reference to `CalculateRGB(Color&, int, int, int)'
+/usr/bin/ld: coloreditor.cpp:(.text._ZN8ColorMap8DrawSelfER9PaintInfo+0x1143): undefined reference to `CalculateRGB(Color&, int, int, int)'
+/usr/bin/ld: coloreditor.cpp:(.text._ZN8ColorMap8DrawSelfER9PaintInfo+0x15fd): undefined reference to `CalculateRGB(Color&, int, int, int)'
+/usr/bin/ld: CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/coloreditor.cpp.o:coloreditor.cpp:(.text._ZN8ColorMap8DrawSelfER9PaintInfo+0x188b): more undefined references to `CalculateRGB(Color&, int, int, int)' follow
+coloreditor.cpp:(.text._ZN11ColorEditor6NotifyEP8IFaceVar+0xd03): undefined reference to `CalculateRGB(int&, int&, int&, int, int, int)'
+/usr/bin/ld: coloreditor.cpp:(.text._ZN11ColorEditor6NotifyEP8IFaceVar+0x1c7e): undefined reference to `CalculateHLS(int, int, int, int&, int&, int&)'
+coloreditor.cpp:(.text._ZN11ColorEditor8DrawSelfER9PaintInfo+0x747): undefined reference to `CalculateRGB(int&, int&, int&, int, int, int)'
+/usr/bin/ld: coloreditor.cpp:(.text._ZN11ColorEditor8DrawSelfER9PaintInfo+0xfa2): undefined reference to `CalculateRGB(int&, int&, int&, int, int, int)'
+/usr/bin/ld: coloreditor.cpp:(.text._ZN11ColorEditor8DrawSelfER9PaintInfo+0x1811): undefined reference to `CalculateRGB(int&, int&, int&, int, int, int)'
+collect2: error: ld returned 1 exit status

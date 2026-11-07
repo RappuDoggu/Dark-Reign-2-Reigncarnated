@@ -1,0 +1,7 @@
+[engine] Logout [Test Pilot]
+[engine] Login [Test Pilot]
+[engine] Logout [Test Pilot]
+[engine] Logout [Second Pilot]
+[engine] Login [Test Pilot]
+[engine] Logout [Test Pilot]
+Original profiles binary persistence, statistics, campaign progress and deletion: PASS (18 checks)

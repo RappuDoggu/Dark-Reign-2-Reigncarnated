@@ -1,0 +1,35 @@
+In file included from /workspace/scratch/71fe0796f7e3/upstream-native/interface/fontsys.h:19,
+                 from /workspace/scratch/71fe0796f7e3/repo/tests/engine_mission_boot_test.cpp:6:
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+/usr/bin/ld: build-mission-runtime-test/original_host.a(graphics__vid_cmd.cpp.o): in function `Vid::SetMode(unsigned int)':
+vid_cmd.cpp:(.text._ZN3Vid7SetModeEj[_ZN3Vid7SetModeEj]+0x3f): undefined reference to `Vid::SetMode(unsigned int, unsigned int, unsigned int, int)'
+/usr/bin/ld: build-mission-runtime-test/original_host.a(graphics__vid_cmd.cpp.o): in function `Vid::SetModeForce(unsigned int)':
+vid_cmd.cpp:(.text._ZN3Vid12SetModeForceEj[_ZN3Vid12SetModeForceEj]+0x3f): undefined reference to `Vid::SetMode(unsigned int, unsigned int, unsigned int, int)'
+/usr/bin/ld: build-mission-runtime-test/original_host.a(graphics__vid_cmd.cpp.o): in function `Vid::Command::Reset()':
+vid_cmd.cpp:(.text._ZN3Vid7Command5ResetEv+0x9): undefined reference to `Hardware::CPU::GetSpeed()'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7Command5ResetEv+0x5c): undefined reference to `Hardware::Memory::GetPhysical()'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7Command5ResetEv+0x1f0): undefined reference to `Vid::Config::TriplebufOff()'
+/usr/bin/ld: build-mission-runtime-test/original_host.a(graphics__vid_cmd.cpp.o): in function `Vid::Command::Handler(unsigned int)':
+vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0xfce): undefined reference to `Vid::SetGamma(int)'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0x19c6): undefined reference to `Vid::Report()'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0x1aa7): undefined reference to `Vid::NextDriver(int)'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0x1c42): undefined reference to `Vid::NextMode(int)'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0x1c51): undefined reference to `Vid::NextMode(int)'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0x1e76): undefined reference to `Vid::InitDD(int)'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0x1f24): undefined reference to `Vid::InitDD(int)'
+/usr/bin/ld: vid_cmd.cpp:(.text._ZN3Vid7CommandL7HandlerEj+0x1fd8): undefined reference to `Vid::SetMode(unsigned int, unsigned int, unsigned int, int)'
+/usr/bin/ld: build-mission-runtime-test/original_host.a(graphics__vid_cmd_mesh.cpp.o): in function `Vid::Command::InitMesh()':
+vid_cmd_mesh.cpp:(.text._ZN3Vid7Command8InitMeshEv+0x805): undefined reference to `Hardware::CPU::GetSpeed()'
+/usr/bin/ld: vid_cmd_mesh.cpp:(.text._ZN3Vid7Command8InitMeshEv+0x818): undefined reference to `Hardware::CPU::GetSpeed()'
+collect2: error: ld returned 1 exit status
+Traceback (most recent call last):
+  File "/workspace/scratch/71fe0796f7e3/repo/tools/test_engine_vid.py", line 40, in <module>
+    subprocess.run(command,check=True)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/g++', '-fsanitize=address,undefined', 'build-mission-runtime-test/engine_mission_boot_test.o', '-Wl,--gc-sections', '-Wl,--start-group', 'build-mission-runtime-test/original_host.a', 'build-engine-host/libdr2_engine_audio.a', 'build-engine-host/libdr2_engine_clock.a', 'build-engine-host/libdr2_engine_input.a', 'build-engine-host/libdr2_engine_io.a', 'build-engine-host/libdr2_engine_main_runtime.a', 'build-engine-host/libdr2_engine_missions.a', 'build-engine-host/libdr2_engine_movies.a', 'build-engine-host/libdr2_engine_music.a', 'build-engine-host/libdr2_engine_resources.a', 'build-engine-host/libdr2_engine_surface_gles.a', 'build-engine-host/libdr2_engine_surfaces.a', 'build-engine-host/libdr2_engine_type_idents.a', 'ffmpeg/host/install/lib/libavformat.a', 'ffmpeg/host/install/lib/libavcodec.a', 'ffmpeg/host/install/lib/libswscale.a', 'ffmpeg/host/install/lib/libavutil.a', '-l:libEGL.so.1', '-Wl,--end-group', '-pthread', '-ldl', '-lm', '-o', 'build-mission-runtime-test/engine_mission_boot_test']' returned non-zero exit status 1.

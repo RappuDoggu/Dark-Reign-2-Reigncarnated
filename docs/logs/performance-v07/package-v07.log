@@ -1,0 +1,30 @@
+Note: /workspace/scratch/61f8462ecfdd/performance/source-snapshot/android/menu/org/reigncarnated/menu/MissionActivity.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+package: name='org.reigncarnated.missioncandidate' versionCode='7' versionName='0.7-performance-test' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+minSdkVersion:'26'
+targetSdkVersion:'35'
+application: label='Reigncarnated IA Test' icon=''
+launchable-activity: name='org.reigncarnated.menu.MenuActivity'  label='' icon=''
+feature-group: label=''
+  uses-gl-es: '0x30000'
+  uses-feature: name='android.hardware.faketouch'
+  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'
+  uses-feature: name='android.hardware.screen.landscape'
+  uses-implied-feature: name='android.hardware.screen.landscape' reason='one or more activities have specified a landscape orientation'
+main
+other-activities
+supports-screens: 'small' 'normal' 'large' 'xlarge'
+supports-any-density: 'true'
+locales:
+densities:
+native-code: 'arm64-v8a'
+/workspace/scratch/61f8462ecfdd/performance/build-v07/Reigncarnated-Performance-v07.apk
+SHA256 9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b

@@ -1,0 +1,41 @@
+{
+  "source_revision": "fa43ad3a7fa0fb750ff6a7721dafd5e2a44b766a",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated IA City Test",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "4be8516a4d59aa2e98aa09a7bc231bc5fa253a148f6a02e8f7310f0253547d47",
+    "libreign_menu.so": "b511596d2fb86ff6f364993a357a5d2b8d6c25d5a277afa72397ce8e72fc707a"
+  },
+  "recovery_identity": false,
+  "apk_sha256": "7343d4c0f16d3136af49eaee2257727847e94868c6165a53132299c8ef219c84",
+  "apk_bytes": 9323647,
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "validation": {
+    "apk_zip_crc": true,
+    "same_signer_as_apk22_and_23": true,
+    "embedded_revision_docs_and_native_hashes": true,
+    "arm64_16k_elf_and_zip_alignment": true,
+    "static_libcxx": true,
+    "java_checks": 150,
+    "touch_checks": 48,
+    "engine_foundation_tests": 12,
+    "original_effect_pcm_lifetime_fixture": true,
+    "aaudio_boundary_fixture": true,
+    "persistent_stage_journal_abrupt_exit_fixture": true,
+    "reference_instant_action_lifecycle_twice": true,
+    "synthetic_campaign_default_client_lifecycle_twice": true,
+    "original_arm64_units_rebuilt": 603,
+    "private_unstripped_original_and_adapter_source_lines": true,
+    "retail_campaign_crash_fixed": false,
+    "android_mission_process_lifecycle_validated": false,
+    "device_combat_audio_validated": false,
+    "phone_fps_measured": false
+  }
+}

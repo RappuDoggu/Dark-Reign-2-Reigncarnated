@@ -1,0 +1,131 @@
+[engine] Looking for texture anim.xyz, found anim.tga.
+Context 1
+ARGB byte order and half-pixel coverage: PASS
+D3D top-left texture orientation: PASS
+Source-alpha blending: PASS
+Alpha reference discard: PASS
+Zero-to-one depth mapping and occlusion: PASS
+Specular-alpha vertex fog: PASS
+Specular RGB addition: PASS
+Reciprocal homogeneous W path: PASS
+Invalid index rejection: PASS
+World/TL perspective texture and affine color parity: PASS
+World near-plane triangle clipping: PASS
+Behind-camera world geometry rejected by GPU clipping: PASS
+World triangle crossing W=0 stays bounded: PASS
+World and TL batches share zero-to-one depth: PASS
+TL UI state restored after world draw: PASS
+Integer-coordinate glyph coverage: PASS
+Offscreen presentation orientation: PASS
+Render-target resize and presentation: PASS
+GLES3 legacy-TL pixel checks: PASS
+Original camera matrix to homogeneous GLES: PASS
+Original Vid texture mode 1: PASS
+Original Vid texture mode 2: PASS
+Original Vid texture mode 3: PASS
+Original Vid texture mode 4: PASS
+Original Vid texture mode 5: PASS
+Original Vid texture mode 6: PASS
+Original Vid texture mode 7: PASS
+Original Vid destination-color blend: PASS
+Original Vid additive blend: PASS
+Original Vid Z test/write: PASS
+Original Vid texture address 0: PASS
+Original Vid texture address 1: PASS
+Original Vid texture address 2: PASS
+Original bucket merge/rebase to GLES: PASS
+Original translucent triangle sort/blend: PASS
+Original translucent bucket tag sort/blend: PASS
+Original additive fog suppression: PASS
+Original additive fog color restoration: PASS
+8-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+16-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+24-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+32-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+PIC alpha -> original CopyLine -> bucket -> GLES: PASS
+8-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+16-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+24-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+32-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+Original bitmap manager fallback/cache to GLES: PASS
+Original bitmap manager numbered animation to GLES: PASS
+Original bitmap manager BMP fallback to GLES: PASS
+Original bitmap manager release/restore to GLES: PASS
+Original bitmap manager context invalidation/replay: PASS
+Original font atlas alpha/half-texel pixels and context replay: PASS
+Original font tint and alpha scale: PASS
+Original font shadow order/opacity: PASS
+Original font right-clip early return: PASS
+Original font multi-atlas texture switch: PASS
+Original font configuration/alias/reload to GLES: PASS
+Original interface metrics/font reference/shadow to GLES: PASS
+Original UI rectangle to GLES: PASS
+Original UI alpha scaling to GLES: PASS
+Original UI tiled texture to GLES: PASS
+Original UI gradient direction to GLES: PASS
+Original UI ordered geometry/font GLES presenter and frame recovery: PASS
+Context 2
+ARGB byte order and half-pixel coverage: PASS
+D3D top-left texture orientation: PASS
+Source-alpha blending: PASS
+Alpha reference discard: PASS
+Zero-to-one depth mapping and occlusion: PASS
+Specular-alpha vertex fog: PASS
+Specular RGB addition: PASS
+Reciprocal homogeneous W path: PASS
+Invalid index rejection: PASS
+World/TL perspective texture and affine color parity: PASS
+World near-plane triangle clipping: PASS
+Behind-camera world geometry rejected by GPU clipping: PASS
+World triangle crossing W=0 stays bounded: PASS
+World and TL batches share zero-to-one depth: PASS
+TL UI state restored after world draw: PASS
+Integer-coordinate glyph coverage: PASS
+Offscreen presentation orientation: PASS
+Render-target resize and presentation: PASS
+GLES3 legacy-TL pixel checks: PASS
+Original camera matrix to homogeneous GLES: PASS
+Original Vid texture mode 1: PASS
+Original Vid texture mode 2: PASS
+Original Vid texture mode 3: PASS
+Original Vid texture mode 4: PASS
+Original Vid texture mode 5: PASS
+Original Vid texture mode 6: PASS
+Original Vid texture mode 7: PASS
+Original Vid destination-color blend: PASS
+Original Vid additive blend: PASS
+Original Vid Z test/write: PASS
+Original Vid texture address 0: PASS
+Original Vid texture address 1: PASS
+Original Vid texture address 2: PASS
+Original bucket merge/rebase to GLES: PASS
+Original translucent triangle sort/blend: PASS
+Original translucent bucket tag sort/blend: PASS
+Original additive fog suppression: PASS
+Original additive fog color restoration: PASS
+8-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+16-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+24-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+32-bit TGA -> original CopyLine -> bucket -> GLES: PASS
+PIC alpha -> original CopyLine -> bucket -> GLES: PASS
+8-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+16-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+24-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+32-bit BMP -> original CopyLine -> bucket -> GLES: PASS
+Original bitmap manager fallback/cache to GLES: PASS
+Original bitmap manager numbered animation to GLES: PASS
+Original bitmap manager BMP fallback to GLES: PASS
+Original bitmap manager release/restore to GLES: PASS
+Original bitmap manager context invalidation/replay: PASS
+Original font atlas alpha/half-texel pixels and context replay: PASS
+Original font tint and alpha scale: PASS
+Original font shadow order/opacity: PASS
+Original font right-clip early return: PASS
+Original font multi-atlas texture switch: PASS
+Original font configuration/alias/reload to GLES: PASS
+Original interface metrics/font reference/shadow to GLES: PASS
+Original UI rectangle to GLES: PASS
+Original UI alpha scaling to GLES: PASS
+Original UI tiled texture to GLES: PASS
+Original UI gradient direction to GLES: PASS
+Original UI ordered geometry/font GLES presenter and frame recovery: PASS

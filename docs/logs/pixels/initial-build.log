@@ -1,0 +1,8 @@
+[ 37%] Built target dr2_primitives
+[ 50%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 62%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 75%] Linking CXX static library libdr2_bitmap_pixels.a
+[ 75%] Built target dr2_bitmap_pixels
+[ 87%] Building CXX object CMakeFiles/bitmap_pixels_smoke.dir/tests/bitmap_pixels_smoke.cpp.o
+[100%] Linking CXX executable bitmap_pixels_smoke
+[100%] Built target bitmap_pixels_smoke

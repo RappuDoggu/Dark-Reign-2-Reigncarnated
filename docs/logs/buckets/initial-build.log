@@ -1,0 +1,76 @@
+[ 10%] Building CXX object CMakeFiles/reign_vid_device.dir/src/vid_device.cpp.o
+[ 20%] Linking CXX static library libreign_vid_device.a
+[ 20%] Built target reign_vid_device
+[ 30%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 40%] Linking CXX static library libdr2_vid_state.a
+[ 40%] Built target dr2_vid_state
+[ 50%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/primitive.cpp.o
+/tmp/reign-upstream-bucket-overlay/primitive.cpp: In member function ‘void PrimitiveDesc::ClearTextures()’:
+/tmp/reign-upstream-bucket-overlay/primitive.cpp:140:32: warning: passing NULL to non-pointer argument 2 of ‘void* memset(void*, int, size_t)’ [-Wconversion-null]
+  140 |         memset( textureStages, NULL, sizeof(TextureStage) * MAX_TEXTURE_STAGES);
+      |                                ^~~~
+In file included from /usr/include/c++/13/cstring:42,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/bucket_prelude.hpp:6,
+                 from /tmp/reign-upstream-bucket-overlay/primitive.h:12,
+                 from /tmp/reign-upstream-bucket-overlay/primitive.cpp:8:
+/usr/include/string.h:61:37: note:   declared here
+   61 | extern void *memset (void *__s, int __c, size_t __n) __THROW __nonnull ((1));
+      |                                 ~~~~^~~
+[ 60%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o
+In file included from /tmp/reign-upstream-vid-overlay/vid_slice.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/bucket_prelude.hpp:2,
+                 from /tmp/reign-upstream-bucket-overlay/bucket.h:1,
+                 from /tmp/reign-upstream-bucket-overlay/bucketdesc.cpp:10:
+/tmp/reign-upstream-bucket-overlay/nlist.h: In member function ‘void NList<DATA>::Iterator::SetList(const NList<DATA>*)’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vid_prelude.hpp:16:27: error: expected ‘;’ before ‘do’
+   16 | #define ASSERT(condition) do {if(!(condition))throw std::runtime_error("Original Vid assertion: " #condition);}while(false)
+      |                           ^~
+/tmp/reign-upstream-bucket-overlay/nlist.h:182:7: note: in expansion of macro ‘ASSERT’
+  182 |       ASSERT(_list->haveMember)
+      |       ^~~~~~
+In file included from /tmp/reign-upstream-bucket-overlay/bucket.h:13:
+/tmp/reign-upstream-bucket-overlay/nlist.h:183:7: error: expected ‘;’ before ‘list’
+  183 |       list = _list;
+      |       ^~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h: In member function ‘void NList<DATA>::Iterator::GoToHead()’:
+/tmp/reign-upstream-bucket-overlay/nlist.h:242:7: error: expected ‘;’ before ‘current’
+  242 |       current = list->head;
+      |       ^~~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h: In member function ‘void NList<DATA>::Iterator::GoToTail()’:
+/tmp/reign-upstream-bucket-overlay/nlist.h:255:7: error: expected ‘;’ before ‘current’
+  255 |       current = list->tail;
+      |       ^~~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h: In member function ‘Bool NList<DATA>::Iterator::IsHead()’:
+/tmp/reign-upstream-bucket-overlay/nlist.h:279:7: error: expected ‘;’ before ‘return’
+  279 |       return ((current == list->head) ? TRUE : FALSE);
+      |       ^~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h: In member function ‘Bool NList<DATA>::Iterator::IsTail()’:
+/tmp/reign-upstream-bucket-overlay/nlist.h:291:7: error: expected ‘;’ before ‘return’
+  291 |       return ((current == list->tail) ? TRUE : FALSE);
+      |       ^~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h: In member function ‘DATA* NList<DATA>::GetNext(DATA*) const’:
+/tmp/reign-upstream-bucket-overlay/nlist.h:554:5: error: expected ‘;’ before ‘Node’
+  554 |     Node *next = node->GetNext();
+      |     ^~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h: In member function ‘DATA* NList<DATA>::GetPrev(DATA*) const’:
+/tmp/reign-upstream-bucket-overlay/nlist.h:573:5: error: expected ‘;’ before ‘Node’
+  573 |     Node *prev = node->GetPrev();
+      |     ^~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h: In instantiation of ‘NList<DATA>::~NList() [with DATA = Bucket]’:
+/tmp/reign-upstream-bucket-overlay/bucket.h:61:3:   required from here
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vid_prelude.hpp:36:25: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   36 | #define ERR_FATAL(args) throw std::runtime_error("Invalid original Vid texture blend flags")
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h:444:7: note: in expansion of macro ‘ERR_FATAL’
+  444 |       ERR_FATAL(("NList was NOT empty when destroyed - MUST call UnlinkAll or DisposeAll!"));
+      |       ^~~~~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vid_prelude.hpp:36:25: note: in C++11 destructors default to ‘noexcept’
+   36 | #define ERR_FATAL(args) throw std::runtime_error("Invalid original Vid texture blend flags")
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-bucket-overlay/nlist.h:444:7: note: in expansion of macro ‘ERR_FATAL’
+  444 |       ERR_FATAL(("NList was NOT empty when destroyed - MUST call UnlinkAll or DisposeAll!"));
+      |       ^~~~~~~~~
+gmake[3]: *** [CMakeFiles/dr2_buckets.dir/build.make:93: CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/Makefile2:1200: CMakeFiles/dr2_buckets.dir/all] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:1241: CMakeFiles/bucket_smoke.dir/rule] Error 2
+gmake: *** [Makefile:563: bucket_smoke] Error 2

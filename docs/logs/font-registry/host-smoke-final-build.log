@@ -1,0 +1,26 @@
+[ 10%] Built target dr2_primitives
+[ 13%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 37%] Built target reign_platform
+[ 41%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 44%] Linking CXX static library libdr2_tokenizer.a
+[ 44%] Built target dr2_tokenizer
+[ 51%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 51%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 55%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 58%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 62%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 65%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 68%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 72%] Linking CXX static library libdr2_config.a
+[ 72%] Built target dr2_config
+[ 79%] Building CXX object CMakeFiles/dr2_fonts.dir/src/native_font.cpp.o
+[ 79%] Building CXX object CMakeFiles/dr2_fonts.dir/tmp/reign-upstream-font-overlay/font_slice.cpp.o
+[ 82%] Linking CXX static library libdr2_fonts.a
+[ 82%] Built target dr2_fonts
+[ 86%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/font_registry.cpp.o
+[ 89%] Building CXX object CMakeFiles/dr2_font_registry.dir/tmp/reign-upstream-font-registry-overlay/registry_slice.cpp.o
+[ 93%] Linking CXX static library libdr2_font_registry.a
+[ 93%] Built target dr2_font_registry
+[ 96%] Building CXX object CMakeFiles/font_registry_smoke.dir/tests/font_registry_smoke.cpp.o
+[100%] Linking CXX executable font_registry_smoke
+[100%] Built target font_registry_smoke

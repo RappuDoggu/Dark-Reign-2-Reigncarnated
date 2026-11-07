@@ -1,0 +1,6 @@
+GitHub Actions run 40121491459, Android job 120953818849
+Original ARM64 compilation/package verification: PASS.
+Host test job 120953819046: PASS.
+New software GLES test failed before compilation at CMake configuration:
+Could not find REIGN_EGL_LIBRARY using the following names: EGL, libEGL.so.1
+Fix: explicitly install libegl1, libegl-mesa0 and libgl1-mesa-dri on the runner.

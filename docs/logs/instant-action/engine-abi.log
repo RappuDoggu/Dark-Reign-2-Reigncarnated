@@ -1,0 +1,4 @@
+Original global definitions: packed data, intrusive pointers and 32-bit RNG: PASS
+Original unmodified header negative control: rejected by static ABI assertions (expected).
+build-engine-android/engine_abi_smoke: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /system/bin/linker64, BuildID[sha1]=e39501ff6454e9b6ab70e48bdb91f25955e3752a, with debug_info, not stripped
+Android execution: NOT run (no connected device).

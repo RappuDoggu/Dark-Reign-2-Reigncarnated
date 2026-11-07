@@ -1,0 +1,7 @@
+3/3 complete source units compiled; not linked or executed.
+7/7 complete source units compiled; not linked or executed.
+Attempt to set host data by non-host
+Attempt to clear host data by non-host
+Attempt to clear host data by non-host
+Original session data: host protection, aliased updates, serialization, local store and CRC round-trip pass; offline identity, readiness, local messages and runtime variables; no mission executed.
+Link exit 0; 0 reported unresolved symbols; 0 other errors; no mission executed.

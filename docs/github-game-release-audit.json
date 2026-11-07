@@ -1,0 +1,63 @@
+{
+  "checked_at_utc": "2026-11-04T02:48:57.366062+00:00",
+  "recovery_source_revision": "3b6db23883bacb26a6ea99ad5a8c6abbffb84ca8",
+  "release_page": "https://github.com/grasmanek94/darkreign2/releases/tag/game",
+  "archives": [
+    {
+      "url": "https://github.com/grasmanek94/darkreign2/releases/download/game/microDR2.zip",
+      "bytes": 30700248,
+      "sha256": "7c0efbb5f2c5630631e148f8150714be3d3679f0fbebfa60f27bd2feda65d109",
+      "zip_crc_passed": true
+    },
+    {
+      "url": "https://github.com/grasmanek94/darkreign2/releases/download/game/R4SOURCE.zip",
+      "bytes": 17973308,
+      "sha256": "e65c085e30c4918c0e9d860d527480d59e72d16e50032bbd230f52b79588c116",
+      "zip_crc_passed": true
+    }
+  ],
+  "extractor": {
+    "repository": "https://github.com/jamescarruthers/uharc-rs",
+    "revision": "34a88f0d84b1b2d6e7263c7e8b446cfd4eaec8a9",
+    "method": "Built from dependency-free Rust source; UHA decoded without executing Windows binary",
+    "all_extracted_file_crcs_passed": true
+  },
+  "microdr2": {
+    "files": 37,
+    "bytes": 82774572,
+    "packs": 15,
+    "music_files": [],
+    "campaign_files": 0,
+    "multiplayer_maps": [
+      "missions/multiplayer/2 Rush.zwp"
+    ],
+    "pack_comparison": {
+      "missions/system/shell.zwp": {
+        "github_bytes": 1064019,
+        "github_sha256": "335c0b478e9f42e81c45fe12971fcededb24cf66079c76d1df17389c4f000c38",
+        "tested_installation_bytes": 17129341,
+        "matches_tested_installation": false
+      },
+      "packs/base.zwp": {
+        "github_bytes": 48900501,
+        "github_sha256": "d9ba5dd757467e9c0f03a07bddf95cd4ca64fcde4afd6920a09735f7664b755a",
+        "tested_installation_bytes": 99711663,
+        "matches_tested_installation": false
+      },
+      "worlds/sprawl.zwp": {
+        "github_bytes": 2547755,
+        "github_sha256": "06a204042c738203289cd67e7c99d1e75a6da22385e5961e758dbf3d9622d918",
+        "tested_installation_bytes": 2547755,
+        "matches_tested_installation": true
+      }
+    },
+    "host_apk_importer_result": {
+      "scene_packs": 3,
+      "tracks": 0
+    },
+    "complete_bundle_guard": "Rejected: No music is available. Import your music ZIP first, then export again.",
+    "complete_bundle_written": false
+  },
+  "result": "Insufficient to reproduce the complete tested game installation; no complete game-data ZIP delivered",
+  "game_data_committed": false
+}

@@ -1,0 +1,236 @@
+{
+  "commit": "aa5fd803bbac64f7fd33c89cee6b5d3fb85dd83b",
+  "run_id": 40215613098,
+  "jobs": [
+    {
+      "id": 121235976162,
+      "name": "host",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40215613098,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Fetch reviewed upstream separately",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Compile and test original primitives and platform services",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Record original frontend compilation boundary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    },
+    {
+      "id": 121235976361,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40215613098,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Fetch reviewed upstream separately",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Install pinned NDK and SDK tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Compile ARM64 and verify local diagnostic package",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Install software EGL runtime for pixel tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Test initial GLES translation on software EGL",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Build original-only renderer test APK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "No live control construction or menu runtime tested",
+    "ARM64 compiled, not executed on device"
+  ],
+  "host_lines": [
+    "2026-10-25T17:16:41.5158514Z [ 37%] Building CXX object CMakeFiles/dr2_iface_events.dir/home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_factory.cpp.o",
+    "2026-10-25T17:16:41.5169342Z /usr/bin/c++ -DDEVELOPMENT=1 -I/home/runner/work/Dark-Reign-2-Reigncarnated/Dark-Reign-2-Reigncarnated/include -I/home/runner/work/_temp/dr2-upstream-iface-events-overlay -I/home/runner/work/_temp/dr2-upstream-frontend-overlay -I/home/runner/work/_temp/dr2-upstream-control-overlay -I/home/runner/work/_temp/dr2-upstream-runtime-overlay -I/home/runner/work/_temp/dr2-upstream-config-overlay -I/home/runner/work/_temp/dr2-upstream/interface -I/home/runner/work/_temp/dr2-upstream/graphics -I/home/runner/work/_temp/dr2-upstream/util -I/home/runner/work/_temp/dr2-upstream/system -std=c++17 -fPIC -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -ffunction-sections -fdata-sections -MD -MT CMakeFiles/dr2_iface_events.dir/home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_factory.cpp.o -MF CMakeFiles/dr2_iface_events.dir/home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_factory.cpp.o.d -o CMakeFiles/dr2_iface_events.dir/home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_factory.cpp.o -c /home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_factory.cpp",
+    "2026-10-25T17:16:43.1341830Z /usr/bin/ar qc libdr2_iface_events.a \"CMakeFiles/dr2_iface_events.dir/home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_events.cpp.o\" \"CMakeFiles/dr2_iface_events.dir/home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_factory.cpp.o\" CMakeFiles/dr2_iface_events.dir/src/interface_events.cpp.o",
+    "2026-10-25T17:16:50.6453617Z [ 44%] Built target interface_registry_smoke",
+    "2026-10-25T17:17:22.6380657Z 10: Original IFace registry, template ownership and isolation: PASS (38 checks)",
+    "2026-10-25T17:17:23.1963975Z 100% tests passed, 0 tests failed out of 31"
+  ],
+  "android_lines": [
+    "2026-10-25T17:17:06.1744939Z [ 91%] Building CXX object CMakeFiles/dr2_iface_events.dir/home/runner/work/_temp/dr2-upstream-iface-events-overlay/iface_factory.cpp.o",
+    "2026-10-25T17:17:09.8655780Z [ 99%] Built target interface_registry_smoke",
+    "2026-10-25T17:17:43.5845145Z 30: GLES3 legacy-TL pixel checks: PASS",
+    "2026-10-25T17:17:43.5859552Z 30: GLES3 legacy-TL pixel checks: PASS",
+    "2026-10-25T17:17:43.7749329Z 100% tests passed, 0 tests failed out of 1"
+  ],
+  "artifacts": [
+    {
+      "id": 12607830428,
+      "name": "host-compilation-and-test-logs",
+      "size_in_bytes": 19058,
+      "url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607830428",
+      "archive_download_url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607830428/zip",
+      "expired": false,
+      "created_at": "2026-10-25T17:17:25Z",
+      "expires_at": "2027-01-23T17:15:50Z",
+      "updated_at": "2026-10-25T17:17:25Z",
+      "digest": "sha256:fbca018905898f1d36c1bee2dcafd02b210dbd828bb76fb7fa64a6217784e2ba",
+      "workflow_run": {
+        "id": 40215613098,
+        "repository_id": 1432322948,
+        "head_repository_id": 1432322948,
+        "head_branch": "dev/native-arm64-primitives",
+        "head_sha": "aa5fd803bbac64f7fd33c89cee6b5d3fb85dd83b"
+      }
+    },
+    {
+      "id": 12607351826,
+      "name": "Reigncarnated-Renderer-Test-v04-arm64",
+      "size_in_bytes": 741862,
+      "url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607351826",
+      "archive_download_url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607351826/zip",
+      "expired": false,
+      "created_at": "2026-10-25T17:17:52Z",
+      "expires_at": "2027-01-23T17:15:50Z",
+      "updated_at": "2026-10-25T17:17:52Z",
+      "digest": "sha256:88b86c8dd96cdf3e80c105c7ca09f0be3a795fe1e58c3b749b1b05b8ecc9cee9",
+      "workflow_run": {
+        "id": 40215613098,
+        "repository_id": 1432322948,
+        "head_repository_id": 1432322948,
+        "head_branch": "dev/native-arm64-primitives",
+        "head_sha": "aa5fd803bbac64f7fd33c89cee6b5d3fb85dd83b"
+      }
+    },
+    {
+      "id": 12607226974,
+      "name": "android-compilation-and-package-logs",
+      "size_in_bytes": 10435,
+      "url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607226974",
+      "archive_download_url": "https://api.github.com/repos/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/artifacts/12607226974/zip",
+      "expired": false,
+      "created_at": "2026-10-25T17:17:53Z",
+      "expires_at": "2027-01-23T17:15:50Z",
+      "updated_at": "2026-10-25T17:17:53Z",
+      "digest": "sha256:479a57620b558f504be03848282ad7f2bc94e58baa28525271503c8dcef6737a",
+      "workflow_run": {
+        "id": 40215613098,
+        "repository_id": 1432322948,
+        "head_repository_id": 1432322948,
+        "head_branch": "dev/native-arm64-primitives",
+        "head_sha": "aa5fd803bbac64f7fd33c89cee6b5d3fb85dd83b"
+      }
+    }
+  ]
+}

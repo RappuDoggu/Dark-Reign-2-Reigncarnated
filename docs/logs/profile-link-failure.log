@@ -1,0 +1,30 @@
+[ 99%] Building CXX object CMakeFiles/dr2_user_profiles.dir/tmp/reign-upstream-user-overlay/game_login.cpp.o
+/usr/bin/ld: CMakeFiles/campaign_catalog_probe.dir/tools/campaign_catalog_probe.cpp.o: in function `main':
+campaign_catalog_probe.cpp:(.text+0x651): undefined reference to `reign::MissionCatalog::MissionCatalog(std::filesystem::__cxx11::path const&, std::function<std::vector<unsigned char, std::allocator<unsigned char> > (std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)>)'
+/usr/bin/ld: campaign_catalog_probe.cpp:(.text+0xdf4): undefined reference to `reign::MissionCatalog::~MissionCatalog()'
+/usr/bin/ld: campaign_catalog_probe.cpp:(.text+0xfd2): undefined reference to `reign::MissionCatalog::~MissionCatalog()'
+/usr/bin/ld: libdr2_campaign_catalog.a(mission_catalog_slice.cpp.o): in function `Missions::Group::LoadConfig()':
+mission_catalog_slice.cpp:(.text+0x1247): undefined reference to `reign::mission_fs::Dir::PathMake(StrBuf<270u, char>&, char const*, char const*)'
+/usr/bin/ld: libdr2_campaign_catalog.a(mission_catalog_slice.cpp.o): in function `Missions::Group::Generate()':
+mission_catalog_slice.cpp:(.text+0x187b): undefined reference to `reign::mission_fs::Dir::FindFirst(reign::mission_fs::Dir::Find&, char const*, char const*, unsigned int)'
+/usr/bin/ld: mission_catalog_slice.cpp:(.text+0x1b39): undefined reference to `reign::mission_fs::Dir::FindNext(reign::mission_fs::Dir::Find&)'
+/usr/bin/ld: mission_catalog_slice.cpp:(.text+0x1b51): undefined reference to `reign::mission_fs::Dir::FindClose(reign::mission_fs::Dir::Find&)'
+/usr/bin/ld: libdr2_campaign_catalog.a(mission_catalog_slice.cpp.o): in function `Missions::RegisterGroup(char const*)':
+mission_catalog_slice.cpp:(.text+0x20fa): undefined reference to `reign::mission_fs::File::Exists(char const*)'
+/usr/bin/ld: libdr2_campaign_catalog.a(mission_catalog_slice.cpp.o): in function `Missions::RegisterGroups(char const*)':
+mission_catalog_slice.cpp:(.text+0x2375): undefined reference to `reign::mission_fs::Dir::FindFirst(reign::mission_fs::Dir::Find&, char const*, char const*, unsigned int)'
+/usr/bin/ld: mission_catalog_slice.cpp:(.text+0x241f): undefined reference to `reign::mission_fs::Dir::PathMake(StrBuf<270u, char>&, char const*, char const*)'
+/usr/bin/ld: mission_catalog_slice.cpp:(.text+0x2457): undefined reference to `reign::mission_fs::Dir::FindNext(reign::mission_fs::Dir::Find&)'
+/usr/bin/ld: mission_catalog_slice.cpp:(.text+0x246f): undefined reference to `reign::mission_fs::Dir::FindClose(reign::mission_fs::Dir::Find&)'
+/usr/bin/ld: libdr2_campaign_catalog.a(mission_catalog_slice.cpp.o): in function `Missions::SetupWritePath(Missions::Mission const*)':
+mission_catalog_slice.cpp:(.text+0x2a04): undefined reference to `reign::mission_fs::Dir::PathMake(StrBuf<270u, char>&, char const*, char const*, char const*, char const*)'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/campaign_catalog_probe.dir/build.make:132: campaign_catalog_probe] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:4886: CMakeFiles/campaign_catalog_probe.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[ 99%] Linking CXX static library libdr2_user_profiles.a
+[ 99%] Built target dr2_user_profiles
+[ 99%] Linking CXX static library libdr2_campaign_selection.a
+[ 99%] Built target dr2_campaign_selection
+gmake: *** [Makefile:101: all] Error 2
+Zero-byte generated mission_catalog.cpp.o observed; removed and rebuilt successfully.

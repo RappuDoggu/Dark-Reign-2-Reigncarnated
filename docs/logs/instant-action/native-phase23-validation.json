@@ -1,0 +1,44 @@
+{
+  "files": {
+    "Reigncarnated-Instant-Action-v06-Candidate.apk": {
+      "bytes": 43602860,
+      "sha256": "6847dceea80b58d6f11c75a95a73c9cad96bf3561edff4054a4ce8e742cc5774"
+    },
+    "Reigncarnated-Instant-Action-Data-v06.zip": {
+      "bytes": 118846872,
+      "sha256": "0123a7ee25cf8eaef38524693a92a80d6804f18f37dccdfe03b6dbbe088ee46b"
+    },
+    "libreign_mission.so": {
+      "bytes": 8287400,
+      "sha256": "b603ee1a2319ba0c10a5bf53dda4cdda634e8348c22cc77d0ad0bb1cf8bd4e5d"
+    }
+  },
+  "native_linked": true,
+  "unresolved_symbols": 0,
+  "elf_load_alignment": "0x4000 (16 KiB)",
+  "exported_jni_methods": 7,
+  "requires_libcxx_shared": false,
+  "sdk_platform_sha256": "0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0",
+  "sdk_build_tools_sha256": "bd3a4966912eb8b30ed0d00b0cda6b6543b949d5ffe00bea54c04c81e1561d88",
+  "host_tests": {
+    "real_gles_affine_perspective_pixels": "pass across two contexts",
+    "imported_library_and_mission_paths": "pass",
+    "two_application_lifecycles": "pass",
+    "existing_profile_login": "pass",
+    "duplicate_instance_refusal": "pass",
+    "pause_resume_and_key_release": "pass",
+    "pointer_unit_selection": "pass",
+    "contextual_move_displacement_xz": [
+      15.9999,
+      15.9999
+    ]
+  },
+  "android_executed": false,
+  "limitations": [
+    "Single human team; no AI opponents",
+    "Existing v05 menu binary retained unchanged; Instant Action uses a test button and separate mission Activity",
+    "Incomplete configuration/option bindings still emit handled console exceptions",
+    "No Android emulator or physical-device launch validation",
+    "Not all original host objects are sanitizer-instrumented; Mesa tests disable leak detection"
+  ]
+}

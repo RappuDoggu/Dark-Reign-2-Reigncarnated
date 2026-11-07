@@ -1,0 +1,5 @@
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+Double-tap-only clicks, single-finger aiming, two-finger pan without zoom/rotation, three-finger building steps, pointer changes and cancellation PASS (31 checks)

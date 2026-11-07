@@ -1,0 +1,9 @@
+{
+  "compiled": 189,
+  "total": 205,
+  "linked": false,
+  "mission_booted": false,
+  "host_tests_passed": 5,
+  "arm64_foundation_linked": true,
+  "device_executed": false
+}

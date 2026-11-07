@@ -1,0 +1,40 @@
+In file included from /workspace/scratch/71fe0796f7e3/recovery/darkreign2-9ce9da5-frontend-configuration-overlay/frontend_configuration_slice.hpp:2:
+In file included from /workspace/scratch/71fe0796f7e3/recovery/darkreign2-9ce9da5-iface-events-overlay/iface_events.hpp:8:
+/workspace/scratch/71fe0796f7e3/recovery/darkreign2-9ce9da5-frontend-overlay/control_stdload.hpp:65:69: warning: instantiation of variable 'Range<unsigned int>::full' required here, but no definition is available [-Wundefined-var-template]
+   65 |   U32 TypeU32(FScope *fScope, const Range<U32> &range = Range<U32>::full);
+      |                                                                     ^
+/workspace/scratch/71fe0796f7e3/recovery/darkreign2-9ce9da5-frontend-overlay/control_stdload.hpp:43:28: note: forward declaration of template entity is here
+   43 |   static const Range<TYPE> full;
+      |                            ^
+/workspace/scratch/71fe0796f7e3/recovery/darkreign2-9ce9da5-frontend-overlay/control_stdload.hpp:65:69: note: add an explicit instantiation declaration to suppress this warning if 'Range<unsigned int>::full' is explicitly instantiated in another translation unit
+   65 |   U32 TypeU32(FScope *fScope, const Range<U32> &range = Range<U32>::full);
+      |                                                                     ^
+1 warning generated.
+[ 98%] Linking CXX static library libreign_menu_frontend.a
+[ 98%] Built target reign_menu_frontend
+[100%] Linking CXX shared library libreign_menu.so
+[100%] Built target reign_menu
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+package: name='org.reigncarnated.menu.v02' versionCode='3' versionName='0.3-folder' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+minSdkVersion:'26'
+targetSdkVersion:'35'
+application: label='Reigncarnated v0.3' icon=''
+launchable-activity: name='org.reigncarnated.menu.MenuActivity'  label='' icon=''
+feature-group: label=''
+  uses-gl-es: '0x30000'
+  uses-feature: name='android.hardware.faketouch'
+  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'
+main
+supports-screens: 'small' 'normal' 'large' 'xlarge'
+supports-any-density: 'true'
+locales:
+densities:
+native-code: 'arm64-v8a'
+APK ZIP structure and entry checksums: PASS

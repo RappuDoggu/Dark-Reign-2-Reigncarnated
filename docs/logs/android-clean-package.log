@@ -1,0 +1,137 @@
+CMake Warning (deprecated) at /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeDetermineSystem.cmake:152 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/android.toolchain.cmake:55 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeDetermineSystem.cmake:152 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /tmp/reign-clean-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+-- The CXX compiler identification is Clang 18.0.3
+CMake Warning (deprecated) at /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/flags.cmake:18 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang.cmake:23 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeCXXInformation.cmake:48 (include)
+  CMakeLists.txt:2 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+-- Detecting CXX compiler ABI info
+CMake Warning (deprecated) at /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /tmp/reign-clean-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  /tmp/reign-clean-android/CMakeFiles/CMakeScratch/TryCompile-7sMJ0d/CMakeLists.txt:3 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/android.toolchain.cmake:55 (include)
+  /tmp/reign-clean-android/CMakeFiles/4.4.4/CMakeSystem.cmake:6 (include)
+  /tmp/reign-clean-android/CMakeFiles/CMakeScratch/TryCompile-7sMJ0d/CMakeLists.txt:3 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at /tmp/reign-sdk-verified/ndk/27.2.12479018/build/cmake/flags.cmake:18 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+Call Stack (most recent call first):
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang.cmake:23 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+  /root/.local/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeCXXInformation.cmake:48 (include)
+  /tmp/reign-clean-android/CMakeFiles/CMakeScratch/TryCompile-7sMJ0d/CMakeLists.txt:3 (project)
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /tmp/reign-sdk-verified/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /tmp/reign-clean-android
+[  7%] Building CXX object CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/crc.cpp.o
+[ 15%] Building CXX object CMakeFiles/reign_platform.dir/src/platform.cpp.o
+[ 23%] Building CXX object CMakeFiles/dr2_primitives.dir/tmp/reign-upstream/system/random.cpp.o
+[ 30%] Linking CXX static library libdr2_primitives.a
+[ 30%] Built target dr2_primitives
+[ 38%] Building CXX object CMakeFiles/reign_checks.dir/tests/engine_checks.cpp.o
+[ 46%] Linking CXX static library libreign_checks.a
+[ 46%] Built target reign_checks
+[ 53%] Building CXX object CMakeFiles/engine_smoke.dir/tests/engine_main.cpp.o
+[ 61%] Linking CXX executable engine_smoke
+[ 61%] Built target engine_smoke
+[ 69%] Linking CXX static library libreign_platform.a
+[ 69%] Built target reign_platform
+[ 76%] Building CXX object CMakeFiles/reign_diagnostic.dir/android/native_activity.cpp.o
+[ 84%] Building CXX object CMakeFiles/platform_smoke.dir/tests/platform_smoke.cpp.o
+[ 92%] Linking CXX executable platform_smoke
+[100%] Linking CXX shared library libreign_diagnostic.so
+[100%] Built target reign_diagnostic
+[100%] Built target platform_smoke
+Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 3,650 days
+	for: CN=Reigncarnated Development
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+LOCAL DIAGNOSTIC ONLY: /tmp/reign-clean-android/reigncarnated-diagnostic.apk
+Contains original upstream primitives. Do not redistribute until rights are resolved.

@@ -1,0 +1,2 @@
+DataFile: open files [0]
+Original heap/buckets, mesh/light managers, owned light textures, GLES draw and cleanup passed twice; no mission executed

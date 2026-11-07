@@ -1,0 +1,65 @@
+{
+  "mission": {
+    "fast": [
+      "native wall time: n=241 mean=7.632 p95=8.612 max=10.443 ms",
+      "callback interval: n=240 mean=8.321 p95=9.357 max=15.016 ms",
+      "Capture readbacks occur after measured native work; callback intervals include those stalls. Not GPU elapsed time.",
+      "Mission 120.0 FPS | Native 7.6 ms (max 9.2)",
+      "85 draws/frame | 6 uploads/s (0.37 MiB/s)",
+      "Engine 1.7 ms | present submit 5.9 ms",
+      "Geometry upload 0.066919 ms | Draw submit 0.232311 ms",
+      "0.122049 MiB geometry/frame | 1.000000 stream renewals/frame"
+    ],
+    "synchronized": [
+      "native wall time: n=31 mean=63.236 p95=78.785 max=79.303 ms",
+      "callback interval: n=30 mean=64.595 p95=79.422 max=80.657 ms",
+      "Capture readbacks occur after measured native work; callback intervals include those stalls. Not GPU elapsed time.",
+      "Mission 15.1 FPS | Native 64.9 ms (max 75.7)",
+      "102 draws/frame | 1 uploads/s (0.06 MiB/s)",
+      "Engine 64.7 ms | present submit 0.2 ms",
+      "Geometry upload 60.565547 ms | Draw submit 1.225645 ms",
+      "0.134107 MiB geometry/frame | 1.000000 stream renewals/frame"
+    ],
+    "rollover_tests_fast_then_synchronized": [
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "source_revision": "2a3098a189d5b9271e0f865c2720848f00b792ce"
+  },
+  "menu": {
+    "fast": [
+      "native wall time: n=241 mean=7.875 p95=8.420 max=10.694 ms",
+      "callback interval: n=240 mean=8.330 p95=8.842 max=15.586 ms",
+      "Capture readbacks occur after measured native work; callback intervals include those stalls. Not GPU elapsed time.",
+      "Menu 120.0 FPS | Native 7.9 ms (max 9.0)",
+      "294 draws/frame | 10 uploads/s",
+      "Geometry upload 0.219 ms | Draw submit 0.325 ms",
+      "2.11 MiB geometry/frame | 1 stream renewals/frame",
+      "Particles 0.326 ms | Present 2.98 ms | Scene 4.6 ms | Sky 0.143 ms | Splats 0.0116 ms | "
+    ],
+    "synchronized": [
+      "native wall time: n=14 mean=149.666 p95=167.050 max=167.050 ms",
+      "callback interval: n=13 mean=151.102 p95=167.827 max=167.827 ms",
+      "Capture readbacks occur after measured native work; callback intervals include those stalls. Not GPU elapsed time.",
+      "Menu 6.6 FPS | Native 150.3 ms (max 167.1)",
+      "295 draws/frame | 6.57 uploads/s",
+      "Geometry upload 137 ms | Draw submit 3.44 ms",
+      "2.11 MiB geometry/frame | 1 stream renewals/frame",
+      "Particles 13.7 ms | Present 0.201 ms | Scene 137 ms | Sky 1.78 ms | Splats 0.529 ms | "
+    ],
+    "rollover_tests_fast_then_synchronized": [
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "source_revision": "2a3098a189d5b9271e0f865c2720848f00b792ce"
+  },
+  "nested_mission_sha256": "a883ff09c49b3235554f3edbbbfd70858d620c00d1ea3b50c7ea512aba0b595d"
+}

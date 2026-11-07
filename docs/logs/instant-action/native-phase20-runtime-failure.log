@@ -1,0 +1,49 @@
+In file included from /workspace/scratch/71fe0796f7e3/upstream-native/interface/fontsys.h:19,
+                 from /workspace/scratch/71fe0796f7e3/repo/tests/engine_mission_boot_test.cpp:5:
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/workspace/scratch/71fe0796f7e3/upstream-native/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+Sound::Init()
+ - Completed
+Entering IFace::Init
+Entering Game::Init
+Found 60 missions in 9 groups
+Entering Game::PreOpenMission 2crazed
+PreOpenMission: [missions\multiplayer][2crazed]
+PreOpenMission: Team::Init
+PreOpenMission: Environment::Init
+PreOpenMission: MoveTable::Init
+PreOpenMission: SidePlacement::Init
+PreOpenMission: UnitLimits::Init
+PreOpenMission: TerrainGroup::Init
+PreOpenMission: AI::Init
+PreOpenMission: TaskCtrl::Init
+PreOpenMission: Config::Init
+PreOpenMission: MissionVar::Init
+Sound::Done()
+DTrack 'Sound' still had 1/1 registered items at shutdown
+ - Completed
+DataFile: open files [0]
+VarItem 'player' (scope) not being deleted
+VarItem 'environment' (scope) not being deleted
+VarItem 'quake' (scope) not being deleted
+VarItem 'common' (scope) not being deleted
+VarItem 'iface' (scope) not being deleted
+VarItem 'rain' (scope) not being deleted
+VarItem 'ai' (scope) not being deleted
+VarItem 'team' (scope) not being deleted
+VarItem 'gamegod' (scope) not being deleted
+DTrack 'Misc' still had 2/2 registered items at shutdown
+Engine assertion: initialized
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  Tree was NOT empty when destroyed - MUST call UnlinkAll or DisposeAll!
+Traceback (most recent call last):
+  File "/workspace/scratch/71fe0796f7e3/repo/tools/test_engine_vid.py", line 41, in <module>
+    subprocess.run([str(binary.resolve())]+a.test_arg,check=True)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/workspace/scratch/71fe0796f7e3/build-mission-runtime-test/engine_mission_boot_test', '/workspace/scratch/71fe0796f7e3/owned-installation/Dark Reign 2/packs/base.zwp']' died with <Signals.SIGABRT: 6>.
+3/3 complete source units compiled; not linked or executed.

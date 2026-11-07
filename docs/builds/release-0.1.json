@@ -1,0 +1,81 @@
+{
+  "source_revision": "2d4ea66bcb24daa44871e993c5c3e57c2b658d0e",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "76f44496b04c57677f3c738c466cbbc951b2a351ef7ab40383216d12a53aa87c",
+    "libreign_menu.so": "ea96b716ba320e0db91b67350343aa99d6b4fb796522aed79972b4fc33a50dc8"
+  },
+  "recovery_identity": false,
+  "version_name": "0.1",
+  "version_code": 32,
+  "apk_bytes": 9549153,
+  "apk_sha256": "a3eab898981301def987ab5a9fe736ca2162560e79673520b0a5cac119ccfd97",
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "elf": {
+    "libreign_menu.so": {
+      "sha256": "ea96b716ba320e0db91b67350343aa99d6b4fb796522aed79972b4fc33a50dc8",
+      "build_id": "96787b57b5ad7bcacc2fe21c739a25ed58cdd8c5"
+    },
+    "libreign_mission.so": {
+      "sha256": "76f44496b04c57677f3c738c466cbbc951b2a351ef7ab40383216d12a53aa87c",
+      "build_id": "ab034860b870396d186a959ccee79bc424eef19a"
+    }
+  },
+  "verification": {
+    "signature": true,
+    "zip_crc": true,
+    "zip_and_elf_16k": true,
+    "arm64_static_libcxx": true,
+    "embedded_source_and_documents": true,
+    "no_keys_or_game_assets": true,
+    "phone_execution_of_0_1": false
+  },
+  "source_relink": {
+    "file": "Reigncarnated-0.1-source-relink.zip",
+    "bytes": 30912974,
+    "sha256": "26ade2fb2b07852339f2912609ebef30e07fb04c1cbf243a2330f3eece181b57",
+    "hashed_members": 706,
+    "relocated_relink_exact": true,
+    "libraries": [
+      "libreign_menu.so",
+      "libreign_mission.so"
+    ],
+    "full_ffmpeg_source_sha256": "7c1ebea95d815e49c1e60c7ee816410dec73a81b8ac002b276780d2f9048e598"
+  },
+  "validation": {
+    "general_host_tests": 68,
+    "engine_foundation_tests": 13,
+    "java_checks": {
+      "folder_import": 28,
+      "zip_import": 12,
+      "music_import": 15,
+      "data_export": 26,
+      "diagnostic_sweep": 21,
+      "touch": 55,
+      "report_retention": 13,
+      "music_policy": 14,
+      "campaign_selection": 16,
+      "resource_input": 16
+    },
+    "sdk35_java_compilation": true,
+    "pinned_1791_upstream_files": true,
+    "real_engine_player_resources_ai_unchanged_twice": true,
+    "real_engine_cinematic_mesh_camera_campaign_route_twice": true,
+    "relocated_kit_manifest": true,
+    "two_library_relink_sha_match": true,
+    "text_rodata_identical_to_apk31": true,
+    "ffmpeg_gpl_nonfree_version3_disabled": true,
+    "phone_0_1_verified": false,
+    "full_campaigns_verified": false,
+    "save_restore_implemented": false,
+    "network_multiplayer_implemented": false
+  }
+}

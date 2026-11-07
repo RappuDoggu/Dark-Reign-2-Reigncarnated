@@ -1,0 +1,61 @@
+name: Attach verified 0.1 draft assets
+
+on:
+  push:
+    branches: [recovery/native-arm64-v012]
+    paths:
+      - .github/workflows/release-candidate.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reigncarnated-draft-v0.1-assets
+  cancel-in-progress: false
+
+jobs:
+  attach:
+    if: github.repository == 'RappuDoggu/Dark-Reign-2-Reigncarnated' && github.ref == 'refs/heads/recovery/native-arm64-v012'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      DELIVERY: 1b55b7cab7d571421a64fc192bac5b970563a490
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 1b55b7cab7d571421a64fc192bac5b970563a490
+          persist-credentials: false
+      - name: Verify immutable delivery and existing draft
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$DELIVERY"
+          (cd builds/v0.1 && sha256sum --check SHA256SUMS.txt)
+          gh api "repos/$GH_REPO/releases" > "$RUNNER_TEMP/releases.json"
+          python3 - <<'PY'
+          import json, os, pathlib
+          releases = json.loads((pathlib.Path(os.environ['RUNNER_TEMP'])/'releases.json').read_text())
+          matching = [r for r in releases if r['tag_name'] == 'v0.1']
+          assert len(matching) == 1, 'Expected exactly one existing v0.1 draft'
+          release = matching[0]
+          assert release['draft'] and release['prerelease'], 'Only attach to an unpublished prerelease'
+          assert release['target_commitish'] == os.environ['DELIVERY'], 'Unexpected release target'
+          receipt = json.loads(pathlib.Path('builds/v0.1/build-receipt.json').read_text())
+          assert receipt['version_name'] == '0.1' and receipt['version_code'] == 32
+          assert receipt['source_revision'] == '2d4ea66bcb24daa44871e993c5c3e57c2b658d0e'
+          print('Draft identity, source and delivery hashes verified')
+          PY
+      - name: Attach candidate without publishing
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release upload v0.1 --clobber \
+            builds/v0.1/Reigncarnated-0.1.apk \
+            builds/v0.1/Reigncarnated-0.1-source-relink.zip \
+            builds/v0.1/SHA256SUMS.txt \
+            builds/v0.1/build-receipt.json
+          gh release view v0.1 --json isDraft,isPrerelease,assets,url

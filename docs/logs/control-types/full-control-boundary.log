@@ -1,0 +1,65 @@
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream/interface/icontrol.cpp:24:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+In file included from /tmp/reign-upstream/interface/icontrol.cpp:11:
+/tmp/reign-upstream/interface/iface.h:358:9: error: ‘Pix’ does not name a type
+  358 |   const Pix * ScreenPixelFormat();
+      |         ^~~
+In file included from /tmp/reign-upstream/interface/icontrol.cpp:12:
+/tmp/reign-upstream/interface/iface_util.h:89:3: error: ‘VertexTL’ does not name a type
+   89 |   VertexTL *GetVerts(U32 count, Bitmap *texture, U32 filter, U32 clamp, U16 &vertOffset);
+      |   ^~~~~~~~
+/tmp/reign-upstream/interface/iface_util.h:107:85: error: ‘VertexTL’ has not been declared
+  107 |   void RenderTriangle(const Point<S32> *vertex, Color color, F32 alphaScale = 1.0F, VertexTL * clip = NULL);
+      |                                                                                     ^~~~~~~~
+/tmp/reign-upstream/interface/iface_util.h:110:113: error: ‘VertexTL’ has not been declared
+  110 |   void RenderRectangle(const ClipRect &rect, Color color, const TextureInfo *tex = NULL, F32 alphaScale = 1.0F, VertexTL * clip = NULL);
+      |                                                                                                                 ^~~~~~~~
+In file included from /tmp/reign-upstream/interface/icontrol.cpp:17:
+/tmp/reign-upstream/interface/input.h:30:3: error: ‘LOGEXTERN’ does not name a type
+   30 |   LOGEXTERN
+      |   ^~~~~~~~~
+/tmp/reign-upstream/interface/input.h:102:8: error: variable or field ‘Init’ declared void
+  102 |   void Init(HINSTANCE inst, HWND window);
+      |        ^~~~
+/tmp/reign-upstream/interface/input.h:102:13: error: ‘HINSTANCE’ was not declared in this scope
+  102 |   void Init(HINSTANCE inst, HWND window);
+      |             ^~~~~~~~~
+/tmp/reign-upstream/interface/input.h:102:29: error: ‘HWND’ was not declared in this scope
+  102 |   void Init(HINSTANCE inst, HWND window);
+      |                             ^~~~
+/tmp/reign-upstream/interface/input.h: In function ‘U16 Input::EventID()’:
+/tmp/reign-upstream/interface/input.h:120:13: error: ‘eventId’ was not declared in this scope; did you mean ‘EventID’?
+  120 |     return (eventId);
+      |             ^~~~~~~
+      |             EventID
+/tmp/reign-upstream/interface/font.h: At global scope:
+/tmp/reign-upstream/interface/font.h:142:3: error: ‘PathString’ does not name a type
+  142 |   PathString path;
+      |   ^~~~~~~~~~
+In file included from /tmp/reign-upstream/util/mathtypes.h:20,
+                 from /tmp/reign-upstream/util/stdload.h:20,
+                 from /tmp/reign-upstream/interface/icontrol.cpp:25:
+/tmp/reign-upstream/system/utils.h:21:8: error: redefinition of ‘struct Float2Int’
+   21 | struct Float2Int
+      |        ^~~~~~~~~
+In file included from <command-line>:
+/tmp/reign-upstream-control-overlay/control_types.hpp:4:8: note: previous definition of ‘struct Float2Int’
+    4 | struct Float2Int
+      |        ^~~~~~~~~
+/tmp/reign-upstream/system/utils.h:117:10: error: ambiguating new declaration of ‘char* Utils::Strchr(const char*, char)’
+  117 |   char * Strchr(const char *str, char c);
+      |          ^~~~~~
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:32:20: note: old declaration ‘const char* Utils::Strchr(const char*, char)’
+   32 | inline const char *Strchr(const char *s,char c) { return std::strchr(s,c); }
+      |                    ^~~~~~
+compilation terminated due to -fmax-errors=12.

@@ -1,0 +1,3 @@
+[engine] (col 16) Unexpected punctuation '='
+[engine] (col 15) Unknown command: 'unknown.command'
+Original console parsing/assignment/arguments/dispatch/unwind: PASS (21 checks)

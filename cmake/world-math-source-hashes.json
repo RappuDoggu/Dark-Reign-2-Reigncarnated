@@ -1,0 +1,8 @@
+{
+  "util/mathtypes.h": "98840b74597794ae5c23987e302b186e45685a80d16a047dab2f92c328405301",
+  "util/mathtypes.cpp": "e6ec58048c1a37e911ec67c407b781dc0ecab9d8a78383a8de84ec48ac764204",
+  "graphics/vid_math.h": "8624e692a75bca092b8f1062c56ec0aa01b02c8f60d95fdeedb6973ee7492669",
+  "graphics/vid_math.cpp": "0aafa2cb5d7ddc0ed506c3732e21073052c527c879e6d8799f3c1a98b236c401",
+  "graphics/terrain.cpp": "a0f91e2d947e7d33d4f8e24d85b6341c2c05cd136454a5e55250be36bfda0826",
+  "graphics/terrain_render_vertextl.cpp": "0ba45e577e29a7121d3c1bf2d0e1e6ffb993acd781b52454dccec0f5e5fdc1af"
+}

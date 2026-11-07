@@ -1,0 +1,7 @@
+/build*/
+/upstream/
+*.apk
+*.a
+*.so
+*.o
+__pycache__/

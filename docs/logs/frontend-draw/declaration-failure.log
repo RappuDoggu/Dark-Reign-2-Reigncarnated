@@ -1,0 +1,101 @@
+[  1%] Built target reign_frontend_support
+[  6%] Built target reign_platform
+[  7%] Built target dr2_primitives
+[  8%] Built target reign_vid_device
+[  9%] Built target dr2_vid_state
+[ 11%] Built target dr2_tokenizer
+[ 15%] Built target dr2_bitmap_pixels
+[ 17%] Built target vid_state_smoke
+[ 18%] Built target installation_probe
+[ 19%] Built target tokenizer_smoke
+[ 20%] Built target reign_checks
+[ 21%] Built target platform_smoke
+[ 22%] Built target archive_smoke
+[ 23%] Built target resources_smoke
+[ 25%] Built target tga_smoke
+[ 26%] Built target bitmap_surface_smoke
+[ 28%] Built target frontend_support_smoke
+[ 30%] Built target dr2_tracking
+[ 32%] Built target dr2_events
+[ 36%] Built target dr2_config
+[ 39%] Built target dr2_buckets
+[ 41%] Built target dr2_bitmap_manager
+[ 42%] Built target bitmap_conversion_probe
+[ 43%] Built target bitmap_pixels_smoke
+[ 44%] Built target bitmap_loader_smoke
+[ 45%] Built target bmp_rgba_probe
+[ 46%] Built target bitmap_bmp_smoke
+[ 47%] Built target configuration_probe
+[ 50%] Built target dr2_runcodes
+[ 51%] Built target config_smoke
+[ 53%] Built target engine_smoke
+[ 54%] Built target tracking_smoke
+[ 55%] Built target event_loop_smoke
+[ 57%] Built target native_event_context_smoke
+[ 60%] Built target dr2_vars
+[ 62%] Built target dr2_iface_metrics
+[ 64%] Built target dr2_fonts
+[ 66%] Built target bucket_smoke
+[ 67%] Built target bitmap_manager_smoke
+[ 69%] Built target bitmap_manager_probe
+[ 70%] Built target font_probe
+[ 72%] Built target font_smoke
+[ 73%] Built target runcodes_smoke
+[ 74%] Built target vars_smoke
+[ 76%] Built target dr2_control_coordinates
+[ 77%] Built target runtime_handoff_smoke
+[ 78%] Built target dr2_frontend_config
+[ 80%] Built target dr2_font_registry
+[ 81%] Built target control_types_smoke
+[ 82%] Built target frontend_config_smoke
+[ 83%] Built target reign_frontend_fonts
+[ 85%] Built target dr2_iface_events
+[ 86%] Built target font_registry_smoke
+[ 87%] Built target interface_metrics_smoke
+[ 88%] Built target font_registry_probe
+[ 89%] Built target reign_frontend_frame
+[ 90%] Building CXX object CMakeFiles/reign_frontend_draw.dir/src/frontend_draw.cpp.o
+[ 91%] Built target frontend_font_smoke
+[ 92%] Built target frontend_frame_smoke
+[ 93%] Linking CXX static library libreign_frontend_draw.a
+[ 93%] Built target reign_frontend_draw
+[ 93%] Building CXX object CMakeFiles/frontend_draw_smoke.dir/tests/frontend_draw_smoke.cpp.o
+[ 94%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/frontend_draw_smoke.cpp: In lambda function:
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/frontend_draw_smoke.cpp:7:23: error: ‘RenderTriangle’ is not a member of ‘IFace’
+    7 |  auto draw=[&]{IFace::RenderTriangle(points,Color(U32(0x80402010)),.5f,nullptr);};
+      |                       ^~~~~~~~~~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/frontend_draw_smoke.cpp: In lambda function:
+/workspace/scratch/2e29d93ded9e/reigncarnated/tests/frontend_draw_smoke.cpp:13:38: error: ‘RenderTriangle’ is not a member of ‘IFace’
+   13 |  reign::FrontendDraw::run([&]{IFace::RenderTriangle(points,Color(U32(0)),1,nullptr);},sink);check(batches==2);
+      |                                      ^~~~~~~~~~~~~~
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp: In destructor ‘virtual IControl::~IControl()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+gmake[2]: *** [CMakeFiles/frontend_draw_smoke.dir/build.make:79: CMakeFiles/frontend_draw_smoke.dir/tests/frontend_draw_smoke.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:2169: CMakeFiles/frontend_draw_smoke.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[ 95%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o
+[ 95%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o
+[ 96%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o
+[ 96%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o
+[ 97%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o
+[ 97%] Built target dr2_frontend_controls
+gmake: *** [Makefile:101: all] Error 2

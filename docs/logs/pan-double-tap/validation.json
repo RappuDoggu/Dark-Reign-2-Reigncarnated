@@ -1,0 +1,28 @@
+{
+  "host_tests": 66,
+  "gesture_checks": 31,
+  "camera_checks": 29,
+  "source_stager_exit_code": 0,
+  "pinned_original_source_files": 1791,
+  "arm64_original_unit_overrides": [
+    "coregame/viewer_standard.cpp",
+    "multiplayer/multiplayer.cpp"
+  ],
+  "original_objects": 603,
+  "native_linked": true,
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "simulation_hz": 10,
+  "controller_changes": false,
+  "android_executed": false,
+  "device_gates": [
+    "pan without zoom creep",
+    "double-tap actions",
+    "three-finger building rotation",
+    "visible APK 19 version",
+    "Instant Action exit and return",
+    "pause/resume",
+    "normal performance"
+  ],
+  "foundation_tests": 10
+}

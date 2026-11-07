@@ -1,0 +1,36 @@
+{
+  "source_revision": "17c61ca85c0d3234895cb79f23e71e204c27c3b8",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated IA City Test",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "7dfb2d01a0d63ce27cc87255c7e6712683ee2495d1bc85414c4ba85072054496",
+    "libreign_menu.so": "b511596d2fb86ff6f364993a357a5d2b8d6c25d5a277afa72397ce8e72fc707a"
+  },
+  "recovery_identity": false,
+  "apk_sha256": "5e2336da039c13f122a9d62fddcfa83033f65b5061a9595697430843187fd487",
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "apk_bytes": 9299071,
+  "validation": {
+    "apk_zip_crc": true,
+    "same_signer_as_apk22": true,
+    "embedded_revision_docs_and_native_hashes": true,
+    "arm64_16k_elf_and_zip_alignment": true,
+    "static_libcxx": true,
+    "host_tests": 68,
+    "engine_foundation_tests": 11,
+    "java_checks": 133,
+    "original_layout_gpu_recreation_and_controls": true,
+    "reference_instant_action_lifecycle_twice": true,
+    "synthetic_campaign_default_client_lifecycle_twice": true,
+    "retail_campaign_device_validated": false,
+    "phone_fog_lighting_validated": false,
+    "phone_fps_measured": false
+  }
+}

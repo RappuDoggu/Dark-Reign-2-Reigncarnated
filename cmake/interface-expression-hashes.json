@@ -1,0 +1,11 @@
+{
+  "util/operation.h": "058631d35ad16ff480dacefcd84198a961fc7a2bdf35719bf5f96f57881bd2de",
+  "util/operation.cpp": "1113a8cd9439b613e409bd984752101d60833e04453ffae808bc2e3f3ba2e2ce",
+  "util/comparison.h": "7298861b2bba901b7cb68de37a1c6cd646f135cd784b8f34aa67945c9c9a6da7",
+  "util/comparison.cpp": "83ee842d5f847bae905fd97cdbf2d005349941041797f5a779cb532cb20907b1",
+  "util/switch.h": "0224c7ac2c0a2c026cd3cb883f62ea4249447393c863220d27a1a82be7056f1e",
+  "util/switch.cpp": "0501e4fc27e1fcce701d7d650e31da4fb489e1396962790afc5b44fc91ff15c1",
+  "util/arithmeticoperator.h": "aaa65f111af61447cf301dd18c80cab6457922b36ec3fc6ea34f4957ce729f7f",
+  "util/relationaloperator.h": "44e8807cccda0b0b8bdb23bec863eb8df8fd54672ebf3e87587714bfae3ca358",
+  "util/relationaloperator.cpp": "b2235c4801b31b47a2005d4e7fd7ab00ddd6d0feb37e08289605e05e038ef08f"
+}

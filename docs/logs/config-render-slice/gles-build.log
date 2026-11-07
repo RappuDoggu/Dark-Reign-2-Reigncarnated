@@ -1,0 +1,7 @@
+[ 20%] Building CXX object CMakeFiles/reign_gles.dir/src/legacy_gles.cpp.o
+[ 40%] Building CXX object CMakeFiles/reign_gles.dir/src/renderer_checks.cpp.o
+[ 60%] Linking CXX static library libreign_gles.a
+[ 60%] Built target reign_gles
+[ 80%] Building CXX object CMakeFiles/gles_smoke.dir/tests/gles_smoke.cpp.o
+[100%] Linking CXX executable gles_smoke
+[100%] Built target gles_smoke

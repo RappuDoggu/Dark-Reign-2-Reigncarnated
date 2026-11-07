@@ -1,0 +1,35 @@
+UpdateCTestConfiguration  from :/tmp/reign-bucket-release/DartConfiguration.tcl
+Parse Config file:/tmp/reign-bucket-release/DartConfiguration.tcl
+Test project /tmp/reign-bucket-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: original_render_buckets
+
+1: Test command: /tmp/reign-bucket-release/bucket_smoke
+1: Working Directory: /tmp/reign-bucket-release
+1: Test timeout computed to be: 1500
+1: Bucket::FlushBucket: !doDraw
+1: Bucket::FlushBucket: !doDraw
+1: Original bucket split alignment/merge/rebase/state/sort/450-bucket flush and rejection checks PASS
+1/2 Test #1: original_render_buckets ..........   Passed    0.01 sec
+test 2
+    Start 2: original_bitmap_pixels
+
+2: Test command: /tmp/reign-bucket-release/bitmap_pixels_smoke
+2: Working Directory: /tmp/reign-bucket-release
+2: Test timeout computed to be: 1500
+2: Original Pix/Bitmap::CopyLine: 18504 golden pixel comparisons PASS (including original 1555 alpha=128 rule); invalid formats reject
+2/2 Test #2: original_bitmap_pixels ...........   Passed    0.01 sec
+
+The following tests passed:
+	original_render_buckets
+	original_bitmap_pixels
+
+100% tests passed out of 2
+
+Total Test time (real) =   0.03 sec

@@ -1,0 +1,52 @@
+{
+  "source_revision": "b2737565d21ec4529736a04b3a3ddc36261e0289",
+  "upstream_revision": "9ce9da5f21604310a997f0c41e9cd383f5e292c3",
+  "base_apk_sha256": "9527160c7d594b6b36a99e71cb0ead8303ed58340d49e56e6c85f916d0fccc7b",
+  "sdk": 35,
+  "ndk": "27.2.12479018",
+  "ffmpeg": "n6.1.1",
+  "android_abi": "arm64-v8a",
+  "application_id": "org.reigncarnated.instantcity",
+  "application_label": "Reigncarnated IA City Test",
+  "simulation": "original 10 Hz; unchanged",
+  "native_libraries": {
+    "libreign_mission.so": "9c2c31a81979f19371b90c0ff11e73dabbad08869a2e1e6432977abd451beaa4",
+    "libreign_menu.so": "29ddcfcafb3bc3f23b8a506b92e39fafe483490d838b9b4684b15edf5ea18b8a"
+  },
+  "recovery_identity": false,
+  "apk_sha256": "4f76e3b9f45eaf53e9a417bfb8c37ea72d41e960a1d22e48ab833728c55716ba",
+  "apk_bytes": 9503871,
+  "signer_certificate_sha256": "09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9",
+  "elf_build_ids": {
+    "libreign_mission.so": "6874b372b4d36c279bb6169d15c1fca4942c0b0d",
+    "libreign_menu.so": "f681feb91074a7bf05bdf875e59d0a3e28fc8b09"
+  },
+  "ffmpeg_codec_recipe_sha256": "58a84c56ac571de138b74904c988c64c2ed5928541891d2b5cc3939e1d58332c",
+  "validation": {
+    "apk_zip_crc": true,
+    "same_signer_as_apk22_through_28": true,
+    "embedded_revision_docs_and_native_hashes": true,
+    "arm64_16k_elf_and_zip_alignment": true,
+    "static_libcxx": true,
+    "general_host_regressions": 68,
+    "engine_foundation_tests": 13,
+    "touch_checks": 55,
+    "retained_report_checks": 13,
+    "music_policy_checks": 14,
+    "sdk35_java_compilation": true,
+    "pinned_1791_upstream_sources_verified": true,
+    "pinned_ffmpeg_host_and_android_mp3_recipe_rebuilt": true,
+    "authored_mpeg1_mono_and_mpeg2_stereo_decode": true,
+    "malformed_and_bounded_audio_inputs_rejected": true,
+    "original_reserved_mp3_queue_under_64_fx_saturation": true,
+    "reserved_speech_survives_combat_priority_stealing": true,
+    "original_reserved_completion_reset_and_named_missing_diagnostics": true,
+    "combat_effect_lifetime_regression": true,
+    "original_cinematic_raw_mesh_camera_and_campaign_handoff_fixture_twice": true,
+    "owner_confirms_apk28_missions_load_with_cutscenes": true,
+    "owner_confirms_missing_voice_is_sprawler_opening_dialogue": true,
+    "phone_sprawler_audio_verified_on_apk29": false,
+    "phone_fps_measured_on_apk29": false,
+    "remaining_sprawler_invalid_uvs_fixed": false
+  }
+}

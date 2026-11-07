@@ -1,0 +1,10 @@
+ARM64 compile PASS: spline.cpp
+ARM64 compile PASS: bookmark_curve.cpp
+ARM64 compile PASS: shell_camera.cpp
+ARM64 compile PASS: terrain_load.cpp
+ARM64 compile PASS: shell_terrain.cpp
+/workspace/scratch/71fe0796f7e3/native-shell-arm64/spline.o:         ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped
+/workspace/scratch/71fe0796f7e3/native-shell-arm64/bookmark_curve.o: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped
+/workspace/scratch/71fe0796f7e3/native-shell-arm64/shell_camera.o:   ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped
+/workspace/scratch/71fe0796f7e3/native-shell-arm64/terrain_load.o:   ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped
+/workspace/scratch/71fe0796f7e3/native-shell-arm64/shell_terrain.o:  ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), not stripped

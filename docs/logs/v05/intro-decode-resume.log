@@ -1,0 +1,13 @@
+[swscaler @ 0x52f000000400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f000062400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0000a8400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0001ce400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0001dc400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0001ea400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0001f8400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f000222400] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x52f0002e6400] No accelerated colorspace conversion found from yuv420p to rgba.
+intro-movie-0.bik 640x480 duration=15.4 sample-rate=44100 stereo-samples=679680 display-frames=924 audio-checksum=8891369974961942132
+intro-movie-1.bik 640x480 duration=7.9 sample-rate=22050 stereo-samples=174720 display-frames=475 audio-checksum=4168747980319490716
+intro-movie-2.bik 640x480 duration=77.1 sample-rate=44100 stereo-samples=3400320 display-frames=4627 audio-checksum=14333633889733257036
+Original Bink video/audio decode and checkpoint continuation: PASS

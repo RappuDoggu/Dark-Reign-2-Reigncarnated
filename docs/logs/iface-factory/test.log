@@ -1,0 +1,4 @@
+Original IFace registry, template ownership and isolation: PASS (38 checks)
+Control creation and main menu: not exercised
+[engine] Registry data [ShellPanel] already defined
+[engine] Registry data [Absent] not found

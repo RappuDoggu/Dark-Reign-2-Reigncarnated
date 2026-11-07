@@ -1,0 +1,95 @@
+[ 25%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o
+[ 50%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: warning: '~IControl' has a non-throwing exception specification but can still throw [-Wexceptions]
+  211 |   ASSERT(!IsActive())
+      |   ^
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: expanded from macro 'ASSERT'
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:208:11: note: destructor has a implicit non-throwing exception specification
+  208 | IControl::~IControl()
+      |           ^
+[ 50%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o
+In file included from /tmp/reign-upstream-frontend-overlay/icontrol.cpp:25:
+/tmp/reign-upstream-frontend-overlay/control_stdload.hpp:65:69: warning: instantiation of variable 'Range<unsigned int>::full' required here, but no definition is available [-Wundefined-var-template]
+   65 |   U32 TypeU32(FScope *fScope, const Range<U32> &range = Range<U32>::full);
+      |                                                                     ^
+/tmp/reign-upstream-frontend-overlay/control_stdload.hpp:43:28: note: forward declaration of template entity is here
+   43 |   static const Range<TYPE> full;
+      |                            ^
+/tmp/reign-upstream-frontend-overlay/control_stdload.hpp:65:69: note: add an explicit instantiation declaration to suppress this warning if 'Range<unsigned int>::full' is explicitly instantiated in another translation unit
+   65 |   U32 TypeU32(FScope *fScope, const Range<U32> &range = Range<U32>::full);
+      |                                                                     ^
+/tmp/reign-upstream-frontend-overlay/control_stdload.hpp:70:79: warning: instantiation of variable 'Range<float>::full' required here, but no definition is available [-Wundefined-var-template]
+   70 |   F32 TypeF32(FScope *fScope, F32 dVal, const Range<F32> &range = Range<F32>::full);
+      |                                                                               ^
+/tmp/reign-upstream-frontend-overlay/control_stdload.hpp:43:28: note: forward declaration of template entity is here
+   43 |   static const Range<TYPE> full;
+      |                            ^
+/tmp/reign-upstream-frontend-overlay/control_stdload.hpp:70:79: note: add an explicit instantiation declaration to suppress this warning if 'Range<float>::full' is explicitly instantiated in another translation unit
+   70 |   F32 TypeF32(FScope *fScope, F32 dVal, const Range<F32> &range = Range<F32>::full);
+      |                                                                               ^
+3 warnings generated.
+[ 75%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o
+/tmp/reign-upstream-frontend-overlay/ifvar.cpp:140:13: warning: 5 enumeration values not handled in switch: 'VI_NONE', 'VI_BINARY', 'VI_CMD'... [-Wswitch]
+  140 |     switch (varType)
+      |             ^~~~~~~
+/tmp/reign-upstream-frontend-overlay/ifvar.cpp:333:13: warning: 5 enumeration values not handled in switch: 'VI_NONE', 'VI_BINARY', 'VI_CMD'... [-Wswitch]
+  333 |     switch (varType)
+      |             ^~~~~~~
+2 warnings generated.
+/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp:91:11: warning: 5 enumeration values not handled in switch: 'CLOSE', 'HELP', 'MINIMIZE'... [-Wswitch]
+   91 |   switch (function)
+      |           ^~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp:229:13: warning: enumeration values 'MINIMIZE' and 'MAXIMIZE' not handled in switch [-Wswitch]
+  229 |     switch (function)
+      |             ^~~~~~~~
+2 warnings generated.
+[100%] Built target dr2_frontend_controls
+[ 15%] Built target dr2_primitives
+[ 23%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+[ 30%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
+/tmp/reign-upstream-runtime-overlay/event_slice.cpp:129:5: warning: expression result unused [-Wunused-value]
+  129 |     type;
+      |     ^~~~
+In file included from /tmp/reign-upstream-runtime-overlay/event_slice.cpp:2:
+In file included from /tmp/reign-upstream-runtime-overlay/event_slice.hpp:3:
+/tmp/reign-upstream-runtime-overlay/queue_slice.hpp:86:7: warning: expression result unused [-Wunused-value]
+   86 |       timeout;
+      |       ^~~~~~~
+/tmp/reign-upstream-runtime-overlay/event_slice.cpp:160:29: note: in instantiation of member function 'reign::event_detail::Queue<reign::event_detail::Event, 128>::RemovePre' requested here
+  160 |       e = state().workQueue.RemovePre();
+      |                             ^
+[ 46%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+2 warnings generated.
+[ 46%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
+[ 53%] Linking CXX static library libdr2_tracking.a
+[ 53%] Built target dr2_tracking
+[ 61%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[ 69%] Linking CXX static library libdr2_events.a
+[ 69%] Built target dr2_events
+[ 76%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[ 76%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+[ 84%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: warning: '~VarItem' has a non-throwing exception specification but can still throw [-Wexceptions]
+  263 |   ASSERT(!pNotify);
+      |   ^
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: expanded from macro 'ASSERT'
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:250:18: note: destructor has a implicit non-throwing exception specification
+  250 | VarSys::VarItem::~VarItem()
+      |                  ^
+1 warning generated.
+[ 92%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+[ 92%] Linking CXX static library libdr2_vars.a
+[ 92%] Built target dr2_vars
+[100%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_coordinates.cpp.o
+[100%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_color_magic.cpp.o
+[107%] Linking CXX static library libdr2_control_coordinates.a
+[107%] Built target dr2_control_coordinates
+[107%] Building CXX object CMakeFiles/control_types_smoke.dir/tests/control_types_smoke.cpp.o
+[115%] Linking CXX executable control_types_smoke
+[115%] Built target control_types_smoke

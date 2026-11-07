@@ -1,0 +1,13 @@
+[ 18%] Built target reign_vid_device
+[ 27%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 36%] Linking CXX static library libdr2_vid_state.a
+[ 36%] Built target dr2_vid_state
+[ 45%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/primitive.cpp.o
+[ 54%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o
+[ 63%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucket.cpp.o
+[ 72%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/tranbucket.cpp.o
+[ 81%] Linking CXX static library libdr2_buckets.a
+[ 81%] Built target dr2_buckets
+[ 90%] Building CXX object CMakeFiles/bucket_smoke.dir/tests/bucket_smoke.cpp.o
+[100%] Linking CXX executable bucket_smoke
+[100%] Built target bucket_smoke

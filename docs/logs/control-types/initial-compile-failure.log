@@ -1,0 +1,75 @@
+In file included from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /tmp/reign-upstream-control-overlay/control_coordinates.cpp:2:
+reigncarnated/include/reign/control_prelude.hpp:8:40: error: ‘VarSys’ is not a namespace-name
+    8 | namespace VarSys = reign::vars_detail::VarSys;
+      |                                        ^~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:973:3: error: ‘ClipRect’ does not name a type
+  973 |   ClipRect    texRect;
+      |   ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:995:23: error: ‘ClipRect’ does not name a type
+  995 |   void UpdateUV(const ClipRect &rect);
+      |                       ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1036:3: error: ‘ClipRect’ does not name a type
+ 1036 |   ClipRect    client;
+      |   ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1037:3: error: ‘ClipRect’ does not name a type
+ 1037 |   ClipRect    window;
+      |   ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1082:3: error: ‘ClipRect’ does not name a type
+ 1082 |   ClipRect border;
+      |   ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp: In constructor ‘TextureSkin::TextureSkin()’:
+/tmp/reign-upstream-control-overlay/control_types.hpp:1091:46: error: expected primary-expression before ‘)’ token
+ 1091 |     Utils::Memset(this, 0, sizeof TextureSkin);
+      |                                              ^
+/tmp/reign-upstream-control-overlay/control_types.hpp: At global scope:
+/tmp/reign-upstream-control-overlay/control_types.hpp:1711:23: error: ‘IFaceVar’ has not been declared
+ 1711 |   virtual void Notify(IFaceVar *var);
+      |                       ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1714:21: error: ‘IFaceVar’ has not been declared
+ 1714 |   void ConfigureVar(IFaceVar * &var, FScope *fScope);
+      |                     ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1717:21: error: ‘IFaceVar’ has not been declared
+ 1717 |   void ConfigureVar(IFaceVar * &var, const char *name);
+      |                     ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1744:20: error: ‘IFaceVar’ has not been declared
+ 1744 |   void ActivateVar(IFaceVar *var, VarSys::VarItemType type = VarSys::VI_NONE);
+      |                    ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1744:35: error: ‘VarSys’ has not been declared
+ 1744 |   void ActivateVar(IFaceVar *var, VarSys::VarItemType type = VarSys::VI_NONE);
+      |                                   ^~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1744:55: error: expected ‘,’ or ‘...’ before ‘type’
+ 1744 |   void ActivateVar(IFaceVar *var, VarSys::VarItemType type = VarSys::VI_NONE);
+      |                                                       ^~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:1837:11: error: ‘ClipRect’ does not name a type
+ 1837 |   virtual ClipRect GetAdjustmentRect();
+      |           ^~~~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:2158:3: error: ‘VarSys’ does not name a type
+ 2158 |   VarSys::VarItem * CreateInteger(const char *name, S32 dVal, S32 low = S32_MIN, S32 high = S32_MAX);
+      |   ^~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:2159:3: error: ‘VarSys’ does not name a type
+ 2159 |   VarSys::VarItem * CreateFloat(const char *name, F32 dVal, F32 low = F32_MIN, F32 high = F32_MAX);
+      |   ^~~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:2160:3: error: ‘VarSys’ does not name a type
+ 2160 |   VarSys::VarItem * CreateString(const char *name, const char *dVal);
+      |   ^~~~~~
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp: In member function ‘Point<int> IControl::ScreenToWindow(const Point<int>&) const’:
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp:12:46: error: ‘const struct PaintInfo’ has no member named ‘client’
+   12 |     wnd -= (ctrl->pos + ctrl->GetPaintInfo().client.p0);
+      |                                              ^~~~~~
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp: In member function ‘Point<int> IControl::ScreenToClient(const Point<int>&) const’:
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp:20:41: error: ‘const struct PaintInfo’ has no member named ‘client’
+   20 |   return (ScreenToWindow(p) - paintInfo.client.p0);
+      |                                         ^~~~~~
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp: In member function ‘Point<int> IControl::ClientToScreen(const Point<int>&) const’:
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp:30:45: error: ‘const struct PaintInfo’ has no member named ‘client’
+   30 |     cli += ctrl->pos + ctrl->GetPaintInfo().client.p0;
+      |                                             ^~~~~~
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp: In member function ‘Bool IControl::InClientFromWindow(const Point<int>&) const’:
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp:39:21: error: ‘const struct PaintInfo’ has no member named ‘client’
+   39 |   return (paintInfo.client.In(p));
+      |                     ^~~~~~
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp: At global scope:
+/tmp/reign-upstream-control-overlay/control_coordinates.cpp:42:1: error: ‘ClipRect’ does not name a type
+   42 | ClipRect IControl::GetAdjustmentRect()
+      | ^~~~~~~~

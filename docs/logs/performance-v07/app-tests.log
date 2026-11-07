@@ -1,0 +1,329 @@
+In file included from /workspace/scratch/61f8462ecfdd/performance/staged/interface/fontsys.h:19,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/mission_app.cpp:7:
+/workspace/scratch/61f8462ecfdd/performance/staged/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+In file included from /usr/include/c++/13/backward/strstream:50,
+                 from /workspace/scratch/61f8462ecfdd/performance/staged/game/sync.h:19,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/mission_app.cpp:20:
+/usr/include/c++/13/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
+   32 | #warning \
+      |  ^~~~~~~
+In file included from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/resource_prelude.h:2,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/mission_prelude.h:2,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/engine_std.h:3,
+                 from /workspace/scratch/61f8462ecfdd/performance/staged/system/std.h:2,
+                 from <command-line>:
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h: In destructor ‘AI::Map::Info::~Info()’:
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:68:9: note: in expansion of macro ‘ASSERT’
+   68 |         ASSERT(!total);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:68:9: note: in expansion of macro ‘ASSERT’
+   68 |         ASSERT(!total);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:69:9: note: in expansion of macro ‘ASSERT’
+   69 |         ASSERT(!values);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:69:9: note: in expansion of macro ‘ASSERT’
+   69 |         ASSERT(!values);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h: In destructor ‘AI::Map::Cluster::~Cluster()’:
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:172:9: note: in expansion of macro ‘ASSERT’
+  172 |         ASSERT(!resource)
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:172:9: note: in expansion of macro ‘ASSERT’
+  172 |         ASSERT(!resource)
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:173:9: note: in expansion of macro ‘ASSERT’
+  173 |         ASSERT(!disruption)
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:173:9: note: in expansion of macro ‘ASSERT’
+  173 |         ASSERT(!disruption)
+      |         ^~~~~~
+In file included from /workspace/scratch/61f8462ecfdd/performance/staged/interface/fontsys.h:19,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/tests/engine_app_test.cpp:15:
+/workspace/scratch/61f8462ecfdd/performance/staged/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+In file included from /usr/include/c++/13/backward/strstream:50,
+                 from /workspace/scratch/61f8462ecfdd/performance/staged/game/sync.h:19,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/tests/engine_app_test.cpp:28:
+/usr/include/c++/13/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
+   32 | #warning \
+      |  ^~~~~~~
+In file included from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/resource_prelude.h:2,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/mission_prelude.h:2,
+                 from /workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/engine_std.h:3,
+                 from /workspace/scratch/61f8462ecfdd/performance/staged/system/std.h:2,
+                 from <command-line>:
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h: In destructor ‘AI::Map::Info::~Info()’:
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:68:9: note: in expansion of macro ‘ASSERT’
+   68 |         ASSERT(!total);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:68:9: note: in expansion of macro ‘ASSERT’
+   68 |         ASSERT(!total);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:69:9: note: in expansion of macro ‘ASSERT’
+   69 |         ASSERT(!values);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:69:9: note: in expansion of macro ‘ASSERT’
+   69 |         ASSERT(!values);
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h: In destructor ‘AI::Map::Cluster::~Cluster()’:
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:172:9: note: in expansion of macro ‘ASSERT’
+  172 |         ASSERT(!resource)
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:172:9: note: in expansion of macro ‘ASSERT’
+  172 |         ASSERT(!resource)
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:173:9: note: in expansion of macro ‘ASSERT’
+  173 |         ASSERT(!disruption)
+      |         ^~~~~~
+/workspace/scratch/61f8462ecfdd/performance/source-snapshot/engine/platform/io_prelude.h:7:50: note: in C++11 destructors default to ‘noexcept’
+    7 | #define ASSERT(condition) do { if (!(condition)) throw std::logic_error("Engine assertion: " #condition); } while (0);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/61f8462ecfdd/performance/staged/coregame_ai/ai_map.h:173:9: note: in expansion of macro ‘ASSERT’
+  173 |         ASSERT(!disruption)
+      |         ^~~~~~
+Sound::Init()
+ - Completed
+PerfStats Initialised
+Found 2 missions in 2 groups
+Found mod type 'addon'
+Adding mod '1024x768interface'
+Adding mod '800x600interface'
+Adding mod 'altcamera'
+Adding mod 'darkrain'
+Adding mod 'lastingbloodstains'
+Adding mod 'mp3player'
+Adding mod 'preview'
+Found mod type 'personality'
+Adding mod 'aggressive'
+Adding mod 'defensive'
+Found mod type 'ruleset'
+Adding mod 'assault'
+Adding mod 'bloodbath'
+Adding mod 'control'
+Adding mod 'deathmatch'
+Adding mod 'gluttony'
+Adding mod 'koth'
+Adding mod 'protecthq'
+Adding mod 'speed'
+Exception caller: 0x522660
+Exception caller: 0x53adcf
+Exception caller: 0x53b17b
+Exception caller: 0x519128
+Exception caller: 0x7f6af66bd1ca
+Exception caller: 0x7f6af66bd28b
+Exception caller: 0x520f75
+[Game] Entering run code [Load]
+PreOpenMission: [missions\multiplayer][2crazed]
+PreOpenMission: Team::Init
+PreOpenMission: Environment::Init
+PreOpenMission: MoveTable::Init
+PreOpenMission: SidePlacement::Init
+PreOpenMission: UnitLimits::Init
+PreOpenMission: TerrainGroup::Init
+PreOpenMission: AI::Init
+PreOpenMission: TaskCtrl::Init
+PreOpenMission: Config::Init
+PreOpenMission: MissionVar::Init
+Mission config: DefaultRule
+Mission config: FixedRule
+Mission config: RequiredAddons
+Mission config: WorldInfo
+Mission config: Environment
+Mission config: DefineTeams
+Mission config: TerrainGroup
+Mission config: Physics
+Type Stream Crc: 47BC54B1
+Type Stream Crc: 607DD41F
+Purging team team2 [1]
+[Game] Entering run code [SimInit]
+Switching to NORMAL
+Exception caller: 0x522660
+Exception caller: 0x6d62b6
+Exception caller: 0x5e2f16
+Exception caller: 0x6d6889
+Exception caller: 0x6d6904
+Exception caller: 0x6d6978
+Exception caller: 0x6bd905
+Exception caller: 0x6bd392
+Exception caller: 0x6be859
+Exception caller: 0x52dbcd
+Exception caller: 0x410868
+Exception caller: 0x7f6af66bd1ca
+Exception caller: 0x7f6af66bd28b
+Exception caller: 0x520f75
+Exception caller: 0x522660
+Exception caller: 0x6d62b6
+Exception caller: 0x5e2f16
+Exception caller: 0x6d6889
+Exception caller: 0x6d6904
+Exception caller: 0x6d6978
+Exception caller: 0x6bd905
+Exception caller: 0x6bd392
+Exception caller: 0x6be859
+Exception caller: 0x52dbcd
+Exception caller: 0x410868
+Exception caller: 0x7f6af66bd1ca
+Exception caller: 0x7f6af66bd28b
+Exception caller: 0x520f75
+[Game] Entering run code [Sim]
+Picking starting rig at 296.556,250.404
+Selected unit sprawler.unit.rig
+Move-order displacement 0.204589,7.60718
+Application lifecycle pass 0 cycles 76 presented 261
+[Game] Clearing runcode [Sim]
+Shutting down simulation
+Logout [Commander]
+Sound::Done()
+ - Completed
+DataFile: open files [0]
+Sound::Init()
+ - Completed
+PerfStats Initialised
+Login [Commander]
+Logout [Commander]
+Login [Commander]
+Found 2 missions in 2 groups
+Found mod type 'addon'
+Adding mod '1024x768interface'
+Adding mod '800x600interface'
+Adding mod 'altcamera'
+Adding mod 'darkrain'
+Adding mod 'lastingbloodstains'
+Adding mod 'mp3player'
+Adding mod 'preview'
+Found mod type 'personality'
+Adding mod 'aggressive'
+Adding mod 'defensive'
+Found mod type 'ruleset'
+Adding mod 'assault'
+Adding mod 'bloodbath'
+Adding mod 'control'
+Adding mod 'deathmatch'
+Adding mod 'gluttony'
+Adding mod 'koth'
+Adding mod 'protecthq'
+Adding mod 'speed'
+Exception caller: 0x522660
+Exception caller: 0x53adcf
+Exception caller: 0x53b17b
+Exception caller: 0x519128
+Exception caller: 0x7f6af66bd1ca
+Exception caller: 0x7f6af66bd28b
+Exception caller: 0x520f75
+[Game] Entering run code [Load]
+PreOpenMission: [missions\multiplayer][2crazed]
+PreOpenMission: Team::Init
+PreOpenMission: Environment::Init
+PreOpenMission: MoveTable::Init
+PreOpenMission: SidePlacement::Init
+PreOpenMission: UnitLimits::Init
+PreOpenMission: TerrainGroup::Init
+PreOpenMission: AI::Init
+PreOpenMission: TaskCtrl::Init
+PreOpenMission: Config::Init
+PreOpenMission: MissionVar::Init
+Mission config: DefaultRule
+Mission config: FixedRule
+Mission config: RequiredAddons
+Mission config: WorldInfo
+Mission config: Environment
+Mission config: DefineTeams
+Mission config: TerrainGroup
+Mission config: Physics
+Type Stream Crc: 47BC54B1
+Type Stream Crc: 607DD41F
+Purging team team2 [1]
+[Game] Entering run code [SimInit]
+Switching to NORMAL
+Exception caller: 0x522660
+Exception caller: 0x6d62b6
+Exception caller: 0x5e2f16
+Exception caller: 0x6d6889
+Exception caller: 0x6d6904
+Exception caller: 0x6d6978
+Exception caller: 0x6bd905
+Exception caller: 0x6bd392
+Exception caller: 0x6be859
+Exception caller: 0x52dbcd
+Exception caller: 0x410868
+Exception caller: 0x7f6af66bd1ca
+Exception caller: 0x7f6af66bd28b
+Exception caller: 0x520f75
+Exception caller: 0x522660
+Exception caller: 0x6d62b6
+Exception caller: 0x5e2f16
+Exception caller: 0x6d6889
+Exception caller: 0x6d6904
+Exception caller: 0x6d6978
+Exception caller: 0x6bd905
+Exception caller: 0x6bd392
+Exception caller: 0x6be859
+Exception caller: 0x52dbcd
+Exception caller: 0x410868
+Exception caller: 0x7f6af66bd1ca
+Exception caller: 0x7f6af66bd28b
+Exception caller: 0x520f75
+[Game] Entering run code [Sim]
+Application lifecycle pass 1 cycles 21 presented 357
+[Game] Clearing runcode [Sim]
+Shutting down simulation
+Logout [Commander]
+Sound::Done()
+ - Completed
+DataFile: open files [0]
+Shared native mission application: load, simulation, pause/resume, shutdown and profile login passed twice on host; no Android execution

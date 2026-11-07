@@ -1,0 +1,7 @@
+{
+  "coregame/game_preview.h": "f96d429c607832ab208e4f7164d46f46240b88f29efc5327ebd1ccaf5b685587",
+  "coregame/game_preview.cpp": "ad5ff3cf10ec70b1c80deb5133464d1cc5d27ea033f54a953d308d625040a747",
+  "game/game_campaignselection.h": "5d6905bd6e8fa9c952beaee0783f3c086c1e4efd9425991dd967e2ed913690db",
+  "game/game_campaignselection.cpp": "fe33a494fb74f55b4493f0ef7b0053e944a7dec0f493889e07e25740fd77b90b",
+  "util/stdload.h": "8739642280604f65b6bbc11bf45067e3a4d922ddda3446a6de76d729718fa815"
+}

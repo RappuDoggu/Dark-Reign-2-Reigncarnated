@@ -1,0 +1,19 @@
+{
+  "code_commit": "5803b5e58cf3f55c19b26d173bd4c79f1de84645",
+  "run_id": 40153363872,
+  "conclusion": "success",
+  "jobs": {
+    "host": 121049381396,
+    "android": 121049381468
+  },
+  "artifacts": {
+    "host_logs": 12583248880,
+    "android_logs": 12583761620,
+    "original_only_v04_apk": 12583307361
+  },
+  "host_tests": 17,
+  "loading_checks": 288,
+  "gpu_checks_per_context": 40,
+  "contexts": 2,
+  "new_original_derived_loader_android_runtime_tested": false
+}

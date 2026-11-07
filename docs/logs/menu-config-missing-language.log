@@ -1,0 +1,10 @@
+[engine] Parse Callstack:
+[engine] If("iface.language", "==", "chinese")
+[engine] GlobalScope()
+Original PTree/Main/IFace configuration attempt: BLOCKED
+Interface statements attempted: 0
+Registered classes: 4
+Font aliases: 0
+Bitmaps: 0
+Blocking dependency: (If) Error! Could not resolve var1
+Original Login/Shell lifecycle, screen rendering, Android APK: NOT demonstrated

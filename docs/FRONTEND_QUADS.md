@@ -1,0 +1,11 @@
+# Original UI quads and texture coordinates — 2026-10-25
+
+The native draw collection now supports triangles and quads, texture identity, filtering requests and centered-texture clamping. Hash-staged original RenderRectangle, three RenderGradient overloads, RenderShadow, AdjustUp/Down and TextureInfo::UpdateUV execute with the native buffers. The mutable temporary TextureInfo is local to each call instead of the original shared global. The static Bitmap adapter reads actual dimensions and half-texel offsets from the existing BitmapSurface; it does not decode movies or replace the entire engine bitmap manager.
+
+Rectangle polygon clipping is explicitly unsupported in this increment. A nonnull clipping polygon throws before drawing; its original clipping block is not replaced with a success stub. Other rectangle calculations remain original. The texture-aware consumer must bind the supplied texture and implement sampler flags. The older untextured callback rejects textured batches. GPU filtering support is not claimed by these tests.
+
+21 focused tests cover rectangle positions, alpha, gradient direction, original four-corner order (0,1,3,2 in vertex order), adjusted colors, tiled UV coordinates, centered placement/clamping, texture identity and shadows. All 35 host tests pass with ASan/UBSan (local LeakSanitizer disabled for the known procfs issue). Initial compilation required the rectangle's default clip argument and linking the existing BitmapSurface library. One test initially assumed the wrong corner order; inspected source established the preserved behavior.
+
+New software GLES checks exercise the actual original rectangle, alpha scale, tiled texture and gradient paths in both recreated EGL contexts. Their CI result is recorded separately when available; CPU test success alone is not GPU validation. The full frontend executable link still fails with 24 unresolved symbols, down from 29. No live root window or menu APK is claimed.
+
+[Build](logs/frontend-quads/build.log), [focused test](logs/frontend-quads/test.log), [suite](logs/frontend-quads/suite.log), [link failure](logs/frontend-quads/link.log), [exact link command and unresolved list](logs/frontend-quads/result.json).

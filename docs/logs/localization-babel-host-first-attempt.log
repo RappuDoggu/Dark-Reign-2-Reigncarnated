@@ -1,0 +1,104 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: native_frontend_support
+ 1/44 Test  #1: native_frontend_support ............   Passed    2.41 sec
+      Start  2: native_frontend_text
+ 2/44 Test  #2: native_frontend_text ...............   Passed    0.16 sec
+      Start  3: original_object_tracking
+ 3/44 Test  #3: original_object_tracking ...........   Passed    1.84 sec
+      Start  4: original_event_dispatch
+ 4/44 Test  #4: original_event_dispatch ............   Passed    0.81 sec
+      Start  5: original_native_event_context
+ 5/44 Test  #5: original_native_event_context ......   Passed    0.09 sec
+      Start  6: original_variable_runtime
+ 6/44 Test  #6: original_variable_runtime ..........   Passed    0.03 sec
+      Start  7: original_runtime_handoff
+ 7/44 Test  #7: original_runtime_handoff ...........   Passed    0.01 sec
+      Start  8: original_control_types
+ 8/44 Test  #8: original_control_types .............   Passed    1.24 sec
+      Start  9: original_frontend_config
+ 9/44 Test  #9: original_frontend_config ...........   Passed    0.77 sec
+      Start 10: original_interface_events
+10/44 Test #10: original_interface_events ..........   Passed    0.35 sec
+      Start 11: original_interface_registry
+11/44 Test #11: original_interface_registry ........   Passed    3.57 sec
+      Start 12: original_messagebox_events
+12/44 Test #12: original_messagebox_events .........   Passed    2.47 sec
+      Start 13: frontend_font_bridge
+13/44 Test #13: frontend_font_bridge ...............   Passed    2.92 sec
+      Start 14: frontend_frame_bridge
+14/44 Test #14: frontend_frame_bridge ..............   Passed    0.25 sec
+      Start 15: native_frontend_input
+15/44 Test #15: native_frontend_input ..............   Passed    0.58 sec
+      Start 16: original_frontend_theme
+16/44 Test #16: original_frontend_theme ............   Passed    1.17 sec
+      Start 17: original_frontend_triangle
+17/44 Test #17: original_frontend_triangle .........   Passed    0.41 sec
+      Start 18: original_frontend_quads
+18/44 Test #18: original_frontend_quads ............   Passed    1.86 sec
+      Start 19: original_frontend_texture_config
+19/44 Test #19: original_frontend_texture_config ...   Passed    1.22 sec
+      Start 20: original_interface_expressions
+20/44 Test #20: original_interface_expressions .....   Passed    0.70 sec
+      Start 21: original_babel_formatting
+21/44 Test #21: original_babel_formatting ..........   Passed    0.88 sec
+      Start 22: original_language_lookup
+Process not started
+ /workspace/scratch/2e29d93ded9e/reign-work/build-host/localization_smoke
+[permission denied]
+22/44 Test #22: original_language_lookup ...........***Not Run   0.00 sec
+      Start 23: original_variable_database
+23/44 Test #23: original_variable_database .........   Passed    0.36 sec
+      Start 24: original_render_buckets
+24/44 Test #24: original_render_buckets ............   Passed    3.75 sec
+      Start 25: original_bitmap_manager
+25/44 Test #25: original_bitmap_manager ............   Passed    5.50 sec
+      Start 26: original_bitmap_pixels
+26/44 Test #26: original_bitmap_pixels .............   Passed    1.55 sec
+      Start 27: bitmap_tga_loading
+27/44 Test #27: bitmap_tga_loading .................   Passed    0.84 sec
+      Start 28: bitmap_bmp_loading
+28/44 Test #28: bitmap_bmp_loading .................   Passed    0.64 sec
+      Start 29: original_vid_states
+29/44 Test #29: original_vid_states ................   Passed    0.52 sec
+      Start 30: original_font_registration
+30/44 Test #30: original_font_registration .........   Passed    0.07 sec
+      Start 31: original_interface_metrics
+31/44 Test #31: original_interface_metrics .........   Passed    0.06 sec
+      Start 32: original_font_atlas_and_draw
+32/44 Test #32: original_font_atlas_and_draw .......   Passed    0.49 sec
+      Start 33: original_runcodes
+33/44 Test #33: original_runcodes ..................   Passed    0.03 sec
+      Start 34: original_config_parser
+Process not started
+ /workspace/scratch/2e29d93ded9e/reign-work/build-host/config_smoke
+[permission denied]
+34/44 Test #34: original_config_parser .............***Not Run   0.00 sec
+      Start 35: original_tokenizer
+35/44 Test #35: original_tokenizer .................   Passed    0.02 sec
+      Start 36: original_engine_primitives
+36/44 Test #36: original_engine_primitives .........   Passed    0.16 sec
+      Start 37: platform_services
+37/44 Test #37: platform_services ..................   Passed    0.01 sec
+      Start 38: pack_metadata_inspector
+38/44 Test #38: pack_metadata_inspector ............   Passed    1.63 sec
+      Start 39: native_archive_reader
+39/44 Test #39: native_archive_reader ..............   Passed    0.09 sec
+      Start 40: make_installation_fixture
+40/44 Test #40: make_installation_fixture ..........   Passed    0.04 sec
+      Start 41: installation_integration
+41/44 Test #41: installation_integration ...........   Passed    0.01 sec
+      Start 42: resource_streams
+42/44 Test #42: resource_streams ...................   Passed    0.02 sec
+      Start 43: tga_pixels
+43/44 Test #43: tga_pixels .........................   Passed    0.01 sec
+      Start 44: native_bitmap_storage
+44/44 Test #44: native_bitmap_storage ..............   Passed    0.01 sec
+
+95% tests passed, 2 tests failed out of 44
+
+Total Test time (real) =  40.61 sec
+
+The following tests FAILED:
+	 22 - original_language_lookup (BAD_COMMAND)
+	 34 - original_config_parser (BAD_COMMAND)
+Errors while running CTest

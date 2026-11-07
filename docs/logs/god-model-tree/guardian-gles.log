@@ -1,0 +1,3 @@
+Context 1 model=jda_guardian.god triangles=394 nonblack=8883
+Context 2 model=jda_guardian.god triangles=394 nonblack=8883
+PASS: serialized root geometry and base textures through GLES. Diagnostic only: no node transforms, animation, lighting, overlays or original material policy.

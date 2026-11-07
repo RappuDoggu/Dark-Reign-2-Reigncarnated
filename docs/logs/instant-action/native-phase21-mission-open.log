@@ -1,0 +1,39 @@
+Sound::Init()
+ - Completed
+PerfStats Initialised
+Entering IFace::Init
+Entering Game::Init
+Found 60 missions in 9 groups
+Entering Game::PreOpenMission 2crazed
+PreOpenMission: [missions\multiplayer][2crazed]
+PreOpenMission: Team::Init
+PreOpenMission: Environment::Init
+PreOpenMission: MoveTable::Init
+PreOpenMission: SidePlacement::Init
+PreOpenMission: UnitLimits::Init
+PreOpenMission: TerrainGroup::Init
+PreOpenMission: AI::Init
+PreOpenMission: TaskCtrl::Init
+PreOpenMission: Config::Init
+PreOpenMission: MissionVar::Init
+Mission config: DefaultRule
+Mission config: FixedRule
+Mission config: RequiredAddons
+Mission config: WorldInfo
+Mission config: Environment
+Mission config: DefineTeams
+Mission config: TerrainGroup
+Mission config: Physics
+Type Stream Crc: D19FCFAA
+Type Stream Crc: 768444CE
+Mission preloaded
+Purging team team2 [1]
+Entering Game::OpenMission
+Mission opened
+Logout [TestOne]
+Final pixel 255,0,0
+Sound::Done()
+ - Completed
+DataFile: open files [0]
+Original 2crazed preload, local player, mission open, shutdown and GLES presentation passed; simulation not executed
+

@@ -1,0 +1,63 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: native_frontend_support
+ 1/29 Test  #1: native_frontend_support ..........   Passed    0.01 sec
+      Start  2: original_object_tracking
+ 2/29 Test  #2: original_object_tracking .........   Passed    0.02 sec
+      Start  3: original_event_dispatch
+ 3/29 Test  #3: original_event_dispatch ..........   Passed    0.01 sec
+      Start  4: original_native_event_context
+ 4/29 Test  #4: original_native_event_context ....   Passed    0.01 sec
+      Start  5: original_variable_runtime
+ 5/29 Test  #5: original_variable_runtime ........   Passed    0.01 sec
+      Start  6: original_runtime_handoff
+ 6/29 Test  #6: original_runtime_handoff .........   Passed    0.01 sec
+      Start  7: original_control_types
+ 7/29 Test  #7: original_control_types ...........   Passed    0.00 sec
+      Start  8: original_frontend_config
+ 8/29 Test  #8: original_frontend_config .........   Passed    0.01 sec
+      Start  9: original_render_buckets
+ 9/29 Test  #9: original_render_buckets ..........   Passed    0.01 sec
+      Start 10: original_bitmap_manager
+10/29 Test #10: original_bitmap_manager ..........   Passed    0.01 sec
+      Start 11: original_bitmap_pixels
+11/29 Test #11: original_bitmap_pixels ...........   Passed    0.01 sec
+      Start 12: bitmap_tga_loading
+12/29 Test #12: bitmap_tga_loading ...............   Passed    0.01 sec
+      Start 13: bitmap_bmp_loading
+13/29 Test #13: bitmap_bmp_loading ...............   Passed    0.01 sec
+      Start 14: original_vid_states
+14/29 Test #14: original_vid_states ..............   Passed    0.00 sec
+      Start 15: original_font_registration
+15/29 Test #15: original_font_registration .......   Passed    0.01 sec
+      Start 16: original_interface_metrics
+16/29 Test #16: original_interface_metrics .......   Passed    0.01 sec
+      Start 17: original_font_atlas_and_draw
+17/29 Test #17: original_font_atlas_and_draw .....   Passed    0.02 sec
+      Start 18: original_runcodes
+18/29 Test #18: original_runcodes ................   Passed    0.01 sec
+      Start 19: original_config_parser
+19/29 Test #19: original_config_parser ...........   Passed    0.01 sec
+      Start 20: original_tokenizer
+20/29 Test #20: original_tokenizer ...............   Passed    0.01 sec
+      Start 21: original_engine_primitives
+21/29 Test #21: original_engine_primitives .......   Passed    0.01 sec
+      Start 22: platform_services
+22/29 Test #22: platform_services ................   Passed    0.01 sec
+      Start 23: pack_metadata_inspector
+23/29 Test #23: pack_metadata_inspector ..........   Passed    0.07 sec
+      Start 24: native_archive_reader
+24/29 Test #24: native_archive_reader ............   Passed    0.02 sec
+      Start 25: make_installation_fixture
+25/29 Test #25: make_installation_fixture ........   Passed    0.02 sec
+      Start 26: installation_integration
+26/29 Test #26: installation_integration .........   Passed    0.01 sec
+      Start 27: resource_streams
+27/29 Test #27: resource_streams .................   Passed    0.01 sec
+      Start 28: tga_pixels
+28/29 Test #28: tga_pixels .......................   Passed    0.01 sec
+      Start 29: native_bitmap_storage
+29/29 Test #29: native_bitmap_storage ............   Passed    0.00 sec
+
+100% tests passed out of 29
+
+Total Test time (real) =   0.35 sec

@@ -1,0 +1,33 @@
+{
+  "translation_unit": "interface/icontrol.cpp",
+  "compiler_exit_code": 1,
+  "opaque_video_declarations": true,
+  "native_control_types": "/tmp/reign-upstream-control-overlay",
+  "command": [
+    "c++",
+    "-include",
+    "/tmp/reign-upstream-control-overlay/control_types.hpp",
+    "-std=c++17",
+    "-fsyntax-only",
+    "-fmax-errors=12",
+    "-include",
+    "/tmp/reign-frontend-native-types/native_prefix.hpp",
+    "-I/tmp/reign-frontend-native-types",
+    "-I/tmp/reign-upstream-control-overlay",
+    "-I/tmp/reign-upstream-runtime-overlay",
+    "-I/tmp/reign-upstream-config-overlay",
+    "-I/workspace/scratch/2e29d93ded9e/reigncarnated/include",
+    "-I/tmp/reign-upstream/interface",
+    "-I/tmp/reign-upstream/graphics",
+    "-I/tmp/reign-upstream/util",
+    "-I/tmp/reign-upstream/system",
+    "-I/tmp/reign-upstream/main",
+    "-I/tmp/reign-upstream/coregame",
+    "-I/tmp/reign-upstream/game",
+    "-I/tmp/reign-upstream/3rdparty",
+    "/tmp/reign-upstream/interface/icontrol.cpp"
+  ],
+  "linked": false,
+  "engine_initialized": false,
+  "menu_rendered": false
+}

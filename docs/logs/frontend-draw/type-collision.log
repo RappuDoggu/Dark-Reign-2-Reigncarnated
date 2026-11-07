@@ -1,0 +1,86 @@
+[  1%] Built target reign_frontend_support
+[  6%] Built target reign_platform
+[  7%] Built target reign_vid_device
+[  8%] Built target dr2_primitives
+[ 10%] Built target dr2_tokenizer
+[ 11%] Built target dr2_vid_state
+[ 12%] Built target installation_probe
+[ 16%] Built target dr2_bitmap_pixels
+[ 17%] Built target reign_checks
+[ 18%] Built target tokenizer_smoke
+[ 19%] Built target platform_smoke
+[ 20%] Built target archive_smoke
+[ 21%] Built target resources_smoke
+[ 23%] Built target tga_smoke
+[ 25%] Built target frontend_support_smoke
+[ 26%] Built target bitmap_surface_smoke
+[ 28%] Built target dr2_tracking
+[ 30%] Built target dr2_events
+[ 33%] Built target dr2_buckets
+[ 37%] Built target dr2_config
+[ 38%] Built target bitmap_conversion_probe
+[ 40%] Built target dr2_bitmap_manager
+[ 41%] Built target bitmap_loader_smoke
+[ 42%] Built target bitmap_pixels_smoke
+[ 43%] Built target bmp_rgba_probe
+[ 44%] Built target bitmap_bmp_smoke
+[ 46%] Built target vid_state_smoke
+[ 47%] Built target configuration_probe
+[ 50%] Built target dr2_runcodes
+[ 51%] Built target config_smoke
+[ 53%] Built target engine_smoke
+[ 54%] Built target tracking_smoke
+[ 55%] Built target event_loop_smoke
+[ 57%] Built target native_event_context_smoke
+[ 60%] Built target dr2_vars
+[ 62%] Built target dr2_iface_metrics
+[ 64%] Built target dr2_fonts
+[ 66%] Built target bucket_smoke
+[ 67%] Built target bitmap_manager_smoke
+[ 69%] Built target bitmap_manager_probe
+[ 70%] Built target font_probe
+[ 72%] Built target font_smoke
+[ 73%] Built target runcodes_smoke
+[ 74%] Built target runtime_handoff_smoke
+[ 75%] Built target vars_smoke
+[ 77%] Built target dr2_control_coordinates
+[ 78%] Built target dr2_frontend_config
+[ 79%] Built target control_types_smoke
+[ 81%] Built target dr2_font_registry
+[ 82%] Built target frontend_config_smoke
+[ 84%] Built target dr2_iface_events
+[ 85%] Built target reign_frontend_fonts
+[ 86%] Built target font_registry_smoke
+[ 87%] Built target interface_metrics_smoke
+[ 88%] Built target font_registry_probe
+[ 89%] Built target reign_frontend_frame
+[ 90%] Building CXX object CMakeFiles/reign_frontend_draw.dir/src/frontend_draw.cpp.o
+[ 91%] Built target frontend_font_smoke
+[ 92%] Building CXX object CMakeFiles/frontend_frame_smoke.dir/tests/frontend_frame_smoke.cpp.o
+/workspace/scratch/2e29d93ded9e/reigncarnated/src/frontend_draw.cpp: In static member function ‘static void reign::FrontendDraw::run(const std::function<void()>&, const Sink&)’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/src/frontend_draw.cpp:18:47: error: cannot convert ‘reign::DrawState*’ to ‘{anonymous}::DrawState*’ in assignment
+   18 |  DrawState state;auto *previous=active;active=&state;
+      |                                               ^~~~~~
+      |                                               |
+      |                                               reign::DrawState*
+/workspace/scratch/2e29d93ded9e/reigncarnated/src/frontend_draw.cpp: In destructor ‘reign::FrontendDraw::run(const std::function<void()>&, const Sink&)::Restore::~Restore()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/src/frontend_draw.cpp:19:56: error: cannot convert ‘reign::DrawState*’ to ‘{anonymous}::DrawState*’ in assignment
+   19 |  struct Restore {DrawState *previous;~Restore(){active=previous;}} restore{previous};
+      |                                                        ^~~~~~~~
+      |                                                        |
+      |                                                        reign::DrawState*
+/workspace/scratch/2e29d93ded9e/reigncarnated/src/frontend_draw.cpp: In static member function ‘static void reign::FrontendDraw::run(const std::function<void()>&, const Sink&)’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/src/frontend_draw.cpp:19:76: error: cannot convert ‘{anonymous}::DrawState*’ to ‘reign::DrawState*’ in initialization
+   19 |  struct Restore {DrawState *previous;~Restore(){active=previous;}} restore{previous};
+      |                                                                            ^~~~~~~~
+      |                                                                            |
+      |                                                                            {anonymous}::DrawState*
+/workspace/scratch/2e29d93ded9e/reigncarnated/src/frontend_draw.cpp:25:33: error: ‘struct reign::DrawState’ has no member named ‘triangles’
+   25 |  for(const auto &triangle:state.triangles){
+      |                                 ^~~~~~~~~
+gmake[2]: *** [CMakeFiles/reign_frontend_draw.dir/build.make:79: CMakeFiles/reign_frontend_draw.dir/src/frontend_draw.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:2128: CMakeFiles/reign_frontend_draw.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[ 92%] Linking CXX executable frontend_frame_smoke
+[ 92%] Built target frontend_frame_smoke
+gmake: *** [Makefile:101: all] Error 2

@@ -1,0 +1,184 @@
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-full-control/icontrol.cpp:24:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+In file included from <command-line>:
+/tmp/reign-full-control/prefix.hpp:6:7: error: ambiguating new declaration of ‘char* Utils::Strrchr(const char*, char)’
+    6 | char *Strrchr(const char *,char);
+      |       ^~~~~~~
+In file included from reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /tmp/reign-full-control/prefix.hpp:1:
+reigncarnated/include/reign/vars_prelude.hpp:10:20: note: old declaration ‘const char* Utils::Strrchr(const char*, char)’
+   10 | inline const char *Strrchr(const char *s,char c){return std::strrchr(s,c);}
+      |                    ^~~~~~~
+In file included from /tmp/reign-upstream/interface/keybind.h:19,
+                 from /tmp/reign-full-control/icontrol.cpp:20:
+/tmp/reign-upstream/util/event.h:20:8: error: using typedef-name ‘using Event = struct reign::event_detail::Event’ after ‘struct’
+   20 | struct Event
+      |        ^~~~~
+reigncarnated/include/reign/control_prelude.hpp:8:7: note: ‘using Event = struct reign::event_detail::Event’ has a previous declaration here
+    8 | using Event = reign::event_detail::Event;
+      |       ^~~~~
+/tmp/reign-upstream/util/event.h:68:11: error: namespace alias ‘EventSys’ not allowed here, assuming ‘reign::event_detail::EventSys’
+   68 | namespace EventSys
+      |           ^~~~~~~~
+/tmp/reign-upstream/util/event.h:106:8: error: default argument given for parameter 3 of ‘void reign::event_detail::EventSys::SetHandler(U16, HANDLERPROC, void*)’ [-fpermissive]
+  106 |   void SetHandler(U16 eventId, HANDLERPROC fn, void *context = NULL);
+      |        ^~~~~~~~~~
+In file included from reigncarnated/include/reign/control_prelude.hpp:4:
+/tmp/reign-upstream-runtime-overlay/event_slice.hpp:99:8: note: previous specification in ‘void reign::event_detail::EventSys::SetHandler(U16, HANDLERPROC, void*)’ here
+   99 |   void SetHandler(U16 eventId, HANDLERPROC fn, void *context = NULL);
+      |        ^~~~~~~~~~
+/tmp/reign-full-control/icontrol.cpp: In destructor ‘virtual IControl::~IControl()’:
+/tmp/reign-full-control/icontrol.cpp:224:5: warning: possible problem detected in invocation of ‘operator delete’ [-Wdelete-incomplete]
+  224 |     delete region;
+      |     ^~~~~~~~~~~~~
+/tmp/reign-full-control/icontrol.cpp:224:12: warning: invalid use of incomplete type ‘class Array<Point<int> >’
+  224 |     delete region;
+      |            ^~~~~~
+reigncarnated/include/reign/control_prelude.hpp:13:25: note: declaration of ‘class Array<Point<int> >’
+   13 | template<class T> class Array;
+      |                         ^~~~~
+/tmp/reign-full-control/icontrol.cpp:224:5: note: neither the destructor nor the class-specific ‘operator delete’ will be called, even if they are declared when the class is defined
+  224 |     delete region;
+      |     ^~~~~~~~~~~~~
+In file included from reigncarnated/include/reign/config_prelude.hpp:2,
+                 from reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from reigncarnated/include/reign/vars_prelude.hpp:2:
+reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-full-control/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-full-control/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+/tmp/reign-full-control/icontrol.cpp: In member function ‘virtual void IControl::DrawCtrlText(const PaintInfo&, const CH*, Color*, const Point<int>&)’:
+/tmp/reign-full-control/icontrol.cpp:615:31: error: cannot convert ‘const CH*’ {aka ‘const short unsigned int*’} to ‘const char*’
+  615 |       lineLen = Utils::Strlen(lineStr);
+      |                               ^~~~~~~
+      |                               |
+      |                               const CH* {aka const short unsigned int*}
+reigncarnated/include/reign/config_prelude.hpp:30:31: note:   initializing argument 1 of ‘U32 Utils::Strlen(const char*)’
+   30 | inline U32 Strlen(const char *s) { return static_cast<U32>(std::strlen(s)); }
+      |                   ~~~~~~~~~~~~^
+/tmp/reign-full-control/icontrol.cpp: In member function ‘virtual void IControl::DrawCtrlFrame(const PaintInfo&)’:
+/tmp/reign-full-control/icontrol.cpp:768:63: error: call of overloaded ‘Color(long int, long int, long int, long int)’ is ambiguous
+  768 |       IFace::RenderRectangle(pi.window, Color(0L, 0L, 0L, 128L), NULL, pi.alphaScale);
+      |                                                               ^
+/tmp/reign-upstream-control-overlay/control_types.hpp:607:10: note: candidate: ‘Color::Color(F32, F32, F32, F32)’
+  607 |   inline Color( F32 rIn, F32 gIn, F32 bIn, F32 aIn)
+      |          ^~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:603:10: note: candidate: ‘Color::Color(F32, F32, F32, U32)’
+  603 |   inline Color( F32 rIn, F32 gIn, F32 bIn, U32 aIn = 255)
+      |          ^~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:599:10: note: candidate: ‘Color::Color(S32, S32, S32, S32)’
+  599 |   inline Color(S32 rIn, S32 gIn, S32 bIn, S32 aIn = 255)
+      |          ^~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:595:10: note: candidate: ‘Color::Color(U32, U32, U32, U32)’
+  595 |   inline Color(U32 rIn, U32 gIn, U32 bIn, U32 aIn = 255)
+      |          ^~~~~
+/tmp/reign-full-control/icontrol.cpp:774:63: error: call of overloaded ‘Color(long int, long int, long int, long int)’ is ambiguous
+  774 |       IFace::RenderRectangle(pi.window, Color(0L, 0L, 0L, 128L), NULL, pi.alphaScale);
+      |                                                               ^
+/tmp/reign-upstream-control-overlay/control_types.hpp:607:10: note: candidate: ‘Color::Color(F32, F32, F32, F32)’
+  607 |   inline Color( F32 rIn, F32 gIn, F32 bIn, F32 aIn)
+      |          ^~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:603:10: note: candidate: ‘Color::Color(F32, F32, F32, U32)’
+  603 |   inline Color( F32 rIn, F32 gIn, F32 bIn, U32 aIn = 255)
+      |          ^~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:599:10: note: candidate: ‘Color::Color(S32, S32, S32, S32)’
+  599 |   inline Color(S32 rIn, S32 gIn, S32 bIn, S32 aIn = 255)
+      |          ^~~~~
+/tmp/reign-upstream-control-overlay/control_types.hpp:595:10: note: candidate: ‘Color::Color(U32, U32, U32, U32)’
+  595 |   inline Color(U32 rIn, U32 gIn, U32 bIn, U32 aIn = 255)
+      |          ^~~~~
+/tmp/reign-full-control/icontrol.cpp: In member function ‘virtual void IControl::Setup(FScope*)’:
+/tmp/reign-full-control/icontrol.cpp:969:20: error: invalid use of incomplete type ‘class Array<Point<int> >’
+  969 |       region = new Array<Point<S32> >;
+      |                    ^~~~~~~~~~~~~~~~~~
+reigncarnated/include/reign/control_prelude.hpp:13:25: note: declaration of ‘class Array<Point<int> >’
+   13 | template<class T> class Array;
+      |                         ^~~~~
+/tmp/reign-full-control/icontrol.cpp:970:13: error: invalid use of incomplete type ‘class Array<Point<int> >’
+  970 |       region->Alloc(size);
+      |             ^~
+reigncarnated/include/reign/control_prelude.hpp:13:25: note: declaration of ‘class Array<Point<int> >’
+   13 | template<class T> class Array;
+      |                         ^~~~~
+/tmp/reign-full-control/icontrol.cpp:975:50: error: no match for ‘operator[]’ (operand types are ‘Array<Point<int> >’ and ‘S32’ {aka ‘int’})
+  975 |         StdLoad::TypePoint<S32>(sScope, (*region)[n]);
+      |                                                  ^
+/tmp/reign-full-control/icontrol.cpp: In member function ‘virtual void IControl::AutoSize()’:
+/tmp/reign-full-control/icontrol.cpp:1339:58: error: cannot convert ‘CH*’ {aka ‘short unsigned int*’} to ‘const char*’
+ 1339 |         newX += paintInfo.font->Width(buf, Utils::Strlen(buf)) + TextWidthPad;
+      |                                                          ^~~
+      |                                                          |
+      |                                                          CH* {aka short unsigned int*}
+reigncarnated/include/reign/config_prelude.hpp:30:31: note:   initializing argument 1 of ‘U32 Utils::Strlen(const char*)’
+   30 | inline U32 Strlen(const char *s) { return static_cast<U32>(std::strlen(s)); }
+      |                   ~~~~~~~~~~~~^
+/tmp/reign-full-control/icontrol.cpp: In member function ‘void IControl::SetupAlignment()’:
+/tmp/reign-full-control/icontrol.cpp:1500:36: error: operands to ‘?:’ have different types ‘IControl*’ and ‘IControlPtr’ {aka ‘reign::tracking_detail::Reaper<IControl>’}
+ 1500 |   IControl *ctrl = alignTo->parent ? alignTo->parent : alignTo;
+      |                    ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-full-control/icontrol.cpp:1500:36: note:   and each type can be converted to the other
+/tmp/reign-full-control/icontrol.cpp: In member function ‘virtual Bool IControl::Deactivate()’:
+/tmp/reign-full-control/icontrol.cpp:1872:54: error: invalid use of incomplete type ‘class Bitmap’
+ 1872 |   if (texture && texture->texture && texture->texture->GetBink() && texture->texture->GetStatus().binkActive)
+      |                                                      ^~
+/tmp/reign-upstream-control-overlay/control_types.hpp:953:7: note: forward declaration of ‘class Bitmap’
+  953 | class Bitmap;
+      |       ^~~~~~
+/tmp/reign-full-control/icontrol.cpp:1872:85: error: invalid use of incomplete type ‘class Bitmap’
+ 1872 |   if (texture && texture->texture && texture->texture->GetBink() && texture->texture->GetStatus().binkActive)
+      |                                                                                     ^~
+/tmp/reign-upstream-control-overlay/control_types.hpp:953:7: note: forward declaration of ‘class Bitmap’
+  953 | class Bitmap;
+      |       ^~~~~~
+/tmp/reign-full-control/icontrol.cpp:1876:21: error: invalid use of incomplete type ‘class Bitmap’
+ 1876 |     texture->texture->BinkSetActive( FALSE);
+      |                     ^~
+/tmp/reign-upstream-control-overlay/control_types.hpp:953:7: note: forward declaration of ‘class Bitmap’
+  953 | class Bitmap;
+      |       ^~~~~~
+/tmp/reign-full-control/icontrol.cpp: In member function ‘virtual U32 IControl::HandleEvent(Event&)’:
+/tmp/reign-full-control/icontrol.cpp:2075:16: error: ‘DIK_TAB’ was not declared in this scope
+ 2075 |           case DIK_TAB:
+      |                ^~~~~~~
+/tmp/reign-full-control/icontrol.cpp: In member function ‘IControl* IControl::Find(S32, S32, Bool)’:
+/tmp/reign-full-control/icontrol.cpp:2247:66: error: invalid use of incomplete type ‘class Array<Point<int> >’
+ 2247 |       in = Point<S32>(x - pos.x, y - pos.y).IsInPolyConvex(region->data, region->count);
+      |                                                                  ^~
+reigncarnated/include/reign/control_prelude.hpp:13:25: note: declaration of ‘class Array<Point<int> >’
+   13 | template<class T> class Array;
+      |                         ^~~~~
+/tmp/reign-full-control/icontrol.cpp:2247:80: error: invalid use of incomplete type ‘class Array<Point<int> >’
+ 2247 |       in = Point<S32>(x - pos.x, y - pos.y).IsInPolyConvex(region->data, region->count);
+      |                                                                                ^~
+reigncarnated/include/reign/control_prelude.hpp:13:25: note: declaration of ‘class Array<Point<int> >’
+   13 | template<class T> class Array;
+      |                         ^~~~~
+/tmp/reign-full-control/icontrol.cpp: In member function ‘const char* IControl::FindVarName(const char*)’:
+/tmp/reign-full-control/icontrol.cpp:2549:31: error: invalid conversion from ‘const char*’ to ‘char*’ [-fpermissive]
+ 2549 |     char *dot = Utils::Strrchr(stripped, '.');
+      |                 ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+      |                               |
+      |                               const char*
+/tmp/reign-full-control/icontrol.cpp: In member function ‘Bool IControl::InWindow(const Point<int>&) const’:
+/tmp/reign-full-control/icontrol.cpp:2630:38: error: invalid use of incomplete type ‘class Array<Point<int> >’
+ 2630 |     return (wnd.IsInPolyConvex(region->data, region->count));
+      |                                      ^~
+reigncarnated/include/reign/control_prelude.hpp:13:25: note: declaration of ‘class Array<Point<int> >’
+   13 | template<class T> class Array;
+      |                         ^~~~~
+compilation terminated due to -fmax-errors=20.

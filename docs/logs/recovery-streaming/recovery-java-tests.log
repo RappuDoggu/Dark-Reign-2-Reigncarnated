@@ -1,0 +1,7 @@
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+Data folder importer: PASS (28 checks)
+ZIP import, multiple archives, missing world, duplicates, traversal, rollback and cancellation: PASS (12)
+Music snapshots, rollback, ZIP safety, limits and timing: PASS (15 checks)

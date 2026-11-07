@@ -1,0 +1,57 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: original_object_tracking
+ 1/26 Test  #1: original_object_tracking .........   Passed    0.03 sec
+      Start  2: original_event_dispatch
+ 2/26 Test  #2: original_event_dispatch ..........   Passed    0.01 sec
+      Start  3: original_variable_runtime
+ 3/26 Test  #3: original_variable_runtime ........   Passed    0.01 sec
+      Start  4: original_runtime_handoff
+ 4/26 Test  #4: original_runtime_handoff .........   Passed    0.01 sec
+      Start  5: original_control_types
+ 5/26 Test  #5: original_control_types ...........   Passed    0.00 sec
+      Start  6: original_render_buckets
+ 6/26 Test  #6: original_render_buckets ..........   Passed    0.02 sec
+      Start  7: original_bitmap_manager
+ 7/26 Test  #7: original_bitmap_manager ..........   Passed    0.01 sec
+      Start  8: original_bitmap_pixels
+ 8/26 Test  #8: original_bitmap_pixels ...........   Passed    0.01 sec
+      Start  9: bitmap_tga_loading
+ 9/26 Test  #9: bitmap_tga_loading ...............   Passed    0.01 sec
+      Start 10: bitmap_bmp_loading
+10/26 Test #10: bitmap_bmp_loading ...............   Passed    0.01 sec
+      Start 11: original_vid_states
+11/26 Test #11: original_vid_states ..............   Passed    0.00 sec
+      Start 12: original_font_registration
+12/26 Test #12: original_font_registration .......   Passed    0.01 sec
+      Start 13: original_interface_metrics
+13/26 Test #13: original_interface_metrics .......   Passed    0.01 sec
+      Start 14: original_font_atlas_and_draw
+14/26 Test #14: original_font_atlas_and_draw .....   Passed    0.02 sec
+      Start 15: original_runcodes
+15/26 Test #15: original_runcodes ................   Passed    0.01 sec
+      Start 16: original_config_parser
+16/26 Test #16: original_config_parser ...........   Passed    0.01 sec
+      Start 17: original_tokenizer
+17/26 Test #17: original_tokenizer ...............   Passed    0.00 sec
+      Start 18: original_engine_primitives
+18/26 Test #18: original_engine_primitives .......   Passed    0.01 sec
+      Start 19: platform_services
+19/26 Test #19: platform_services ................   Passed    0.01 sec
+      Start 20: pack_metadata_inspector
+20/26 Test #20: pack_metadata_inspector ..........   Passed    0.04 sec
+      Start 21: native_archive_reader
+21/26 Test #21: native_archive_reader ............   Passed    0.02 sec
+      Start 22: make_installation_fixture
+22/26 Test #22: make_installation_fixture ........   Passed    0.02 sec
+      Start 23: installation_integration
+23/26 Test #23: installation_integration .........   Passed    0.01 sec
+      Start 24: resource_streams
+24/26 Test #24: resource_streams .................   Passed    0.01 sec
+      Start 25: tga_pixels
+25/26 Test #25: tga_pixels .......................   Passed    0.01 sec
+      Start 26: native_bitmap_storage
+26/26 Test #26: native_bitmap_storage ............   Passed    0.00 sec
+
+100% tests passed out of 26
+
+Total Test time (real) =   0.31 sec

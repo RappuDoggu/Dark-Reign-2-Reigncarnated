@@ -1,0 +1,37 @@
+Test project /workspace/scratch/71fe0796f7e3/build-engine-host
+      Start  1: original_global_engine_abi
+ 1/13 Test  #1: original_global_engine_abi ..........   Passed    0.01 sec
+      Start  2: original_engine_native_io
+ 2/13 Test  #2: original_engine_native_io ...........   Passed    0.04 sec
+      Start  3: original_engine_mission_resources
+ 3/13 Test  #3: original_engine_mission_resources ...   Passed    0.04 sec
+      Start  4: original_engine_mission_start
+ 4/13 Test  #4: original_engine_mission_start .......   Passed    0.03 sec
+      Start  5: original_engine_native_runtime
+ 5/13 Test  #5: original_engine_native_runtime ......   Passed    0.03 sec
+      Start  6: original_engine_native_input
+ 6/13 Test  #6: original_engine_native_input ........   Passed    0.01 sec
+      Start  7: original_engine_frame_clock
+ 7/13 Test  #7: original_engine_frame_clock .........   Passed    0.01 sec
+      Start  8: original_engine_bitmap_io
+ 8/13 Test  #8: original_engine_bitmap_io ...........   Passed    0.01 sec
+      Start  9: original_engine_movie_adapter
+ 9/13 Test  #9: original_engine_movie_adapter .......   Passed    5.91 sec
+      Start 10: original_engine_native_surfaces
+10/13 Test #10: original_engine_native_surfaces .....   Passed    0.01 sec
+      Start 11: original_engine_surface_gles
+11/13 Test #11: original_engine_surface_gles ........   Passed    0.41 sec
+      Start 12: original_engine_imported_music
+12/13 Test #12: original_engine_imported_music ......   Passed    0.02 sec
+      Start 13: original_engine_native_pcm
+13/13 Test #13: original_engine_native_pcm ..........   Passed    0.01 sec
+
+100% tests passed out of 13
+
+Total Test time (real) =   6.53 sec
+
+2/2 complete source units compiled; not linked or executed.
+
+Native Vid attachment, format selection, presentation failure and cleanup pass; fixture device only, no mission rendered.
+
+Link exit 1; 15 reported unresolved symbols; 0 other errors; no mission executed.

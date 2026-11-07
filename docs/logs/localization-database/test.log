@@ -1,0 +1,6 @@
+[engine] Parse Callstack:
+[engine] VarBinary("huge")
+[engine] Database()
+[engine] Parse Callstack:
+[engine] Database()
+Original variable database/nibble order/bounds/nesting/update: PASS (12 checks)

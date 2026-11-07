@@ -1,0 +1,24 @@
+Test project /workspace/scratch/2e29d93ded9e/reigncarnated/build-host
+    Start 1: original_engine_primitives
+1/2 Test #1: original_engine_primitives .......***Failed    0.01 sec
+==134==Can't open /proc/133/task for reading.
+==133==LeakSanitizer has encountered a fatal error.
+==133==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==133==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 2: platform_services
+2/2 Test #2: platform_services ................***Failed    0.01 sec
+==136==Can't open /proc/135/task for reading.
+==135==LeakSanitizer has encountered a fatal error.
+==135==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==135==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+
+0% tests passed, 2 tests failed out of 2
+
+Total Test time (real) =   0.02 sec
+
+The following tests FAILED:
+	  1 - original_engine_primitives (Failed)
+	  2 - platform_services (Failed)
+Errors while running CTest

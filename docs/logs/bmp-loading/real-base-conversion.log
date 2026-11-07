@@ -1,0 +1,9 @@
+BMP loaded: meshview_ground.bmp width=256 height=256
+BMP loaded: meshview_sky.bmp width=256 height=256
+Extended source format loaded: interface_textures_rock.tga type=2 depth=16 width=128 height=119
+Extended source format loaded: studio_brush_circle_g.tga type=9 depth=8 width=32 height=32
+Extended source format loaded: studio_brush_circle_n.tga type=9 depth=8 width=32 height=32
+Extended source format loaded: studio_brush_circle_s.tga type=9 depth=8 width=32 height=32
+Extended source format loaded: studio_brush_irregular.tga type=9 depth=8 width=32 height=32
+BMP loaded: engine_turtle.bmp width=64 height=64
+TGA -> original Pix/CopyLine: independently_compared_images=106 pixels=11741056 extended_formats_loaded=5 PIC_loaded=453 BMP_loaded=3 comparison_mismatches=0

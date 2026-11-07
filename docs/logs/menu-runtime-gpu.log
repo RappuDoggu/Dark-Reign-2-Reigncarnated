@@ -1,0 +1,5 @@
+Context 1 frame 1: 72 geometry, 4 fonts, 295799 nonblack pixels
+Context 1 frame 2: 72 geometry, 4 fonts, 295799 nonblack pixels
+Context 2 frame 1: 72 geometry, 4 fonts, 295799 nonblack pixels
+Context 2 frame 2: 72 geometry, 4 fonts, 295799 nonblack pixels
+Original Login GPU rendering, repeated frames and context recreation: PASS

@@ -1,0 +1,9 @@
+{
+  "v02": {
+    "certificate_sha256": "47599d2ce39a77f1e9acfa628e9ac392a0cc8fa2bb6306b7bac0788328c69486"
+  },
+  "v03": {
+    "certificate_sha256": "47599d2ce39a77f1e9acfa628e9ac392a0cc8fa2bb6306b7bac0788328c69486"
+  },
+  "compatible_signature": true
+}

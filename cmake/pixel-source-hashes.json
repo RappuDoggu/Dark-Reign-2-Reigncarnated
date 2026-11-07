@@ -1,0 +1,5 @@
+{
+  "graphics/bitmap.h": "991d09a1670505bdb5d0d592ecfc65fffddbdedefaa016e41ed16cfac84169ad",
+  "graphics/bitmap.cpp": "55df7fcba1a97311899fc191c34b61745fb34ff8c86da4f46c16e82d9a4e47d6",
+  "graphics/bitmapprimitive.cpp": "6016cf7fd03aded57c6ffa97ed18a59f38d06bcf67b708a9f839b697ec48e46c"
+}

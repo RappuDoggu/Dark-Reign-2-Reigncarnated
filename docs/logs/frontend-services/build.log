@@ -1,0 +1,212 @@
+[  3%] Built target dr2_primitives
+[  4%] Built target reign_vid_device
+[  9%] Built target reign_platform
+[ 10%] Built target reign_frontend_support
+[ 11%] Building CXX object CMakeFiles/dr2_tokenizer.dir/tmp/reign-upstream-config-overlay/tbuf.cpp.o
+[ 11%] Building CXX object CMakeFiles/dr2_vid_state.dir/tmp/reign-upstream-vid-overlay/vid_slice.cpp.o
+[ 12%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icontrol.cpp.o
+[ 13%] Built target reign_checks
+[ 13%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icroot.cpp.o
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream-frontend-overlay/icontrol.cpp:24:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+[ 14%] Building CXX object CMakeFiles/dr2_tokenizer.dir/src/tokenizer.cpp.o
+[ 15%] Linking CXX static library libdr2_vid_state.a
+[ 15%] Built target dr2_vid_state
+[ 17%] Built target platform_smoke
+[ 18%] Built target archive_smoke
+[ 20%] Built target resources_smoke
+[ 21%] Built target tga_smoke
+[ 23%] Built target bitmap_surface_smoke
+[ 24%] Built target frontend_support_smoke
+[ 25%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/dtrack.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/control_prelude.hpp:2,
+                 from /tmp/reign-upstream-control-overlay/control_types.hpp:3,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/frontend_prelude.hpp:3,
+                 from <command-line>:
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp: In destructor ‘virtual IControl::~IControl()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-frontend-overlay/icontrol.cpp:211:3: note: in expansion of macro ‘ASSERT’
+  211 |   ASSERT(!IsActive())
+      |   ^~~~~~
+[ 25%] Linking CXX static library libdr2_tokenizer.a
+[ 26%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icbutton.cpp.o
+[ 26%] Built target dr2_tokenizer
+[ 26%] Building CXX object CMakeFiles/dr2_events.dir/tmp/reign-upstream-runtime-overlay/event_slice.cpp.o
+[ 27%] Building CXX object CMakeFiles/dr2_tracking.dir/tmp/reign-upstream-runtime-overlay/tracksys.cpp.o
+[ 28%] Building CXX object CMakeFiles/dr2_events.dir/src/event_loop.cpp.o
+[ 29%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icwindow.cpp.o
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream-frontend-overlay/icwindow.cpp:18:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+[ 29%] Linking CXX static library libdr2_tracking.a
+[ 29%] Built target dr2_tracking
+[ 29%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/ifvar.cpp.o
+[ 30%] Building CXX object CMakeFiles/dr2_frontend_controls.dir/tmp/reign-upstream-frontend-overlay/icsystembutton.cpp.o
+In file included from /tmp/reign-upstream/interface/fontsys.h:19,
+                 from /tmp/reign-upstream-frontend-overlay/icsystembutton.cpp:17:
+/tmp/reign-upstream/interface/font.h:32:26: warning: multi-character character constant [-Wmultichar]
+   32 |         enum { FILEID  = 'TNOF' };
+      |                          ^~~~~~
+/tmp/reign-upstream/interface/font.h:35:20: warning: multi-character character constant [-Wmultichar]
+   35 |   enum { FILEID2 = 'KROB' };
+      |                    ^~~~~~
+[ 31%] Building CXX object CMakeFiles/dr2_config.dir/src/engine_file.cpp.o
+[ 32%] Linking CXX static library libdr2_events.a
+[ 32%] Built target dr2_events
+[ 32%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/primitive.cpp.o
+[ 32%] Building CXX object CMakeFiles/dr2_config.dir/src/config.cpp.o
+[ 32%] Built target dr2_frontend_controls
+[ 32%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/tmp/reign-upstream-pixel-overlay/pixel_slice.cpp.o
+[ 33%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucketdesc.cpp.o
+[ 34%] Building CXX object CMakeFiles/dr2_bitmap_pixels.dir/src/bitmap_pixels.cpp.o
+[ 35%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/bucket.cpp.o
+[ 36%] Linking CXX static library libdr2_bitmap_pixels.a
+[ 38%] Built target dr2_bitmap_pixels
+[ 39%] Building CXX object CMakeFiles/vid_state_smoke.dir/tests/vid_state_smoke.cpp.o
+[ 40%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/ptree.cpp.o
+[ 40%] Building CXX object CMakeFiles/dr2_buckets.dir/tmp/reign-upstream-bucket-overlay/tranbucket.cpp.o
+[ 41%] Linking CXX executable vid_state_smoke
+[ 41%] Built target vid_state_smoke
+[ 41%] Linking CXX executable installation_probe
+[ 42%] Built target installation_probe
+[ 42%] Linking CXX executable tokenizer_smoke
+[ 43%] Built target tokenizer_smoke
+[ 44%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/fscope.cpp.o
+[ 45%] Built target engine_smoke
+[ 46%] Building CXX object CMakeFiles/tracking_smoke.dir/tests/tracking_smoke.cpp.o
+[ 47%] Linking CXX static library libdr2_buckets.a
+[ 47%] Built target dr2_buckets
+[ 48%] Building CXX object CMakeFiles/event_loop_smoke.dir/tests/event_loop_smoke.cpp.o
+[ 49%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/vnode.cpp.o
+[ 49%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/stdparse.cpp.o
+[ 50%] Linking CXX executable tracking_smoke
+[ 51%] Building CXX object CMakeFiles/dr2_config.dir/tmp/reign-upstream-config-overlay/blockfile.cpp.o
+[ 51%] Built target tracking_smoke
+[ 51%] Building CXX object CMakeFiles/native_event_context_smoke.dir/tests/native_event_context_smoke.cpp.o
+[ 52%] Linking CXX executable event_loop_smoke
+[ 52%] Built target event_loop_smoke
+[ 53%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/str.cpp.o
+[ 54%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varsys.cpp.o
+[ 55%] Linking CXX executable native_event_context_smoke
+[ 56%] Linking CXX static library libdr2_config.a
+[ 56%] Built target native_event_context_smoke
+[ 56%] Built target dr2_config
+[ 57%] Building CXX object CMakeFiles/bucket_smoke.dir/tests/bucket_smoke.cpp.o
+[ 58%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/tmp/reign-upstream-bitmap-manager-overlay/manager_slice.cpp.o
+[ 59%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varitem.cpp.o
+In file included from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/config_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/runtime_prelude.hpp:2,
+                 from /workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/vars_prelude.hpp:2,
+                 from /tmp/reign-upstream-runtime-overlay/varsys.h:3,
+                 from /tmp/reign-upstream-runtime-overlay/varitem.cpp:2:
+/tmp/reign-upstream-runtime-overlay/varitem.cpp: In destructor ‘reign::vars_detail::VarSys::VarItem::~VarItem()’:
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: warning: ‘throw’ will always call ‘terminate’ [-Wterminate]
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+/workspace/scratch/2e29d93ded9e/reigncarnated/include/reign/tokenizer_prelude.hpp:13:29: note: in C++11 destructors default to ‘noexcept’
+   13 | #define ASSERT(x) if (!(x)) throw std::runtime_error("Original tokenizer assertion: " #x);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/reign-upstream-runtime-overlay/varitem.cpp:263:3: note: in expansion of macro ‘ASSERT’
+  263 |   ASSERT(!pNotify);
+      |   ^~~~~~
+[ 60%] Linking CXX executable bitmap_conversion_probe
+[ 61%] Built target bitmap_conversion_probe
+[ 62%] Linking CXX executable bitmap_pixels_smoke
+[ 63%] Building CXX object CMakeFiles/dr2_bitmap_manager.dir/src/bitmap_manager.cpp.o
+[ 63%] Built target bitmap_pixels_smoke
+[ 63%] Linking CXX executable bucket_smoke
+[ 64%] Linking CXX executable bitmap_loader_smoke
+[ 64%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varscope.cpp.o
+[ 64%] Built target bucket_smoke
+[ 64%] Built target bitmap_loader_smoke
+[ 65%] Linking CXX executable bmp_rgba_probe
+[ 65%] Linking CXX executable bitmap_bmp_smoke
+[ 65%] Built target bmp_rgba_probe
+[ 66%] Built target bitmap_bmp_smoke
+[ 66%] Building CXX object CMakeFiles/dr2_fonts.dir/tmp/reign-upstream-font-overlay/font_slice.cpp.o
+[ 67%] Building CXX object CMakeFiles/dr2_iface_metrics.dir/tmp/reign-upstream-metrics-overlay/metrics_slice.cpp.o
+[ 68%] Building CXX object CMakeFiles/dr2_vars.dir/tmp/reign-upstream-runtime-overlay/varptr.cpp.o
+[ 68%] Linking CXX static library libdr2_iface_metrics.a
+[ 68%] Built target dr2_iface_metrics
+[ 69%] Linking CXX executable configuration_probe
+[ 69%] Built target configuration_probe
+[ 69%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/runcodes.cpp.o
+[ 70%] Linking CXX static library libdr2_bitmap_manager.a
+[ 70%] Built target dr2_bitmap_manager
+[ 71%] Linking CXX executable config_smoke
+[ 72%] Building CXX object CMakeFiles/dr2_fonts.dir/src/native_font.cpp.o
+[ 73%] Built target config_smoke
+[ 74%] Linking CXX executable bitmap_manager_smoke
+[ 75%] Built target bitmap_manager_smoke
+[ 75%] Linking CXX executable bitmap_manager_probe
+[ 76%] Linking CXX static library libdr2_vars.a
+[ 77%] Built target bitmap_manager_probe
+[ 78%] Building CXX object CMakeFiles/dr2_runcodes.dir/tmp/reign-upstream-config-overlay/main_exec.cpp.o
+[ 78%] Built target dr2_vars
+[ 79%] Building CXX object CMakeFiles/dr2_runcodes.dir/src/runcode_host.cpp.o
+[ 79%] Building CXX object CMakeFiles/vars_smoke.dir/tests/vars_smoke.cpp.o
+[ 80%] Building CXX object CMakeFiles/runtime_handoff_smoke.dir/tests/runtime_handoff_smoke.cpp.o
+[ 80%] Linking CXX static library libdr2_runcodes.a
+[ 80%] Built target dr2_runcodes
+[ 80%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_coordinates.cpp.o
+[ 81%] Linking CXX executable vars_smoke
+[ 82%] Linking CXX static library libdr2_fonts.a
+[ 82%] Built target dr2_fonts
+[ 82%] Building CXX object CMakeFiles/dr2_frontend_config.dir/tmp/reign-upstream-frontend-overlay/control_stdload.cpp.o
+[ 82%] Built target vars_smoke
+[ 82%] Building CXX object CMakeFiles/dr2_font_registry.dir/tmp/reign-upstream-font-registry-overlay/registry_slice.cpp.o
+[ 83%] Linking CXX executable runtime_handoff_smoke
+[ 83%] Built target runtime_handoff_smoke
+[ 84%] Building CXX object CMakeFiles/dr2_control_coordinates.dir/tmp/reign-upstream-control-overlay/control_color_magic.cpp.o
+[ 85%] Linking CXX executable font_probe
+[ 85%] Built target font_probe
+[ 85%] Linking CXX executable font_smoke
+[ 86%] Built target font_smoke
+[ 87%] Building CXX object CMakeFiles/runcodes_smoke.dir/tests/runcodes_smoke.cpp.o
+[ 88%] Linking CXX static library libdr2_frontend_config.a
+[ 88%] Built target dr2_frontend_config
+[ 89%] Building CXX object CMakeFiles/frontend_config_smoke.dir/tests/frontend_config_smoke.cpp.o
+[ 90%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/font_registry.cpp.o
+[ 91%] Linking CXX static library libdr2_control_coordinates.a
+[ 91%] Built target dr2_control_coordinates
+[ 92%] Building CXX object CMakeFiles/control_types_smoke.dir/tests/control_types_smoke.cpp.o
+[ 92%] Linking CXX executable runcodes_smoke
+[ 92%] Built target runcodes_smoke
+[ 93%] Building CXX object CMakeFiles/dr2_font_registry.dir/src/interface_metrics.cpp.o
+[ 94%] Linking CXX executable frontend_config_smoke
+[ 94%] Linking CXX executable control_types_smoke
+[ 94%] Built target frontend_config_smoke
+[ 94%] Built target control_types_smoke
+[ 95%] Linking CXX static library libdr2_font_registry.a
+[ 95%] Built target dr2_font_registry
+[ 97%] Linking CXX executable font_registry_probe
+[ 97%] Linking CXX executable font_registry_smoke
+[ 97%] Linking CXX executable interface_metrics_smoke
+[ 98%] Built target font_registry_smoke
+[ 99%] Built target interface_metrics_smoke
+[100%] Built target font_registry_probe

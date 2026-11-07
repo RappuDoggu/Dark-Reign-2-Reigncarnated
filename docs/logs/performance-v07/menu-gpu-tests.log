@@ -1,0 +1,36 @@
+[swscaler @ 0x55da8e429fc0] No accelerated colorspace conversion found from yuv420p to rgba.
+[swscaler @ 0x55da8c1b01c0] No accelerated colorspace conversion found from yuv420p to rgba.
+Weather WAVs validated: /tmp/reign-menu-gpu-46742066801795/audio/effect-2.wav /tmp/reign-menu-gpu-46742066801795/audio/effect-3.wav
+Effects: 19 emitters, 28 particles, 23 water clusters, 3 ground splats, 4 water splats
+Context 1 frame 1: 0 geometry, 0 fonts, 0 nonblack pixels
+Effects: 19 emitters, 320 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 1 frame 2: 0 geometry, 0 fonts, 275748 nonblack pixels
+Effects: 19 emitters, 334 particles, 23 water clusters, 2 ground splats, 0 water splats
+Context 1 frame 3: 20 geometry, 9 fonts, 290491 nonblack pixels
+Effects: 19 emitters, 336 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 1 frame 4: 20 geometry, 9 fonts, 293835 nonblack pixels
+Effects: 19 emitters, 336 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 1 frame 5: 20 geometry, 9 fonts, 293925 nonblack pixels
+Weather sound: engine_thunder.wav
+Effects: 19 emitters, 336 particles, 23 water clusters, 3 ground splats, 0 water splats
+Context 1 frame 6: 20 geometry, 9 fonts, 293939 nonblack pixels
+Effects: 19 emitters, 336 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 1 frame 7: 20 geometry, 9 fonts, 293872 nonblack pixels
+Weather WAVs validated: /tmp/reign-menu-gpu-46742066801795/audio/effect-2.wav /tmp/reign-menu-gpu-46742066801795/audio/effect-3.wav
+Effects: 19 emitters, 28 particles, 23 water clusters, 3 ground splats, 4 water splats
+Context 2 frame 1: 0 geometry, 0 fonts, 0 nonblack pixels
+Effects: 19 emitters, 320 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 2 frame 2: 0 geometry, 0 fonts, 275748 nonblack pixels
+Effects: 19 emitters, 334 particles, 23 water clusters, 2 ground splats, 0 water splats
+Context 2 frame 3: 20 geometry, 9 fonts, 290491 nonblack pixels
+Effects: 19 emitters, 336 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 2 frame 4: 20 geometry, 9 fonts, 293835 nonblack pixels
+Effects: 19 emitters, 336 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 2 frame 5: 20 geometry, 9 fonts, 293925 nonblack pixels
+Weather sound: engine_thunder.wav
+Effects: 19 emitters, 336 particles, 23 water clusters, 3 ground splats, 0 water splats
+Context 2 frame 6: 20 geometry, 9 fonts, 293939 nonblack pixels
+Effects: 19 emitters, 336 particles, 23 water clusters, 4 ground splats, 0 water splats
+Context 2 frame 7: 20 geometry, 9 fonts, 293872 nonblack pixels
+Original Instant Action button -> native chooser: PASS
+Original menu GPU rendering and context recreation: PASS

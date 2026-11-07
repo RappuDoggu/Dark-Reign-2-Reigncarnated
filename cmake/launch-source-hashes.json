@@ -1,0 +1,22 @@
+{
+  "game/gameruncodes.cpp": "1f7327f3ab3de50fb731b9e8f3996f85be7948e84079cc470b9a00d152306968",
+  "game/movieplayer.cpp": "e608e5b20bbbf0cb3d3bc75c3cfd995794432071a69f47dc6c6d353388a0d218",
+  "graphics/light.cpp": "f9159ff16724be226b85358a5dca8bed27a605a9667029adec10bf5deaf9752b",
+  "graphics/lightvertsmodel.cpp": "88a9f99f17c0e28812dd96bf97846b1641b2ee5e70e71a94c36ff987c2f53385",
+  "graphics/mesh_render_vertextl.cpp": "6b1ddd55143bfba60ded657c27508dbedb391fb252c897e36b52f002432cacf9",
+  "graphics/terrain_sky.cpp": "29115ac02ee80cf7c155bd09575f7a4a2d5bba1ed01fc2ea3e518d1d1dcf053b",
+  "graphics/vidrend.cpp": "c3d1174fcded2483fefa7e7c242cc831fb1921149fe988f4a331c7feaef79690",
+  "graphics/vid_cmd_dialog.cpp": "2ddc5dd64a0a1c022f786703bedf797d7dd9035c9fab0ac3c7a0da38930160d6",
+  "coregame/environment_light.cpp": "6facdb6e9b19bc9c539232732ccc43b526f73c5b82c2b8da52c3b6ad9d6c5ff6",
+  "coregame/environment_rain.cpp": "ddff1933ef02ba3820263136bce6d84fe36bcc5005e37c8b43632a291d7ded2b",
+  "coregame/viewer_action.cpp": "80ec97baec1b48b83e3803250fdd8f9796c5ce414133eeba4bb64f55aaf072b2",
+  "coregame/particlefx.cpp": "29f7d98ca8fd69352e2400ce0a9da2b63a6544679298439a0ef50177806ad815",
+  "coregame_particles/particle.cpp": "525428e659c4d6d66126c1fbac0743eafcd23bbc45acf51ae151fde4dd1a5bf4",
+  "coregame_particles/embersimulate.cpp": "3d663904492b616b11a6eb43d85cf46599d3a2141a758ff1d4e9c5e02371decf",
+  "coregame_particles/smokesimulate.cpp": "5ac725efb3b03e96d961fb1777acdd910d4b6a2a81beec950043c544805f4f71",
+  "coregame_particles/spriterender.cpp": "65fbebbf184edacf56ee92b2cb87ced17382b5018aa28d94c6721513f046f919",
+  "coregame_particles/particlerender.cpp": "57d7763f5c58b5913caf4756be6fc751d379bf8bafb9534bf0fd17bdf15ce8c4",
+  "graphics/terrain_render_vertextl.cpp": "0ba45e577e29a7121d3c1bf2d0e1e6ffb993acd781b52454dccec0f5e5fdc1af",
+  "graphics/effects_utils.cpp": "0654db16ed6551f26ad164872f0a81e599d3bdb4b84bf22fb00d2668408368ba",
+  "graphics/effects_utils.h": "608576bf649e9d2345531b12b0c6ecd3dc61c2346fe6ee6eea42deb5806ea907"
+}

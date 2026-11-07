@@ -1,0 +1,110 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: native_frontend_support
+ 1/47 Test  #1: native_frontend_support ............   Passed    0.02 sec
+      Start  2: native_frontend_text
+ 2/47 Test  #2: native_frontend_text ...............   Passed    0.01 sec
+      Start  3: original_object_tracking
+ 3/47 Test  #3: original_object_tracking ...........   Passed    0.02 sec
+      Start  4: original_event_dispatch
+ 4/47 Test  #4: original_event_dispatch ............   Passed    0.01 sec
+      Start  5: original_native_event_context
+ 5/47 Test  #5: original_native_event_context ......   Passed    0.01 sec
+      Start  6: original_variable_runtime
+ 6/47 Test  #6: original_variable_runtime ..........   Passed    0.02 sec
+      Start  7: original_runtime_handoff
+ 7/47 Test  #7: original_runtime_handoff ...........   Passed    0.01 sec
+      Start  8: original_control_types
+Process not started
+ /workspace/scratch/2e29d93ded9e/reign-work/build-host/control_types_smoke
+[permission denied]
+ 8/47 Test  #8: original_control_types .............***Not Run   0.00 sec
+      Start  9: original_frontend_config
+ 9/47 Test  #9: original_frontend_config ...........   Passed    0.01 sec
+      Start 10: original_interface_events
+10/47 Test #10: original_interface_events ..........   Passed    0.02 sec
+      Start 11: original_interface_registry
+11/47 Test #11: original_interface_registry ........   Passed    0.02 sec
+      Start 12: original_messagebox_events
+12/47 Test #12: original_messagebox_events .........   Passed    0.01 sec
+      Start 13: frontend_font_bridge
+13/47 Test #13: frontend_font_bridge ...............   Passed    0.02 sec
+      Start 14: frontend_frame_bridge
+14/47 Test #14: frontend_frame_bridge ..............   Passed    0.01 sec
+      Start 15: native_frontend_input
+15/47 Test #15: native_frontend_input ..............   Passed    0.01 sec
+      Start 16: original_frontend_theme
+Process not started
+ /workspace/scratch/2e29d93ded9e/reign-work/build-host/frontend_theme_smoke
+[permission denied]
+16/47 Test #16: original_frontend_theme ............***Not Run   0.00 sec
+      Start 17: original_frontend_triangle
+17/47 Test #17: original_frontend_triangle .........   Passed    0.01 sec
+      Start 18: original_frontend_quads
+18/47 Test #18: original_frontend_quads ............   Passed    0.01 sec
+      Start 19: original_frontend_texture_config
+19/47 Test #19: original_frontend_texture_config ...   Passed    0.01 sec
+      Start 20: original_interface_expressions
+20/47 Test #20: original_interface_expressions .....   Passed    0.02 sec
+      Start 21: original_live_frontend_controls
+21/47 Test #21: original_live_frontend_controls ....   Passed    0.02 sec
+      Start 22: original_frontend_effect_routing
+22/47 Test #22: original_frontend_effect_routing ...   Passed    0.01 sec
+      Start 23: original_console_dispatch
+23/47 Test #23: original_console_dispatch ..........   Passed    0.02 sec
+      Start 24: original_babel_formatting
+24/47 Test #24: original_babel_formatting ..........   Passed    0.01 sec
+      Start 25: original_language_lookup
+25/47 Test #25: original_language_lookup ...........   Passed    0.02 sec
+      Start 26: original_variable_database
+26/47 Test #26: original_variable_database .........   Passed    0.02 sec
+      Start 27: original_render_buckets
+27/47 Test #27: original_render_buckets ............   Passed    0.03 sec
+      Start 28: original_bitmap_manager
+28/47 Test #28: original_bitmap_manager ............   Passed    0.01 sec
+      Start 29: original_bitmap_pixels
+29/47 Test #29: original_bitmap_pixels .............   Passed    0.02 sec
+      Start 30: bitmap_tga_loading
+30/47 Test #30: bitmap_tga_loading .................   Passed    0.02 sec
+      Start 31: bitmap_bmp_loading
+31/47 Test #31: bitmap_bmp_loading .................   Passed    0.02 sec
+      Start 32: original_vid_states
+32/47 Test #32: original_vid_states ................   Passed    0.02 sec
+      Start 33: original_font_registration
+33/47 Test #33: original_font_registration .........   Passed    0.02 sec
+      Start 34: original_interface_metrics
+34/47 Test #34: original_interface_metrics .........   Passed    0.02 sec
+      Start 35: original_font_atlas_and_draw
+35/47 Test #35: original_font_atlas_and_draw .......   Passed    0.06 sec
+      Start 36: original_runcodes
+36/47 Test #36: original_runcodes ..................   Passed    0.01 sec
+      Start 37: original_config_parser
+37/47 Test #37: original_config_parser .............   Passed    0.03 sec
+      Start 38: original_tokenizer
+38/47 Test #38: original_tokenizer .................   Passed    0.01 sec
+      Start 39: original_engine_primitives
+39/47 Test #39: original_engine_primitives .........   Passed    0.02 sec
+      Start 40: platform_services
+40/47 Test #40: platform_services ..................   Passed    0.01 sec
+      Start 41: pack_metadata_inspector
+41/47 Test #41: pack_metadata_inspector ............   Passed    0.08 sec
+      Start 42: native_archive_reader
+42/47 Test #42: native_archive_reader ..............   Passed    0.03 sec
+      Start 43: make_installation_fixture
+43/47 Test #43: make_installation_fixture ..........   Passed    0.03 sec
+      Start 44: installation_integration
+44/47 Test #44: installation_integration ...........   Passed    0.01 sec
+      Start 45: resource_streams
+45/47 Test #45: resource_streams ...................   Passed    0.02 sec
+      Start 46: tga_pixels
+46/47 Test #46: tga_pixels .........................   Passed    0.01 sec
+      Start 47: native_bitmap_storage
+47/47 Test #47: native_bitmap_storage ..............   Passed    0.01 sec
+
+96% tests passed, 2 tests failed out of 47
+
+Total Test time (real) =   0.89 sec
+
+The following tests FAILED:
+	  8 - original_control_types (BAD_COMMAND)
+	 16 - original_frontend_theme (BAD_COMMAND)
+Errors while running CTest

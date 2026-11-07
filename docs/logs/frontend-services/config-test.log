@@ -1,0 +1,13 @@
+[engine] Parse Callstack:
+[engine] MenuTest(2)
+[engine] Parse Callstack:
+[engine] MenuTest()
+[engine] Parse Callstack:
+[engine] MenuTest("wrong")
+[engine] Parse Callstack:
+[engine] MenuTest(1.500000)
+[engine] Parse Callstack:
+[engine] MenuTest(3)
+[engine] Parse Callstack:
+[engine] MenuTest()
+Original menu StdLoad scalar/string/CRC/point paths: PASS (24 checks)

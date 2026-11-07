@@ -1,0 +1,45 @@
+$ /root/.local/bin/ctest --test-dir build-engine-host --output-on-failure
+Test project <workspace>/build-engine-host
+    Start 1: original_global_engine_abi
+1/4 Test #1: original_global_engine_abi ..........   Passed    0.01 sec
+    Start 2: original_engine_native_io
+2/4 Test #2: original_engine_native_io ...........   Passed    0.02 sec
+    Start 3: original_engine_mission_resources
+3/4 Test #3: original_engine_mission_resources ...   Passed    0.04 sec
+    Start 4: original_engine_mission_start
+4/4 Test #4: original_engine_mission_start .......   Passed    0.04 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =   0.12 sec
+exit=0
+
+$ build-engine-host/engine_io_test owned-installation/Dark Reign 2/missions/multiplayer/2crazed.zwp owned-installation/Dark Reign 2/packs/base.zwp
+PASS native File/Dir: I/O, mappings, paths, enumeration, CRC, failure paths
+PASS real archive: 5 entries mapped/read: owned-installation/Dark Reign 2/missions/multiplayer/2crazed.zwp
+PASS real archive: 2074 entries mapped/read: owned-installation/Dark Reign 2/packs/base.zwp
+exit=0
+
+$ build-engine-host/engine_resources_test owned-installation/Dark Reign 2
+DataFile: open files [0]
+PASS original FileSys + PTree: 2crazed, 100x100, 125 object definitions
+PASS original resource unload; gameplay simulation is not linked by this test
+exit=0
+
+$ build-engine-host/engine_mission_start_test owned-installation/Dark Reign 2
+Found 60 missions in 9 groups
+DataFile: open files [0]
+PASS original Missions: discover -> select 2crazed -> activate -> open game.cfg -> queue Mission -> unload
+NOT EXECUTED: Game::PreOpenMission, player/team creation, simulation, renderer, touch controls
+exit=0
+
+$ /root/.local/bin/cmake --build build-engine-android
+[1/4] Building CXX object CMakeFiles/engine_resources_test.dir<workspace>/repo/tests/engine_resources_test.cpp.o
+[2/4] Linking CXX executable engine_resources_test
+[3/4] Building CXX object CMakeFiles/engine_io_test.dir<workspace>/repo/tests/engine_io_test.cpp.o
+[4/4] Linking CXX executable engine_io_test
+exit=0
+
+$ file build-engine-android/engine_mission_start_test
+build-engine-android/engine_mission_start_test: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /system/bin/linker64, BuildID[sha1]=a3b011c82bd96dd0b8af4815e5064949e0291fdf, with debug_info, not stripped
+exit=0

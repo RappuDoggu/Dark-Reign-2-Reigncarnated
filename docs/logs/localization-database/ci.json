@@ -1,0 +1,37 @@
+{
+  "tested_commit": "a8149ed5217a4143372ba3b7d3bb9268ac4c0b15",
+  "run_id": 40226863538,
+  "run_url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40226863538",
+  "host": {
+    "job_id": 121269963511,
+    "conclusion": "success",
+    "tests": 42
+  },
+  "android": {
+    "job_id": 121269963261,
+    "conclusion": "success",
+    "arm64_compilation": true,
+    "software_gles_pixels": true,
+    "device_menu_runtime": false
+  },
+  "artifacts": [
+    {
+      "id": 12611805557,
+      "name": "Reigncarnated-Renderer-Test-v04-arm64",
+      "digest": "sha256:6586014e73ca1663cb44aecfc64ebfc722a0a0449c7bf04b473126d30a08a755",
+      "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40226863538/artifacts/12611805557"
+    },
+    {
+      "id": 12611705750,
+      "name": "android-compilation-and-package-logs",
+      "digest": "sha256:dd06ffe61a1aeb79f8b149645512af1fbcaf8d16c532c96f01952d8ed2f6f14d",
+      "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40226863538/artifacts/12611705750"
+    },
+    {
+      "id": 12611423545,
+      "name": "host-compilation-and-test-logs",
+      "digest": "sha256:d9a7545880eb404b9dbac7d39853c4afe80b74d17766a851f35e27e9dcc16efc",
+      "url": "https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/40226863538/artifacts/12611423545"
+    }
+  ]
+}

@@ -1,0 +1,263 @@
+catalog-build.log
+/tmp/reign-upstream-catalog-overlay/mission_catalog_slice.cpp:72:5: error: ‘PTree’ was not declared in this scope
+/tmp/reign-upstream-catalog-overlay/mission_catalog_slice.cpp:78:9: error: ‘pTree’ was not declared in this scope
+/tmp/reign-upstream-catalog-overlay/mission_catalog_slice.cpp:132:22: error: ‘Strstr’ is not a member of ‘Utils’; did you mean ‘Strchr’?
+
+catalog-build-fixed.log
+/tmp/reign-upstream-config-overlay/tbuf.h:54:23: error: expected ‘)’ before ‘ErrorCallBack’
+/tmp/reign-upstream-config-overlay/tbuf.h:57:9: error: ‘StrBuf’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:80:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/tbuf.h:87:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:88:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:89:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/tbuf.h:90:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/tbuf.h:91:3: error: ‘U8’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:92:3: error: ‘TBufString’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:98:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:99:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:102:23: error: ‘U8_MAX’ was not declared in this scope; did you mean ‘INT8_MAX’?
+/tmp/reign-upstream-config-overlay/tbuf.h:105:3: error: ‘ErrorCallBack’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:111:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/tbuf.h:117:25: error: ‘U8’ has not been declared
+/tmp/reign-upstream-config-overlay/tbuf.h:120:15: error: variable or field ‘FASTCALL’ declared void
+/tmp/reign-upstream-config-overlay/tbuf.h:120:15: error: expected ‘;’ at end of member declaration
+/tmp/reign-upstream-config-overlay/tbuf.h:120:58: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/tbuf.h:120:65: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/tbuf.h:120:24: error: ISO C++ forbids declaration of ‘DefaultError’ with no type [-fpermissive]
+/tmp/reign-upstream-config-overlay/tbuf.h:130:34: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/tbuf.h:130:62: error: ‘ErrorCallBack’ has not been declared
+/tmp/reign-upstream-config-overlay/tbuf.h:154:21: error: ‘U8’ has not been declared
+/tmp/reign-upstream-config-overlay/tbuf.h:169:8: error: variable or field ‘CDECL’ declared void
+/tmp/reign-upstream-config-overlay/tbuf.h:169:8: error: expected ‘;’ at end of member declaration
+/tmp/reign-upstream-config-overlay/tbuf.h:169:14: error: ISO C++ forbids declaration of ‘TokenError’ with no type [-fpermissive]
+/tmp/reign-upstream-config-overlay/tbuf.h:184:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:191:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/tbuf.h:130:83: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/tbuf.h:200:12: error: ‘setup’ was not declared in this scope; did you mean ‘Setup’?
+/tmp/reign-upstream-config-overlay/tbuf.h:200:5: error: ‘ASSERT’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/tbuf.h:208:12: error: ‘setup’ was not declared in this scope; did you mean ‘Setup’?
+/tmp/reign-upstream-config-overlay/tbuf.h:208:5: error: ‘ASSERT’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/tbuf.h:209:13: error: ‘bufName’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:74:5: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:98:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:107:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/nlist.h:136:5: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/nlist.h:206:5: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/nlist.h:276:5: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:288:5: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:300:5: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:454:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:476:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/nlist.h:487:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:586:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/nlist.h:45:14: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:51:14: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:115:19: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:116:5: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:145:23: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:145:45: error: class ‘NList<DATA>::Iterator’ does not have any field named ‘pos’
+/tmp/reign-upstream-config-overlay/nlist.h:169:7: error: class ‘NList<DATA>::Iterator’ does not have any field named ‘pos’
+/tmp/reign-upstream-config-overlay/nlist.h:182:7: error: expected ‘;’ before ‘ASSERT’
+/tmp/reign-upstream-config-overlay/nlist.h:195:14: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:197:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:225:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:242:7: error: expected ‘;’ before ‘current’
+/tmp/reign-upstream-config-overlay/nlist.h:243:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:255:7: error: expected ‘;’ before ‘current’
+/tmp/reign-upstream-config-overlay/nlist.h:256:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:313:41: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:324:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:332:15: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:347:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:348:41: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:359:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:367:15: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:382:7: error: ‘pos’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:383:41: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:396:10: error: there are no arguments to ‘IsEmpty’ that depend on a template parameter, so a declaration of ‘IsEmpty’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:398:7: error: there are no arguments to ‘ERR_FATAL’ that depend on a template parameter, so a declaration of ‘ERR_FATAL’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:408:5: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:408:18: error: ‘TRUE’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:419:5: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:419:18: error: ‘FALSE’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:430:5: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:430:18: error: ‘FALSE’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:442:10: error: there are no arguments to ‘IsEmpty’ that depend on a template parameter, so a declaration of ‘IsEmpty’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:444:7: error: there are no arguments to ‘ERR_FATAL’ that depend on a template parameter, so a declaration of ‘ERR_FATAL’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:500:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:500:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:512:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:512:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:513:33: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:524:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:524:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:536:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:536:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:537:33: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:554:5: error: expected ‘;’ before ‘Node’
+/tmp/reign-upstream-config-overlay/nlist.h:556:13: error: ‘next’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:556:33: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:573:5: error: expected ‘;’ before ‘Node’
+/tmp/reign-upstream-config-overlay/nlist.h:575:13: error: ‘prev’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:575:33: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:628:5: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:639:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:639:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:667:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:667:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:710:5: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:721:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:721:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:745:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:745:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:806:5: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:820:14: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:820:7: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:849:7: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:868:14: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:868:7: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:897:7: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:941:5: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:952:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:952:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:976:10: error: there are no arguments to ‘IsEmpty’ that depend on a template parameter, so a declaration of ‘IsEmpty’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:1001:18: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:1021:18: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:1041:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:1041:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:1056:10: error: there are no arguments to ‘IsEmpty’ that depend on a template parameter, so a declaration of ‘IsEmpty’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:1080:12: error: ‘haveMember’ was not declared in this scope; did you mean ‘nodeMember’?
+/tmp/reign-upstream-config-overlay/nlist.h:1080:5: error: there are no arguments to ‘ASSERT’ that depend on a template parameter, so a declaration of ‘ASSERT’ must be available [-fpermissive]
+/tmp/reign-upstream-config-overlay/nlist.h:1088:31: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:1101:18: error: ‘count’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:1103:12: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/vnode.h:106:7: error: ‘S32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:112:7: error: ‘F32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:119:7: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:126:7: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:161:21: error: ‘S32’ has not been declared
+/tmp/reign-upstream-config-overlay/vnode.h:162:20: error: ‘F32’ has not been declared
+/tmp/reign-upstream-config-overlay/vnode.h:169:3: error: ‘S32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:170:3: error: ‘F32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:172:20: error: ‘Bool’ has not been declared
+/tmp/reign-upstream-config-overlay/vnode.h:175:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:182:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/vnode.h:172:33: error: ‘TRUE’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/fscope.h:55:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:72:30: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:75:30: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:83:44: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:87:10: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:90:8: error: variable or field ‘NORETURN’ declared void
+/tmp/reign-upstream-config-overlay/fscope.h:90:8: error: expected ‘;’ at end of member declaration
+/tmp/reign-upstream-config-overlay/fscope.h:90:17: error: ‘CDECL’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:102:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:105:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:108:23: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:111:23: error: ‘Bool’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:114:53: error: ‘Bool’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:118:3: error: ‘S32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:119:3: error: ‘F32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:125:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:126:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:127:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:133:3: error: ‘S32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:134:3: error: ‘F32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:138:3: error: ‘S32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:139:3: error: ‘F32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:143:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:144:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:145:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:157:41: error: ‘Bool’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:160:41: error: ‘U32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:167:43: error: ‘S32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:168:42: error: ‘F32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:172:24: error: ‘S32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:173:23: error: ‘F32’ has not been declared
+/tmp/reign-upstream-config-overlay/fscope.h:185:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:202:3: error: ‘U32’ does not name a type
+/tmp/reign-upstream-config-overlay/fscope.h:208:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/fscope.h:99:32: error: ‘NULL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/fscope.h:111:39: error: ‘FALSE’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/fscope.h:114:69: error: ‘TRUE’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/fscope.h:157:57: error: ‘TRUE’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/ptree.h:85:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/ptree.h:98:3: error: ‘BinTree’ does not name a type; did you mean ‘PTree’?
+/tmp/reign-upstream-config-overlay/ptree.h:101:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/ptree.h:131:41: error: ‘BinTree’ has not been declared
+/tmp/reign-upstream-config-overlay/ptree.h:131:48: error: expected ‘,’ or ‘...’ before ‘<’ token
+/tmp/reign-upstream-config-overlay/ptree.h:132:23: error: ‘BinTree’ has not been declared
+/tmp/reign-upstream-config-overlay/ptree.h:132:30: error: expected ‘,’ or ‘...’ before ‘<’ token
+/tmp/reign-upstream-config-overlay/ptree.h:139:13: error: expected ‘)’ before ‘useCrc’
+/tmp/reign-upstream-config-overlay/ptree.h:143:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/ptree.h:149:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-config-overlay/ptree.h:152:3: error: ‘Bool’ does not name a type; did you mean ‘bool’?
+/tmp/reign-upstream-control-overlay/control_types.hpp:1754:24: error: ‘class NList<IControl>::Node’ has no member named ‘InUse’
+/tmp/reign-upstream-catalog-overlay/mission_catalog_slice.cpp:73:11: error: use of deleted function ‘PTree::PTree()’
+/tmp/reign-upstream-config-overlay/ptree.h:62:7: error: no matching function for call to ‘FScope::FScope()’
+/tmp/reign-upstream-catalog-overlay/mission_catalog_slice.cpp:79:15: error: ‘class PTree’ has no member named ‘AddFile’
+/tmp/reign-upstream-catalog-overlay/mission_catalog_slice.cpp:87:25: error: ‘class FScope’ has no member named ‘NameCrc’
+/tmp/reign-upstream-catalog-overlay/mission_catalog_slice.cpp:273:63: error: ‘class NList<Missions::Group>’ has no member named ‘GetCount’
+/tmp/reign-upstream-config-overlay/nlist.h:639:22: error: ‘ASSERT’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:640:11: error: ‘ASSERT’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation
+/tmp/reign-upstream-config-overlay/nlist.h:645:18: error: ‘class NList<Missions::Group>::Node’ has no member named ‘InUse’
+/tmp/reign-upstream-config-overlay/nlist.h:645:11: error: ‘ASSERT’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation
+/tmp/reign-upstream-config-overlay/nlist.h:1056:17: error: ‘IsEmpty’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:396:17: error: ‘IsEmpty’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:398:16: error: ‘ERR_FATAL’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:181:13: error: ‘ASSERT’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:442:17: error: ‘IsEmpty’ was not declared in this scope
+/tmp/reign-upstream-config-overlay/nlist.h:444:16: error: ‘ERR_FATAL’ was not declared in this scope
+
+catalog-build-fixed2.log
+mission_catalog.cpp:(.text+0x52cc): undefined reference to `FileSys::Session::Session(std::function<std::vector<unsigned char, std::allocator<unsigned char> > (std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)>)'
+/usr/bin/ld: mission_catalog.cpp:(.text+0x5349): undefined reference to `FileSys::Session::~Session()'
+/usr/bin/ld: mission_catalog.cpp:(.text+0x53ef): undefined reference to `FileSys::Session::~Session()'
+ptree.cpp:(.text+0x1718): undefined reference to `FileSys::Open(char const*)'
+/usr/bin/ld: ptree.cpp:(.text+0x1810): undefined reference to `FileSys::Close(FileSys::DataFile*)'
+/usr/bin/ld: ptree.cpp:(.text+0x2212): undefined reference to `FileSys::Close(FileSys::DataFile*)'
+ptree.cpp:(.text+0x7f23): undefined reference to `File::Write(void const*, unsigned int)'
+ptree.cpp:(.text+0x8cf9): undefined reference to `File::Open(char const*, unsigned int)'
+/usr/bin/ld: ptree.cpp:(.text+0x9186): undefined reference to `File::Close()'
+ptree.cpp:(.text+0xa88a): undefined reference to `File::Unlink(char const*)'
+ptree.cpp:(.text._ZN4File7WriteU8Eh[_ZN4File7WriteU8Eh]+0xe6): undefined reference to `File::Write(void const*, unsigned int)'
+blockfile.cpp:(.text+0xed2): undefined reference to `File::Seek(unsigned int, unsigned int)'
+blockfile.cpp:(.text+0x10d8): undefined reference to `FileSys::DataFile::Seek(unsigned int)'
+blockfile.cpp:(.text+0x135c): undefined reference to `File::Write(void const*, unsigned int)'
+blockfile.cpp:(.text+0x1611): undefined reference to `FileSys::DataFile::Read(void*, unsigned int)'
+blockfile.cpp:(.text+0x1adf): undefined reference to `File::Open(char const*, unsigned int)'
+/usr/bin/ld: blockfile.cpp:(.text+0x1ce8): undefined reference to `FileSys::Open(char const*)'
+/usr/bin/ld: blockfile.cpp:(.text+0x20a4): undefined reference to `FileSys::Close(FileSys::DataFile*)'
+/usr/bin/ld: blockfile.cpp:(.text+0x23e6): undefined reference to `FileSys::Close(FileSys::DataFile*)'
+/usr/bin/ld: blockfile.cpp:(.text+0x2d61): undefined reference to `FileSys::Close(FileSys::DataFile*)'
+blockfile.cpp:(.text+0x3145): undefined reference to `FileSys::Close(FileSys::DataFile*)'
+/usr/bin/ld: blockfile.cpp:(.text+0x3206): undefined reference to `File::Close()'
+collect2: error: ld returned 1 exit status
+
+campaign-ui-build.log
+/tmp/reign-upstream/interface/icdroplist.h:101:3: error: ‘ICListBoxPtr’ does not name a type
+/tmp/reign-upstream/interface/icdroplist.h:136:3: error: ‘ICListBox’ does not name a type
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:112:19: error: ‘TRANSPARENT’ was not declared in this scope; did you mean ‘STYLE_TRANSPARENT’?
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:173:20: error: ‘GetListBox’ was not declared in this scope; did you mean ‘ICListBox’?
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:178:37: error: invalid use of incomplete type ‘class IFaceVar’
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:244:5: error: ‘listBox’ was not declared in this scope; did you mean ‘ICListBox’?
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:253:5: error: ‘listBox’ was not declared in this scope; did you mean ‘ICListBox’?
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:258:3: error: ‘listBox’ was not declared in this scope; did you mean ‘ICListBox’?
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:385:16: error: ‘listBox’ was not declared in this scope; did you mean ‘ICListBox’?
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:407:16: error: invalid use of incomplete type ‘class IFaceVar’
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:427:68: error: invalid use of incomplete type ‘class IFaceVar’
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:505:24: error: invalid use of incomplete type ‘class IFaceVar’
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:510:28: error: ‘GetListBox’ was not declared in this scope; did you mean ‘ICListBox’?
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:567:16: error: invalid use of incomplete type ‘class IFaceVar’
+/tmp/reign-upstream-frontend-overlay/icdroplist.cpp:577:13: error: no declaration matches ‘ICListBox* ICDropList::GetListBox()’
+
+campaign-ui-build-fixed.log
+game_campaignselection.cpp:(.text+0x5946): undefined reference to `TextureInfo::TextureInfo(Bitmap*, unsigned int)'
+collect2: error: ld returned 1 exit status
+
+preview-test-build.log
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o):(.data.rel..Lubsan_data830+0x18): undefined reference to `typeinfo for ICRoot'
+iface_factory.cpp:(.text._ZN5IFace10DeactivateEPKc+0x17e): undefined reference to `ICRoot::FindByName(char const*, IControl*)'
+/usr/bin/ld: libdr2_iface_events.a(iface_factory.cpp.o):(.data.rel..Lubsan_data845+0x18): undefined reference to `typeinfo for ICRoot'
+iface_factory.cpp:(.text._ZN5IFace10FindByNameEPKcP8IControl+0x302): undefined reference to `ICRoot::FindByName(char const*, IControl*)'
+collect2: error: ld returned 1 exit status

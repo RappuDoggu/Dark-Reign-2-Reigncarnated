@@ -1,0 +1,41 @@
+=================================================================
+==5==ERROR: AddressSanitizer: new-delete-type-mismatch on 0x50f000000400 in thread T0:
+  object passed to delete has wrong type:
+  size of the allocated type:   176 bytes;
+  size of the deallocated type: 184 bytes.
+    #0 0x7f6b1ebda5e8 in operator delete(void*, unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:164
+    #1 0x5631a45ffb31 in ICClass::~ICClass() (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1bfb31) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #2 0x5631a460100d in BinTree<ICClass, unsigned int>::Dispose(unsigned int) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1c100d) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #3 0x5631a45fee78 in IFace::UnregisterControlClass(char const*) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1bee78) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #4 0x5631a45f20c7 in main::{lambda()#1}::operator()() const (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b20c7) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #5 0x5631a45f53d9 in void std::__invoke_impl<void, main::{lambda()#1}&>(std::__invoke_other, main::{lambda()#1}&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b53d9) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #6 0x5631a45f4b07 in std::enable_if<is_invocable_r_v<void, main::{lambda()#1}&>, void>::type std::__invoke_r<void, main::{lambda()#1}&>(main::{lambda()#1}&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b4b07) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #7 0x5631a45f408b in std::_Function_handler<void (), main::{lambda()#1}>::_M_invoke(std::_Any_data const&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b408b) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #8 0x5631a46263b1 in std::function<void ()>::operator()() const (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1e63b1) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #9 0x5631a461b03b in reign::EventLoop::run_native(std::function<void ()> const&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1db03b) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #10 0x5631a460457c in reign::InterfaceEvents::run(std::function<void ()> const&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1c457c) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #11 0x5631a45f2ac3 in main (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b2ac3) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #12 0x7f6b1df461c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: 274eec488d230825a136fa9c4d85370fed7a0a5e)
+    #13 0x7f6b1df4628a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: 274eec488d230825a136fa9c4d85370fed7a0a5e)
+    #14 0x5631a45eedc4 in _start (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1aedc4) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+
+0x50f000000400 is located 0 bytes inside of 176-byte region [0x50f000000400,0x50f0000004b0)
+allocated by thread T0 here:
+    #0 0x7f6b1ebd9548 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:95
+    #1 0x5631a462b76c in FScope::Dup(FScope*) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1eb76c) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #2 0x5631a45ff535 in IFace::DefineControlType(FScope*) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1bf535) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #3 0x5631a45f0e3c in main::{lambda()#1}::operator()() const (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b0e3c) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #4 0x5631a45f53d9 in void std::__invoke_impl<void, main::{lambda()#1}&>(std::__invoke_other, main::{lambda()#1}&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b53d9) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #5 0x5631a45f4b07 in std::enable_if<is_invocable_r_v<void, main::{lambda()#1}&>, void>::type std::__invoke_r<void, main::{lambda()#1}&>(main::{lambda()#1}&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b4b07) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #6 0x5631a45f408b in std::_Function_handler<void (), main::{lambda()#1}>::_M_invoke(std::_Any_data const&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b408b) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #7 0x5631a46263b1 in std::function<void ()>::operator()() const (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1e63b1) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #8 0x5631a461b03b in reign::EventLoop::run_native(std::function<void ()> const&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1db03b) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #9 0x5631a460457c in reign::InterfaceEvents::run(std::function<void ()> const&) (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1c457c) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #10 0x5631a45f2ac3 in main (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1b2ac3) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+    #11 0x7f6b1df461c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: 274eec488d230825a136fa9c4d85370fed7a0a5e)
+    #12 0x7f6b1df4628a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: 274eec488d230825a136fa9c4d85370fed7a0a5e)
+    #13 0x5631a45eedc4 in _start (/workspace/scratch/2e29d93ded9e/reign-work/build-host/interface_registry_smoke+0x1aedc4) (BuildId: f584b13477a33ff6565a509516c0b000a7a74613)
+
+SUMMARY: AddressSanitizer: new-delete-type-mismatch ../../../../src/libsanitizer/asan/asan_new_delete.cpp:164 in operator delete(void*, unsigned long)
+==5==HINT: if you don't care about these errors you may set ASAN_OPTIONS=new_delete_type_mismatch=0
+==5==ABORTING

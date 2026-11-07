@@ -1,0 +1,339 @@
+deserto_barrel01.god cycles:
+deserto_guardtower01.god cycles:
+deserto_guardtower02.god cycles:
+do_2x2_landingpad.god cycles:
+do_3x3_landingpad.god cycles:
+do_airport45.god cycles:
+do_airport90.god cycles:
+do_airport_pad.god cycles:
+do_amb_archrock.god cycles:
+do_amb_archrock02.god cycles:
+do_amb_rock01.god cycles:
+do_amb_rock02.god cycles:
+do_amb_rock03.god cycles:
+do_amb_rock04.god cycles:
+do_amb_rock05.god cycles:
+do_amb_rock06.god cycles:
+do_amb_tree01.god cycles:
+do_amb_tree02.god cycles:
+do_amb_tree03.god cycles:
+do_cargolift.god cycles:
+do_dockboxes.god cycles:
+do_domegate.god cycles:
+do_domewall.god cycles:
+do_fueltank01.god cycles:
+do_fueltank02.god cycles:
+do_fueltank03.god cycles:
+do_hangarbay.god cycles:
+do_pier_01.god cycles:
+do_pier_02.god cycles:
+do_pier_des_01.god cycles:
+do_pier_des_02.god cycles:
+do_pier_des_03.god cycles:
+do_pier_des_04.god cycles:
+do_pier_shore_01.god cycles:
+do_pier_shore_02.god cycles:
+do_pier_t_01.god cycles:
+do_pipe2_1x1.god cycles:
+do_pipe2_1x1_tsec.god cycles:
+do_pipe2_1x1_tsec_1.god cycles:
+do_pipe2_2x1_down.god cycles:
+do_pipe2_2x2_turn.god cycles:
+do_pipe2_3x3_turn.god cycles:
+do_pipe2_4x1.god cycles:
+do_pipe_1x1.god cycles:
+do_pipe_1x1_cap.god cycles:
+do_pipe_1x1_tsec.god cycles:
+do_pipe_2x1_down.god cycles:
+do_pipe_2x2_turn.god cycles:
+do_pipe_3x3_terminal.god cycles:
+do_pipe_3x3_turn.god cycles:
+do_pipe_4x1.god cycles:
+do_pipe_4x2_terminal.god cycles:
+do_sewer_ent.god cycles:
+do_ship_01.god cycles:
+do_ship_02.god cycles:
+jun_deathfield.god cycles: preprocess default POSTPROCESS process
+sig_spike01.god cycles:
+catwalk.god cycles:
+com-pipe_bend_1.god cycles:
+com-pipe_end.god cycles:
+com-pipe_long.god cycles:
+com-pipe_t.god cycles:
+spr_bridge_enter.god cycles:
+spr_bridge_mid.god cycles:
+spr_dwelling01.god cycles:
+spr_dwelling02.god cycles:
+spr_dwelling03.god cycles:
+spw_auto01.god cycles:
+spw_auto02.god cycles:
+spw_auto03.god cycles:
+spw_billboard01.god cycles:
+spw_billboard02.god cycles:
+spw_billboard03.god cycles:
+spw_billboard04.god cycles:
+spw_billboard05.god cycles:
+spw_bridge_45.god cycles:
+spw_bridge_90.god cycles:
+spw_building01.god cycles:
+spw_building02.god cycles:
+spw_building03.god cycles:
+spw_building04.god cycles:
+spw_building05.god cycles:
+spw_building06.god cycles:
+spw_building07.god cycles:
+spw_building08.god cycles:
+spw_bussta.god cycles:
+spw_door_01.god cycles:
+spw_lamppost.god cycles:
+spw_newsta.god cycles:
+spw_ruin01.god cycles:
+spw_ruin02.god cycles:
+spw_ruin03.god cycles:
+spw_streetlamp_broken.god cycles:
+spw_trash_girder.god cycles:
+spw_trash_large.god cycles:
+spw_trash_med.god cycles:
+spw_trash_refer.god cycles:
+spw_trash_small.god cycles:
+spw_trash_spikes.god cycles:
+spw_waterpipe.god cycles:
+collector 0.6600.god cycles:
+chunk01.god cycles:
+chunk02.god cycles:
+chunk03.god cycles:
+chunk04.god cycles:
+chunk05.god cycles:
+chunk1.god cycles:
+chunk2.god cycles:
+civilian.god cycles: move default
+do_controltower.god cycles:
+falcon_tower.god cycles:
+gibchunk01.god cycles:
+gibchunk02.god cycles:
+gibchunk03.god cycles:
+iochnk01.god cycles:
+iochnk02.god cycles:
+iochnk03.god cycles:
+iochnk04.god cycles:
+iochnk05.god cycles:
+jda_shuttle.god cycles:
+missile.god cycles:
+mortar_lrg.god cycles:
+mortar_sml.god cycles:
+ramp_10.god cycles:
+ramp_10_steep.god cycles:
+ramp_15.god cycles:
+ramp_20.god cycles:
+resource_0_0.god cycles: default
+resource_0_1.god cycles: default
+resource_regen_0_0.god cycles: default
+resource_regen_0_1.god cycles: default
+rocket_lrg.god cycles:
+rocket_sml.god cycles:
+sig_tograncolumn.god cycles:
+sig_togranpowergen.god cycles:
+sig_togranpylon.god cycles:
+sig_tograntemple.god cycles:
+engine_arrow.god cycles:
+engine_formation.god cycles:
+engine_location.god cycles:
+engine_origin.god cycles:
+engine_pandemic.god cycles:
+engine_sky.god cycles:
+jda_aatower.god cycles:
+jda_actower.god cycles: PREPROCESS default POSTPROCESS PROCESS
+jda_actower_upgrade.god cycles:
+jda_aircarrier.god cycles:
+jda_aircontrol-upgrade.god cycles:
+jda_aircontrol.god cycles:
+jda_aptower.god cycles:
+jda_artillery.god cycles: default FIRE
+jda_attackboat.god cycles:
+jda_attower.god cycles: default FIRE
+jda_blackstar.god cycles:
+jda_bulldog.god cycles:
+jda_cameratower.god cycles: default
+jda_cloakbunker.god cycles:
+jda_collector.god cycles: default LOAD
+jda_constructor.god cycles: CONSUME PREPROCESS default POSTPROCESS PROCESS
+jda_dock.god cycles:
+jda_dock_upgrade.god cycles:
+jda_enforcer.god cycles: MOVE PREFIRE IDLE default IDLE2 FIRE
+jda_forcewall.god cycles:
+jda_fusiongen.god cycles:
+jda_growler.god cycles:
+jda_guardian.god cycles: MOVE PREFIRE IDLE default IDLE2 FIRE
+jda_headquarters.god cycles:
+jda_headquarters_upgrade1.god cycles:
+jda_headquarters_upgrade2.god cycles:
+jda_hovercollector.god cycles: default LOAD
+jda_motorpool.god cycles:
+jda_motorpool_upgrade.god cycles:
+jda_precinct.god cycles:
+jda_precinct_upgrade.god cycles:
+jda_psilab.god cycles:
+jda_psitech.god cycles: PREPROCESS MOVE IDLE default IDLE2 PROCESS
+jda_publicteleport.god cycles:
+jda_radome.god cycles: PREPROCESS default PROCESS
+jda_radome_open.god cycles: default
+jda_radome_upgrade.god cycles: default
+jda_refinery.god cycles:
+jda_repairboat.god cycles: PREPROCESS default POSTPROCESS PROCESS
+jda_rover.god cycles:
+jda_sentinel.god cycles: MOVE PREFIRE IDLE default IDLE2 FIRE
+jda_skyfortress.god cycles: PREFIRE POSTFIRE default
+jda_skyfortress_base.god cycles:
+jda_solarstation.god cycles: CONSTRUCTING default
+jda_spy.god cycles: MOVE SURRENDER IDLE default IDLE2
+jda_stasistruck.god cycles: default PROCESS
+jda_striker.god cycles:
+jda_telepad.god cycles:
+jda_telepad_return.god cycles:
+jda_walker.god cycles: MOVE IDLE default
+reaper 0.1316.god cycles:
+scaver 0.0216.god cycles:
+bridge_enter.god cycles:
+bridge_mid.god cycles:
+cineractive_centerpeice.god cycles:
+cineractive_chick.god cycles: MAD default TALK
+cineractive_rumbler.god cycles: MAD default TALK
+cineractive_senator.god cycles: MAD default TALK
+cineractive_voodun.god cycles: MAD default TALK
+domes_statue_enforcer.god cycles:
+dome_billboard.god cycles:
+dome_building01.god cycles:
+dome_building02.god cycles:
+dome_building03.god cycles:
+dome_building04.god cycles:
+dome_building05.god cycles:
+dome_garbagecan.god cycles:
+dome_gates.god cycles: CLOSE default
+dome_parkbench.god cycles:
+firepoint.god cycles:
+fp_fence.god cycles:
+j09_cwcouncil.god cycles:
+jda_bridge.god cycles:
+jda_floatingplatform.god cycles: default
+jda_juggarage.god cycles:
+jda_juggernaut.god cycles:
+jda_light.god cycles:
+jda_obelisk.god cycles:
+jda_relaystation.god cycles: default
+jda_sentrygun.god cycles: PREFIRE POSTFIRE default FIRE
+jda_shuttle_crash.god cycles:
+jda_spy2.god cycles: MOVE idle default
+mis_cwcouncil.god cycles:
+mis_cwlimo.god cycles:
+mis_defensectrl.god cycles:
+mis_fissionctrl.god cycles: default
+mis_fissionctrlrod.god cycles:
+mis_portalpiece.god cycles:
+mis_transtruck.god cycles:
+mis_voodundec.god cycles:
+s05_cpanel.god cycles:
+s05_forestdoor.god cycles:
+s05_forestdoor_d.god cycles:
+s05_rocket.god cycles:
+s06_impale01.god cycles:
+s06_impale02.god cycles:
+s06_impale03.god cycles:
+s08_pylon.god cycles:
+senator.god cycles: MOVE default
+sew_creature.god cycles: move IDLE default fire
+sew_hydro_door.god cycles:
+shell_scoreboard.god cycles: default
+spr_judasleader.god cycles: MOVE PREFIRE POSTFIRE IDLE default IDLE2 FIRE
+spr_light.god cycles:
+spr_voodunleader.god cycles: PREPROCESS MOVE IDLE default POSTPROCESS IDLE2 PROCESS
+spw_billboard_zepp.god cycles: default
+temple_fire.god cycles:
+temple_magicbox.god cycles:
+togransuicidedude.god cycles: default
+togran_anim.god cycles: default PROCESS
+togran_telepad.god cycles:
+togran_temple.god cycles: PREPROCESS default PROCESS
+s01_path_lamp 1.0000.god cycles:
+spr_aatower.god cycles: default FIRE
+spr_aerodrome.god cycles: PREPROCESS default POSTPROCESS PROCESS
+spr_aptower.god cycles:
+spr_artilleryboat.god cycles:
+spr_assaultboat.god cycles:
+spr_baron.god cycles: MOVE default FIRE DEATH
+spr_cameratower.god cycles:
+spr_chopper.god cycles: default
+spr_collector.god cycles: default LOAD
+spr_constructor.god cycles: consume preprocess default postprocess process
+spr_forcewall.god cycles:
+spr_garage.god cycles: default PROCESS
+spr_garage_upgrade.god cycles:
+spr_gogo.god cycles:
+spr_heavytank.god cycles: default FIRE
+spr_hospital.god cycles: default PROCESS
+spr_hovercollector.god cycles: default LOAD
+spr_hq.god cycles:
+spr_hq_upgrade.god cycles: default PROCESS
+spr_hq_upgrade2.god cycles:
+spr_judas.god cycles: MOVE PREFIRE POSTFIRE IDLE default IDLE2 FIRE
+spr_juggarage.god cycles: default PROCESS
+spr_juggernaut.god cycles:
+spr_mortargirl.god cycles: MOVE PREFIRE POSTFIRE IDLE default IDLE2 FIRE
+spr_nukegenerator.god cycles: default
+spr_reaper.god cycles: MOVE PREFIRE POSTFIRE IDLE default IDLE2 FIRE
+spr_refinery.god cycles: default process
+spr_repairboat.god cycles:
+spr_rumbler.god cycles: MOVE PREFIRE IDLE default IDLE2 FIRE
+spr_scaver.god cycles: PREPROCESS MOVE IDLE default POSTPROCESS IDLE2 PROCESS
+spr_scaverhut.god cycles: PREPROCESS default POSTPROCESS PROCESS
+spr_scaverhut_upgrade.god cycles:
+spr_scaverhut_upgrade2.god cycles:
+spr_scragtower.god cycles: default FIRE
+spr_skulk.god cycles: MOVE PREFIRE POSTFIRE IDLE default IDLE2 FIRE
+spr_solarstation.god cycles: CONSTRUCTING default
+spr_spy.god cycles: MOVE IDLE default IDLE2
+spr_squat.god cycles: default PROCESS
+spr_squat_upgrade.god cycles:
+spr_stasistruck.god cycles:
+spr_tankkiller.god cycles:
+spr_trap.god cycles:
+spr_voodun.god cycles: PREPROCESS MOVE IDLE default POSTPROCESS IDLE2 PROCESS
+spr_vshrine.god cycles: default PROCESS
+spr_vshrine_upgrade.god cycles:
+spr_wharf.god cycles: default PROCESS
+spr_wharf_upgrade.god cycles:
+spr_zeppelin.god cycles:
+sub 0.0178.god cycles:
+tankburst_1_beams 1.0000.god cycles: default
+tankburst_1_ring 1.0000.god cycles: default
+tankburst_1_shpere 1.0000.god cycles: default
+bot.god cycles:
+building.god cycles: exit default enter process
+fueltank1.god cycles:
+fueltank2.god cycles:
+fueltank3.god cycles:
+hemisphere 1.0000.god cycles:
+laser 0.0100.god cycles:
+laser 1.0000.god cycles:
+laser0-002.god cycles:
+laser0-01.god cycles:
+laser0-2.god cycles:
+laser0-25.god cycles:
+laser0-5.god cycles:
+laser1-0.god cycles:
+light 0.0010.god cycles:
+mine.god cycles:
+monument01.god cycles:
+obsidian.god cycles:
+projectile 0.0500.god cycles:
+projectile 0.1000.god cycles:
+projectile 0.2000.god cycles:
+projectile 0.3000.god cycles:
+ramp_10mx2c_01 1.0000.god cycles:
+ramp_5mx2c_01 1.0000.god cycles:
+s00_missile.god cycles:
+togranpiece 1.0000.god cycles:
+spr_bridge.god cycles:
+spw_bldg_burnt.god cycles:
+spw_broken_pipe.god cycles:
+spw_waterburst_pipe.god cycles:
+PASS roots=449 cycles=234 samples=936 cycles-with-moving-vertices=179 vertices=28179

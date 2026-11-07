@@ -1,0 +1,7 @@
+[ 10%] Building CXX object CMakeFiles/reign_vid_device.dir/src/vid_device.cpp.o
+[ 20%] Linking CXX static library libreign_vid_device.a
+[ 20%] Built target reign_vid_device
+[ 40%] Built target dr2_vid_state
+[ 70%] Built target reign_gles
+[ 80%] Linking CXX executable gles_smoke
+[100%] Built target gles_smoke

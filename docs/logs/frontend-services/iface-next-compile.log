@@ -1,0 +1,6 @@
+In file included from /tmp/reign-upstream/util/multilanguage.h:19,
+                 from /tmp/reign-upstream/interface/iface.cpp:23:
+/tmp/reign-upstream/system/win32.h:34:10: fatal error: windows.h: No such file or directory
+   34 | #include <windows.h>
+      |          ^~~~~~~~~~~
+compilation terminated.

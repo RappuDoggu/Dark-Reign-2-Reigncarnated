@@ -1,0 +1,12 @@
+STARTUP parsed scopes=25 arguments=33
+CONFIG formation.cfg scopes=332 arguments=332
+CONFIG types_messages.cfg scopes=709 arguments=523
+CONFIG types_common.cfg scopes=68 arguments=57
+CONFIG types_physics.cfg scopes=87 arguments=64
+CONFIG types_traction.cfg scopes=99 arguments=176
+MISSION_CONFIG scopes=281 arguments=365
+MISSION_TYPES scopes=20561 arguments=26631
+MISSION_DATA objects.cfg scopes=7144 arguments=11425
+MISSION_DATA mission_exec.cfg scopes=0 arguments=0
+MISSION_DATA strategic.cfg scopes=2180 arguments=2205
+Original configuration parser: PASS; full engine/video/gameplay NOT initialized

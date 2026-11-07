@@ -1,0 +1,46 @@
+Test project /workspace/scratch/2e29d93ded9e/reign-work/build-host
+      Start  1: native_frontend_support
+ 1/34 Test  #1: native_frontend_support ..........   Passed    0.01 sec
+      Start  2: original_object_tracking
+ 2/34 Test  #2: original_object_tracking .........   Passed    0.02 sec
+      Start  3: original_event_dispatch
+ 3/34 Test  #3: original_event_dispatch ..........   Passed    0.01 sec
+      Start  4: original_native_event_context
+ 4/34 Test  #4: original_native_event_context ....   Passed    0.01 sec
+      Start  5: original_variable_runtime
+ 5/34 Test  #5: original_variable_runtime ........   Passed    0.01 sec
+      Start  6: original_runtime_handoff
+ 6/34 Test  #6: original_runtime_handoff .........   Passed    0.01 sec
+      Start  7: original_control_types
+ 7/34 Test  #7: original_control_types ...........   Passed    0.00 sec
+      Start  8: original_frontend_config
+ 8/34 Test  #8: original_frontend_config .........   Passed    0.01 sec
+      Start  9: original_interface_events
+ 9/34 Test  #9: original_interface_events ........   Passed    0.01 sec
+      Start 10: original_interface_registry
+10/34 Test #10: original_interface_registry ......   Passed    0.01 sec
+      Start 11: frontend_font_bridge
+11/34 Test #11: frontend_font_bridge .............   Passed    0.01 sec
+      Start 12: frontend_frame_bridge
+12/34 Test #12: frontend_frame_bridge ............   Passed    0.01 sec
+      Start 13: original_frontend_triangle
+13/34 Test #13: original_frontend_triangle .......   Passed    0.01 sec
+      Start 14: original_render_buckets
+14/34 Test #14: original_render_buckets ..........   Passed    0.02 sec
+      Start 15: original_bitmap_manager
+15/34 Test #15: original_bitmap_manager ..........   Passed    0.01 sec
+      Start 16: original_bitmap_pixels
+16/34 Test #16: original_bitmap_pixels ...........   Passed    0.02 sec
+      Start 17: bitmap_tga_loading
+17/34 Test #17: bitmap_tga_loading ...............   Passed    0.02 sec
+      Start 18: bitmap_bmp_loading
+18/34 Test #18: bitmap_bmp_loading ...............   Passed    0.02 sec
+      Start 19: original_vid_states
+19/34 Test #19: original_vid_states ..............   Passed    0.01 sec
+      Start 20: original_font_registration
+20/34 Test #20: original_font_registration .......   Passed    0.01 sec
+      Start 21: original_interface_metrics
+21/34 Test #21: original_interface_metrics .......   Passed    0.01 sec
+      Start 22: original_font_atlas_and_draw
+22/34 Test #22: original_font_atlas_and_draw .....   Passed    0.03 sec
+      Start 23: original_runcodes

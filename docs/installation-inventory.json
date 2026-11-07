@@ -1,0 +1,712 @@
+{
+  "files": 496,
+  "bytes": 469820640,
+  "packs": [
+    {
+      "path": "missions/assault/a4assault.zwp",
+      "bytes": 509532,
+      "sha256": "968c2b1910b8cd1eb29c74de22e2853bbd22c51f210503366f1c0240b84f5c13",
+      "entries": 4,
+      "payload_bytes": 509383
+    },
+    {
+      "path": "missions/assault/a4seadevil.zwp",
+      "bytes": 387376,
+      "sha256": "5694bd3855636f54628715ba762e7c4f8a6eadc84420270d8aeae53fa3607218",
+      "entries": 4,
+      "payload_bytes": 387227
+    },
+    {
+      "path": "missions/control/c2control.zwp",
+      "bytes": 300581,
+      "sha256": "cfca3852c41307a290ba1d461b4f8cacd9056b424c2158ae40bc472df59c4deb",
+      "entries": 4,
+      "payload_bytes": 300432
+    },
+    {
+      "path": "missions/control/c4siege.zwp",
+      "bytes": 475579,
+      "sha256": "bb8153a37b6aa16a1d8e56c96fa17157891b4df480e87fbde644d7d10cccdc95",
+      "entries": 4,
+      "payload_bytes": 475430
+    },
+    {
+      "path": "missions/control/c8snowpass.zwp",
+      "bytes": 630304,
+      "sha256": "3526233531c812cb5cd6e21be810e2434e1accf3308c359e48f94b77c79ec1d8",
+      "entries": 4,
+      "payload_bytes": 630155
+    },
+    {
+      "path": "missions/fenced/f2crazed.zwp",
+      "bytes": 284573,
+      "sha256": "a8e3fa23c7d079ff82eddf53a21e43658c01d1e201c9a6384358aadd9356000c",
+      "entries": 5,
+      "payload_bytes": 284394
+    },
+    {
+      "path": "missions/fenced/f4crazed.zwp",
+      "bytes": 367734,
+      "sha256": "1774cbd0f1aa24bc2c7a29c0c3c2b3802e3ecee1e340207e421bbcd15c9a3e37",
+      "entries": 5,
+      "payload_bytes": 367555
+    },
+    {
+      "path": "missions/fenced/f4siege.zwp",
+      "bytes": 486146,
+      "sha256": "4cdffcdca0ff564b99b8d07dceb7f43c73dc27f0d0983ddc55f75a54d1dbe47d",
+      "entries": 5,
+      "payload_bytes": 485967
+    },
+    {
+      "path": "missions/jda/J01.zwp",
+      "bytes": 9647255,
+      "sha256": "99a4d1e3737a761d17d30fe6b5361bbf2f58be15bd32d03d652fa15a6f4681f3",
+      "entries": 33,
+      "payload_bytes": 9646165
+    },
+    {
+      "path": "missions/jda/J02.zwp",
+      "bytes": 22947977,
+      "sha256": "9f06e5301c8cfc3e562e7e414d0ab42a99bdfcee55ef73df00e2af081014f124",
+      "entries": 37,
+      "payload_bytes": 22946779
+    },
+    {
+      "path": "missions/jda/J03.zwp",
+      "bytes": 15348715,
+      "sha256": "ae8d69041c9d2d2016c12f9859e3f9f77c8f1e2985dbf75c9024ab952c0d81c9",
+      "entries": 48,
+      "payload_bytes": 15346979
+    },
+    {
+      "path": "missions/jda/J04.zwp",
+      "bytes": 21322918,
+      "sha256": "060deab2b50161655e01df0870052286165b8919cb03ab29f26ce59ad70d0626",
+      "entries": 41,
+      "payload_bytes": 21321520
+    },
+    {
+      "path": "missions/jda/J05.zwp",
+      "bytes": 13079366,
+      "sha256": "6c0162e8ffaaec6b5f3b76967b38204191a9a1f0774df027fc285fde9789017e",
+      "entries": 28,
+      "payload_bytes": 13078402
+    },
+    {
+      "path": "missions/jda/J06.zwp",
+      "bytes": 18901249,
+      "sha256": "381b44da4169876eb2e97163749608c77d5b500c8dbae08753e22a17b43ddbbd",
+      "entries": 38,
+      "payload_bytes": 18899868
+    },
+    {
+      "path": "missions/jda/J06_Intro.zwp",
+      "bytes": 1193287,
+      "sha256": "3e553817e992f43113b82e3a75759e6a0e8fc8cdc79d8d2551ff49fe3e5cfbc0",
+      "entries": 22,
+      "payload_bytes": 1192422
+    },
+    {
+      "path": "missions/jda/J07.zwp",
+      "bytes": 13413433,
+      "sha256": "f234f56bf2a9a89dd450384674e264180c7bb1a48d5fc7e7b9079d9c7c1500f3",
+      "entries": 27,
+      "payload_bytes": 13412547
+    },
+    {
+      "path": "missions/jda/J08.zwp",
+      "bytes": 18098757,
+      "sha256": "b1abc42d2e1f94e4108965379e6a8c8676943a5479e5f7c7429634b08c9fc607",
+      "entries": 32,
+      "payload_bytes": 18097686
+    },
+    {
+      "path": "missions/jda/J09.zwp",
+      "bytes": 15087575,
+      "sha256": "be654889ed62a128e222539f52de0e0f002978c15aca9cf09afef13530ad7920",
+      "entries": 35,
+      "payload_bytes": 15086400
+    },
+    {
+      "path": "missions/jda/J10.zwp",
+      "bytes": 13236926,
+      "sha256": "c0f47fe06f8b4c6eb6ad404a7802952ee1ae62895fae1db52a13beea55cbc91b",
+      "entries": 38,
+      "payload_bytes": 13235701
+    },
+    {
+      "path": "missions/koth/k3dr2.zwp",
+      "bytes": 297527,
+      "sha256": "49c5032a227a70432d9ab2f91f85596d82e2cdcaf15b88faf86aed7a4653112e",
+      "entries": 4,
+      "payload_bytes": 297378
+    },
+    {
+      "path": "missions/koth/k3spooge.zwp",
+      "bytes": 292116,
+      "sha256": "b183a6e9cd977eb8c6940e83f696c8a1795e238da0f0ac645e7143d25e35b323",
+      "entries": 4,
+      "payload_bytes": 291967
+    },
+    {
+      "path": "missions/koth/k4sprawl.zwp",
+      "bytes": 439820,
+      "sha256": "81f9d97cd39f46ff7952f716fc3bef3a5bbe16c3a04f05932294d9bde185f051",
+      "entries": 4,
+      "payload_bytes": 439671
+    },
+    {
+      "path": "missions/koth/k6jungle.zwp",
+      "bytes": 635014,
+      "sha256": "2bbeafe6e31f0eeaa44760ef853d04d71ef45644c6ecb3744e00301d2ba99b47",
+      "entries": 4,
+      "payload_bytes": 634865
+    },
+    {
+      "path": "missions/multiplayer/2crazed.zwp",
+      "bytes": 271730,
+      "sha256": "a3547bad471ce8415afec174307811a1505016a3bad9afc25c3e43f2d483a4e9",
+      "entries": 5,
+      "payload_bytes": 271551
+    },
+    {
+      "path": "missions/multiplayer/2hilo.zwp",
+      "bytes": 289101,
+      "sha256": "15800302c222bd9fe902cd95ae634b3bb7090f6fa720716961efbad65ad2a6f9",
+      "entries": 5,
+      "payload_bytes": 288922
+    },
+    {
+      "path": "missions/multiplayer/2mountain.zwp",
+      "bytes": 251559,
+      "sha256": "51e4cf170e8b833d585c8e909a2d11366542dac6ce09737277d88d6f9ee9b933",
+      "entries": 5,
+      "payload_bytes": 251380
+    },
+    {
+      "path": "missions/multiplayer/2siege.zwp",
+      "bytes": 297315,
+      "sha256": "48a4cd35674e74a2dc9bbc076d190e7e96b96b1e1b45dbb4ba278ca06e7e432e",
+      "entries": 5,
+      "payload_bytes": 297136
+    },
+    {
+      "path": "missions/multiplayer/3dr2.zwp",
+      "bytes": 297310,
+      "sha256": "0f80b3a3f9d9796ffded7f68f02765c37e0a29c00e1b1a8a9c4fded7a642ae31",
+      "entries": 5,
+      "payload_bytes": 297131
+    },
+    {
+      "path": "missions/multiplayer/3spooge.zwp",
+      "bytes": 295035,
+      "sha256": "f728f56df520e2618df04b8188b46dca38ec6679fd977342f7ed5c4b681444e7",
+      "entries": 5,
+      "payload_bytes": 294856
+    },
+    {
+      "path": "missions/multiplayer/4crazed.zwp",
+      "bytes": 351056,
+      "sha256": "10de7b518baeaa86eced58a3a1da959d6ab1ce9919d6982acb8fe1aff6cfad16",
+      "entries": 5,
+      "payload_bytes": 350877
+    },
+    {
+      "path": "missions/multiplayer/4octopussy.zwp",
+      "bytes": 348911,
+      "sha256": "d326688ff4d458ce9c3c3bf9101cb7925ee931a42dd44b8788e832463cbeb196",
+      "entries": 5,
+      "payload_bytes": 348732
+    },
+    {
+      "path": "missions/multiplayer/4seadevil.zwp",
+      "bytes": 361848,
+      "sha256": "e92b98cfc13fd320dd8f1145c8632f2ecb8a47084e32f73d02e8da00cb6d563b",
+      "entries": 5,
+      "payload_bytes": 361669
+    },
+    {
+      "path": "missions/multiplayer/4siege.zwp",
+      "bytes": 473296,
+      "sha256": "83849a0731545bfe3a8366f22328d0b9b4402ec58ec2c9116ca64c66878dd1db",
+      "entries": 5,
+      "payload_bytes": 473117
+    },
+    {
+      "path": "missions/multiplayer/6city.zwp",
+      "bytes": 857738,
+      "sha256": "cbf411c607bb429c97b7fa85db912d504388e5a7d6192037d6a4395f236ffd85",
+      "entries": 5,
+      "payload_bytes": 857559
+    },
+    {
+      "path": "missions/multiplayer/6jungle.zwp",
+      "bytes": 634955,
+      "sha256": "3faa4b2069088fc611b571801ee82e57bdd499b541b389753663b8c25955b67e",
+      "entries": 5,
+      "payload_bytes": 634776
+    },
+    {
+      "path": "missions/multiplayer/6sixway.zwp",
+      "bytes": 1014140,
+      "sha256": "f99a6b5a99d05434b5bfbcbeb6a89ef79a4be99e1085df14646cbebe484caebd",
+      "entries": 6,
+      "payload_bytes": 1013941
+    },
+    {
+      "path": "missions/multiplayer/8angelbay.zwp",
+      "bytes": 1620481,
+      "sha256": "b9fd6d914ec6d197d50228291327ccf4f36cd69187e37002788f702b2d29814c",
+      "entries": 5,
+      "payload_bytes": 1620302
+    },
+    {
+      "path": "missions/multiplayer/8snowpass.zwp",
+      "bytes": 630502,
+      "sha256": "26e20dc32a42feb7cadd4527533f0dd8a3b894cfcada0fd409451eeeb7c897e7",
+      "entries": 5,
+      "payload_bytes": 630323
+    },
+    {
+      "path": "missions/multiplayer/8warway.zwp",
+      "bytes": 604911,
+      "sha256": "d95039b229a4dd4eee98b34793247dbcf5758a24ba5220c9391c55abbae88e4d",
+      "entries": 5,
+      "payload_bytes": 604732
+    },
+    {
+      "path": "missions/sprawler/Outro.zwp",
+      "bytes": 336284,
+      "sha256": "ef28e77156cfe7bebd08a776bfe9c83749a12efd28d07b1a95bf82ea11e52bf7",
+      "entries": 8,
+      "payload_bytes": 336010
+    },
+    {
+      "path": "missions/sprawler/S01.zwp",
+      "bytes": 1489051,
+      "sha256": "9eda92d97d300a79fd8048b277ea3a2c1f0f0c2245c8970a2386b9d5a77a6d0d",
+      "entries": 29,
+      "payload_bytes": 1488097
+    },
+    {
+      "path": "missions/sprawler/S01_Intro.zwp",
+      "bytes": 1228169,
+      "sha256": "104d2b0282e15383b097e8fe71c050ae963aa39c4dec8d51057eda623154fdfa",
+      "entries": 19,
+      "payload_bytes": 1227444
+    },
+    {
+      "path": "missions/sprawler/S02.zwp",
+      "bytes": 1126956,
+      "sha256": "a9db525fd757022716dd848b8ea91a6fa4db2207a581d6d0bc1d048a3cd8d461",
+      "entries": 27,
+      "payload_bytes": 1126057
+    },
+    {
+      "path": "missions/sprawler/S03.zwp",
+      "bytes": 916376,
+      "sha256": "cddf793237a50c22e81131ba372878a5f279a4614033ab03cddd1e84bef25c9d",
+      "entries": 27,
+      "payload_bytes": 915434
+    },
+    {
+      "path": "missions/sprawler/S04.zwp",
+      "bytes": 1542970,
+      "sha256": "3a138b62df15d3ec8454366f20b3c779d60cfa67cd61f6ec75171e4974d0f50d",
+      "entries": 27,
+      "payload_bytes": 1542069
+    },
+    {
+      "path": "missions/sprawler/S05.zwp",
+      "bytes": 1187347,
+      "sha256": "c7c3af5e8d5fe101a56024bcd9ece5e3f4435bb8c8a7877567db3fe42d1232fa",
+      "entries": 27,
+      "payload_bytes": 1186406
+    },
+    {
+      "path": "missions/sprawler/S06.zwp",
+      "bytes": 1055278,
+      "sha256": "54e1305c778779aa38850445dc852c14b2b1258f185ab4064bce10648244575f",
+      "entries": 23,
+      "payload_bytes": 1054529
+    },
+    {
+      "path": "missions/sprawler/S07.zwp",
+      "bytes": 1211824,
+      "sha256": "1be537bc286616b75573ac343340d5b5f8b33dd5f91f21667add33d192b881de",
+      "entries": 24,
+      "payload_bytes": 1210994
+    },
+    {
+      "path": "missions/sprawler/S08.zwp",
+      "bytes": 1600535,
+      "sha256": "d7e14f3f57ec0141d7b04d4c7ebae2160fcf39f1731a3ca77564246833e30286",
+      "entries": 33,
+      "payload_bytes": 1599354
+    },
+    {
+      "path": "missions/sprawler/S09.zwp",
+      "bytes": 2558486,
+      "sha256": "b568d74249157d8284e628f559bb6ab236fb6f535fad80dd1a3478b5caa82d02",
+      "entries": 41,
+      "payload_bytes": 2557151
+    },
+    {
+      "path": "missions/sprawler/Transition into S01.zwp",
+      "bytes": 5322570,
+      "sha256": "0c42a1e713ce8d7e1d68023b26382e9677042403434bf4fa31e801b4087e90f3",
+      "entries": 13,
+      "payload_bytes": 5322105
+    },
+    {
+      "path": "missions/sprawler/Transition into S02.zwp",
+      "bytes": 6786371,
+      "sha256": "4ef2fad849fc427e6e32e58f6e64158036b94ccc9c80281d4543fb895d4dc8d4",
+      "entries": 13,
+      "payload_bytes": 6785906
+    },
+    {
+      "path": "missions/sprawler/Transition into S03.zwp",
+      "bytes": 4517707,
+      "sha256": "9920d5d6bd973e3018fa106bc356e54873e42bb36ca5a74300badfd832e41e50",
+      "entries": 13,
+      "payload_bytes": 4517242
+    },
+    {
+      "path": "missions/sprawler/Transition into S04.zwp",
+      "bytes": 7967390,
+      "sha256": "1cba66ba9a824853a76dfc5e86849f9352ac11fd07a0feaa67fd6526d2b333d0",
+      "entries": 13,
+      "payload_bytes": 7966925
+    },
+    {
+      "path": "missions/sprawler/Transition into S05.zwp",
+      "bytes": 4866362,
+      "sha256": "996499d023e40913ca75b471d65f18ad3faef6926a46150d0398fcb7738acbc5",
+      "entries": 13,
+      "payload_bytes": 4865897
+    },
+    {
+      "path": "missions/sprawler/Transition into S06.zwp",
+      "bytes": 7352230,
+      "sha256": "6811d699bb0d07f990acfe53208b501bbc9ad13c5c2ad3c063cf84ff93d14e55",
+      "entries": 13,
+      "payload_bytes": 7351765
+    },
+    {
+      "path": "missions/sprawler/Transition into S07.zwp",
+      "bytes": 4934158,
+      "sha256": "d6fc752c0c69b401b9e617efa1c37b72aa7c910b4f3dbe4e63a1c445a6ef5057",
+      "entries": 13,
+      "payload_bytes": 4933693
+    },
+    {
+      "path": "missions/sprawler/Transition into S08.zwp",
+      "bytes": 1323910,
+      "sha256": "22f6345a33331d0ef5a0655b017bfe923769f1652218ddc0fd00e25adb32f598",
+      "entries": 13,
+      "payload_bytes": 1323445
+    },
+    {
+      "path": "missions/sprawler/Transition into S09.zwp",
+      "bytes": 2535720,
+      "sha256": "38becb255107bab9e75fdf93ab9e1c56a73b1b84020e0214d13ec7d681ffd468",
+      "entries": 13,
+      "payload_bytes": 2535255
+    },
+    {
+      "path": "missions/system/shell.zwp",
+      "bytes": 17129341,
+      "sha256": "af17926f47bca75247cc85e02d905e369c4f939d52dcef177e7324cc8cf14140",
+      "entries": 27,
+      "payload_bytes": 17128314
+    },
+    {
+      "path": "mods/addon/1024x768interface.zwp",
+      "bytes": 11258,
+      "sha256": "7577a44368db53ec6b5cbcbae7c5298dc92d8c6b3c68540f7070b338c32e644b",
+      "entries": 5,
+      "payload_bytes": 11017
+    },
+    {
+      "path": "mods/addon/800x600interface.zwp",
+      "bytes": 11256,
+      "sha256": "e93f8bd9bcdd63380d14740aa7334b5e19325acf30589f5984d90578c8d1b5b4",
+      "entries": 5,
+      "payload_bytes": 11015
+    },
+    {
+      "path": "mods/addon/altcamera.zwp",
+      "bytes": 1291,
+      "sha256": "6df984cec9ba14aa0d742082aa15fc67a5e7a7f03f147922f4e464af75eff903",
+      "entries": 2,
+      "payload_bytes": 1189
+    },
+    {
+      "path": "mods/addon/darkrain.zwp",
+      "bytes": 30572,
+      "sha256": "e81eedbf5abf56b68df067c2934a3cad8bae2a5a96f1cb8ea0e1b0d52597f93c",
+      "entries": 22,
+      "payload_bytes": 29801
+    },
+    {
+      "path": "mods/addon/lastingbloodstains.zwp",
+      "bytes": 25925,
+      "sha256": "a64a9f202cecfe60ee89b14f9073efde002926f499d3febc9ea2baac10aed386",
+      "entries": 6,
+      "payload_bytes": 25517
+    },
+    {
+      "path": "mods/addon/mp3player.zwp",
+      "bytes": 159228,
+      "sha256": "6cc9ce4ed5cd7dad08b8d8c31bf91ea181b4438a31fbd1a39d5710fb8029f144",
+      "entries": 4,
+      "payload_bytes": 159066
+    },
+    {
+      "path": "mods/addon/preview.zwp",
+      "bytes": 235,
+      "sha256": "4b99c02954c535752f0f84f817721c1fb65b7071ea3f67f11da9eeaaaf9ba38e",
+      "entries": 2,
+      "payload_bytes": 126
+    },
+    {
+      "path": "mods/personality/aggressive.zwp",
+      "bytes": 7283,
+      "sha256": "a9648124d6346844765285c2d9026d091f89e232b898729c85b8e894a7dd2b55",
+      "entries": 2,
+      "payload_bytes": 7177
+    },
+    {
+      "path": "mods/personality/defensive.zwp",
+      "bytes": 7223,
+      "sha256": "94d76ce7bca2ac019dc6b63f2f55f679e205f2ce1c2bbfbda265db5768876cc3",
+      "entries": 2,
+      "payload_bytes": 7118
+    },
+    {
+      "path": "mods/ruleset/assault.zwp",
+      "bytes": 1191410,
+      "sha256": "9f7492c789f9daa21688bd002eecec566b660ce24df61920aba9352ac7d3968f",
+      "entries": 13,
+      "payload_bytes": 1190807
+    },
+    {
+      "path": "mods/ruleset/bloodbath.zwp",
+      "bytes": 2991,
+      "sha256": "d25d2f253bfca9d1241c2beb2331f05d9710e8446176b981fae6ae4930c9cd35",
+      "entries": 3,
+      "payload_bytes": 2852
+    },
+    {
+      "path": "mods/ruleset/control.zwp",
+      "bytes": 650241,
+      "sha256": "9456199f81ba2c80c14eaf953f8777e532ad7281ae722c4c796e45687fbbcad7",
+      "entries": 5,
+      "payload_bytes": 650048
+    },
+    {
+      "path": "mods/ruleset/deathmatch.zwp",
+      "bytes": 786,
+      "sha256": "aadfd189f4d0aaed0ffd845456122f7034b8a94b95021d9b34ce88a1d54b8c96",
+      "entries": 2,
+      "payload_bytes": 677
+    },
+    {
+      "path": "mods/ruleset/gluttony.zwp",
+      "bytes": 2451,
+      "sha256": "0108cef85741f579a20bc40c377731cd3755c6ce6d9234f1dd40363fcbdbaacb",
+      "entries": 3,
+      "payload_bytes": 2314
+    },
+    {
+      "path": "mods/ruleset/koth.zwp",
+      "bytes": 343761,
+      "sha256": "a8a7f305f00af4f635aa695054b2d830b5a238f5c9f745b70174c81bbaea4c98",
+      "entries": 6,
+      "payload_bytes": 343539
+    },
+    {
+      "path": "mods/ruleset/protecthq.zwp",
+      "bytes": 3873,
+      "sha256": "3f8b5ec6871d4e6414f152dea6b1663fa71944b3392293e8df554aeaeafa9b9f",
+      "entries": 3,
+      "payload_bytes": 3734
+    },
+    {
+      "path": "mods/ruleset/speed.zwp",
+      "bytes": 477887,
+      "sha256": "1edfe39e5d349743068bf95e601bb72c6664ea8ec3ecb82a4f5cb0c488d72bbb",
+      "entries": 94,
+      "payload_bytes": 473535
+    },
+    {
+      "path": "packs/base.zwp",
+      "bytes": 99711663,
+      "sha256": "f28ea56cecea135ee52c00c5f63fab975dd882778b549fc814954f3cf7d02fe9",
+      "entries": 2074,
+      "payload_bytes": 99631656
+    },
+    {
+      "path": "sides/client/jda.zwp",
+      "bytes": 5178468,
+      "sha256": "a18b9c093de7401160f5cb8ab24d9d3806ce4f39bbad9a2bcee40a2690fceb2d",
+      "entries": 75,
+      "payload_bytes": 5175638
+    },
+    {
+      "path": "sides/client/sprawler.zwp",
+      "bytes": 4759562,
+      "sha256": "154577b5b28104a8471d09d3334d84b5e4b0171bfef99fd9e69a7184aa1e0515",
+      "entries": 79,
+      "payload_bytes": 4756638
+    },
+    {
+      "path": "worlds/deserto.zwp",
+      "bytes": 4654511,
+      "sha256": "682ef111675ef79b547ca9699cf1a2b85a0183005fe659717c9b2f7c3e9f942b",
+      "entries": 61,
+      "payload_bytes": 4652298
+    },
+    {
+      "path": "worlds/dome.zwp",
+      "bytes": 3059602,
+      "sha256": "28861ab1cc55dd3bcce8591db9b3002a344c85603296e4784f287eac11389e50",
+      "entries": 58,
+      "payload_bytes": 3057579
+    },
+    {
+      "path": "worlds/gilwoch.zwp",
+      "bytes": 2367259,
+      "sha256": "45e8166b2e93ff4ae5a50fa9a455fd8a52e7c8717d4c299326c2dcdeb450a9c8",
+      "entries": 41,
+      "payload_bytes": 2365762
+    },
+    {
+      "path": "worlds/jungle.zwp",
+      "bytes": 4281461,
+      "sha256": "f972c087dfac1370801f6f55ed057e6503404a16c679ab36d9e48356f517aeb3",
+      "entries": 74,
+      "payload_bytes": 4278962
+    },
+    {
+      "path": "worlds/sewer.zwp",
+      "bytes": 3319088,
+      "sha256": "1636800f346e1bf895d05ef2236639f98126fdc8da1c064307ab28b3eddd7d23",
+      "entries": 57,
+      "payload_bytes": 3317091
+    },
+    {
+      "path": "worlds/sigma.zwp",
+      "bytes": 4029049,
+      "sha256": "06fc04ee8ba9a1bd3284cf37e3a52b9aef56256c28d514faa8abb42d3c3483ea",
+      "entries": 78,
+      "payload_bytes": 4026358
+    },
+    {
+      "path": "worlds/sprawl.zwp",
+      "bytes": 2547755,
+      "sha256": "06a204042c738203289cd67e7c99d1e75a6da22385e5961e758dbf3d9622d918",
+      "entries": 45,
+      "payload_bytes": 2546099
+    },
+    {
+      "path": "worlds/wasteland.zwp",
+      "bytes": 214624,
+      "sha256": "9ecbbad84fb31120c74fe3e2f3a0ec0e284f1420f3cf8d3d36ffff77622be18a",
+      "entries": 2,
+      "payload_bytes": 214491
+    }
+  ],
+  "executables": [
+    {
+      "name": "dr2.exe",
+      "sha256": "5ea4734ab2f2ad381877ce1c0d9b03365ddb3dd8e3ff0719a634296be1c15250",
+      "machine": "0x14c",
+      "versions": {
+        "FileVersion": "1,458",
+        "FileDescription": "Dark Reign 2",
+        "Build Date": "09/08/20"
+      },
+      "imports": [
+        "KERNEL32.dll",
+        "USER32.dll",
+        "GDI32.dll",
+        "ADVAPI32.dll",
+        "SHELL32.dll",
+        "DDRAW.dll",
+        "DINPUT8.dll",
+        "binkw32.dll",
+        "mss32.dll",
+        "WS2_32.dll",
+        "WINMM.dll",
+        "VERSION.dll"
+      ]
+    },
+    {
+      "name": "DDraw.dll",
+      "sha256": "5922459a2a7e440ce467e9af2b669da0e3db2eadd880fa5b6caff2a6cf89da92",
+      "machine": "0x14c",
+      "versions": {
+        "FileDescription": "dgVoodoo 2.64 - DirectDraw",
+        "FileVersion": "4.7.1.3000",
+        "ProductVersion": "2.64.0.0"
+      },
+      "imports": [
+        "GDI32.dll",
+        "KERNEL32.DLL",
+        "ole32.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll"
+      ]
+    },
+    {
+      "name": "D3DImm.dll",
+      "sha256": "943788dae0b5d73e9ce22758a13fc90b3f0d6e6d2a68607a90ebe09387bc2edf",
+      "machine": "0x14c",
+      "versions": {
+        "FileDescription": "dgVoodoo 2.64 - Direct3D",
+        "FileVersion": "4.7.1.3000",
+        "ProductVersion": "2.64.0.0"
+      },
+      "imports": [
+        "KERNEL32.DLL",
+        "USER32.dll"
+      ]
+    },
+    {
+      "name": "mss32.dll",
+      "sha256": "b3251203c3f68b4cb1f69ade0b300af0160d03094c08d6ce69821d475325206e",
+      "machine": "0x14c",
+      "versions": {
+        "FileDescription": "Miles Sound System",
+        "FileVersion": "6.0f",
+        "ProductVersion": "6.0f"
+      },
+      "imports": [
+        "KERNEL32.dll",
+        "USER32.dll",
+        "WINMM.dll"
+      ]
+    },
+    {
+      "name": "binkw32.dll",
+      "sha256": "a9fec882c1cf59f03c49a43f971c5927cc07254929e4e1ff4ecc6ceea1c39d40",
+      "machine": "0x14c",
+      "versions": {
+        "FileDescription": "Bink Video",
+        "FileVersion": "1.0i",
+        "ProductVersion": "1.0i"
+      },
+      "imports": [
+        "KERNEL32.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "GDI32.dll"
+      ]
+    }
+  ],
+  "input_archive_sha256": "e12ede0e457d79dc1d5d4cf220521b537421a899b7ff02cdb9ee1805991f630d"
+}

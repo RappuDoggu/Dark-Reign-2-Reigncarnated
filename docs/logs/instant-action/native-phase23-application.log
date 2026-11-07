@@ -1,0 +1,201 @@
+Sound::Init()
+ - Completed
+PerfStats Initialised
+Found 1 missions in 2 groups
+Found mod type 'addon'
+Adding mod '1024x768interface'
+Adding mod '800x600interface'
+Adding mod 'altcamera'
+Adding mod 'darkrain'
+Adding mod 'lastingbloodstains'
+Adding mod 'mp3player'
+Adding mod 'preview'
+Found mod type 'personality'
+Adding mod 'aggressive'
+Adding mod 'defensive'
+Found mod type 'ruleset'
+Adding mod 'assault'
+Adding mod 'bloodbath'
+Adding mod 'control'
+Adding mod 'deathmatch'
+Adding mod 'gluttony'
+Adding mod 'koth'
+Adding mod 'protecthq'
+Adding mod 'speed'
+Exception caller: 0x420e79
+Exception caller: 0x421335
+Exception caller: 0x437147
+Exception caller: 0x43e1a6
+Exception caller: 0x4250ff
+Exception caller: 0x7f0fd6ef91ca
+Exception caller: 0x7f0fd6ef928b
+Exception caller: 0x41ef95
+[Game] Entering run code [Load]
+PreOpenMission: [missions\multiplayer][2crazed]
+PreOpenMission: Team::Init
+PreOpenMission: Environment::Init
+PreOpenMission: MoveTable::Init
+PreOpenMission: SidePlacement::Init
+PreOpenMission: UnitLimits::Init
+PreOpenMission: TerrainGroup::Init
+PreOpenMission: AI::Init
+PreOpenMission: TaskCtrl::Init
+PreOpenMission: Config::Init
+PreOpenMission: MissionVar::Init
+Mission config: DefaultRule
+Mission config: FixedRule
+Mission config: RequiredAddons
+Mission config: WorldInfo
+Mission config: Environment
+Mission config: DefineTeams
+Mission config: TerrainGroup
+Mission config: Physics
+Type Stream Crc: 47BC54B1
+Type Stream Crc: 607DD41F
+Purging team team2 [1]
+[Game] Entering run code [SimInit]
+Switching to NORMAL
+Exception caller: 0x420e79
+Exception caller: 0x421335
+Exception caller: 0x6861ea
+Exception caller: 0x547890
+Exception caller: 0x685237
+Exception caller: 0x68627a
+Exception caller: 0x686da6
+Exception caller: 0x66bbd9
+Exception caller: 0x66bda6
+Exception caller: 0x66b94f
+Exception caller: 0x66bda6
+Exception caller: 0x66bebd
+Exception caller: 0x66d422
+Exception caller: 0x46b9fe
+Exception caller: 0x43e5c2
+Exception caller: 0x425409
+Exception caller: 0x420e79
+Exception caller: 0x421335
+Exception caller: 0x6861ea
+Exception caller: 0x547890
+Exception caller: 0x685237
+Exception caller: 0x68627a
+Exception caller: 0x686da6
+Exception caller: 0x66bbd9
+Exception caller: 0x66bda6
+Exception caller: 0x66b94f
+Exception caller: 0x66bda6
+Exception caller: 0x66bebd
+Exception caller: 0x66d422
+Exception caller: 0x46b9fe
+Exception caller: 0x43e5c2
+Exception caller: 0x425409
+[Game] Entering run code [Sim]
+Picking starting rig at 296.556,250.404
+Selected unit sprawler.unit.rig
+Move-order displacement 15.9999,15.9999
+Application lifecycle pass 0 cycles 249 presented 121
+[Game] Clearing runcode [Sim]
+Shutting down simulation
+Logout [Commander]
+Sound::Done()
+ - Completed
+DataFile: open files [0]
+Sound::Init()
+ - Completed
+PerfStats Initialised
+Login [Commander]
+Logout [Commander]
+Login [Commander]
+Found 1 missions in 2 groups
+Found mod type 'addon'
+Adding mod '1024x768interface'
+Adding mod '800x600interface'
+Adding mod 'altcamera'
+Adding mod 'darkrain'
+Adding mod 'lastingbloodstains'
+Adding mod 'mp3player'
+Adding mod 'preview'
+Found mod type 'personality'
+Adding mod 'aggressive'
+Adding mod 'defensive'
+Found mod type 'ruleset'
+Adding mod 'assault'
+Adding mod 'bloodbath'
+Adding mod 'control'
+Adding mod 'deathmatch'
+Adding mod 'gluttony'
+Adding mod 'koth'
+Adding mod 'protecthq'
+Adding mod 'speed'
+Exception caller: 0x420e79
+Exception caller: 0x421335
+Exception caller: 0x437147
+Exception caller: 0x43e1a6
+Exception caller: 0x4250ff
+Exception caller: 0x7f0fd6ef91ca
+Exception caller: 0x7f0fd6ef928b
+Exception caller: 0x41ef95
+[Game] Entering run code [Load]
+PreOpenMission: [missions\multiplayer][2crazed]
+PreOpenMission: Team::Init
+PreOpenMission: Environment::Init
+PreOpenMission: MoveTable::Init
+PreOpenMission: SidePlacement::Init
+PreOpenMission: UnitLimits::Init
+PreOpenMission: TerrainGroup::Init
+PreOpenMission: AI::Init
+PreOpenMission: TaskCtrl::Init
+PreOpenMission: Config::Init
+PreOpenMission: MissionVar::Init
+Mission config: DefaultRule
+Mission config: FixedRule
+Mission config: RequiredAddons
+Mission config: WorldInfo
+Mission config: Environment
+Mission config: DefineTeams
+Mission config: TerrainGroup
+Mission config: Physics
+Type Stream Crc: 47BC54B1
+Type Stream Crc: 607DD41F
+Purging team team2 [1]
+[Game] Entering run code [SimInit]
+Switching to NORMAL
+Exception caller: 0x420e79
+Exception caller: 0x421335
+Exception caller: 0x6861ea
+Exception caller: 0x547890
+Exception caller: 0x685237
+Exception caller: 0x68627a
+Exception caller: 0x686da6
+Exception caller: 0x66bbd9
+Exception caller: 0x66bda6
+Exception caller: 0x66b94f
+Exception caller: 0x66bda6
+Exception caller: 0x66bebd
+Exception caller: 0x66d422
+Exception caller: 0x46b9fe
+Exception caller: 0x43e5c2
+Exception caller: 0x425409
+Exception caller: 0x420e79
+Exception caller: 0x421335
+Exception caller: 0x6861ea
+Exception caller: 0x547890
+Exception caller: 0x685237
+Exception caller: 0x68627a
+Exception caller: 0x686da6
+Exception caller: 0x66bbd9
+Exception caller: 0x66bda6
+Exception caller: 0x66b94f
+Exception caller: 0x66bda6
+Exception caller: 0x66bebd
+Exception caller: 0x66d422
+Exception caller: 0x46b9fe
+Exception caller: 0x43e5c2
+Exception caller: 0x425409
+[Game] Entering run code [Sim]
+Application lifecycle pass 1 cycles 82 presented 175
+[Game] Clearing runcode [Sim]
+Shutting down simulation
+Logout [Commander]
+Sound::Done()
+ - Completed
+DataFile: open files [0]
+Shared native mission application: load, simulation, pause/resume, shutdown and profile login passed twice on host; no Android execution
