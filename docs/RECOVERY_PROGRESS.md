@@ -1339,3 +1339,17 @@ are generated from those inputs so extracted-kit relinks can be hash-verified.
 Build/source receipts, release guide and provenance documents are embedded in
 the APK. Final kit/signature/hash/test results accompany the delivery receipt.
 No complete campaign, save/restore, multiplayer or new phone FPS claim is made.
+
+0.1 candidate APK: **9,549,153 bytes**, SHA-256
+`a3eab898981301def987ab5a9fe736ca2162560e79673520b0a5cac119ccfd97`.
+Matching source/relink ZIP: **30,912,974 bytes**, SHA-256
+`26ade2fb2b07852339f2912609ebef30e07fb04c1cbf243a2330f3eece181b57`.
+Release source `2d4ea66bcb24daa44871e993c5c3e57c2b658d0e`; native implementation
+source remains `e47230e...`. 706 kit members are hash-verified after extraction;
+both separately relocated relinks match the signed APK's library hashes exactly.
+Native .text/.rodata match APK31. Host suites 68/13 pass; all ten Java groups pass
+(216 checks total), SDK35 Java compilation passes, and real original resource and
+campaign/cinematic/mesh/camera/navigation fixtures pass twice with clean shutdown.
+Signature, old signer continuity, version32/0.1, source/docs, ABI/alignment and
+private/game-data exclusion pass independent verification. Exact build IDs and
+results are in `docs/builds/release-0.1.json`. No 0.1 phone execution claim is made.
