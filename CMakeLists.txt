@@ -635,6 +635,11 @@ if(REIGN_GLES_BACKEND OR ANDROID)
   add_library(reign_gles STATIC src/legacy_gles.cpp src/renderer_checks.cpp)
   set_target_properties(reign_gles PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_include_directories(reign_gles PUBLIC include)
+  if(ANDROID)
+    # NativeDiagnostics in this static library calls __android_log_print.
+    # Propagate that dependency to every Android consumer, including the asset probe.
+    target_link_libraries(reign_gles PUBLIC log)
+  endif()
   if(TARGET reign_frontend_presenter)
     target_link_libraries(reign_frontend_presenter PUBLIC reign_gles)
   endif()

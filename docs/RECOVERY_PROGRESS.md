@@ -1353,3 +1353,22 @@ campaign/cinematic/mesh/camera/navigation fixtures pass twice with clean shutdow
 Signature, old signer continuity, version32/0.1, source/docs, ABI/alignment and
 private/game-data exclusion pass independent verification. Exact build IDs and
 results are in `docs/builds/release-0.1.json`. No 0.1 phone execution claim is made.
+
+### GitHub delivery and CI follow-up — 2026-11-07
+
+Delivery `1b55b7cab7d571421a64fc192bac5b970563a490` is backed up on the recovery
+branch. Public immutable raw APK/source downloads both return HTTP 200 and match
+the delivery hashes. Draft recovery-to-main PR #3 is open; main remains unchanged.
+A v0.1 draft prerelease exists at the delivery checkpoint. The environment's
+GitHub API/git credential works, but uploads.github.com rejected the direct
+asset upload with HTTP 401. A narrowly scoped Actions workflow attaches the
+four verified delivery files only to the existing, matching, unpublished v0.1
+prerelease. It never publishes the release and uses GitHub's job token rather
+than uploading any private signing credential.
+
+The previous Android CI failure was traced to `__android_log_print` in the
+shared GLES static-library diagnostics. Its Android `log` dependency now
+propagates to every consumer. A clean SDK35/NDK27 asset-probe build, signing,
+16KiB ZIP alignment and CRC verification pass locally. This follow-up changes
+build dependency metadata only; the delivered APK/source kit retain their
+recorded source revisions and hashes.
