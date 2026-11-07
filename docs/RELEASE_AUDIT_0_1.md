@@ -12,6 +12,17 @@ Release preparation preserves recovery history, proposes the complete current
 work for main through a separate reviewable PR and prepares a draft v0.1 release.
 A draft and an APK in the recovery branch are not a published GitHub Release.
 
+Delivery follow-up: draft PR #3 is open and mergeable. The v0.1 draft prerelease
+targets delivery `1b55b7c...` and contains the APK, matching source ZIP, checksums
+and receipt. Direct uploads returned HTTP401; the scoped draft-only Actions job
+`42381059656` successfully attached them. Independently downloaded release assets
+and public immutable raw links match all recorded hashes/sizes. GitHub's previous
+Android renderer diagnostic failure was traced to a missing propagated `log`
+dependency, fixed in `ae03dde...` and reproduced successfully with a clean local
+package build. GitHub CI run `42381059560` also passes both host and Android jobs
+on that fix, including the previously failing step and native frontend/decoder
+compilation. See [GitHub verification](builds/release-0.1-github.json).
+
 ## Findings addressed
 
 | Finding | Resolution |
@@ -21,6 +32,8 @@ A draft and an APK in the recovery branch are not a published GitHub Release.
 | Stale landing page and proposed 0.0.1 notes | Make 0.1 early-access scope, installation/update path, downloads, source, checksum, player guide, roadmap and limitations explicit. Retain old notes as historical. |
 | Source/licence claims conflated | Record the owner's position, verified archive MIT metadata and mirror evidence separately; preserve actual notices. No automatic copyright-expiry claim and no obsolete audit-only build prohibition. |
 | New Java models missing from CI tests | Add report retention, music policy, campaign selection and resource parsing to the existing host job. Host tests do not stand in for device acceptance. |
+| Renderer diagnostic CI link failure | Propagate Android log dependency from reign_gles; clean SDK35/NDK27 probe package/signature/alignment/CRC passes. |
+| Release asset upload authentication | Attach only verified immutable candidate files to the existing draft through a contents-write Actions job token; independent release downloads match all hashes. |
 | Main lacks current implementation | Prepare a separate reviewable recovery-to-main PR; do not merge or rewrite main automatically. |
 | Incomplete feature claims | Keep full campaigns, saves, NaN UV rendering defects, device/audio verification, controller changes and networking clearly scoped. |
 

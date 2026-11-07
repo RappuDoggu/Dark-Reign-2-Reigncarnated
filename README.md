@@ -4,9 +4,9 @@
 
 ## 0.1 release candidate
 
-[**Download APK**](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/recovery/native-arm64-v012/builds/v0.1/Reigncarnated-0.1.apk) ·
+[**Download APK**](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/Reigncarnated-0.1.apk) ·
 [Release notes](docs/RELEASE_0_1.md) ·
-[Source/relink ZIP](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/recovery/native-arm64-v012/builds/v0.1/Reigncarnated-0.1-source-relink.zip) ·
+[Source/relink ZIP](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/Reigncarnated-0.1-source-relink.zip) ·
 [Checksums](builds/v0.1/SHA256SUMS.txt) ·
 [Player guide](docs/PLAYER_GUIDE.md) · [Roadmap](docs/ROADMAP.md)
 
@@ -58,9 +58,13 @@ Use [bug reporting](.github/ISSUE_TEMPLATE/bug_report.md); do not upload game ar
 ## Source, builds and release status
 
 Active implementation is on **`recovery/native-arm64-v012`**. Main remains the
-older baseline until a reviewed recovery-to-main PR is merged. The candidate APK,
+older baseline until [recovery-to-main PR #3](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/pull/3)
+is reviewed and merged. The candidate APK,
 source/relink archive and receipts are backed up on that branch. A draft GitHub
-Release is reviewable separately; a draft is not a public/stable release.
+[Release](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/untagged-bfc407c1b0cb1dffc4a3)
+contains the four verified assets and is reviewable separately by maintainers;
+a draft is not a public/stable release. The APK/source links above are public
+and pinned to the immutable delivery commit. See [GitHub verification](docs/builds/release-0.1-github.json).
 
 The matching source/relink ZIP includes port source, complete pinned FFmpeg
 n6.1.1 source/configuration and portable inputs for **both** native libraries.

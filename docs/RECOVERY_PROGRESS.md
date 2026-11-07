@@ -1372,3 +1372,13 @@ propagates to every consumer. A clean SDK35/NDK27 asset-probe build, signing,
 16KiB ZIP alignment and CRC verification pass locally. This follow-up changes
 build dependency metadata only; the delivered APK/source kit retain their
 recorded source revisions and hashes.
+
+Draft asset attachment run `42381059656` succeeded. The four uploaded assets'
+GitHub SHA256 digests/sizes match, and independent authenticated release downloads
+pass `sha256sum --check`. Public immutable links are verified separately. The
+draft status, delivery/source IDs, PR #3 and download evidence are recorded in
+`docs/builds/release-0.1-github.json`. Main is not merged; the release is not published.
+
+GitHub CI run `42381059560` on link-fix revision `ae03dde...` passes both host and
+Android jobs, including software EGL pixels, renderer APK packaging and original
+native frontend/Bink compilation. This closes the previous CI link failure.
