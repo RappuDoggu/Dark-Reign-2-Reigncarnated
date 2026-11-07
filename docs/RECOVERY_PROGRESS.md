@@ -1311,3 +1311,31 @@ release materials still need preparation/verification; the historical v0.5 kit
 cannot be called the APK31 kit. See `docs/releases/v0.0.1-alpha.DRAFT.md`.
 This documentation-only update changes no APK, engine, main branch, tag, published
 Release or cloud-environment configuration.
+
+## 0.1 early-access release preparation — 2026-11-07
+
+The restored environment executes commands, retains the existing update signer
+and the native build caches, and has working GitHub Release API reads. Main is
+still the old audit baseline; the recovery branch contains the implementation.
+The concrete user reference StarDroid v1.5.4 README, player guide and release
+asset list were inspected. Its separate APK/source/checksum downloads, data import,
+update and controls guidance inform the 0.1 presentation without borrowing feature
+or licence claims. See RELEASE_AUDIT_0_1.md.
+
+VersionName 0.1/versionCode32 and launcher name Reigncarnated preserve the existing
+package and signer. Gameplay/native sources remain APK31's implementation.
+The release now has a player guide, synopsis, known limitations, roadmap, bug
+report template, current provenance/notices and updated Java CI checks. Verified
+Google Code metadata declares MIT and credits an ex-Activision developer; the
+GitHub mirror reports no root licence. These evidence points are separate from
+the owner's account, and old Phase 0 restrictions are historical, not a blanket
+build prohibition. Original assets/keys stay private.
+
+The old relink packager only covered the v0.5 menu. New release tooling verifies
+recorded native source/object inputs and exports portable debug-stripped objects
+for BOTH menu/mission libraries, complete pinned FFmpeg source/configuration,
+port source and modification/relink instructions. The exact release libraries
+are generated from those inputs so extracted-kit relinks can be hash-verified.
+Build/source receipts, release guide and provenance documents are embedded in
+the APK. Final kit/signature/hash/test results accompany the delivery receipt.
+No complete campaign, save/restore, multiplayer or new phone FPS claim is made.

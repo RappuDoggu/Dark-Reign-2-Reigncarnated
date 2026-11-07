@@ -1,75 +1,76 @@
 # Reigncarnated
 
-Native ARM64 Android source-port work for Dark Reign 2.
+**Dark Reign 2 on Android — native ARM64, offline early access.**
 
-## Current testing build: APK31
+## 0.1 release candidate
 
-Active implementation and APKs are on **`recovery/native-arm64-v012`**. The main
-branch remains the older audit baseline. This checkpoint is an offline testing
-build; no 0.1 stable release is declared.
+[**Download APK**](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/recovery/native-arm64-v012/builds/v0.1/Reigncarnated-0.1.apk) ·
+[Release notes](docs/RELEASE_0_1.md) ·
+[Source/relink ZIP](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/recovery/native-arm64-v012/builds/v0.1/Reigncarnated-0.1-source-relink.zip) ·
+[Checksums](builds/v0.1/SHA256SUMS.txt) ·
+[Player guide](docs/PLAYER_GUIDE.md) · [Roadmap](docs/ROADMAP.md)
 
-[**Download APK31 — Campaign Testing (9.5 MB)**](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/983c52e50a05ce4d37433f4eb114d509875b082c/builds/v0.25/Reigncarnated-Campaign-Testing-v31.apk)
+Android **8.0+**, **ARM64**, **GLES3.0**. Version **0.1**, Android version code **32**.
+The existing IA City Test app updates in place and is now labeled **Reigncarnated**.
+Install over it without uninstalling to retain imported data and progress.
 
-- Android package: `org.reigncarnated.instantcity`, **Reigncarnated IA City Test**.
-- Android version: `0.25-campaign-testing`, version code **31**.
-- Source: `e47230ebcb62a75b9d269f87afaaeffdfb1f1cd2`.
-- SHA-256: `f1676ad16b9f0a4ed4cd4998f36ef24c73e0a4ed8eadd59929b4dca7752e5303`.
-- Same private signer as APK22–30: install as an update to retain imported data.
-- APK contains build/source receipts, instructions and progress in `assets/build/`.
-  Signing keys and game data are not bundled; import your legally owned files.
+**Game data is not included.** Import your legally owned installation separately.
+Keep the original archives outside app storage. This is a community source port;
+no publisher endorsement or ownership of the original title is claimed.
 
-## Available for testing
+## Available in 0.1
 
-Original menu/city animation, offline Instant Action with one original AI,
-native mission/cinematic execution, combat and unit audio, MP3 mission speech
-support, music suspension during cutscenes/speech, Android settings and touch
-selection/building placement. Original simulation remains 10 Hz.
+- Original animated menu and offline Instant Action setup with practice/one original AI.
+- Campaign starts plus individual mission/cutscene testing without unlock requirements.
+- Player-only starting-resource editing for Instant Action; map defaults/AI preserved.
+- Native GLES rendering with original **10 Hz simulation**, independent of screen refresh.
+- Touch selection, drag selection, anchored building rotation/confirmation and two-finger pan.
+- Android settings, native combat/unit audio, MP3 speech support and music arbitration.
+- ZIP/folder import, private data backup/export and all-in-one diagnostics.
 
-**Campaigns** separates original campaign starts from unrestricted individual
-mission/cutscene tests. The catalog supports all declared imported sequence
-entries; the known owned-package metadata lists 31. Missing files are marked.
-Individual tests use separate progress and return to the menu on transitions.
-**Instant Action → Resources** edits only the local player's starting stockpile;
-blank preserves map default and zero is supported. AI starting amounts are unchanged.
+The known campaign metadata lists 31 sequence entries, including 12 separately
+named intros/transitions/outro entries. Availability depends on imported files;
+embedded cinematics stay in their mission scripts. Individual tests keep separate
+progress and return to the menu on transitions.
 
-The owner reports Instant Action appears completable and missions now load with
-cutscenes. Those reports do not establish complete campaign playthroughs. APK31
-host checks include 68 general tests, real player-only resource initialization
-with an AI, original campaign handoff and individual menu-return fixtures.
-Phone acceptance of APK31's new UI remains pending. Detailed evidence and limits:
-[APK31 receipt](docs/builds/campaign-testing-v31.json),
-[build/test notes](builds/v0.25/README.md),
-[recovery progress](docs/RECOVERY_PROGRESS.md).
+## Early-access limits
 
-## Proposed public prerelease
+Complete campaigns and every dialogue/objective/ending are not yet verified.
+Mid-mission save/restore and multiplayer are not implemented. Remaining invalid
+UV rendering, shroud/lighting, broad device/audio/long-session and thermal testing
+are tracked openly. Controller work is deferred. No new 0.1 phone FPS claim is made.
+See [known issues and validation](docs/RELEASE_0_1.md),
+[release receipt](docs/builds/release-0.1.json) and
+[campaign acceptance matrix](docs/CAMPAIGN_ACCEPTANCE.csv).
 
-**`v0.0.1-alpha`** is the proposed first public testing tag; it has not been
-created or published by this work. See the concrete
-[draft release notes](docs/releases/v0.0.1-alpha.DRAFT.md). APK31's internal Android
-version remains stated above; do not rename it as a stable 0.1 build.
+## Install and report
 
-Full campaign completion, local save/restore, remaining active-texture NaN UV
-defects, dialogue acceptance and broader device/long-session testing remain open.
-Multiplayer is offline in this build. Follow the
-[release acceptance plan](docs/RELEASE_0_1_AND_MULTIPLAYER.md) and
-[campaign verification matrix](docs/CAMPAIGN_ACCEPTANCE.csv).
+1. Download and install the APK on an ARM64 Android phone with GLES3.
+2. Import complete game data containing packs, missions, worlds, sides, mods and library.
+3. Open Instant Action or Campaigns. See the player guide for gestures and testing modes.
 
-The earlier [dependency/provenance audit](docs/DEPENDENCIES.md) records an
-unresolved upstream redistribution-authority question. This checkpoint does not
-resolve it. Public-release preparation also needs current FFmpeg corresponding
-source/relink materials; the historical v0.5 relink packager is not the current
-mission-library release kit. No new public-distribution rights are asserted here.
+For an update, install over the existing matching-signed app. Uninstall/clear-data
+removes imported files and progress; Android app backup is disabled. Keep a private
+export externally. For bugs, provide version, device/Android, map/mission, launch
+mode and reproduction steps, with the all-in-one diagnostics ZIP after the issue.
+Use [bug reporting](.github/ISSUE_TEMPLATE/bug_report.md); do not upload game archives.
 
-## Build and provenance
+## Source, builds and release status
 
-Use [the reproducible recovery instructions](docs/RECOVERY_BUILD.md): SDK35,
-NDK27.2.12479018, Java17/21, CMake, Ninja, Python and the pinned FFmpeg n6.1.1
-recipe. The pinned original source is fetched separately at
-`9ce9da5f21604310a997f0c41e9cd383f5e292c3` and checked against the repository's
-1,791-file inventory. Preserve API26, ARM64/static libc++, original ABI flags,
-16 KiB native alignment and the 10 Hz simulation.
+Active implementation is on **`recovery/native-arm64-v012`**. Main remains the
+older baseline until a reviewed recovery-to-main PR is merged. The candidate APK,
+source/relink archive and receipts are backed up on that branch. A draft GitHub
+Release is reviewable separately; a draft is not a public/stable release.
 
-Historical v0.3–v0.7 documents and the earlier `dev/native-arm64-primitives`
-checkpoint describe previous milestones. The recovery branch, source receipts
-and current progress record identify the implementation delivered now. Keep
-signing keys, owned asset archives and raw device diagnostics private.
+The matching source/relink ZIP includes port source, complete pinned FFmpeg
+n6.1.1 source/configuration and portable inputs for **both** native libraries.
+Its extracted relink is checked against the APK's exact library hashes. No keys,
+owned game packs, raw diagnostics or unstripped native libraries are included.
+[Build instructions](docs/RECOVERY_BUILD.md) · [Progress](docs/RECOVERY_PROGRESS.md) ·
+[Source/provenance and notices](docs/SOURCE_PROVENANCE.md) ·
+[Repository/StarDroid comparison](docs/RELEASE_AUDIT_0_1.md).
+
+SDK35, NDK27.2.12479018, API26, static libc++, original ABI flags and 16KiB alignment
+are preserved. Original engine source is separately fetched at
+`9ce9da5f21604310a997f0c41e9cd383f5e292c3` and verified against 1,791 file hashes.
+Older v0.x milestones and audit documents describe historical checkpoints.

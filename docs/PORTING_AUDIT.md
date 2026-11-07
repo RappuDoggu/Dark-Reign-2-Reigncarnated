@@ -1,3 +1,7 @@
+> Historical dated audit. For the current 0.1 release inputs, replacements and
+> evidence, see [SOURCE_PROVENANCE.md](SOURCE_PROVENANCE.md). Earlier statements
+> about absent gameplay/binaries describe their original checkpoint.
+
 # Verified Login package and mission dependency — 2026-10-26
 
 Clean CI now builds the private original Login APK. Original MoveTable/BalanceTable are additionally staged and tested locally (274 checks; 56/56 complete host suite). No new decompilation addresses were inferred. Device execution and full shell transition remain unverified/unimplemented respectively.

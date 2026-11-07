@@ -863,3 +863,55 @@ Check **Play selected cutscene**, direct late-mission launch and return to menu.
 Test **Instant Action → Resources** with blank, zero and an edited amount; verify
 your starting balance and unchanged AI behavior. Collect diagnostics after any
 failure; they now identify individual-test mode and starting-resource settings.
+
+## 0.1 release packaging and complete two-library relink kit
+
+0.1 uses Android version code 32 and the existing `org.reigncarnated.instantcity`
+identity/update signer; its launcher label is Reigncarnated. Native gameplay
+implementation is unchanged from APK31. A current kit replaces the old v0.5
+menu-only packager. Prepare committed release source, verify native source/object
+provenance and export debug-stripped portable link inputs:
+
+```sh
+python tools/prepare_release_relink.py --mission "$work/candidate-v31" \
+ --menu "$work/build-menu-v22" --ffmpeg "$work/ffmpeg/android/install" \
+ --ndk "$ANDROID_NDK_HOME" --output "$work/release-01-kit" \
+ --native-source-revision e47230ebcb62a75b9d269f87afaaeffdfb1f1cd2
+python "$work/release-01-kit/relink.py" --ndk "$ANDROID_NDK_HOME" \
+ --output "$work/release-01-native"
+python tools/package_mission_candidate.py \
+ --base-apk builds/v0.7/Reigncarnated-Performance-v07.apk \
+ --native-library "$work/release-01-native/libreign_mission.so" \
+ --menu-library "$work/release-01-native/libreign_menu.so" \
+ --sdk "$ANDROID_SDK_ROOT" --output "$work/release-01-package" \
+ --output-name Reigncarnated-0.1.apk \
+ --signing-key /private/path/to/existing-update.keystore \
+ --application-id org.reigncarnated.instantcity --app-label Reigncarnated
+python tools/verify_release_apk.py --apk "$work/release-01-package/Reigncarnated-0.1.apk" \
+ --sdk "$ANDROID_SDK_ROOT" --ndk "$ANDROID_NDK_HOME" \
+ --source-revision "$(git rev-parse HEAD)" \
+ --certificate 09790c4cce9605efeeb16051dc8527b6a6cae53d6baf24675dc34cc0a6683db9 \
+ --output "$work/release-01-package/build-receipt.json"
+```
+
+The cached candidate paths above are recovery-workspace names, not required
+fresh-build output names. Fresh builders use `build_performance_candidate.py`
+with the same version/identity and current tools; the relink preparer accepts the
+actual mission/menu/FFmpeg/NDK paths. Reuse requires no native implementation diff
+against the compiled source revision. Otherwise rebuild original objects first.
+
+After packaging, use `tools/finalize_release_relink.py --kit "$work/release-01-kit"`
+with `--unsigned-apk`, the verified `--receipt` and external ZIP `--output`. It
+copies the unsigned APK/receipt, hashes every member and writes the deterministically
+timestamped `Reigncarnated-0.1-source-relink.zip`.
+The kit excludes historical binaries/media/logs, retains current port source and
+authored tests, includes the full pinned FFmpeg archive/licence/recipe and supports
+`--decoder-libs` for a rebuilt or modified decoder. Extract the completed ZIP to a
+new directory, validate every member hash, relink both libraries again and compare
+exact SHA256 values with those in the signed APK. Keep `.unstripped.so`, original
+private objects, signing files and game packs outside the distributable ZIP.
+
+This release retains the original 10 Hz/ABI configuration and high-detail renderer.
+It supplies no original game assets. Source/licence evidence is recorded in
+SOURCE_PROVENANCE.md; native middleware binaries are replaced, not redistributed.
+A draft release and reviewable PR do not merge main or publish the cloud environment.

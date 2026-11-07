@@ -1,3 +1,7 @@
+> Historical dated audit. For the current 0.1 release inputs, replacements and
+> evidence, see [SOURCE_PROVENANCE.md](SOURCE_PROVENANCE.md). Earlier statements
+> about absent gameplay/binaries describe their original checkpoint.
+
 # Mission movement table — 2026-10-26
 
 `Game::PreOpenMission` calls `MoveTable::Init` before loading game.cfg. The full

@@ -47,7 +47,10 @@ with zipfile.ZipFile(a.base_apk) as old,zipfile.ZipFile(unsigned,'a') as apk:
  apk.writestr('assets/build/source.json',json.dumps(receipt,indent=2)+'\n')
  apk.writestr('assets/build/BUILD.md',(repo/'docs/RECOVERY_BUILD.md').read_text())
  apk.writestr('assets/build/PROGRESS.md',(repo/'docs/RECOVERY_PROGRESS.md').read_text())
- apk.writestr('assets/notices/performance-candidate.txt','Private original ARM64 performance candidate. Menu and mission libraries are rebuilt together with optimized compilation; original game data is imported separately. See the matching source checkpoint and accompanying source/relink archive. FFmpeg n6.1.1, LGPL 2.1 or later. No proprietary game data is included in this APK.')
+ for name in ['RELEASE_0_1.md','PLAYER_GUIDE.md','SOURCE_PROVENANCE.md']:
+  path=repo/'docs'/name
+  if path.is_file():apk.writestr('assets/build/'+name,path.read_text())
+ apk.writestr('assets/notices/performance-candidate.txt','Reigncarnated native ARM64 Android source port. Original game data is imported separately. This release includes a matching source/relink archive for both native libraries and the unmodified FFmpeg n6.1.1 source, LGPL 2.1 or later. See the release receipt and build instructions. No original game assets or signing keys are included in this APK.')
 aligned=out/'mission-aligned.apk';run([tools/'zipalign','-f','-P','16','4',unsigned,aligned])
 key=a.signing_key or out/'recovery-debug.keystore'
 if not key.exists():run(['keytool','-genkeypair','-noprompt','-keystore',key,'-storepass','android','-keypass','android','-alias','androiddebugkey','-dname','CN=Reigncarnated Private Mission Candidate','-keyalg','RSA','-keysize','2048','-validity','3650'])
