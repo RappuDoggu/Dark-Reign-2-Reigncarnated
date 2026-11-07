@@ -1,80 +1,125 @@
-# Reigncarnated
+<div align="center">
 
-**Dark Reign 2 on Android — native ARM64, offline early access.**
+<img src="docs/images/reigncarnated-banner.svg" alt="Reigncarnated — Dark Reign 2 on Android" width="100%" />
 
-## 0.1 release candidate
+### Dark Reign 2. Back in your hands.
 
-[**Download APK**](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/Reigncarnated-0.1.apk) ·
-[Release notes](docs/RELEASE_0_1.md) ·
-[Source/relink ZIP](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/Reigncarnated-0.1-source-relink.zip) ·
-[Checksums](builds/v0.1/SHA256SUMS.txt) ·
-[Player guide](docs/PLAYER_GUIDE.md) · [Roadmap](docs/ROADMAP.md)
+**A 25-year favorite is finding a new home on Android.**
 
-Android **8.0+**, **ARM64**, **GLES3.0**. Version **0.1**, Android version code **32**.
-The existing IA City Test app updates in place and is now labeled **Reigncarnated**.
-Install over it without uninstalling to retain imported data and progress.
+Build your base. Command your army. Take the fight back to the JDA—or join them.
 
-**Game data is not included.** Import your legally owned installation separately.
-Keep the original archives outside app storage. This is a community source port;
-no publisher endorsement or ownership of the original title is claimed.
+**[Download the 0.1 APK](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1.apk)** ·
+[Player guide](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/PLAYER_GUIDE.md) ·
+[Release notes](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/RELEASE_0_1.md) ·
+[Roadmap](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/ROADMAP.md)
 
-## Available in 0.1
+**Native ARM64** &nbsp; / &nbsp; **Android 8.0+** &nbsp; / &nbsp; **Offline play** &nbsp; / &nbsp; **Early access**
 
-- Original animated menu and offline Instant Action setup with practice/one original AI.
-- Campaign starts plus individual mission/cutscene testing without unlock requirements.
-- Player-only starting-resource editing for Instant Action; map defaults/AI preserved.
-- Native GLES rendering with original **10 Hz simulation**, independent of screen refresh.
-- Touch selection, drag selection, anchored building rotation/confirmation and two-finger pan.
-- Android settings, native combat/unit audio, MP3 speech support and music arbitration.
-- ZIP/folder import, private data backup/export and all-in-one diagnostics.
+</div>
 
-The known campaign metadata lists 31 sequence entries, including 12 separately
-named intros/transitions/outro entries. Availability depends on imported files;
-embedded cinematics stay in their mission scripts. Individual tests keep separate
-progress and return to the menu on transitions.
+---
 
-## Early-access limits
+## An old favorite. A new front line.
 
-Complete campaigns and every dialogue/objective/ending are not yet verified.
-Mid-mission save/restore and multiplayer are not implemented. Remaining invalid
-UV rendering, shroud/lighting, broad device/audio/long-session and thermal testing
-are tracked openly. Controller work is deferred. No new 0.1 phone FPS claim is made.
-See [known issues and validation](docs/RELEASE_0_1.md),
-[release receipt](docs/builds/release-0.1.json) and
-[campaign acceptance matrix](docs/CAMPAIGN_ACCEPTANCE.csv).
+Dark Reign 2 gave us sprawling battlefields, rival factions and the irresistible
+urge to build one more army. **Reigncarnated** brings its original engine to
+Android, with native ARM64 execution, modern GLES rendering and controls made
+for a touchscreen.
 
-## Install and report
+The original **10 Hz simulation** stays intact. The classic AI is here. The JDA
+and Sprawlers are back on the battlefield. This is a community effort to get a
+favorite RTS into our hands again—and keep making it better.
 
-1. Download and install the APK on an ARM64 Android phone with GLES3.
-2. Import complete game data containing packs, missions, worlds, sides, mods and library.
-3. Open Instant Action or Campaigns. See the player guide for gestures and testing modes.
+> **0.1 is an early-access release, ready for testing.** Instant Action and
+> campaign mission access are available. Full campaign playthroughs and remaining
+> rendering issues still need work; saves and multiplayer are not implemented.
 
-For an update, install over the existing matching-signed app. Uninstall/clear-data
-removes imported files and progress; Android app backup is disabled. Keep a private
-export externally. For bugs, provide version, device/Android, map/mission, launch
-mode and reproduction steps, with the all-in-one diagnostics ZIP after the issue.
-Use [bug reporting](.github/ISSUE_TEMPLATE/bug_report.md); do not upload game archives.
+## Get back into the fight
 
-## Source, builds and release status
+| Ready to try | What you can do |
+| --- | --- |
+| **Instant Action** | Choose a map, difficulty and seed. Face the original strategic AI or use practice mode. |
+| **Campaigns & cutscenes** | Start either faction's campaign, or select individual imported missions and cutscenes for testing. |
+| **Touch command** | Tap to select and order, drag to select groups, pan with two fingers, and anchor, rotate and confirm buildings. |
+| **Classic atmosphere** | Original animated menus, native combat and unit audio, plus music and speech support from your imported installation. |
+| **Android settings** | Adjust audio, brightness, map pan speed, keep-awake and frame timing display. |
+| **Testing tools** | Set your own Instant Action starting resources and export an all-in-one diagnostics ZIP when something goes wrong. |
 
-Active implementation is on **`recovery/native-arm64-v012`**. Main remains the
-older baseline until [recovery-to-main PR #3](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/pull/3)
-is reviewed and merged. The candidate APK,
-source/relink archive and receipts are backed up on that branch. A draft GitHub
-[Release](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/untagged-bfc407c1b0cb1dffc4a3)
-contains the four verified assets and is reviewable separately by maintainers;
-a draft is not a public/stable release. The APK/source links above are public
-and pinned to the immutable delivery commit. See [GitHub verification](docs/builds/release-0.1-github.json).
+Campaign selection opens the door to testing every declared mission entry;
+it does **not** mean both campaigns have been verified completable. See the
+[release notes](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/RELEASE_0_1.md)
+for the current limits.
 
-The matching source/relink ZIP includes port source, complete pinned FFmpeg
-n6.1.1 source/configuration and portable inputs for **both** native libraries.
-Its extracted relink is checked against the APK's exact library hashes. No keys,
-owned game packs, raw diagnostics or unstripped native libraries are included.
-[Build instructions](docs/RECOVERY_BUILD.md) · [Progress](docs/RECOVERY_PROGRESS.md) ·
-[Source/provenance and notices](docs/SOURCE_PROVENANCE.md) ·
-[Repository/StarDroid comparison](docs/RELEASE_AUDIT_0_1.md).
+## Play 0.1
 
-SDK35, NDK27.2.12479018, API26, static libc++, original ABI flags and 16KiB alignment
-are preserved. Original engine source is separately fetched at
-`9ce9da5f21604310a997f0c41e9cd383f5e292c3` and verified against 1,791 file hashes.
-Older v0.x milestones and audit documents describe historical checkpoints.
+1. **[Download and install Reigncarnated-0.1.apk](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1.apk).** You'll need Android 8.0 or newer, an ARM64 device and GLES 3.0.
+2. **Import your own Dark Reign 2 installation.** Use the ZIP or folder importer with the complete game data. The [player guide](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/PLAYER_GUIDE.md) explains the required files and music import.
+3. **Launch Instant Action or a campaign.** Build something. Break something. Tell us what happened.
+
+**Updating from IA City Test?** Install over the existing app. It becomes
+**Reigncarnated** and keeps the same package and signer. Avoid uninstalling or
+clearing app data, and keep a private game-data backup outside the app.
+
+The APK contains the port; **original game data is imported separately**.
+
+[Release page and all downloads](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1) ·
+[Alternate APK download](https://raw.githubusercontent.com/RappuDoggu/Dark-Reign-2-Reigncarnated/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/Reigncarnated-0.1.apk)
+
+## Help shape the comeback
+
+The next push is about making the experience hold up from the first mission to
+the last: campaign objectives and dialogue, rendering and fog of war, save/resume,
+and longer Instant Action sessions across more devices. Touch refinements follow
+the same goal: keep the tactics, make the phone controls feel natural.
+
+Controllers and multiplayer are longer-term work. Network recovery needs
+determinism and peer testing before we can promise a working match.
+[Follow the roadmap →](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/ROADMAP.md)
+
+**Playing on a device we haven't tested? Found a repeatable bug?**
+[Open an issue](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/issues).
+Include your phone, Android version, app version, map or mission and reproduction
+steps. Collect the in-app diagnostics ZIP immediately after the problem. Keep
+game archives and unrelated private files out of reports.
+
+If this is your kind of comeback, **star the repository and help us test it**.
+
+## Built to be inspected—and rebuilt
+
+**[Matching source/relink ZIP](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1-source-relink.zip)** ·
+[SHA256 checksums](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/SHA256SUMS.txt) ·
+[Build instructions](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/RECOVERY_BUILD.md) ·
+[Development progress](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/RECOVERY_PROGRESS.md)
+
+The APK identifies its exact source revision. The matching kit includes the port
+source, pinned FFmpeg source/configuration and portable relink inputs for **both**
+native libraries. Separately extracted relinks reproduce the delivered library
+hashes. Host and Android CI, build receipts and download checks provide the
+evidence behind the release.
+
+<details>
+<summary><strong>Source branches, toolchain and release status</strong></summary>
+
+The current Android implementation and this landing page are on **`main`**.
+The recovered history is also preserved on
+[`recovery/native-arm64-v012`](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/tree/recovery/native-arm64-v012).
+The released APK and source kit identify their exact application source revision,
+`2d4ea66bcb24daa44871e993c5c3e57c2b658d0e`; later documentation and build-metadata
+changes do not change that APK.
+
+The 0.1 APK is Android version code 32. It uses SDK 35, NDK 27.2.12479018,
+FFmpeg n6.1.1, static libc++ and 16 KiB native alignment. Original engine source is
+fetched at a pinned revision and verified against 1,791 file hashes. Signing keys
+and original game packs are excluded from the public deliverables.
+
+0.1 is published as an **early-access prerelease**, with verified assets from an
+immutable delivery commit. It is still an unfinished game. See the [build receipt](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/1b55b7cab7d571421a64fc192bac5b970563a490/builds/v0.1/build-receipt.json)
+and [GitHub verification](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/builds/release-0.1-github.json).
+
+</details>
+
+---
+
+An unofficial community source port. Original credits and notices are retained;
+no publisher endorsement is claimed.
+[Source provenance & third-party notices](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/blob/main/docs/SOURCE_PROVENANCE.md).

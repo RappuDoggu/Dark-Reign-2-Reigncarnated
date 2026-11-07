@@ -1382,3 +1382,21 @@ draft status, delivery/source IDs, PR #3 and download evidence are recorded in
 GitHub CI run `42381059560` on link-fix revision `ae03dde...` passes both host and
 Android jobs, including software EGL pixels, renderer APK packaging and original
 native frontend/Bink compilation. This closes the previous CI link failure.
+
+### Publication authorization and public landing page — 2026-11-07
+
+The owner explicitly instructed: "yes, publish ... publish all changes up to this
+point including the banner changes." This supersedes the earlier do-not-publish
+instruction for this GitHub publication. Merge the recovered Android implementation,
+the 0.1 delivery and the public landing-page/banner changes into main, and publish
+the verified v0.1 assets as an early-access prerelease. Original game data and
+signing credentials remain private.
+
+The landing page includes a new authored industrial-style SVG banner, the
+"Dark Reign 2. Back in your hands." introduction, downloads, supported features,
+installation/update guidance, contribution links and explicit early-access limits.
+Desktop/390px phone rendering and 14 linked destinations were verified for the
+prepared draft. Publication updates the guide links to main and download links
+to the release, retaining an immutable alternate APK link. Runtime code, the
+signed APK and source/relink hashes are unchanged. Actual public release/merge
+and anonymous-download verification are recorded after publication.
