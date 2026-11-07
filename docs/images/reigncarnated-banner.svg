@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">Reigncarnated</title>
+  <desc id="desc">Dark Reign 2 on Android. A dark industrial title banner with green and amber accents.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1">
+      <stop stop-color="#111d23"/>
+      <stop offset="1" stop-color="#080e13"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#a3d7ba" stroke-opacity=".055"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="320" rx="12" fill="url(#background)"/>
+  <rect width="1200" height="320" rx="12" fill="url(#grid)"/>
+  <g fill="none" stroke="#92cfa3" stroke-opacity=".13">
+    <path d="M985-30 830 65v190l155 95 165-95V65Z"/>
+    <path d="m985 15-116 72v146l116 72 126-72V87Z"/>
+    <path d="m985 60-77 49v102l77 49 87-49V109Z"/>
+  </g>
+  <path d="M0 46h10v228H0" fill="#98d9a5"/>
+  <path d="M1200 46h-10v228h10" fill="#e4ab65"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="64" y="70" fill="#a9bcb7" font-size="15" font-weight="700" letter-spacing="4">DARK REIGN 2 / NATIVE ARM64 ANDROID</text>
+    <text x="58" y="174" fill="#e4f1e6" font-size="86" font-weight="800" letter-spacing="2">REIGNCARNATED</text>
+    <path d="M64 200h720" stroke="#98d9a5" stroke-width="2"/>
+    <path d="M64 200h104" stroke="#e4ab65" stroke-width="4"/>
+    <text x="64" y="246" fill="#a9bcb7" font-size="20" letter-spacing="3">THE CLASSIC RTS. A NEW FRONT LINE.</text>
+    <rect x="64" y="268" width="151" height="26" rx="3" fill="#98d9a5" fill-opacity=".12" stroke="#98d9a5" stroke-opacity=".5"/>
+    <text x="77" y="286" fill="#b6e4be" font-size="12" font-weight="700" letter-spacing="1.5">0.1 EARLY ACCESS</text>
+  </g>
+</svg>
