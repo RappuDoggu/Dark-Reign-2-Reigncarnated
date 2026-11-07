@@ -1424,3 +1424,14 @@ integration", and remains unapplied. It did not block README/banner publication,
 the source merge or the release. Private signing files and game data were not
 published. Current release, public-download and merge evidence is recorded in
 `docs/builds/release-0.1-github.json`.
+
+### Public release page revision — 2026-11-07
+
+Shortened the landing page from 845 to approximately 290 words and removed
+development history, recovery/CI/relink explanations and promotional filler from
+the public copy. The README and release description now use the unmodified Dark
+Reign 2 storefront banner, credited in `docs/images/README.md`, in place of the
+authored text banner. Planned features list multiplayer, mods, more/custom maps,
+upscaling, zoom/camera changes, saves and controller support; these remain clearly
+separate from the features in 0.1. The roadmap and public release notes use the
+same player-facing scope. No app, signing or release-asset change is involved.
