@@ -63,6 +63,8 @@ namespace Sight {class Map;}
 #include "reign/legacy_gles.hpp"
 #include "load_status.h"
 #include "audio_status.h"
+#include "audio_native.h"
+#include "bink_native.h"
 #include "variable_failure.h"
 #include "mission_route.h"
 #include "reign/host_options.hpp"
@@ -77,6 +79,42 @@ void Require(bool ok,const char *what){if(!ok)throw std::runtime_error(what);}
 template<class T> void Register(const char *name){IFace::RegisterControlClass(name,+[](U32,IControl *parent,U32)->IControl *{return new T(parent);});}
 }
 struct MissionApp::Impl {
+ reign::LegacyGles *video=nullptr;
+ PresentVideo presentOutput=nullptr;
+ void *outputContext=nullptr;
+ unsigned movieTexture=0,movieWidth=0,movieHeight=0;
+ static bool Present(void *context){
+  auto &self=*static_cast<Impl *>(context);
+  if(auto *bitmap=Bitmap::Manager::ExclusiveMovie()){
+   HBINK movie=bitmap->GetBink();
+   if(!bitmap->BinkDone()&&!BinkWait(movie)){
+    BinkDoFrame(movie);
+    const auto *rgba=MoviePixels(movie);
+    if(self.movieTexture&&(self.movieWidth!=movie->Width||self.movieHeight!=movie->Height)){
+     self.video->delete_texture(self.movieTexture);self.movieTexture=0;
+    }
+    if(self.movieTexture)self.video->update_texture_rgba(self.movieTexture,movie->Width,movie->Height,rgba);
+    else self.movieTexture=self.video->texture_rgba(movie->Width,movie->Height,rgba);
+    self.movieWidth=movie->Width;self.movieHeight=movie->Height;
+    if(movie->FrameNum==movie->Frames)bitmap->FinishExclusiveMovie();
+    else BinkNextFrame(movie);
+   }
+   if(self.movieTexture){
+    float w=bitmap->CenterExclusiveMovie()?float(self.movieWidth):640.f;
+    float h=bitmap->CenterExclusiveMovie()?float(self.movieHeight):480.f;
+    float x=(640-w)/2,y=(480-h)/2;
+    reign::LegacyTL quad[]={{x,y,0,1,0xffffffff,0,0,0},{x+w,y,0,1,0xffffffff,0,1,0},
+                            {x+w,y+h,0,1,0xffffffff,0,1,1},{x,y+h,0,1,0xffffffff,0,0,1}};
+    const std::uint16_t indices[]={0,1,2,0,2,3};
+    reign::DrawState state;state.texture=self.movieTexture;state.texture_op=reign::TextureOp::texture;state.filtered=true;
+    self.video->clear(640,480,0,0,0,1);self.video->draw(640,480,quad,4,indices,6,state);
+   }
+  }else if(self.movieTexture){
+   self.video->delete_texture(self.movieTexture);self.movieTexture=0;GetDigitalMixer()->ClearMovie();
+  }
+  return self.presentOutput(self.outputContext);
+ }
+
  std::vector<std::function<void()>> cleanup;
  std::unique_ptr<Camera> camera;
  std::optional<MissionDestination> navigation;
@@ -110,6 +148,10 @@ struct MissionApp::Impl {
   FileSys::Init();Defer([]{FileSys::Done();});EventSys::Init();Defer([]{EventSys::Done();});
   MultiLanguage::Init();Defer([]{MultiLanguage::Done();});FontSys::Init();Defer([]{FontSys::Done();});
   Console::Init();Defer([]{Console::Done();});Input::Init(nullptr,nullptr);Defer([]{Input::Done();});SetInputViewport(640,480);
+  SetMovieAudioSink([](const std::int16_t *pcm,std::size_t count,unsigned rate,void *){
+   GetDigitalMixer()->QueueMovie(pcm,count,rate);
+  },nullptr);
+  Defer([]{SetMovieAudioSink(nullptr,nullptr);GetDigitalMixer()->ClearMovie();});
   Sound::Init();Defer([]{Sound::Done();});GameSound::Init();Defer([]{GameSound::Done();});PerfStats::Init();Defer([]{PerfStats::Done();});
   Require(FileSys::AddSrcPack("base",pack.string().c_str())&&FileSys::SetActiveStream("base"),"Cannot mount base.zwp");
   PTree configuration;Require(configuration.AddFile((root/"library/engine/startup.cfg").string().c_str()),"Cannot read startup.cfg");
@@ -122,7 +164,8 @@ struct MissionApp::Impl {
   VarSys::CreateInteger("vid.heap.check.verts",Vid::renderState.maxVerts,VarSys::NOTIFY,&Vid::Var::checkMaxVerts);
   VarSys::CreateInteger("vid.heap.check.tris",Vid::renderState.maxTris,VarSys::NOTIFY,&Vid::Var::checkMaxTris);
   Vid::InitBuckets();Defer([]{Vid::DoneBuckets();});
-  Require(AttachGlesVideo(renderer,640,480,present,context)==S_OK,"Cannot attach GLES video");Defer([]{DetachVideo();});
+  video=&renderer;presentOutput=present;outputContext=context;
+  Require(AttachGlesVideo(renderer,640,480,Present,this)==S_OK,"Cannot attach GLES video");Defer([this]{if(movieTexture)video->delete_texture(movieTexture);DetachVideo();});
   Require(Bitmap::Manager::Init(),"Cannot initialize bitmaps");Defer([]{Bitmap::Manager::Done();});
   Require(Material::Manager::Init(),"Cannot initialize materials");Defer([]{Material::Manager::Done();});
   Require(Vid::Light::Init(),"Cannot initialize lighting");Defer([]{Vid::Light::Done();});
@@ -154,7 +197,13 @@ struct MissionApp::Impl {
   BeginOfflineSession(mission,"Commander",options.campaign,options.opponents,options.seed,options.difficulty,options.startingResources);Defer([]{EndOfflineSession();});GameGod::Loader::InitNativeVariables();
   Orders::Init();Defer([]{Orders::Done();});Sync::Init();Defer([]{Sync::Done();});Demo::Init();Defer([]{Demo::Done();});InitializeRuntimeVariables();
   Defer([this]{EndGame();});
-  InitializeFrameClock(Clock::Time::Ms());Game::RC::Init();Defer([]{Game::RC::Clear();Game::RC::Done();});Game::RC::Set("Load");
+  InitializeFrameClock(Clock::Time::Ms());Game::RC::Init();Defer([]{Game::RC::Clear();Game::RC::Done();});if(!options.restoreSlot.empty()){
+   Require(options.restoreSlot=="checkpointA"||options.restoreSlot=="checkpointB","Unknown checkpoint slot");
+   SaveGame::Info info{};
+   Require(SaveGame::GetInfo(options.restoreSlot.c_str(),info)&&Utils::Stricmp(info.missionName,mission.c_str())==0&&Utils::Stricmp(info.missionPath,groupPath.c_str())==0,"Checkpoint mission does not match the launch target");
+   Require(SaveGame::PrepareLoad(options.restoreSlot.c_str()),"Unable to open the mission checkpoint");
+  }
+  Game::RC::Set("Load");
  }
 };
 MissionApp::MissionApp(const std::string &installation,const std::string &writable,const std::string &mission,reign::LegacyGles &renderer,PresentVideo present,void *context,const MissionOptions &options):impl(std::make_unique<Impl>()){
@@ -165,11 +214,22 @@ std::string MissionApp::Diagnostics()const{std::ostringstream out;if(auto *sessi
  out<<"\nGraphics: high detail, full mesh, 32-bit textures; filters="<<Vid::renderState.status.filter<<" distance fog="<<Vid::renderState.status.fog<<" fog rgb="<<unsigned(Vid::renderState.fogColor.r)<<','<<unsigned(Vid::renderState.fogColor.g)<<','<<unsigned(Vid::renderState.fogColor.b)<<" ambient rgb="<<unsigned(Vid::renderState.ambientColor.r)<<','<<unsigned(Vid::renderState.ambientColor.g)<<','<<unsigned(Vid::renderState.ambientColor.b)<<" terrain shroud="<<(VarSys::FindVarItem("terrain.shroud.active")?VarSys::FindVarItem("terrain.shroud.active")->Integer():-1);
  out<<"\nVariable failure (if any):\n"<<LastVariableFailure()<<"\n"<<NativeEngine::DigitalDiagnostics()<<"\n"<<missionLoadStatus.Report();return out.str();}
 void MissionApp::Close(){impl->Stop();}
+void MissionApp::Save(const std::string &slot){
+ Require(slot=="checkpointA"||slot=="checkpointB","Unknown checkpoint slot");
+ Require(InSimulation()&&!Viewer::movie&&!Viewer::Action::IsPlaying()&&!impl->navigation,"Save during active gameplay");
+ Require(SaveGame::Save(slot.c_str(),"Reigncarnated checkpoint"),"Could not write all mission checkpoint files");
+ SaveGame::Info info{};
+ Require(SaveGame::GetInfo(slot.c_str(),info),"Checkpoint readback failed");
+}
 void MissionApp::Control(unsigned action,float x,float y){
  if(!InSimulation())throw std::logic_error("Mission is still loading");
  if(!std::isfinite(x)||!std::isfinite(y))throw std::invalid_argument("Invalid camera gesture");
  if(action==1){Client::Events::TriggerClientMode(Client::CM_NONE);Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr("de::deselect"),0,0);}
  else if(action==2||action==3)Client::Events::HandleDiscreteEvent(nullptr,Crc::CalcStr(action==2?"de::prevdir":"de::nextdir"),0,0);
+ else if(action==7){
+  Require(CanPan(),"Camera zoom is locked during cinematics and transitions");
+  dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent())->ZoomNative(std::clamp(x,-12.f,12.f));
+ }
  else if(action==6)Vid::SetFogStateI(!Vid::renderState.status.fog); // Distance fog only; sight/shroud remain original.
  else if(action==5){if(!CanPan())throw std::logic_error("Map camera controls are locked during this cinematic or transition");auto *camera=dynamic_cast<Viewer::Standard *>(Viewer::GetCurrent());const auto &matrix=camera->GetMatrix();Vector right(matrix.right.x,0,matrix.right.z),front(matrix.front.x,0,matrix.front.z);if(right.Magnitude2()<1e-8f||front.Magnitude2()<1e-8f)throw std::logic_error("Current camera has no ground-plane pan direction");right.Normalize();front.Normalize();auto delta=right*std::clamp(x,-32.f,32.f)+front*std::clamp(y,-32.f,32.f);camera->PanNative(delta.x,delta.z);}
  else throw std::invalid_argument("Unknown mission control");

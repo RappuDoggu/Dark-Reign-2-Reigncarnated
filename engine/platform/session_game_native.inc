@@ -1,5 +1,6 @@
 // Single-player setup uses the original Team/Player machinery and mission data.
 #include "game.h"
+#include "savegame.h"
 #include "gameconstants.h"
 #include "unitobj.h"
 #include "team.h"
@@ -29,7 +30,9 @@ void SetupMission(){
  if(session->opponents){
   ::Team *enemy=nullptr;for(U32 id=0;id<Game::MAX_TEAMS;++id){auto *team=::Team::Id2Team(id);if(team&&team!=selected&&team->IsAvailablePlay()){enemy=team;break;}}
   if(!enemy)throw std::runtime_error("Selected map has no second playable starting team");
-  auto *personality=Mods::GetRandomMod(Mods::Types::Personality);if(!personality)throw std::runtime_error("Import the AI personality mods before enabling an opponent");
+  auto *personality=SaveGame::LoadActive()
+   ?Mods::GetMod(Mods::Types::Personality,Crc::CalcStr(enemy->GetPersonality()))
+   :Mods::GetRandomMod(Mods::Types::Personality);if(!personality)throw std::runtime_error("Import the AI personality mods before enabling an opponent");
   auto *ai=Strategic::Create(personality->GetName().crc);if(!ai)throw std::runtime_error("Original strategic AI could not be created");ai->SetTeam(enemy);enemy->SetPersonality(personality->GetName().str);enemy->SetDifficulty(Difficulty::GetCurrentSetting().GetValue());
   selected->SetRelation(enemy->GetId(),Relation(Relation::ENEMY));enemy->SetRelation(selected->GetId(),Relation(Relation::ENEMY));
  }
@@ -41,6 +44,6 @@ void SetupPostMission(){
  const auto *session=NativeEngine::CurrentOfflineSession();
  // Apply after the map's teams/resources load and before the first simulation
  // cycle. Change only the local player's stockpile, preserving every AI team.
- if(!session->campaign&&session->startingResources>=0)::Player::GetCurrentPlayer()->GetTeam()->SetResourceStore(U32(session->startingResources));
+ if(!SaveGame::LoadActive()&&!session->campaign&&session->startingResources>=0)::Player::GetCurrentPlayer()->GetTeam()->SetResourceStore(U32(session->startingResources));
 }
 }

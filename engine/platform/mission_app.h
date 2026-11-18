@@ -8,7 +8,7 @@ namespace reign {class LegacyGles;}
 namespace NativeEngine {
 // One original engine instance, owned entirely by its EGL/render thread.
 // The caller keeps its renderer and EGL context alive through Close/destruction.
-struct MissionOptions {std::string group="missions/multiplayer",difficulty="";bool campaign=false;unsigned opponents=0,seed=1;bool individualCampaign=false;int startingResources=-1;};
+struct MissionOptions {std::string group="missions/multiplayer",difficulty="";bool campaign=false;unsigned opponents=0,seed=1;bool individualCampaign=false;int startingResources=-1;std::string restoreSlot;};
 struct MissionDestination {std::string group,mission;bool menu=false,campaign=false;};
 class MissionApp {
  struct Impl;std::unique_ptr<Impl> impl;
@@ -19,6 +19,7 @@ public:
  MissionApp(const MissionApp &)=delete;
  MissionApp &operator=(const MissionApp &)=delete;
  std::string Diagnostics() const;
+ void Save(const std::string &slot);
  void Control(unsigned action,float x=0,float y=0);
  void Frame();
  void SetActive(bool);

@@ -20,7 +20,12 @@ ShellTerrain load_shell_terrain(ConfigLoader loader,unsigned width,unsigned heig
  if(e.sky.showClouds!=0&&e.sky.showClouds!=1)throw std::runtime_error("Invalid terrain cloud flag");
  finite(result.offsetX);finite(result.offsetZ);finite(result.fogDepth);finite(result.farPlane);
  for(U32 i=0;i<decoder.normCount;++i){auto &v=decoder.normList[i];finite(v.x);finite(v.y);finite(v.z);result.normals.push_back({v.x,v.y,v.z});}
- for(auto &c:field.cellList)finite(c.height);for(auto &c:decoder.clusList)finite(c.waterHeight);
+ for(auto &c:field.cellList)finite(c.height);
+ for(auto &cluster:decoder.clusList){
+  // A dry cluster never samples a water plane. Some retail maps leave this field uninitialized.
+  if(cluster.status&1)finite(cluster.waterHeight);
+  else if(!std::isfinite(cluster.waterHeight))cluster.waterHeight=0;
+ }
  for(auto &o:decoder.overlays.values)result.overlays.push_back(o.data);
  result.textures=std::move(decoder.textures);result.cells=std::move(field.cellList);result.clusters=std::move(decoder.clusList);return result;
 }

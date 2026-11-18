@@ -11,7 +11,8 @@ import javax.microedition.khronos.opengles.GL10;
 /** Device-validation entry point for the original ARM64 mission engine. */
 public final class MissionActivity extends Activity {
  static {System.loadLibrary("reign_mission");}
- private static native long openMission(String root,String writable,String group,String mission,boolean campaign,int opponents,int seed,String difficulty,boolean individualCampaign,int startingResources);
+ private static native long openMission(String root,String writable,String group,String mission,boolean campaign,int opponents,int seed,String difficulty,boolean individualCampaign,int startingResources,String slot);
+ private static native String saveMission(long handle,String slot);
  private static native String controlMission(long h,int action,float x,float y);
  private static native boolean placingMission(long h);
  private static native boolean panEnabledMission(long h);
@@ -59,6 +60,8 @@ public final class MissionActivity extends Activity {
    arrow.setOnTouchListener((v,event)->{int action=event.getActionMasked();if(action==MotionEvent.ACTION_DOWN)view.queueEvent(()->keyMission(key,true));else if(action==MotionEvent.ACTION_UP||action==MotionEvent.ACTION_CANCEL)view.queueEvent(()->keyMission(key,false));return true;});
    cameraTools.addView(arrow,new LinearLayout.LayoutParams(dp(56),dp(48)));
   }
+  cameraTools.addView(actionButton("−","Zoom out",()->view.control(7,8,0)));
+  cameraTools.addView(actionButton("+","Zoom in",()->view.control(7,-8,0)));
   cameraTools.setVisibility(View.GONE);FrameLayout.LayoutParams cameraPosition=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.CENTER_HORIZONTAL);cameraPosition.topMargin=dp(80);root.addView(cameraTools,cameraPosition);
   LinearLayout toolbar=new LinearLayout(this);toolbar.setBackgroundColor(0xc0182418);
   toolbar.addView(actionButton("Left click","Click at the world cursor; confirms the building preview",()->view.touch.click()));
@@ -68,6 +71,16 @@ public final class MissionActivity extends Activity {
   more.addView(actionButton("Build ↷","Rotate the selected building preview clockwise",()->view.control(3,0,0)));
   more.addView(actionButton("Camera","Two fingers pan the map only. While placing: tap to anchor/rotate, double-tap to confirm.",()->cameraTools.setVisibility(cameraTools.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE)));
   more.addView(actionButton("Debug","Collect or share diagnostics",this::showDebugTools));scroll.addView(more);toolbar.addView(scroll,new LinearLayout.LayoutParams(0,-2,1));root.addView(toolbar,new FrameLayout.LayoutParams(-1,-2,Gravity.TOP));
+  if(!target.individual)more.addView(actionButton("Save game","Save this mission at the current simulation cycle",()->view.queueEvent(()->{
+   if(view.handle==0)return;
+   try{
+    MissionCheckpoint checkpoint=new MissionCheckpoint(getFilesDir());String slot=checkpoint.nextSlot();
+    String error=saveMission(view.handle,slot);
+    if(error!=null)throw new java.io.IOException(error);
+    checkpoint.publish(slot,target.group,target.mission,target.campaign,getIntent());
+    runOnUiThread(()->Toast.makeText(this,"Mission saved",Toast.LENGTH_SHORT).show());
+   }catch(Exception e){runOnUiThread(()->Toast.makeText(this,"Save failed: "+e.getMessage(),Toast.LENGTH_LONG).show());}
+  })));
   more.addView(actionButton("Options","Audio, display and touch options",this::showOptions));
   placementHint=new TextView(this);placementHint.setText("Tap to anchor • Tap again to rotate • Double-tap to place • Drag to reposition");placementHint.setTextColor(0xffffffff);placementHint.setBackgroundColor(0xc0000000);placementHint.setVisibility(View.GONE);FrameLayout.LayoutParams hintPosition=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);hintPosition.topMargin=dp(52);root.addView(placementHint,hintPosition);
   metrics=new RenderMetrics(this,root,"Mission");setContentView(root);
@@ -116,17 +129,22 @@ public final class MissionActivity extends Activity {
   public void onSurfaceCreated(GL10 gl,EGLConfig config){syncMusic(8);if(sweep!=null){sweep.cancel();sweep=null;}Diagnostics.event("Mission GPU: "+gl.glGetString(GL10.GL_RENDERER)+" | "+gl.glGetString(GL10.GL_VERSION));if(handle!=0){abandonMission(handle);closeMission(handle);handle=0;report("Graphics context restored; restarting test mission…");}failed=ready=placing=tapRelease=simulationReady=false;runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);});}
   public void onSurfaceChanged(GL10 gl,int w,int h){width=w;height=h;}
   public void onDrawFrame(GL10 gl){if(!resumed||failed||width<=0||height<=0)return;
-   if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),target.individual?"mission-test-runtime":"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),target.campaign,getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""),target.individual,target.campaign?-1:getIntent().getIntExtra("startingResources",-1));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
+   if(handle==0){handle=openMission(getIntent().getStringExtra("installation"),new File(getFilesDir(),target.individual?"mission-test-runtime":"mission-runtime").getAbsolutePath(),intentValue("group","missions/multiplayer"),intentValue("mission","2crazed"),target.campaign,getIntent().getIntExtra("opponents",0),getIntent().getIntExtra("seed",1),intentValue("difficulty",""),target.individual,target.campaign?-1:getIntent().getIntExtra("startingResources",-1),intentValue("slot",""));if(handle==0){failed=true;report(missionError());return;}effectsMission(handle,AndroidOptions.effects(MissionActivity.this));debugMission(handle,getSharedPreferences("debug",0).getBoolean("synchronized",false)?3:2);}
    long drawStart=System.nanoTime();String error=frameMission(handle,width,height);syncMusic(error==null?musicBlockMission(handle):8);if(error==null&&optionsMission(handle))runOnUiThread(MissionActivity.this::showOptions);boolean nextPlacement=placingMission(handle);if(nextPlacement!=placing){placing=nextPlacement;runOnUiThread(()->{touch.aim(nextPlacement);placementHint.setVisibility(nextPlacement?View.VISIBLE:View.GONE);});}if(tapRelease){pointerMission(tapX,tapY,0,false);tapRelease=false;}long drawEnd=System.nanoTime();metrics.frame(drawStart,drawEnd,()->performanceMission(handle));if(sweep!=null){if(error!=null)sweep.abort(error);else sweep.frame(drawStart,drawEnd);}if(error!=null){Diagnostics.event("Mission frame stopped: "+error);Diagnostics.saveMissionFailure(MissionActivity.this,intentValue("group","")+"/"+intentValue("mission",""),metrics.latest()+"\n"+diagnosticsMission(handle));failed=true;simulationReady=false;runOnUiThread(()->cancelTouch());report(error);}else {String[] route=navigationMission(handle);if(route!=null){
     Diagnostics.saveMissionState(MissionActivity.this,intentValue("group","")+"/"+intentValue("mission",""),metrics.latest()+"\n"+diagnosticsMission(handle));
     syncMusic(8);simulationReady=false;ready=false;
     if(route[0].equals("menu")){failed=true;runOnUiThread(()->onBackPressed());return;}
-    closeMission(handle);handle=0;placing=tapRelease=false;target=new Target(route[1],route[2],route[3].equals("1"),false);
+    closeMission(handle);handle=0;getIntent().removeExtra("slot");placing=tapRelease=false;target=new Target(route[1],route[2],route[3].equals("1"),false);
     Diagnostics.event("Campaign handoff to "+route[1]+"/"+route[2]);
     runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);status.setText("Loading "+route[2]+"…");status.setVisibility(View.VISIBLE);metrics.reset();loadingHandler.removeCallbacks(loadingPoll);loadingHandler.postDelayed(loadingPoll,500);});return;
-   }if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;runOnUiThread(()->status.setVisibility(View.GONE));}}
+   }if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;
+    if(target.campaign&&!target.individual){
+     try{new CampaignSelection.Checkpoint(target.mission,intentValue("difficulty","")).write(getFilesDir(),target.group);}
+     catch(java.io.IOException e){Diagnostics.event("Could not save campaign checkpoint: "+e.getMessage());}
+    }
+    runOnUiThread(()->status.setVisibility(View.GONE));}}
   }
-  void control(int action,float x,float y){queueEvent(()->{if(handle!=0){if(action==5&&!panEnabledMission(handle))return;String error=controlMission(handle,action,x,y);if(error!=null){Diagnostics.event(error);runOnUiThread(()->Toast.makeText(MissionActivity.this,error,Toast.LENGTH_SHORT).show());}}});}
+  void control(int action,float x,float y){queueEvent(()->{if(handle!=0){if((action==5||action==7)&&!panEnabledMission(handle))return;String error=controlMission(handle,action,x,y);if(error!=null){Diagnostics.event(error);runOnUiThread(()->Toast.makeText(MissionActivity.this,error,Toast.LENGTH_SHORT).show());}}});}
   @Override public boolean onTouchEvent(MotionEvent event){
    float scale=Math.min(width/640f,height/480f);if(scale<=0)return true;
    if(!simulationReady){cancelTouch();return true;}

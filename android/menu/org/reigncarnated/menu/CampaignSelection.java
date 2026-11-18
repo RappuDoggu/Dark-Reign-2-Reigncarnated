@@ -1,5 +1,7 @@
 package org.reigncarnated.menu;
 import java.util.*;
+import java.io.*;
+import java.nio.file.*;
 /** Ordered launch data shared by the campaign hub and individual test picker. */
 final class CampaignSelection {
  static final class Entry {
@@ -18,6 +20,46 @@ final class CampaignSelection {
   }
   entries=Collections.unmodifiableList(all);starts=Collections.unmodifiableList(firsts);
  }
+ static String groupKey(String group){
+  return group.replace((char)92,'/').toLowerCase(Locale.ROOT);
+ }
+ Entry checkpoint(String group,String mission){
+  for(Entry entry:entries){
+   if(groupKey(entry.group).equals(groupKey(group))&&entry.name.equalsIgnoreCase(mission)&&entry.available)return entry;
+  }
+  return null;
+ }
  private static boolean bit(String s){return s.equals("0")||s.equals("1");}
- private static boolean simple(String s){return !s.isEmpty()&&!s.equals(".")&&!s.equals("..")&&s.length()<128&&s.indexOf('/')<0&&s.indexOf('\\')<0&&s.indexOf(':')<0&&s.indexOf('\t')<0&&s.indexOf('\r')<0&&s.indexOf('\n')<0;}
+ static boolean simple(String s){return !s.isEmpty()&&!s.equals(".")&&!s.equals("..")&&s.length()<128&&s.indexOf('/')<0&&s.indexOf('\\')<0&&s.indexOf(':')<0&&s.indexOf('\t')<0&&s.indexOf('\r')<0&&s.indexOf('\n')<0;}
+
+ /** Mission and menu run in different Android processes. Read the published file on each visit. */
+ static final class Checkpoint {
+  final String mission,difficulty;
+  Checkpoint(String mission,String difficulty){this.mission=mission;this.difficulty=difficulty;}
+
+  private static File path(File root,String group){
+   String key=CampaignSelection.groupKey(group);
+   if(!key.startsWith("missions/")||!CampaignSelection.simple(key.substring(9)))
+    throw new IllegalArgumentException("Invalid campaign group");
+   return new File(root,"campaign-"+key.substring(9)+".checkpoint");
+  }
+
+  static Checkpoint read(File root,String group){
+   try(DataInputStream in=new DataInputStream(new FileInputStream(path(root,group)))){
+    if(in.readInt()!=1)return null;
+    Checkpoint value=new Checkpoint(in.readUTF(),in.readUTF());
+    return in.read()==-1?value:null;
+   }catch(IOException ignored){return null;}
+  }
+
+  void write(File root,String group)throws IOException{
+   File target=path(root,group),temp=File.createTempFile("campaign-", ".tmp",root);
+   try{
+    try(FileOutputStream file=new FileOutputStream(temp);DataOutputStream out=new DataOutputStream(file)){
+     out.writeInt(1);out.writeUTF(mission);out.writeUTF(difficulty);out.flush();file.getFD().sync();
+    }
+    Files.move(temp.toPath(),target.toPath(),StandardCopyOption.ATOMIC_MOVE,StandardCopyOption.REPLACE_EXISTING);
+   }finally{Files.deleteIfExists(temp.toPath());}
+  }
+ }
 }

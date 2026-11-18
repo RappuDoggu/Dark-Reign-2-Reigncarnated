@@ -63,7 +63,9 @@ int main(){try{
  NativeEngine::BeginOfflineSession("other","Commander",false,1,42,"Hard");
  check(NativeEngine::CurrentOfflineSession()->opponents==1&&NativeEngine::CurrentOfflineSession()->seed==42&&NativeEngine::CurrentOfflineSession()->difficulty=="Hard"&&!MultiPlayer::GetDataCrc()&&!MultiPlayer::IsReady());
  NativeEngine::BeginOfflineSession("other","Commander",false,1,42,"Hard",44444);check(NativeEngine::CurrentOfflineSession()->startingResources==44444);
- FScope unsupportedSave(nullptr,"Save");bool saveRejected=false;try{MultiPlayer::Save(&unsupportedSave);}catch(const std::runtime_error &){saveRejected=true;}check(saveRejected);
+ FScope offlineSave(nullptr,"Save");MultiPlayer::Save(&offlineSave);
+ offlineSave.InitIterators();MultiPlayer::Load(&offlineSave);
+ check(NativeEngine::CurrentOfflineSession()->startingResources==44444);
 
  FScope empty(nullptr,"Local");MultiPlayer::Load(&empty);
  saved.InitIterators();MultiPlayer::Data::Load(&saved);check(MultiPlayer::Data::HaveData());

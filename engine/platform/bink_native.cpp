@@ -27,6 +27,7 @@ void Rewind(HBINK b){auto &s=State(b);s.movie=std::make_unique<reign::BinkMovie>
 }
 namespace NativeEngine {
 void SetMovieAudioSink(MovieAudioSink sink,void *context){audioSink=sink;audioContext=context;}
+const std::uint8_t *MoviePixels(HBINK b){return State(b).movie->rgba().data();}
 HBINK OpenMovie(const void *bytes,std::size_t size){
  try {
   if(!bytes||size<44||size>128u*1024u*1024u)throw std::invalid_argument("Invalid movie memory range");

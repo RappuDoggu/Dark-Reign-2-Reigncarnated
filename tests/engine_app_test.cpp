@@ -113,10 +113,40 @@ int main(int argc,char **argv){try{
  if(argc<2||argc>5)throw std::runtime_error("Provide installation [mission [group [campaign]]]");
  const std::string selectedMission=argc>2?argv[2]:"2crazed";NativeEngine::MissionOptions options;if(std::getenv("REIGN_CAPTURE_VIDEO_DIR"))options.opponents=1;if(argc>3)options.group=argv[3];options.campaign=argc>4&&std::string(argv[4])=="campaign";options.individualCampaign=std::getenv("REIGN_INDIVIDUAL_CAMPAIGN_FIXTURE")!=nullptr;if(const char *amount=std::getenv("REIGN_START_RESOURCES_FIXTURE")){options.startingResources=std::stoi(amount);options.opponents=1;}
  auto argument=std::filesystem::path(argv[1]);auto root=std::filesystem::is_directory(argument)?argument:argument.parent_path().parent_path();
+ const bool snapshot=std::getenv("REIGN_SAVE_FIXTURE")!=nullptr;
+ if((snapshot||std::getenv("REIGN_SOAK_SECONDS"))&&!options.campaign)options.opponents=1;
+ unsigned savedCycle=0;std::uint32_t comparisonCycle=0;
+ std::vector<std::pair<unsigned,unsigned>> referenceTeams;
  auto work=std::filesystem::temp_directory_path()/("reign-app-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
  Context context;reign::LegacyGles renderer(resolve);Presentation presentation{&renderer};
  for(unsigned pass=0;pass<2;++pass){
+  if(snapshot&&pass)options.restoreSlot="checkpointA";
   NativeEngine::MissionApp app(root.string(),work.string(),selectedMission,renderer,present,&presentation,options);
+  if(const char *expected=std::getenv("REIGN_EXPECT_NEXT")){
+   auto bootDeadline=std::chrono::steady_clock::now()+std::chrono::minutes(2);
+   while(!app.InSimulation()&&std::chrono::steady_clock::now()<bootDeadline){
+    app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(12));
+   }
+   check(app.InSimulation());Missions::NextMission(TRUE);
+   auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);
+   std::optional<NativeEngine::MissionDestination> route;
+   while(!route&&std::chrono::steady_clock::now()<deadline){
+    app.Frame();route=app.TakeNavigation();std::this_thread::sleep_for(std::chrono::milliseconds(12));
+   }
+   if(std::string(expected)=="@menu"){
+    check(route&&route->menu);std::cerr<<"Final campaign return to menu from "<<selectedMission<<"\n";
+    app.Close();continue;
+   }
+   check(route&&!route->menu&&route->campaign&&Utils::Stricmp(route->mission.c_str(),expected)==0);
+   app.Close();auto nextOptions=options;nextOptions.group=route->group;
+   NativeEngine::MissionApp next(root.string(),work.string(),route->mission,renderer,present,&presentation,nextOptions);
+   deadline=std::chrono::steady_clock::now()+std::chrono::minutes(3);
+   while(!next.InSimulation()&&std::chrono::steady_clock::now()<deadline){
+    next.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(12));
+   }
+   check(next.InSimulation());std::cerr<<"Original campaign handoff "<<selectedMission<<" -> "<<route->mission<<" entered simulation\n";
+   next.Close();continue;
+  }
   if(options.campaign)check(!MultiPlayer::Data::HaveData()&&Difficulty::GetApplyEnemy());
   // Original optional-texture lookup must return no texture, not throw before
   // FindCreate can apply its own extension check (retail J01 first-frame failure).
@@ -132,8 +162,65 @@ int main(int argc,char **argv){try{
    }
    if(!app.SimulationCycles())check(NativeEngine::missionLoadStatus.Report().rfind("READY\n",0)!=0);std::this_thread::sleep_for(std::chrono::milliseconds(16));}
   if(std::getenv("REIGN_START_RESOURCES_FIXTURE"))check(resourcesChecked);
+  // Authored opening movies suspend simulation while their wall-clock video advances.
+  auto deadline=std::chrono::steady_clock::now()+std::chrono::minutes(3);
+  while(Viewer::movie&&std::chrono::steady_clock::now()<deadline){
+   app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(12));
+  }
+  for(unsigned frame=0;!app.SimulationCycles()&&frame<120;++frame){
+   app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));
+  }
   check(app.InSimulation()&&app.SimulationCycles()>0);
   if(options.campaign)check(Player::GetCurrentPlayer()&&Player::GetCurrentPlayer()->GetTeam()->IsDefaultClient());
+  if(snapshot){
+   auto *team=Player::GetCurrentPlayer()->GetTeam();check(team);
+   if(!pass){
+    // Wait for a playable camera before saving a campaign opening.
+    const auto deadline=std::chrono::steady_clock::now()+std::chrono::minutes(3);
+    while(!app.CanPan()&&std::chrono::steady_clock::now()<deadline){
+     app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(12));
+    }
+    check(app.CanPan());app.Control(7,8);app.Control(7,-8);
+    team->SetResourceStore(54321);savedCycle=app.SimulationCycles();
+    app.Save("checkpointA");std::cerr<<"Saved cycle "<<savedCycle<<" resources 54321\n";
+   }else{
+    check(team->GetResourceStore()==54321&&app.SimulationCycles()>=savedCycle);
+    if(!options.campaign){
+     bool ai=false;for(U32 id=0;id<Game::MAX_TEAMS;++id){auto *other=Team::Id2Team(id);if(other&&other!=team&&other->IsAI())ai=true;}check(ai);
+    }
+    std::cerr<<"Restored cycle "<<app.SimulationCycles()<<" resources "<<team->GetResourceStore()<<"\n";
+   }
+   if(!pass){
+    // Fail after world files have been written to the inactive slot.
+    std::string slot=User::GetSavePath("checkpointB",TRUE);std::replace(slot.begin(),slot.end(),char(92),'/');
+    std::filesystem::create_directory(std::filesystem::path(slot)/"saveinfo.cfg");
+    bool failed=false;try{app.Save("checkpointB");}catch(const std::exception &){failed=true;}
+    check(failed&&!SaveGame::SaveActive());comparisonCycle=savedCycle+60;
+   }
+   const auto until=std::chrono::steady_clock::now()+std::chrono::seconds(30);
+   while(app.SimulationCycles()<comparisonCycle&&std::chrono::steady_clock::now()<until){
+    app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(8));
+   }
+   check(app.SimulationCycles()==comparisonCycle);
+   std::vector<std::pair<unsigned,unsigned>> teams;
+   for(U32 id=0;id<Game::MAX_TEAMS;++id){
+    auto *member=Team::Id2Team(id);
+    if(member)teams.emplace_back(member->GetResourceStore(),member->GetUnitObjects().GetCount());
+   }
+   std::cerr<<"Comparison pass "<<pass<<" cycle "<<comparisonCycle;
+   for(const auto &team:teams)std::cerr<<" [resources="<<team.first<<" units="<<team.second<<"]";
+   std::cerr<<"\n";
+   if(!pass)referenceTeams=teams;
+   else{check(teams==referenceTeams);std::cerr<<"Matched team resources and unit counts at cycle "<<comparisonCycle<<" after interrupted second-slot save\n";}
+   app.Close();continue;
+  }
+  if(const char *duration=std::getenv("REIGN_SOAK_SECONDS")){
+   auto seconds=std::stoul(duration);check(seconds>=1&&seconds<=86400);
+   const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(seconds);
+   const auto initial=app.SimulationCycles();
+   while(std::chrono::steady_clock::now()<deadline){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(8));}
+   check(app.SimulationCycles()>initial);std::cerr<<"Soak cycles "<<initial<<" -> "<<app.SimulationCycles()<<"\n";
+  }
   if(std::getenv("REIGN_LEGACY_VIDEO_REPRO")){
    check(IFace::Activate("Sys::Options"));auto *tabs=IFace::FindByName("Sys::Options.Tabs");check(tabs);
    IFace::SendNotify(tabs,nullptr,Crc::CalcStr("TabGroup::Message::Select"),Crc::CalcStr("Video"));
@@ -219,7 +306,7 @@ int main(int argc,char **argv){try{
   }
   auto before=app.SimulationCycles();NativeEngine::QueueKey(0xc8,TRUE);app.Frame();before=app.SimulationCycles();app.SetActive(false);check(!Input::IsKeyDown(0xc8));
   for(unsigned frame=0;frame<4;++frame)app.Frame();check(app.SimulationCycles()==before);
-  app.SetActive(true);for(unsigned frame=0;frame<20;++frame){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));}
+  app.SetActive(true);for(unsigned frame=0;frame<600&&app.SimulationCycles()<=before;++frame){app.Frame();std::this_thread::sleep_for(std::chrono::milliseconds(16));}
   check(app.SimulationCycles()>before);
   std::cerr<<"Application lifecycle pass "<<pass<<" cycles "<<app.SimulationCycles()<<" presented "<<presentation.calls<<"\n";
   std::cerr<<app.Diagnostics()<<"\n"<<renderer.diagnostics()<<"\n";

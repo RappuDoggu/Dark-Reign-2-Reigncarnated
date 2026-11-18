@@ -26,6 +26,12 @@ int main(){try{
  mixer.StopEffect(&effectStorage);check(mixer.Playing(shot));mixer.Render(output,24);check(output[0]>.9f&&!mixer.Playing(shot));
  auto loop=mixer.Play(clip,1,64,0,1,0,&effectStorage);check(loop);mixer.StopEffect(&effectStorage);check(!mixer.Playing(loop));
  mixer.StopAll();mixer.SetVolume(0.5f);id=mixer.Play(clip,1,64,1);mixer.Render(output,24);check(std::abs(output[0]-clip->stereo[0]*0.5f)<0.00001f);
+ mixer.SetVolume(1);
+ const std::int16_t movie[]={16384,-16384,8192,-8192};
+ mixer.QueueMovie(movie,2,24000);mixer.QueueMovie(movie+2,2,24000);
+ mixer.Render(output,5,48000);
+ check(output[0]==.5f&&output[1]==-.5f&&output[2]==.5f&&output[4]==.25f&&output[8]==0);
+ mixer.QueueMovie(movie,4,24000);mixer.ClearMovie();mixer.Render(output,2);check(output[0]==0);
  mixer.SetOutputRunning(false);mixer.Render(output,24);for(auto s:output)check(s==0);
  bool rejected=false;bytes[40]=250;try{DecodeWave(bytes.data(),bytes.size());}catch(const std::invalid_argument &){rejected=true;}check(rejected);
  std::cout<<"PCM bounds, conversion, resampling, panning, finite/infinite loops, priority, owner stop and output loss pass.\n";return 0;
