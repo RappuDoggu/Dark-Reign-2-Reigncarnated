@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.AtomicFile;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.json.JSONException;
@@ -15,8 +16,15 @@ final class MissionCheckpoint {
  MissionCheckpoint(File root){file=new AtomicFile(new File(root,"mission-checkpoint.json"));}
 
  JSONObject read() throws IOException, JSONException {
-  if(!file.getBaseFile().exists())return null;
-  JSONObject state=new JSONObject(new String(file.readFully(),StandardCharsets.UTF_8));
+  byte[] bytes;
+  try {
+   bytes=file.readFully();
+  } catch(FileNotFoundException e) {
+   File base=file.getBaseFile();
+   if(base.exists()||new File(base.getPath()+".bak").exists())throw e;
+   return null;
+  }
+  JSONObject state=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
   String slot=state.getString("slot");
   if(!slot.equals("checkpointA")&&!slot.equals("checkpointB"))throw new IOException("Unknown mission save slot");
   return state;
