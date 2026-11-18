@@ -132,12 +132,26 @@ public final class MenuActivity extends Activity {
   if(!resumed||instantOpening||(missionDialog!=null&&missionDialog.isShowing()))return;if(!hasData()){message("Import your complete game data first.");return;}final int generation=audioGeneration;
   view.queueEvent(()->{if(view.handle==0){message("Wait for the main menu to finish loading");return;}String[] rows=campaignTestingNative(view.handle),difficulty=difficultyNative(view.handle);if(rows==null||difficulty==null){message(errorNative());return;}runOnUiThread(()->{if(destroyed||!resumed||generation!=audioGeneration)return;try{showCampaignHub(new CampaignSelection(rows),difficulty);}catch(Exception e){message(e.getMessage());}});});
  }
+ private ScrollView scrollCampaign(LinearLayout panel){
+  ScrollView scroll=new ScrollView(this);scroll.addView(panel);return scroll;
+ }
  private void showCampaignHub(CampaignSelection catalog,String[] difficulties){
   if(destroyed||!resumed||(missionDialog!=null&&missionDialog.isShowing()))return;
   if(catalog.entries.isEmpty()){message("No campaign sequences were found in the imported missions folders.");return;}
   LinearLayout panel=campaignPanel("Start a campaign from its original opening, or choose any mission or cutscene for testing.");
-  android.app.AlertDialog dialog=new android.app.AlertDialog.Builder(this).setTitle("Campaigns").setView(panel).setNegativeButton("Close",null).create();
+  android.app.AlertDialog dialog=new android.app.AlertDialog.Builder(this).setTitle("Campaigns").setView(scrollCampaign(panel)).setNegativeButton("Close",null).create();
   for(CampaignSelection.Entry first:catalog.starts){Button button=new Button(this);button.setText("Start "+first.faction()+" campaign");button.setEnabled(first.available);button.setOnClickListener(v->{dialog.dismiss();showCampaignStart(first,difficulties);});panel.addView(button);TextView opening=new TextView(this);opening.setText("Opening: "+first.name+(first.available?"":" — missing imported data"));panel.addView(opening);}
+  android.content.SharedPreferences progress=getSharedPreferences("campaign-checkpoints",MODE_PRIVATE);
+  for(CampaignSelection.Entry first:catalog.starts){
+   String key=first.group.toLowerCase(java.util.Locale.ROOT);
+   CampaignSelection.Entry saved=catalog.checkpoint(first.group,progress.getString(key,""));
+   if(saved==null)continue;
+   String difficulty=progress.getString(key+"/difficulty","");
+   Button resume=new Button(this);
+   resume.setText("Continue "+saved.faction()+" from start of "+saved.name);
+   resume.setOnClickListener(v->{dialog.dismiss();launchCampaign(saved,difficulty,false);});
+   panel.addView(resume);
+  }
   Button individual=new Button(this);individual.setText("Choose individual mission / cutscene (testing)");individual.setOnClickListener(v->{dialog.dismiss();showCampaignTest(catalog,difficulties);});panel.addView(individual);trackCampaignDialog(dialog);
  }
  private void showCampaignStart(CampaignSelection.Entry entry,String[] difficulties){

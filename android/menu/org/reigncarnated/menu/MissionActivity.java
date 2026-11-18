@@ -124,7 +124,13 @@ public final class MissionActivity extends Activity {
     closeMission(handle);handle=0;placing=tapRelease=false;target=new Target(route[1],route[2],route[3].equals("1"),false);
     Diagnostics.event("Campaign handoff to "+route[1]+"/"+route[2]);
     runOnUiThread(()->{cancelTouch();touch.aim(false);placementHint.setVisibility(View.GONE);status.setText("Loading "+route[2]+"…");status.setVisibility(View.VISIBLE);metrics.reset();loadingHandler.removeCallbacks(loadingPoll);loadingHandler.postDelayed(loadingPoll,500);});return;
-   }if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;runOnUiThread(()->status.setVisibility(View.GONE));}}
+   }if(!ready&&loadingMission().startsWith("READY\n")){ready=simulationReady=true;
+    if(target.campaign&&!target.individual){
+     String key=target.group.toLowerCase(java.util.Locale.ROOT);
+     getSharedPreferences("campaign-checkpoints",MODE_PRIVATE).edit()
+      .putString(key,target.mission).putString(key+"/difficulty",intentValue("difficulty","")).apply();
+    }
+    runOnUiThread(()->status.setVisibility(View.GONE));}}
   }
   void control(int action,float x,float y){queueEvent(()->{if(handle!=0){if(action==5&&!panEnabledMission(handle))return;String error=controlMission(handle,action,x,y);if(error!=null){Diagnostics.event(error);runOnUiThread(()->Toast.makeText(MissionActivity.this,error,Toast.LENGTH_SHORT).show());}}});}
   @Override public boolean onTouchEvent(MotionEvent event){

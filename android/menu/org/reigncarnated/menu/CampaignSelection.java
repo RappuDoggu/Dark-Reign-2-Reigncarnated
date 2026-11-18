@@ -18,6 +18,12 @@ final class CampaignSelection {
   }
   entries=Collections.unmodifiableList(all);starts=Collections.unmodifiableList(firsts);
  }
+ Entry checkpoint(String group,String mission){
+  for(Entry entry:entries){
+   if(entry.group.equalsIgnoreCase(group)&&entry.name.equalsIgnoreCase(mission)&&entry.available)return entry;
+  }
+  return null;
+ }
  private static boolean bit(String s){return s.equals("0")||s.equals("1");}
  private static boolean simple(String s){return !s.isEmpty()&&!s.equals(".")&&!s.equals("..")&&s.length()<128&&s.indexOf('/')<0&&s.indexOf('\\')<0&&s.indexOf(':')<0&&s.indexOf('\t')<0&&s.indexOf('\r')<0&&s.indexOf('\n')<0;}
 }
