@@ -125,6 +125,12 @@ int main(){try{
   check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,poison.data(),5,triangleIndices,6,0)==S_OK);
   WORD badReference[]={0,1,4};check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,poison.data(),5,badReference,3,0)==E_FAIL);
   check(renderer.diagnostics().find("Invalid referenced TL coordinates/rhw at vertex 4")!=std::string::npos);
+  auto diffuseQuad=vertices;
+  diffuseQuad[0].u=std::numeric_limits<float>::quiet_NaN();
+  device->SetTexture(0,nullptr);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,diffuseQuad.data(),4,triangleIndices,6,0)==S_OK);
+  device->SetTexture(0,surface);
+  check(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,D3DFVF_TLVERTEX,diffuseQuad.data(),4,triangleIndices,6,0)==E_FAIL);
   DWORD stored=0;
   for(auto type:{D3DRENDERSTATE_TEXTUREPERSPECTIVE,D3DRENDERSTATE_DITHERENABLE,D3DRENDERSTATE_CLIPPING}){
    for(DWORD value:{0u,1u}){check(device->SetRenderState(type,value)==S_OK);check(device->GetRenderState(type,&stored)==S_OK&&stored==value);}

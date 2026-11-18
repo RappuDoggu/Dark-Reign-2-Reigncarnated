@@ -49,7 +49,7 @@ std::shared_ptr<const AudioClip> DecodeWave(const void *input,std::size_t size){
  }
  return clip;
 }
-AudioMixer::AudioMixer(unsigned n):voices(n){if(!n||n>256)throw std::invalid_argument("Invalid audio voice capacity");}
+AudioMixer::AudioMixer(unsigned n):voices(n),movieSamples(movieCapacity*2){if(!n||n>256)throw std::invalid_argument("Invalid audio voice capacity");}
 std::uint64_t AudioMixer::Play(std::shared_ptr<const AudioClip> clip,float gain,int pan,int loops,float priority,std::uint32_t owner,const void *effect,const void *record){
  std::lock_guard<std::mutex> lock(mutex);
  ++counters.requests;if(!OutputRunning()){++counters.output_off;return 0;}
@@ -59,6 +59,26 @@ std::uint64_t AudioMixer::Play(std::shared_ptr<const AudioClip> clip,float gain,
  if(slot==voices.end()){slot=std::min_element(voices.begin(),voices.end(),[](const auto&a,const auto&b){return a.priority<b.priority;});if(slot->priority>=priority){++counters.priority_rejected;return 0;}}
  if(++serial==0)++serial;
  *slot=Voice{std::move(clip),serial,0,loops,std::clamp(gain,0.f,1.f),priority,std::clamp(pan,0,127),owner,effect,record};++counters.started;return serial;
+}
+void AudioMixer::ClearMovie(){
+ std::lock_guard<std::mutex> lock(mutex);
+ movieRead=movieCount=moviePhase=0;
+}
+void AudioMixer::QueueMovie(const std::int16_t *samples,std::size_t count,unsigned rate){
+ if(!samples||count%2||rate<8000||rate>96000||!OutputRunning())return;
+ std::lock_guard<std::mutex> lock(mutex);
+ if(movieRate!=rate){movieRead=movieCount=moviePhase=0;movieRate=rate;}
+ const auto frames=std::min<std::size_t>(count/2,movieCapacity);
+ samples+=count-2*frames;
+ if(movieCount+frames>movieCapacity){
+  unsigned drop=unsigned(movieCount+frames-movieCapacity);
+  movieRead=(movieRead+drop)%movieCapacity;movieCount-=drop;moviePhase=0;
+ }
+ unsigned write=(movieRead+movieCount)%movieCapacity;
+ auto first=std::min<std::size_t>(frames,movieCapacity-write);
+ std::copy_n(samples,2*first,movieSamples.begin()+2*write);
+ std::copy_n(samples+2*first,2*(frames-first),movieSamples.begin());
+ movieCount+=unsigned(frames);
 }
 void AudioMixer::Render(float *out,std::size_t frames,unsigned rate)noexcept{
  if(!out||frames>65536)return;std::fill(out,out+frames*2,0.f);if(rate<8000||rate>192000||!OutputRunning())return;
@@ -78,6 +98,14 @@ void AudioMixer::Render(float *out,std::size_t frames,unsigned rate)noexcept{
   }
   // Publish completion even when the last sample exactly fills this callback.
   while(v.id&&v.position>=limit){v.position-=limit;if(v.loops>0&&--v.loops==0)v.id=0;}
+ }
+ if(movieOutputRate!=rate){moviePhase=0;movieOutputRate=rate;}
+ for(std::size_t frame=0;frame<frames&&movieCount;++frame){
+  for(unsigned channel=0;channel<2;++channel)
+   out[2*frame+channel]+=movieSamples[2*movieRead+channel]*(volume/32768.f);
+  moviePhase+=movieRate;
+  const unsigned advance=std::min(movieCount,moviePhase/rate);
+  moviePhase%=rate;movieRead=(movieRead+advance)%movieCapacity;movieCount-=advance;
  }
  float peak=0;for(std::size_t i=0;i<frames*2;++i){out[i]=std::clamp(out[i],-1.f,1.f);peak=std::max(peak,std::abs(out[i]));}counters.peak=std::max(counters.peak,peak);if(peak>0.0001f)++counters.audible_callbacks;
 }

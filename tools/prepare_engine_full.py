@@ -76,7 +76,10 @@ patch('coregame/terraingroup.h', [('Type::BlendName','BlendName')])
 patch('coregame/team.h', [('Team::GetConsoleId', 'GetConsoleId')])
 # Touch pan uses the original scroll target instead of resetting camera height.
 # A non-virtual method preserves all original fields and vtable entries.
-patch('coregame/viewer_private.h', [('    // Move to position\n    void LookAt(F32 x, F32 z);\n\n    // Exec a scope', '    void PanNative(F32 x, F32 z);\n\n    // Move to position\n    void LookAt(F32 x, F32 z);\n\n    // Exec a scope')])
+patch('graphics/bitmap.h', [('    static void SetTexture( Bitmap *texture, U32 stage = 0);',
+    '    static Bitmap *ExclusiveMovie(){auto *movie=binkList.GetTail();return movie && movie->status.binkExclusive ? movie : nullptr;}\n    static void SetTexture( Bitmap *texture, U32 stage = 0);'),
+    ('  inline Bool BinkDone()', '  void FinishExclusiveMovie(){status.binkDone=TRUE;}\n  bool CenterExclusiveMovie() const{return status.binkStretch;}\n  inline Bool BinkDone()')])
+patch('coregame/viewer_private.h', [('    // Move to position\n    void LookAt(F32 x, F32 z);\n\n    // Exec a scope', '    void PanNative(F32 x, F32 z);\n    void ZoomNative(F32 distance){Swoop(distance);}\n\n    // Move to position\n    void LookAt(F32 x, F32 z);\n\n    // Exec a scope')])
 source=out/'coregame/viewer_standard.cpp';source.write_text(source.read_text()+'\n#include "viewer_pan_native.inc"\n')
 patch('graphics/tranbucket.h', [('TranBucketMan::SetMaxZ','SetMaxZ'),('TranBucketMan::SetMinZ','SetMinZ'),('TranBucketMan::SetMaxBucketCount','SetMaxBucketCount')])
 patch('interface/iftypes.h', [('sizeof TextureSkin','sizeof(TextureSkin)')])
@@ -129,6 +132,23 @@ for name in ['coregame/displayobjective.cpp','coregame/radio.cpp']:
   text=text.replace('(const CH *)"Someone"','(const CH *)u"Someone"')
  source.write_text(text)
 patch('coregame/claim.cpp', [('UnitObj *Claim::GetOwner','UnitObj *GetOwner')])
+# MissionActivity opens the selected mission on a fresh engine instance.
+patch('system/random.h',[('    void SetSeed(U32 newSeed);','    void SetSeed(U32 newSeed);\n    U32 CurrentSeed() const { return seed; }')])
+patch('game/savegame.cpp',[
+ ('    // Save each system','    StdSave::TypeU32(gScope, "OfflineRandomSeed", Random::sync.CurrentSeed());\n    // Save each system'),
+ ('          // Delete the parse tree','          Random::sync.SetSeed(StdLoad::TypeU32(loadPTree->GetGlobalScope(), "OfflineRandomSeed", Random::sync.CurrentSeed()));\n          // Delete the parse tree')])
+# A projected sun behind the camera can still have positive post-divide depth.
+patch('graphics/terrain_sky.cpp',[('if (sunVector.z > 0.0f)','if (rhw > 0.0f && sunVector.z > 0.0f)')])
+# A restored object can begin with a different cosmetic mesh variant. Apply
+# texture timing only to instances that actually have an animated texture.
+patch('graphics/meshent.cpp',[('      ASSERT( hasTexAnim);','      if (!hasTexAnim) break;')])
+patch('game/savegame.h',[('  Bool Load(const char *slot);','  Bool Load(const char *slot);\n  Bool PrepareLoad(const char *slot);')])
+patch('game/savegame.cpp',[
+ ('  Bool Load(const char *slot)\n','  Bool PrepareLoad(const char *slot)\n'),
+ ('        Main::runCodes.Set(0xA293FAEB); // "Mission"','        // Caller starts the mission after preparing the save stream.'),
+ ('  Bool LoadActive()', '  Bool Load(const char *slot)\n  {\n    if (!PrepareLoad(slot)) return FALSE;\n    Main::runCodes.Set(0xA293FAEB);\n    return TRUE;\n  }\n\n  Bool LoadActive()'),
+ ('        mode = SAVE;', '        mode = SAVE;\n        struct ResetSave { ~ResetSave(){ mode=IDLE; } } resetSave;')])
+patch('coregame/coregame.cpp',[(f'CON_ERR(("Unable to save {kind} data"))',f'CON_ERR(("Unable to save {kind} data"))\n      return FALSE;') for kind in ['world','object']])
 patch('game/savegame.cpp', [('  static enum\n','  enum\n')])
 patch('coregame_objects/mapobj.cpp', [('sizeof Vector','sizeof(Vector)'),('sizeof Quaternion','sizeof(Quaternion)')])
 source=out/'game/sync.cpp';text=source.read_text()

@@ -15,6 +15,10 @@ class AudioMixer {
  struct Voice { std::shared_ptr<const AudioClip> clip; std::uint64_t id=0; std::uint64_t position=0; int loops=1; float volume=1,priority=0; int pan=64; std::uint32_t owner=0; const void *effect=nullptr,*record=nullptr; unsigned denominator=48000; };
  std::mutex mutex;
  std::vector<Voice> voices;
+ // Stereo movie frames arrive on the engine thread and drain on the audio callback.
+ static constexpr unsigned movieCapacity=96000;
+ std::vector<std::int16_t> movieSamples;
+ unsigned movieRead=0,movieCount=0,movieRate=0,moviePhase=0,movieOutputRate=0;
  std::uint64_t serial=0;
  float volume=1;
  std::atomic<bool> running{false};
@@ -24,6 +28,8 @@ public:
  void SetOutputRunning(bool value)noexcept {running.store(value);}
  bool OutputRunning()const noexcept {return running.load();}
  std::uint64_t Play(std::shared_ptr<const AudioClip>,float volume,int pan,int loops,float priority=0,std::uint32_t owner=0,const void *effect=nullptr,const void *record=nullptr);
+ void QueueMovie(const std::int16_t *samples,std::size_t count,unsigned rate);
+ void ClearMovie();
  void Render(float *stereo,std::size_t frames,unsigned rate=48000)noexcept;
  bool Playing(std::uint64_t);
  void Stop(std::uint64_t);

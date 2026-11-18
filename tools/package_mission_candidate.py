@@ -32,7 +32,7 @@ receipt={'source_revision':revision,'upstream_revision':'9ce9da5f21604310a997f0c
 platform=a.sdk/'platforms/android-35/android.jar';tools=a.sdk/'build-tools/35.0.0'
 classes=out/'classes';dex=out/'dex';classes.mkdir(exist_ok=True);dex.mkdir(exist_ok=True)
 def run(cmd):subprocess.run([str(x) for x in cmd],check=True)
-run(['java','com.sun.tools.javac.Main','--release','8','-classpath',platform,'-d',classes,*sorted((repo/'android/menu/org/reigncarnated/menu').glob('*.java'))])
+run(['java','com.sun.tools.javac.Main','-source','8','-target','8','-bootclasspath',str(tools/'core-lambda-stubs.jar')+':'+str(platform),'-d',classes,*sorted((repo/'android/menu/org/reigncarnated/menu').glob('*.java'))])
 run([tools/'d8','--lib',platform,'--min-api','26','--output',dex,*sorted(classes.rglob('*.class'))])
 manifest=out/'AndroidManifest.xml';manifest_text=(repo/'android/menu/AndroidManifest.xml').read_text()
 manifest_text=manifest_text.replace('org.reigncarnated.missioncandidate',application_id).replace('Reigncarnated IA Test',app_label)

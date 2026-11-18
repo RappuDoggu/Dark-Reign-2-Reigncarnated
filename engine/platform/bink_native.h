@@ -12,6 +12,7 @@ namespace NativeEngine {
 using MovieAudioSink=void (*)(const std::int16_t *stereo,std::size_t samples,unsigned rate,void *context);
 // Engine-thread configuration; sink consumes/copies PCM before returning.
 void SetMovieAudioSink(MovieAudioSink,void *context);
+const std::uint8_t *MoviePixels(HBINK);
 HBINK OpenMovie(const void *bytes,std::size_t size);
 }
 const char *BinkGetError();

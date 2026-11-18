@@ -30,10 +30,12 @@ Bool IsHost(){return NativeEngine::CurrentOfflineSession()?TRUE:FALSE;}
 void Load(FScope *scope){
  if(!scope)throw std::invalid_argument("Missing session save scope");
  if(!NativeEngine::CurrentOfflineSession())throw std::logic_error("Select a local mission before loading session state");
- // A plain local game has no network database. Restoring a multiplayer save
- // requires host/player reconstruction, so reject it before modifying state.
- if(scope->NextFunction())throw std::runtime_error("Multiplayer save-session restoration is not supported by the local mission target");
+ FScope *entry=scope->NextFunction();
+ if(!entry){Data::LocalFlush();return;}
+ if(std::string(entry->NameStr())!="OfflineData"||scope->NextFunction())
+  throw std::runtime_error("Unrecognized offline session data");
  Data::LocalFlush();
+ Data::Load(entry);
 }
 namespace Data {Bool Online(){return FALSE;} }
 }
@@ -43,7 +45,11 @@ void ClearReady(){localReady=false;}
 void SetReady(){RequireSession();localReady=true;}
 Bool IsReady(){RequireSession();const bool ready=localReady;localReady=false;return ready?TRUE:FALSE;}
 void Process(){RequireSession();} // No asynchronous transport in this build; sends dispatch locally.
-void Save(FScope *){throw std::runtime_error("Local session save restoration is not implemented");}
+void Save(FScope *scope){
+ RequireSession();
+ if(!scope)throw std::invalid_argument("Missing session save scope");
+ Data::Save(scope->AddFunction("OfflineData"));
+}
 namespace Network {const NBinTree<Player,CRC> &GetPlayers(){return localPlayers;}}
 namespace Data {
 U32 GetLag(){return 0;} // No network sync queue in the offline target.

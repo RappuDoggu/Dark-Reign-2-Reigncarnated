@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   auto loader = catalog.mission_loader("missions\\multiplayer", mission);
   auto game = reign::parse_config(loader, "game.cfg");
   auto objects = reign::parse_config(loader, "objects.cfg");
-  unsigned width = 0, height = 0, teams = 0, defaultClients = 0, count = 0;
+  unsigned width = 0, height = 0, teams = 0, playableTeams = 0, defaultClients = 0, count = 0;
   std::string terrainGroup, defaultRule;
   for (const auto &n : game) {
    if (n.name == "TerrainGroup") terrainGroup = std::get<std::string>(n.arguments.at(0));
@@ -33,7 +33,12 @@ int main(int argc, char **argv) {
    }
    if (n.name == "DefineTeams") for (const auto &t : n.children) if (t.name == "CreateTeam") {
     ++teams;
-    for (const auto &c : t.children) if (c.name == "DefaultClient" && std::get<std::int32_t>(c.arguments.at(0))) ++defaultClients;
+    bool playable=true;
+    for(const auto &c:t.children){
+     if(c.name=="AvailablePlay")playable=std::get<std::int32_t>(c.arguments.at(0))!=0;
+     if(c.name=="DefaultClient"&&std::get<std::int32_t>(c.arguments.at(0)))++defaultClients;
+    }
+    if(playable)++playableTeams;
    }
   }
   std::set<std::int32_t> ids;
@@ -42,15 +47,17 @@ int main(int argc, char **argv) {
    if (id <= 0 || !ids.insert(id).second) throw std::runtime_error("Invalid/duplicate object ID");
    ++count;
   }
-  if (!width || !height || !teams || defaultClients != 1 || !count || terrainGroup.empty())
-   throw std::runtime_error("Incomplete mission definitions");
+  if (!width || !height || !playableTeams || !count || terrainGroup.empty())
+   throw std::runtime_error("Incomplete mission definitions: dimensions="+std::to_string(width)+"x"+std::to_string(height)+
+     " teams="+std::to_string(teams)+" default clients="+std::to_string(defaultClients)+
+     " playable teams="+std::to_string(playableTeams)+" objects="+std::to_string(count)+" terrain="+terrainGroup);
   auto terrain = reign::load_shell_terrain(loader, width, height);
   std::cout << "Instant Action data preflight: PASS\nMission: " << mission
    << "\nMap: " << width << 'x' << height << "\nTerrain group: " << terrainGroup
    << "\nMap team definitions: " << teams << " (not instantiated players)"
    << "\nDefault clients: " << defaultClients << "\nObject definitions: " << count
    << "\nTerrain cells: " << terrain.cells.size() << "\nDefault rule: " << defaultRule
-   << "\nMission boot, no-opponent setup, touch selection and construction: NOT implemented/tested\n";
+   << "\nData preflight only; gameplay execution is tested by the native mission harness\n";
  } catch (const std::exception &e) {
   std::cerr << "INSTANT_ACTION_DATA_FAIL " << e.what() << '\n'; return 1;
  }

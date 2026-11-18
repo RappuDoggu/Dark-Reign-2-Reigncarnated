@@ -146,7 +146,8 @@ out vec4 output_color;
 void main(){
  vec4 d=screen_diffuse/screen_w;
  vec4 s=screen_specular/screen_w;
- vec4 t=texture(image,texture_perspective!=0?texcoord:screen_texcoord/screen_w);
+ vec4 t=vec4(1.0);
+ if(texture_op!=0)t=texture(image,texture_perspective!=0?texcoord:screen_texcoord/screen_w);
  vec4 c=d;
  if(texture_op==1)c=d*t;
  if(texture_op==2)c=vec4(d.rgb*t.rgb,t.a);
@@ -216,14 +217,14 @@ void LegacyGles::draw_tl(unsigned w,unsigned h,const LegacyTL *vertices,std::siz
  if(!vertices||count>65536)throw std::runtime_error("Invalid TL batch");
  if(!indices||!index_count||index_count%(lines?2:3)||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported TL index topology");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("TL index out of bounds");
- for(std::size_t n=0;n<index_count;++n){auto i=indices[n];if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))throw std::runtime_error("Invalid referenced TL coordinates/rhw at vertex "+std::to_string(i)+" x="+std::to_string(vertices[i].x)+" y="+std::to_string(vertices[i].y)+" z="+std::to_string(vertices[i].z)+" rhw="+std::to_string(vertices[i].rhw)+" uv="+std::to_string(vertices[i].u)+","+std::to_string(vertices[i].v));}
+ for(std::size_t n=0;n<index_count;++n){auto i=indices[n];if(!std::isfinite(vertices[i].rhw)||vertices[i].rhw<=0||!std::isfinite(vertices[i].x)||!std::isfinite(vertices[i].y)||!std::isfinite(vertices[i].z)||(state.texture_op!=TextureOp::diffuse&&(!std::isfinite(vertices[i].u)||!std::isfinite(vertices[i].v))))throw std::runtime_error("Invalid referenced TL coordinates/rhw at vertex "+std::to_string(i)+" x="+std::to_string(vertices[i].x)+" y="+std::to_string(vertices[i].y)+" z="+std::to_string(vertices[i].z)+" rhw="+std::to_string(vertices[i].rhw)+" uv="+std::to_string(vertices[i].u)+","+std::to_string(vertices[i].v));}
  draw_batch(w,h,vertices,count,indices,index_count,state,false,lines);
 }
 void LegacyGles::draw_clip(unsigned w,unsigned h,const LegacyClip *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state){
  if(!vertices||count>65536)throw std::runtime_error("Invalid homogeneous batch");
  if(!indices||!index_count||index_count%3||index_count>std::size_t(std::numeric_limits<GLsizei>::max()))throw std::runtime_error("Unsupported homogeneous triangle indices");
  for(std::size_t i=0;i<index_count;++i)if(indices[i]>=count)throw std::runtime_error("Homogeneous index out of bounds");
- for(std::size_t n=0;n<index_count;++n){auto i=indices[n];const auto &v=vertices[i];if(!std::isfinite(v.x)||!std::isfinite(v.y)||!std::isfinite(v.z)||!std::isfinite(v.w)||!std::isfinite(v.u)||!std::isfinite(v.v))throw std::runtime_error("Invalid homogeneous coordinates");}
+ for(std::size_t n=0;n<index_count;++n){auto i=indices[n];const auto &v=vertices[i];if(!std::isfinite(v.x)||!std::isfinite(v.y)||!std::isfinite(v.z)||!std::isfinite(v.w)||(state.texture_op!=TextureOp::diffuse&&(!std::isfinite(v.u)||!std::isfinite(v.v))))throw std::runtime_error("Invalid homogeneous coordinates");}
  draw_batch(w,h,vertices,count,indices,index_count,state,true);
 }
 void LegacyGles::draw_batch(unsigned w,unsigned h,const void *vertices,std::size_t count,const std::uint16_t *indices,std::size_t index_count,const DrawState &state,bool homogeneous,bool lines){
