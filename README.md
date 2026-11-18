@@ -6,6 +6,12 @@
 
 **[Download 0.1 APK](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/download/v0.1/Reigncarnated-0.1.apk)** · [All downloads](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/releases/tag/v0.1) · [Player guide](docs/PLAYER_GUIDE.md)
 
+## In development for 0.2
+
+Build 33 adds separate JDA and Sprawler Continue options, mid-mission saves, campaign movie fixes, camera zoom and map compatibility changes. The ARM64 test app installs alongside 0.1 and requires its own game-data import. [Build 33 test bundle](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/44302916962/artifacts/14427172346)
+
+Host testing covered opening and reopening all 31 campaign entries, restoring resources in JDA 01 and advancing to JDA 02. Sprawler progression, interrupted-save recovery and Fold 5 gameplay are still under test. [Build verification](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/44302916962)
+
 ## In 0.1
 
 - Instant Action against the original AI, plus practice mode.
