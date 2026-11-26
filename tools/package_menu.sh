@@ -10,7 +10,7 @@ build=${REIGN_MENU_BUILD_DIR:-$repo/build-menu}
 tools="$ANDROID_SDK_ROOT/build-tools/35.0.0"
 platform="$ANDROID_SDK_ROOT/platforms/android-35/android.jar"
 if [ "${REIGN_REUSE_CONFIG:-0}" = 1 ]; then
- python3 - "$build/CMakeCache.txt" "$ANDROID_NDK_HOME" "$REIGN_UPSTREAM" "$REIGN_FFMPEG_ROOT" <<'PYCACHE'
+ python3 - "$build/CMakeCache.txt" "$ANDROID_NDK_HOME" "$REIGN_UPSTREAM" "$REIGN_FFMPEG_ROOT" "$repo" <<'PYCACHE'
 import pathlib,sys
 cache={}
 for line in pathlib.Path(sys.argv[1]).read_text().splitlines():
@@ -39,11 +39,12 @@ mapfile -d '' classes < <(find "$build/classes" -name '*.class' -print0)
 "$tools/d8" --lib "$platform" --min-api 26 --output "$build/dex" "${classes[@]}"
 "$tools/aapt2" link -o "$build/unsigned.apk" -I "$platform" \
  --manifest "$repo/android/menu/AndroidManifest.xml"
-python3 - "$build" "$ANDROID_NDK_HOME" "$REIGN_FFMPEG_ROOT" <<'PY'
+python3 - "$build" "$ANDROID_NDK_HOME" "$REIGN_FFMPEG_ROOT" "$repo" <<'PY'
 import pathlib, sys, zipfile
 p = pathlib.Path(sys.argv[1])
 ndk = pathlib.Path(sys.argv[2])/'toolchains/llvm/prebuilt/linux-x86_64'
 with zipfile.ZipFile(p/'unsigned.apk','a') as z:
+ z.write(pathlib.Path(sys.argv[4])/'docs/images/dark-reign-2-banner.jpg','assets/launcher/dark-reign-2.jpg')
  z.write(pathlib.Path(sys.argv[3])/'COPYING.LGPLv2.1','assets/notices/ffmpeg-LGPLv2.1.txt',compress_type=zipfile.ZIP_DEFLATED)
  z.writestr('assets/notices/ffmpeg.txt','Uses FFmpeg n6.1.1 (LGPL 2.1 or later). Source: https://github.com/FFmpeg/FFmpeg/tree/n6.1.1. See accompanying source and relink materials.')
  z.write(p/'libreign_menu.so','lib/arm64-v8a/libreign_menu.so',compress_type=zipfile.ZIP_STORED)

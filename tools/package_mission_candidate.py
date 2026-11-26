@@ -40,7 +40,8 @@ manifest.write_text(manifest_text)
 unsigned=out/'mission-unsigned.apk';run([tools/'aapt2','link','-o',unsigned,'-I',platform,'--manifest',manifest])
 with zipfile.ZipFile(a.base_apk) as old,zipfile.ZipFile(unsigned,'a') as apk:
  for item in old.infolist():
-  if (item.filename.startswith('assets/') and item.filename not in {'assets/notices/performance-candidate.txt','assets/build/source.json','assets/build/BUILD.md','assets/build/PROGRESS.md'}) or (item.filename=='lib/arm64-v8a/libreign_menu.so' and not a.menu_library):apk.writestr(item.filename,old.read(item),compress_type=zipfile.ZIP_STORED if item.filename.endswith('.so') else zipfile.ZIP_DEFLATED)
+  if (item.filename.startswith('assets/') and item.filename not in {'assets/launcher/dark-reign-2.jpg','assets/notices/performance-candidate.txt','assets/build/source.json','assets/build/BUILD.md','assets/build/PROGRESS.md'}) or (item.filename=='lib/arm64-v8a/libreign_menu.so' and not a.menu_library):apk.writestr(item.filename,old.read(item),compress_type=zipfile.ZIP_STORED if item.filename.endswith('.so') else zipfile.ZIP_DEFLATED)
+ apk.write(repo/'docs/images/dark-reign-2-banner.jpg','assets/launcher/dark-reign-2.jpg',compress_type=zipfile.ZIP_STORED)
  if a.menu_library:apk.write(a.menu_library,'lib/arm64-v8a/libreign_menu.so',compress_type=zipfile.ZIP_STORED)
  apk.write(a.native_library,'lib/arm64-v8a/libreign_mission.so',compress_type=zipfile.ZIP_STORED)
  for file in dex.glob('classes*.dex'):apk.write(file,file.name,compress_type=zipfile.ZIP_DEFLATED)
@@ -50,7 +51,7 @@ with zipfile.ZipFile(a.base_apk) as old,zipfile.ZipFile(unsigned,'a') as apk:
  for name in ['RELEASE_0_1.md','PLAYER_GUIDE.md','SOURCE_PROVENANCE.md']:
   path=repo/'docs'/name
   if path.is_file():apk.writestr('assets/build/'+name,path.read_text())
- apk.writestr('assets/notices/performance-candidate.txt','Reigncarnated native ARM64 Android source port. Original game data is imported separately. This release includes a matching source/relink archive for both native libraries and the unmodified FFmpeg n6.1.1 source, LGPL 2.1 or later. See the release receipt and build instructions. No original game assets or signing keys are included in this APK.')
+ apk.writestr('assets/notices/performance-candidate.txt','Reigncarnated native ARM64 Android source port. Original game data is imported separately. This release includes a matching source/relink archive for both native libraries and the unmodified FFmpeg n6.1.1 source, LGPL 2.1 or later. See the release receipt and build instructions. Launcher artwork: Dark Reign 2 promotional banner from GOG. Playable game data is imported separately.')
 aligned=out/'mission-aligned.apk';run([tools/'zipalign','-f','-P','16','4',unsigned,aligned])
 key=a.signing_key or out/'recovery-debug.keystore'
 if not key.exists():run(['keytool','-genkeypair','-noprompt','-keystore',key,'-storepass','android','-keypass','android','-alias','androiddebugkey','-dname','CN=Reigncarnated Private Mission Candidate','-keyalg','RSA','-keysize','2048','-validity','3650'])

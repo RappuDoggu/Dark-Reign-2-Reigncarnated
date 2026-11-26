@@ -53,7 +53,7 @@ public final class MenuActivity extends Activity {
  private IntroAudioPlayer introAudio;private volatile boolean menuReady;
  private native float volumeNative(long h);
  private volatile MenuAudioPlayer audioPlayer;
- private MenuView view;private LinearLayout setup;private TextView status;private Button choose,chooseZip,cancelImport;
+ private MenuView view;private FrameLayout setup;private TextView status;private Button choose,chooseZip,cancelImport;
  private String report="",dataRoot;private RenderMetrics metrics;private volatile boolean importing,cancelled,destroyed;
  private volatile boolean resumed;
  private final StringBuilder history=new StringBuilder();
@@ -75,18 +75,68 @@ public final class MenuActivity extends Activity {
   instantButton=new Button(this);instantButton.setText("Instant Action");instantButton.setOnClickListener(v->showInstantAction());screen.addView(instantButton,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
   resourceButton=new Button(this);updateResourceButton();resourceButton.setVisibility(View.GONE);resourceButton.setOnClickListener(v->showStartingResources());screen.addView(resourceButton,new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START));
   TextView version=new TextView(this);version.setText(apkVersion);version.setTextColor(0xffffffff);version.setBackgroundColor(0xb0000000);version.setPadding(dp(6),dp(3),dp(6),dp(3));screen.addView(version,new FrameLayout.LayoutParams(-2,-2,Gravity.BOTTOM|Gravity.START));
-  setup=new LinearLayout(this);setup.setOrientation(LinearLayout.VERTICAL);setup.setGravity(Gravity.CENTER);setup.setPadding(dp(28),dp(24),dp(28),dp(24));setup.setBackgroundColor(0xff101710);
-  TextView title=new TextView(this);title.setText("REIGNCARNATED");title.setTextColor(0xffaadd99);title.setTextSize(28);title.setGravity(Gravity.CENTER);setup.addView(title);
-  TextView description=new TextView(this);description.setText("Select ZIP files from your legally owned Dark Reign 2 installation.\n\nFor Instant Action, include the complete packs, missions, worlds, sides, mods and library folders. Music is imported automatically. Select multiple ZIPs together if needed. Data is copied once; later launches play the original introduction and open the native menu.");description.setTextColor(0xffeeeeee);description.setGravity(Gravity.CENTER);description.setPadding(0,dp(20),0,dp(20));setup.addView(description);
-  chooseZip=new Button(this);chooseZip.setText("Select game data ZIP(s)");chooseZip.setOnClickListener(v->pickZip());setup.addView(chooseZip);
-  choose=new Button(this);choose.setText("Select game data folder");choose.setOnClickListener(v->pickFolder());setup.addView(choose);
-  cancelImport=new Button(this);cancelImport.setText("Cancel import");cancelImport.setVisibility(View.GONE);cancelImport.setOnClickListener(v->{cancelled=true;status.setText("Cancelling import…");});setup.addView(cancelImport);
-  Button back=new Button(this);back.setText("Return to existing game");back.setVisibility(hasData()?View.VISIBLE:View.GONE);back.setOnClickListener(v->{if(!importing)setup.setVisibility(View.GONE);});setup.addView(back);
-  status=new TextView(this);status.setTextColor(0xffdddddd);status.setGravity(Gravity.CENTER);status.setPadding(0,dp(16),0,0);setup.addView(status);
+  setup=createSetup();
   screen.addView(setup,new FrameLayout.LayoutParams(-1,-1));setup.setVisibility(hasData()?View.GONE:View.VISIBLE);metrics=new RenderMetrics(this,screen,"Menu");setContentView(screen);
   // Delete only unreferenced importer-owned snapshots, captured before a new import can start.
   final String keepRoot=dataRoot,keepMusicRoot=getPreferences(0).getString("audio.musicRoot",null);File parent=new File(getFilesDir(),"installations");File[] abandoned=parent.listFiles();
   if(abandoned!=null)new Thread(()->{for(File f:abandoned)if((f.getName().startsWith("import-")||f.getName().startsWith("data-"))&&!f.getAbsolutePath().equals(keepRoot)&&!f.getAbsolutePath().equals(keepMusicRoot))DataFolderImporter.remove(f);},"ReignCleanup").start();
+ }
+ private FrameLayout createSetup(){
+  ImageView art=new ImageView(this);
+  art.setScaleType(ImageView.ScaleType.FIT_CENTER);
+  art.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+  try(InputStream in=getAssets().open("launcher/dark-reign-2.jpg")){
+   art.setImageBitmap(android.graphics.BitmapFactory.decodeStream(in));
+  }catch(IOException e){Diagnostics.event("Launcher artwork unavailable: "+e.getMessage());}
+
+  ScrollView scroll=new ScrollView(this);
+  scroll.setFillViewport(true);
+  scroll.setBackgroundColor(0xff11221f);
+  LinearLayout panel=new LinearLayout(this);
+  panel.setOrientation(LinearLayout.VERTICAL);
+  panel.setGravity(Gravity.CENTER_VERTICAL);
+  panel.setPadding(dp(18),dp(12),dp(18),dp(12));
+  scroll.addView(panel);
+
+  TextView title=new TextView(this);
+  title.setText("Reigncarnated");title.setTextColor(0xffdbeac9);title.setTextSize(26);
+  panel.addView(title);
+  TextView instructions=new TextView(this);
+  instructions.setText("Import your complete Dark Reign 2 installation. Choose its folder or select all game-data ZIPs together.");
+  instructions.setTextColor(0xffecf0e9);instructions.setPadding(0,dp(6),0,dp(12));
+  panel.addView(instructions);
+  chooseZip=setupButton(panel,"Import ZIP files",v->pickZip());
+  choose=setupButton(panel,"Import folder",v->pickFolder());
+  cancelImport=setupButton(panel,"Cancel import",v->{cancelled=true;status.setText("Cancelling import…");});
+  cancelImport.setVisibility(View.GONE);
+  Button back=setupButton(panel,"Return to game",v->{if(!importing)setup.setVisibility(View.GONE);});
+  back.setVisibility(hasData()?View.VISIBLE:View.GONE);
+  status=new TextView(this);
+  status.setTextColor(0xffe3d4a3);panel.addView(status);
+
+  FrameLayout layout=new FrameLayout(this){
+   @Override protected void onMeasure(int widthSpec,int heightSpec){
+    int width=MeasureSpec.getSize(widthSpec),height=MeasureSpec.getSize(heightSpec);
+    boolean wide=width>=dp(540)&&width>height;
+    int panelWidth=wide?Math.min(dp(380),width/2):width;
+    int artHeight=wide?height:Math.min(height/3,width*740/1600);
+    FrameLayout.LayoutParams imageParams=(FrameLayout.LayoutParams)art.getLayoutParams();
+    imageParams.width=wide?width-panelWidth:width;imageParams.height=artHeight;
+    FrameLayout.LayoutParams controls=(FrameLayout.LayoutParams)scroll.getLayoutParams();
+    controls.width=panelWidth;controls.height=wide?height:height-artHeight;
+    super.onMeasure(widthSpec,heightSpec);
+   }
+  };
+  layout.setBackgroundColor(0xff091714);
+  layout.setClickable(true);
+  layout.addView(art,new FrameLayout.LayoutParams(-1,-1,Gravity.TOP|Gravity.START));
+  layout.addView(scroll,new FrameLayout.LayoutParams(-1,-1,Gravity.BOTTOM|Gravity.END));
+  return layout;
+ }
+ private Button setupButton(LinearLayout panel,String label,View.OnClickListener listener){
+  Button button=new Button(this);
+  button.setText(label);button.setAllCaps(false);button.setMinHeight(dp(48));
+  button.setOnClickListener(listener);panel.addView(button);return button;
  }
  private void showInstantAction(){
   if(!resumed)return;
