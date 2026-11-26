@@ -1,0 +1,105 @@
+name: Package campaign build 34
+
+on:
+  push:
+    branches: [ci/campaign-build-34]
+    paths: [.github/workflows/campaign-build-34.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 7988049c9c03b1b0e24d918b491f835568b4bff3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build and verify side-by-side ARM64 test APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          revision=7988049c9c03b1b0e24d918b491f835568b4bff3
+          test "$(git rev-parse HEAD)" = "$revision"
+          work="$RUNNER_TEMP/reign-build"
+          mkdir -p "$work" "$RUNNER_TEMP/reign-logs"
+          exec > >(tee "$RUNNER_TEMP/reign-logs/build.log") 2>&1
+          bash tools/fetch_upstream.sh "$work/upstream"
+          bash tools/install_android_sdk.sh "$work/sdk"
+          export ANDROID_NDK_HOME="$work/sdk/ndk/27.2.12479018"
+          bash tools/build_bink_decoder.sh "$work/ffmpeg" android
+          python3 tools/build_performance_candidate.py \
+            --upstream "$work/upstream" --sdk "$work/sdk" \
+            --ffmpeg "$work/ffmpeg/android/install" \
+            --base-apk builds/v0.7/Reigncarnated-Performance-v07.apk \
+            --output "$work/candidate" --jobs 4 --new-recovery-key \
+            --output-name Reigncarnated-0.1.1-test-7988049.apk \
+            --application-id org.reigncarnated.campaign34 \
+            --app-label "Reigncarnated Campaign Test 34"
+          python3 tools/prepare_release_relink.py \
+            --mission "$work/candidate/package" --menu "$work/candidate/menu" \
+            --ffmpeg "$work/ffmpeg/android/install" --ndk "$ANDROID_NDK_HOME" \
+            --native-source-revision "$revision" --output "$work/kit"
+          python3 "$work/kit/relink.py" --ndk "$ANDROID_NDK_HOME" --output "$work/relinked"
+          python3 tools/package_mission_candidate.py \
+            --base-apk builds/v0.7/Reigncarnated-Performance-v07.apk \
+            --native-library "$work/relinked/libreign_mission.so" \
+            --menu-library "$work/relinked/libreign_menu.so" \
+            --sdk "$work/sdk" --output "$work/package" --new-recovery-key \
+            --output-name Reigncarnated-0.1.1-test-7988049.apk \
+            --application-id org.reigncarnated.campaign34 \
+            --app-label "Reigncarnated Campaign Test 34"
+          package="$work/package"
+          apk="$package/Reigncarnated-0.1.1-test-7988049.apk"
+          "$work/sdk/build-tools/35.0.0/aapt2" dump badging "$apk" |
+            grep -F "package: name='org.reigncarnated.campaign34' versionCode='34' versionName='0.1.1-test'"
+          "$work/sdk/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$apk"
+          for lib in libreign_menu.so libreign_mission.so; do
+            "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" -lW "$work/relinked/$lib" |
+              awk '$1=="LOAD" { if ($NF!="0x4000") exit 1; n++ } END { if (!n) exit 1 }'
+          done
+          export PACKAGE_DIR="$package" RELINK_DIR="$work/relinked"
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, zipfile
+          package = pathlib.Path(os.environ['PACKAGE_DIR'])
+          relink = pathlib.Path(os.environ['RELINK_DIR'])
+          receipt = json.loads((package / 'build-receipt.json').read_text())
+          apk = package / 'Reigncarnated-0.1.1-test-7988049.apk'
+          assert hashlib.sha256(apk.read_bytes()).hexdigest() == receipt['apk_sha256']
+          with zipfile.ZipFile(apk) as z:
+              assert z.testzip() is None
+              assert z.read('assets/launcher/dark-reign-2.jpg') == pathlib.Path('docs/images/dark-reign-2-banner.jpg').read_bytes()
+              assert not any(n.lower().endswith(('.zwp', '.bik', '.jks', '.keystore')) for n in z.namelist())
+              for name, digest in receipt['native_libraries'].items():
+                  assert hashlib.sha256(z.read('lib/arm64-v8a/' + name)).hexdigest() == digest
+                  assert hashlib.sha256((relink / name).read_bytes()).hexdigest() == digest, name
+          PY
+          mkdir -p "$RUNNER_TEMP/reign-delivery"
+          python3 tools/finalize_release_relink.py \
+            --kit "$work/kit" --unsigned-apk "$package/mission-aligned.apk" \
+            --receipt "$package/build-receipt.json" \
+            --output "$RUNNER_TEMP/reign-delivery/Reigncarnated-0.1.1-test-source-relink.zip"
+          unzip -q "$RUNNER_TEMP/reign-delivery/Reigncarnated-0.1.1-test-source-relink.zip" -d "$work/relink-check"
+          python3 "$work/relink-check/relink.py" --ndk "$ANDROID_NDK_HOME" --output "$work/relocated"
+          for lib in libreign_menu.so libreign_mission.so; do
+            cmp "$work/relocated/$lib" "$work/relinked/$lib"
+          done
+          cp "$apk" "$package/build-receipt.json" "$RUNNER_TEMP/reign-delivery/"
+          cd "$RUNNER_TEMP/reign-delivery"
+          sha256sum *.apk *.zip build-receipt.json > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Reigncarnated-0.1.1-test-7988049
+          path: ${{ runner.temp }}/reign-delivery/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: campaign-build-34-log
+          path: ${{ runner.temp }}/reign-logs/
