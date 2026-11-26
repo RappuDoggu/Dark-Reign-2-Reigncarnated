@@ -36,7 +36,7 @@ public final class MissionActivity extends Activity {
  private static native void pointerMission(int x,int y,int button,boolean down);
  private static native void keyMission(int key,boolean down);
  private static native void closeMission(long handle);
- private static final class Target {
+ static final class Target {
   final String group,mission,slot;
   final boolean campaign,individual;
   Target(String group,String mission,boolean campaign,boolean individual,String slot){
