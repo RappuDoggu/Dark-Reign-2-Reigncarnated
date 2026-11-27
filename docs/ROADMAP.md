@@ -2,13 +2,18 @@
 
 0.1 supports offline play. The following features are planned; there are no release dates yet.
 
-## Next
+## Offline release criteria
 
-- Campaign fixes: objectives, dialogue, transitions and endings for both factions.
-- Rendering fixes: fog of war, lighting, textures and effects.
-- Save/resume and reliable campaign progress.
-- Better zoom limits, camera controls and touch selection.
-- Longer-match stability, audio fixes and testing across more Android devices.
+The offline release covers both retail campaigns and Instant Action on Android. Track the two campaign playthroughs in the [mission acceptance table](CAMPAIGN_ACCEPTANCE.csv). Its 31 entries comprise 19 playable missions and 12 cutscenes or transitions. Record the build, device and result for each entry.
+
+| Area | What establishes completion |
+| --- | --- |
+| Campaigns | Play JDA and Sprawler from their openings to their endings. Verify objectives, dialogue, cinematics and the normal handoff into the next entry. |
+| Saves | Resume a mid-mission save after leaving the game. Check units, resources and objectives, then advance normally. Verify each faction's Continue entry and recovery after an interrupted save. |
+| Instant Action | Finish a match against the original AI. Exercise unit selection, orders, construction, combat, camera controls and the results screen. |
+| Presentation and stability | Verify fog of war, lighting, textures, effects, music and speech in gameplay. Exercise pause/resume and longer matches on the target phone. |
+
+Host loading and forced next-mission checks narrow down failures. Mark a campaign entry complete after the corresponding gameplay checks pass. LAN, online play and the extensions below are tracked separately.
 
 ## Maps and mods
 
