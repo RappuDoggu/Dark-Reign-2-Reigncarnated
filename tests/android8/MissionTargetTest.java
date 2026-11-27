@@ -18,6 +18,12 @@ public final class MissionTargetTest {
      !recreated.campaign||recreated.individual||!recreated.slot.isEmpty())
    throw new AssertionError("Restored wrong mission or stale save slot");
 
+  MissionActivity.Target saved=advanced.withSavedSlot("checkpointA").withSavedSlot("checkpointB");
+  MissionActivity.Target afterSave=MissionActivity.Target.from(saved.toBundle());
+  if(!afterSave.slot.equals("checkpointB")||!afterSave.group.equals(advanced.group)||
+     !afterSave.mission.equals("S02")||!afterSave.campaign||afterSave.individual)
+   throw new AssertionError("Activity recreation lost the most recent mid-mission save");
+
   launch.putBoolean("individualCampaign",true);
   MissionActivity.Target test=MissionActivity.Target.from(MissionActivity.Target.from(launch).toBundle());
   if(!test.individual)throw new AssertionError("Lost individual campaign isolation");

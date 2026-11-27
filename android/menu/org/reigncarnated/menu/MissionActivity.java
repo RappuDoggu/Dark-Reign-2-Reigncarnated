@@ -42,6 +42,9 @@ public final class MissionActivity extends Activity {
   Target(String group,String mission,boolean campaign,boolean individual,String slot){
    this.group=group;this.mission=mission;this.campaign=campaign;this.individual=individual;this.slot=slot;
   }
+  Target withSavedSlot(String publishedSlot){
+   return new Target(group,mission,campaign,individual,publishedSlot);
+  }
   Bundle toBundle(){
    Bundle data=new Bundle();
    data.putString("group",group);data.putString("mission",mission);data.putString("slot",slot);
@@ -98,6 +101,7 @@ public final class MissionActivity extends Activity {
     String error=saveMission(view.handle,slot);
     if(error!=null)throw new java.io.IOException(error);
     checkpoint.publish(slot,target.group,target.mission,target.campaign,getIntent());
+    target=target.withSavedSlot(slot);
     runOnUiThread(()->Toast.makeText(this,"Mission saved",Toast.LENGTH_SHORT).show());
    }catch(Exception e){runOnUiThread(()->Toast.makeText(this,"Save failed: "+e.getMessage(),Toast.LENGTH_LONG).show());}
   })));
