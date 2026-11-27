@@ -45,6 +45,15 @@ public final class MissionTouchTest {
   t.cancel();t.down(200,200,19000);t.move(240,240);int released=s.releases.size();pair(t,250,40,19100);check(s.releases.size()==released+1);t.pairEnd(19200);t.up(250,220,19300);check(s.clicks.size()==before);
   before=s.clicks.size();t.down(-5,-5,20000);check(!t.hold(21000));t.up(5,5,21100);check(s.clicks.size()==before);t.down(100,100,22000);check(!t.hold(21900));t.up(100,100,21900);check(s.clicks.size()==before);
   t.down(100,100,23000);t.move(200,200);released=s.releases.size();t.aim(true);check(s.releases.size()==released+1);t.up(200,200,23100);check(s.clicks.size()==before);
+  // A quick drag can cross the threshold on ACTION_UP without a final MOVE.
+  t.aim(false);before=s.clicks.size();int presses=s.presses.size();released=s.releases.size();
+  t.down(200,180,24000);t.move(204,181);t.up(260,205,24030);
+  check(s.presses.size()==presses+1&&s.presses.get(presses).equals("200,180"));
+  check(s.releases.size()==released+1&&s.releases.get(released).equals("260,205"));
+  check(s.clicks.size()==before);
+  t.aim(true);tap(t,100,150,25000);t.advance(25500);s.actions.clear();
+  t.down(100,150,26000);t.up(180,170,26030);t.advance(27000);
+  check(s.moves.get(s.moves.size()-1).equals("180,170")&&s.actions.isEmpty()&&s.clicks.size()==before);
   System.out.println("Anchored tap rotation, double-tap confirmation without pointer movement, deliberate reposition, cancellation, normal left-mouse drag/hold and pan without zoom PASS ("+checks+" checks)");
  }
 }

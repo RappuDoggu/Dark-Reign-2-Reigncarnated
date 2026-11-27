@@ -24,12 +24,15 @@ final class MissionTouch {
   // An anchored tap must never move the native pointer, even on DOWN.
   if(!aim||!anchored)cursor(x,y);
  }
- void move(float x,float y){
-  if(!active||multi)return;
+ private void trackDrag(float x,float y){
   if(Math.hypot(x-downX,y-downY)>=SLOP){
    moved=true;clearTap();
    if(!aim&&!selecting&&!held&&inside(downX,downY)){selecting=true;sink.press((int)downX,(int)downY);}
   }
+ }
+ void move(float x,float y){
+  if(!active||multi)return;
+  trackDrag(x,y);
   if(!aim||!anchored||moved)cursor(x,y);
  }
  boolean hold(long time){
@@ -53,6 +56,7 @@ final class MissionTouch {
   lastTap=time;tapX=x;tapY=y;tapEligible=true;
  }
  void up(float x,float y,long time){
+  if(active&&!multi&&!held&&time>=downTime&&inside(downX,downY)&&inside(x,y))trackDrag(x,y);
   advance(time);
   if(selecting){cursor(x,y);releaseSelection();}
   else if(active&&!multi&&!held&&inside(downX,downY)&&inside(x,y)&&time>=downTime){
