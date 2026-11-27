@@ -12,6 +12,7 @@ The offline release covers both retail campaigns and Instant Action on Android. 
 | Saves | Resume a mid-mission save after leaving the game. Check units, resources and objectives, then advance normally. Verify each faction's Continue entry and recovery after an interrupted save. |
 | Instant Action | Finish a match against the original AI. Exercise unit selection, orders, construction, combat, camera controls and the results screen. |
 | Presentation and stability | Verify fog of war, lighting, textures, effects, music and speech in gameplay. Exercise pause/resume and longer matches on the target phone. |
+| Installation and updates | Verify a fresh import and an update that retains game data, settings and saves on the supported Android versions. |
 
 Host loading and forced next-mission checks narrow down failures. Mark a campaign entry complete after the corresponding gameplay checks pass. LAN, online play and the extensions below are tracked separately.
 

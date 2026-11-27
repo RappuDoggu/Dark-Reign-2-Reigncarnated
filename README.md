@@ -8,7 +8,7 @@
 
 ## In development for 0.2
 
-[Build 34 ARM64 test package](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/45826393118) adds a scrollable game-data launcher with Dark Reign 2 artwork. Android can now reopen the current campaign mission after recreating the activity during a campaign. Use **Save game** to preserve mid-mission progress. This test app installs alongside 0.1 and build 33 and requires its own game-data import.
+Build 35 restores the most recent successful mid-mission save when Android recreates the mission activity. Quick drags now select units or reposition a building preview even when the finger crosses the drag threshold just as it lifts. The test app installs alongside 0.1 and build 34 and requires its own game-data import. [ARM64 test APK and source bundle](https://github.com/RappuDoggu/Dark-Reign-2-Reigncarnated/actions/runs/45968780928)
 
 Development builds include separate JDA and Sprawler Continue options, mid-mission saves, campaign movie fixes, camera zoom and map compatibility changes. Prior host checks opened and reopened all 31 campaign entries, restored resources in JDA 01 and advanced to JDA 02. Full campaign playthroughs and Fold 5 verification are still open.
 
